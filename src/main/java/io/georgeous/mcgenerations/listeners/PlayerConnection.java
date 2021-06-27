@@ -3,6 +3,7 @@ package io.georgeous.mcgenerations.listeners;
 import io.georgeous.mcgenerations.Main;
 import io.georgeous.mcgenerations.player.PlayerManager;
 import io.georgeous.mcgenerations.SpawnManager;
+import io.georgeous.mcgenerations.player.PlayerRole;
 import io.georgeous.mcgenerations.player.PlayerWrapper;
 import org.bukkit.Location;
 import org.bukkit.entity.*;
@@ -13,6 +14,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.Objects;
 
 public class PlayerConnection implements Listener {
     private final Main main;
@@ -40,23 +43,24 @@ public class PlayerConnection implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
-        /*
+
         Player p = event.getEntity();
         PlayerWrapper playerWrapper = PlayerManager.get(p);
+        PlayerRole playerRole = playerWrapper.playerRole;
 
         removeBabyHandlerFromDrops(event);
-        playerWrapper.playerRole.die();
+        playerRole.die();
 
         //p.setBedSpawnLocation(new Location(p.getWorld(),0d,250d,0d), true);
         p.setBedSpawnLocation(Main.councilLocation, true);
 
-         */
+
     }
 
     public void removeBabyHandlerFromDrops(PlayerDeathEvent event){
         for(ItemStack item : event.getDrops()){
             if(item.hasItemMeta()){
-                if(item.getItemMeta().hasDisplayName()){
+                if(Objects.requireNonNull(item.getItemMeta()).hasDisplayName()){
                     if(item.getItemMeta().getDisplayName().contains("Baby-Handler")){
                         item.setAmount(0);
                     }

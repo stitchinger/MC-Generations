@@ -3,6 +3,7 @@ package io.georgeous.mcgenerations.commands;
 
 import io.georgeous.mcgenerations.Main;
 import io.georgeous.mcgenerations.player.PlayerManager;
+import io.georgeous.mcgenerations.player.PlayerRole;
 import io.georgeous.mcgenerations.player.PlayerWrapper;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -24,32 +25,31 @@ public class Iam implements CommandExecutor {
             return true;
         }
 
+        Player player = (Player) sender;
+        PlayerWrapper playerWrapper = PlayerManager.get(player);
+        PlayerRole playerRole = playerWrapper.playerRole;
+
+        if(playerRole == null){
+            sender.sendMessage("No PlayerRole attached");
+            return true;
+        }
+
         if (args.length != 3) {
             sender.sendMessage("Usage: /I am Lisa Simpson");
         }
 
         if (args.length == 3) {
-            Player p = (Player) sender;
-            PlayerWrapper cp = PlayerManager.get(p);
-
-            if(!cp.playerRole.isNamed()){
+            if(!playerRole.isNamed()){
                 String first = args[1].substring(0, 1).toUpperCase() + args[1].substring(1);
                 String last = args[2].substring(0, 1).toUpperCase() + args[2].substring(1);
 
-                cp.playerRole.setName(first);
-                cp.playerRole.family.setName(last);
-                cp.playerRole.setNamed(true);
+                playerRole.setName(first);
+                playerRole.family.setName(last);
+                playerRole.setNamed(true);
             } else{
-                p.sendMessage("You can name yourself only once");
+                player.sendMessage("You can name yourself only once");
             }
-
-
-
-
-
         }
-
-
         return true;
     }
 }

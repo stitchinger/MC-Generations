@@ -24,15 +24,18 @@ public class Me implements CommandExecutor {
             return true;
         }
 
-        if(args.length == 0){
-            Player p = (Player) sender;
-            PlayerWrapper cp = PlayerManager.get(p);
-            PlayerRole pr = cp.playerRole;
+        Player player = (Player) sender;
+        PlayerWrapper playerWrapper = PlayerManager.get(player);
+        PlayerRole playerRole = playerWrapper.playerRole;
 
-
-            sender.sendMessage("You are " + cp.playerRole.firstName + " " + cp.playerRole.family.getName() + ".");
-            sender.sendMessage("You are " + cp.playerRole.am.ageInYears +  " year(s) old.");
+        if(playerRole == null){
+            sender.sendMessage("No PlayerRole attached");
+            return true;
         }
+
+        sender.sendMessage("You are " + playerRole.firstName + " " + playerRole.family.getName() + ".");
+        sender.sendMessage("You are " + playerRole.am.ageInYears +  " year(s) old.");
+
         return true;
     }
 }

@@ -41,7 +41,7 @@ public class SpawnManager {
         PlayerWrapper playerWrapper = PlayerManager.get(player);
         playerWrapper.playerRole = new PlayerRole(player);
 
-        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),"spreadplayers 0 0 200 10000 false " + player.getName());
+        //Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),"spreadplayers 0 0 200 10000 false " + player.getName());
 
         playerWrapper.playerRole.am.setAge(10);
 
@@ -84,7 +84,7 @@ public class SpawnManager {
     public static void inheritFromMother(PlayerWrapper cp, Entity mom, Main main){
         PlayerWrapper cMom = PlayerManager.get((Player)mom);
 
-        cp.playerRole.generation = cMom.playerRole.generation + 1;;
+        cp.playerRole.generation = cMom.playerRole.generation + 1;
         cp.playerRole.family = cMom.playerRole.family;
 
         //NameManager.name(cp.player, cp.firstName, cp.family.getName());

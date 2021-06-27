@@ -22,7 +22,7 @@ public class PlayerRole {
     public String firstName;
     private boolean isNamed;
     public boolean isDead = false;
-    public boolean isBorn = false;
+
 
     // Family
     public Family family;
@@ -67,7 +67,7 @@ public class PlayerRole {
             if (this.child.getHealth() <= 0) {
                 this.child = null;
             }
-            float damage = 0;
+            float damage;
             damage = Util.map((float) this.child.getFoodLevel(), 0, 20f, 25, 0);
             PlayerInventory inventory = player.getInventory();
             ItemStack[] stack = inventory.getContents();

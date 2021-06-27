@@ -31,12 +31,14 @@ public class Age implements CommandExecutor {
         if(args.length == 1){
             Player p = (Player) sender;
             PlayerWrapper cp = PlayerManager.get(p);
+            if(cp.playerRole == null){
+                p.sendMessage("No PlayerRole attached");
+                return true;
+            }
             cp.playerRole.am.setAge(Integer.parseInt(args[0]));
-            //cp.am.ageInYears = Integer.parseInt(args[0]);
-            //cp.createBoard(cp);
             //cp.pm.checkPhaseUp();
 
-            //p.sendMessage("Changed " + p.getName() + "'s age to " + Integer.parseInt(args[0]));
+            p.sendMessage("Changed " + p.getName() + "'s age to " + Integer.parseInt(args[0]));
 
         }
 
