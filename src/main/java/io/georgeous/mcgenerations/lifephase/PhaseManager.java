@@ -98,6 +98,7 @@ public class PhaseManager {
         }
         currentPhase = phases[phaseIndex];
         currentPhase.start();
+
         phaseUpEffect();
     }
 

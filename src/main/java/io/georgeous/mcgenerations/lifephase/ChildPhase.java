@@ -17,6 +17,8 @@ public class ChildPhase extends LifePhase{
     public ChildPhase(Player player){
         this.player = player;
         this.skinID = "2007359867";
+        this.canCarry = false;
+        this.maxCharsInChat = 12;
     }
 
     @Override
@@ -25,6 +27,7 @@ public class ChildPhase extends LifePhase{
         //cp.destroySurrogate();
         //NameManager.changeSkin(this.player, PhaseManager.skinIds[2]);
         SurroManager.destroySurrogate(player);
+        this.canCarry = false;
     }
 
     @Override

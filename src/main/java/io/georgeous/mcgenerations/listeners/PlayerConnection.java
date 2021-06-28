@@ -5,7 +5,6 @@ import io.georgeous.mcgenerations.player.PlayerManager;
 import io.georgeous.mcgenerations.SpawnManager;
 import io.georgeous.mcgenerations.player.PlayerRole;
 import io.georgeous.mcgenerations.player.PlayerWrapper;
-import org.bukkit.Location;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -46,10 +45,14 @@ public class PlayerConnection implements Listener {
 
         Player p = event.getEntity();
         PlayerWrapper playerWrapper = PlayerManager.get(p);
-        PlayerRole playerRole = playerWrapper.playerRole;
+        PlayerRole playerRole = playerWrapper.getRole();
 
         removeBabyHandlerFromDrops(event);
-        playerRole.die();
+        if(playerRole != null){
+            playerRole.die();
+        }
+
+
 
         //p.setBedSpawnLocation(new Location(p.getWorld(),0d,250d,0d), true);
         p.setBedSpawnLocation(Main.councilLocation, true);

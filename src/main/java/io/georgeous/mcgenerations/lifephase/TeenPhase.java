@@ -18,7 +18,7 @@ public class TeenPhase extends LifePhase{
     @Override
     public void start() {
         player.sendMessage("You are a §ateen");
-        playerWrapper.playerRole.receiveBabyHandler();
+        playerWrapper.getRole().receiveBabyHandler();
         //NameManager.changeSkin(this.player, PhaseManager.skinIds[3]);
         SurroManager.destroySurrogate(player);
     }

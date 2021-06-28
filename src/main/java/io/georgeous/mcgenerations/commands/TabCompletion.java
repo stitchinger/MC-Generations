@@ -24,6 +24,8 @@ public class TabCompletion implements TabCompleter {
                 l.add("banner");
                 l.add("saveplayer");
                 l.add("council");
+                l.add("save");
+                l.add("load");
 
                 return l;
 

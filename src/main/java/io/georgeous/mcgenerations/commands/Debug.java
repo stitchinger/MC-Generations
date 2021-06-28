@@ -58,6 +58,13 @@ public class Debug implements CommandExecutor {
 
 
             }
+            else if(args[0].equalsIgnoreCase("save")){ //
+                PlayerManager.savePlayer();
+
+            }
+            else if(args[0].equalsIgnoreCase("load")){ //
+                PlayerManager.restorePlayer();
+            }
         }
 
         return false;

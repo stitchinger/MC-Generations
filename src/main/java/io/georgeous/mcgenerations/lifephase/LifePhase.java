@@ -6,7 +6,9 @@ import org.bukkit.potion.PotionEffect;
 public abstract class LifePhase {
 
     public String skinID;
-    public int maxWords = 1;
+    public int maxCharsInChat = 999;
+    public boolean canCarry = true;
+    public boolean canBeCarried = false;
 
     public static final int BABY_PHASE = 0,
             TODDLER_PHASE = 1,

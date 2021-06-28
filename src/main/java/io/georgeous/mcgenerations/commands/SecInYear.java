@@ -22,7 +22,7 @@ public class SecInYear implements CommandExecutor {
             sender.sendMessage("Usage: /secinyear 60");
         }
 
-        cp.playerRole.am.setSecInYear(Integer.parseInt(args[0]));
+        cp.getRole().am.setSecInYear(Integer.parseInt(args[0]));
 
 
         return false;

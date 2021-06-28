@@ -27,7 +27,7 @@ public class Iam implements CommandExecutor {
 
         Player player = (Player) sender;
         PlayerWrapper playerWrapper = PlayerManager.get(player);
-        PlayerRole playerRole = playerWrapper.playerRole;
+        PlayerRole playerRole = playerWrapper.getRole();
 
         if(playerRole == null){
             sender.sendMessage("No PlayerRole attached");

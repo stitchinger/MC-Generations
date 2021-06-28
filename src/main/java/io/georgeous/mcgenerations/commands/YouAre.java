@@ -44,13 +44,13 @@ public class YouAre implements CommandExecutor {
             if(target instanceof Player){
                 // if target wasnt named before
                 PlayerWrapper cpTarget = PlayerManager.get((Player)target);
-                if(!cpTarget.playerRole.isNamed()){
-                    cpTarget.playerRole.firstName = first;
-                    cpTarget.playerRole.setNamed(true);
+                if(!cpTarget.getRole().isNamed()){
+                    cpTarget.getRole().firstName = first;
+                    cpTarget.getRole().setNamed(true);
                 }
                 //NameManager.name((Player) target,first, cp.family.getName());
             }else{
-                target.setCustomName(first + " " + cp.playerRole.family.getName());
+                target.setCustomName(first + " " + cp.getRole().family.getName());
             }
         }else{
             p.sendMessage("You need to hold your baby for naming it.");

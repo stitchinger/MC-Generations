@@ -42,13 +42,13 @@ public final class Main extends JavaPlugin {
         registerEvents();
         registerCommands();
 
-        if (this.getConfig().contains("data.player"))
+        //if (this.getConfig().contains("data.player"))
             //this.restorePlayer();
 
+        PlayerManager.enable();
         // Init Players
-        for (Player p : getServer().getOnlinePlayers()) {
-            PlayerManager.initPlayer(p);
-        }
+
+
 
         startCouncil();
 
@@ -61,6 +61,11 @@ public final class Main extends JavaPlugin {
         }.runTaskTimer(this, 0L, 1L);
     }
 
+    @Override
+    public void onDisable() {
+        PlayerManager.disable();
+    }
+
     public void printLoadupText(){
         System.out.println("MCG ? ========== [ MC Generations ] ==========");
         System.out.println("MCG ? Version: 0.1");
@@ -71,11 +76,6 @@ public final class Main extends JavaPlugin {
     private void update() {
         PlayerManager.update();
         SurroManager.update();
-    }
-
-    @Override
-    public void onDisable() {
-        PlayerManager.disable();
     }
 
     public void registerEvents() {

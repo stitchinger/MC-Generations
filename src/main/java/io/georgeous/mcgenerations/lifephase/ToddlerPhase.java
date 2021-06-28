@@ -17,6 +17,9 @@ public class ToddlerPhase extends LifePhase{
     public ToddlerPhase(Player player){
         this.player = player;
         this.skinID = "0";
+        this.canCarry = false;
+        this.canBeCarried = true;
+        this.maxCharsInChat = 12;
     }
 
     @Override

@@ -16,9 +16,14 @@ public class BabyPhase extends LifePhase {
             new PotionEffect(PotionEffectType.JUMP, 2, 128, false, false, false)
     };
 
+
+
     public BabyPhase(Player player) {
         this.player = player;
         this.skinID = "0";
+        this.canCarry = false;
+        this.canBeCarried = true;
+        this.maxCharsInChat = 2;
     }
 
     @Override

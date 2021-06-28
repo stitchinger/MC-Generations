@@ -39,11 +39,12 @@ public class SpawnManager {
 
     public static void spawnAsEve(Player player, Main main){
         PlayerWrapper playerWrapper = PlayerManager.get(player);
-        playerWrapper.playerRole = new PlayerRole(player);
+
+        playerWrapper.setRole(new PlayerRole(player));
 
         //Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),"spreadplayers 0 0 200 10000 false " + player.getName());
 
-        playerWrapper.playerRole.am.setAge(10);
+        playerWrapper.getRole().am.setAge(10);
 
         player.playSound(player.getLocation(), Sound.AMBIENT_CAVE,1,1);
         player.sendMessage("You spawned as an Eve");
@@ -51,16 +52,16 @@ public class SpawnManager {
 
     public static void spawnAsBaby(Player player, Entity mom, Main main){
         PlayerWrapper playerWrapper = PlayerManager.get(player);
-        playerWrapper.playerRole = new PlayerRole(player);
+        playerWrapper.setRole(new PlayerRole(player));
 
         player.teleport(mom.getLocation().add(0,1,0));
 
         inheritFromMother(playerWrapper, mom, main);
 
-        playerWrapper.playerRole.am.ageInYears = 0;
-        playerWrapper.playerRole.am.ageInSeconds = 0;
+        playerWrapper.getRole().am.ageInYears = 0;
+        playerWrapper.getRole().am.ageInSeconds = 0;
 
-        PlayerManager.get((Player)mom).playerRole.child = player;
+        PlayerManager.get((Player) mom).getRole().child = player;
 
         // Messages
         player.sendMessage("You spawned as a Baby");
@@ -81,11 +82,11 @@ public class SpawnManager {
         return mom;
     }
 
-    public static void inheritFromMother(PlayerWrapper cp, Entity mom, Main main){
+    public static void inheritFromMother(PlayerWrapper playerWrapper, Entity mom, Main main){
         PlayerWrapper cMom = PlayerManager.get((Player)mom);
 
-        cp.playerRole.generation = cMom.playerRole.generation + 1;
-        cp.playerRole.family = cMom.playerRole.family;
+        playerWrapper.getRole().generation = cMom.getRole().generation + 1;
+        playerWrapper.getRole().family = cMom.getRole().family;
 
         //NameManager.name(cp.player, cp.firstName, cp.family.getName());
     }

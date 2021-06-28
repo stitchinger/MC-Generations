@@ -3,6 +3,7 @@ package io.georgeous.mcgenerations.listeners;
 
 import io.georgeous.mcgenerations.Main;
 import io.georgeous.mcgenerations.player.PlayerManager;
+import io.georgeous.mcgenerations.player.PlayerRole;
 import io.georgeous.mcgenerations.player.PlayerWrapper;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -51,8 +52,12 @@ public class InventoryListener implements Listener {
         if(event.getEntity() instanceof Player){
             Player p = ((Player) event.getEntity()).getPlayer();
 
-            PlayerWrapper cp = PlayerManager.get(p);
-            if(cp.playerRole.am.ageInYears < 3){
+            PlayerWrapper playerWrapper = PlayerManager.get(p);
+            PlayerRole playerRole = playerWrapper.getRole();
+            if(playerRole == null){
+                return;
+            }
+            if(playerRole.am.ageInYears < 3){
                 event.setCancelled(true);
                 return;
             }
