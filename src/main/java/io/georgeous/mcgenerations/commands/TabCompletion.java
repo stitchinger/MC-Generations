@@ -26,6 +26,8 @@ public class TabCompletion implements TabCompleter {
                 l.add("council");
                 l.add("save");
                 l.add("load");
+                l.add("savefamily");
+                l.add("loadfamily");
 
                 return l;
 
@@ -34,12 +36,9 @@ public class TabCompletion implements TabCompleter {
         if(cmd.getName().equalsIgnoreCase("pets") && args.length >= 0){
             if(sender instanceof Player){
                 Player player = (Player) sender;
-
                 List<String> list = new ArrayList<>();
                 l.add("release");
                 l.add("passon");
-
-
                 return l;
 
             }

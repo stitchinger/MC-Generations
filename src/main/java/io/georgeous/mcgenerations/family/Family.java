@@ -1,28 +1,29 @@
-package io.georgeous.mcgenerations;
+package io.georgeous.mcgenerations.family;
 
 import org.bukkit.block.Banner;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.PlayerDeathEvent;
+
+import java.util.UUID;
 
 
 public class Family {
 
     private String name;
     private String color;
+    private long established;
     private Banner banner;
     private Player leader;
     //private Map<String,String> colorCodes = new HashMap<>();
-    private String[] colorCodes = {"§0", "§1", "§2", "§3", "§4", "§5", "§6", "§7", "§8", "§9", "§a", "§b", "§c", "§d", "§e", "§f"};
+    private String[] colorCodes = {"§1", "§2", "§3", "§4", "§5", "§6", "§7", "§8", "§9", "§a", "§b", "§c", "§d", "§e", "§f"};
+    private String uuid;
+
 
     public Family(String name){
         this.name = name;
-
-        for(String c : colorCodes){
-            String prefix = "§";
-            c = prefix + c + "";
-        }
-
         this.color = getRandomColor();
+        this.uuid = UUID.randomUUID().toString();
+        this.established = System.currentTimeMillis();
     }
 
     public String getName(){
@@ -55,5 +56,16 @@ public class Family {
     }
 
 
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public long getEstablished() {
+        return established;
+    }
 }
 

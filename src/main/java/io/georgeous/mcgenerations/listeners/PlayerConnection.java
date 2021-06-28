@@ -26,18 +26,19 @@ public class PlayerConnection implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player p = event.getPlayer();
-
+        /*
         if(PlayerManager.get(p) == null){
             PlayerManager.initPlayer(p);
         }
-
+         */
         event.setJoinMessage("Welcome to One Hour One Life!");
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        Player p = event.getPlayer();
-        PlayerWrapper cp = PlayerManager.get(p);
+        //Player p = event.getPlayer();
+        //PlayerWrapper cp = PlayerManager.get(p);
+        //PlayerManager.playersMap.remove(p);
     }
 
     @EventHandler
@@ -48,16 +49,13 @@ public class PlayerConnection implements Listener {
         PlayerRole playerRole = playerWrapper.getRole();
 
         removeBabyHandlerFromDrops(event);
+
         if(playerRole != null){
             playerRole.die();
         }
 
-
-
         //p.setBedSpawnLocation(new Location(p.getWorld(),0d,250d,0d), true);
         p.setBedSpawnLocation(Main.councilLocation, true);
-
-
     }
 
     public void removeBabyHandlerFromDrops(PlayerDeathEvent event){

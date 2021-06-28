@@ -52,7 +52,7 @@ public class SurroManager implements Listener {
         PlayerWrapper cp = PlayerManager.get(player);
         Villager v = (Villager) player.getWorld().spawnEntity(player.getLocation(), EntityType.VILLAGER);
         v = prepareSurro(v);
-        v.setCustomName(cp.getRole().firstName + " " + cp.getRole().family.getName());
+        v.setCustomName(cp.getRole().getName() + " " + cp.getRole().family.getName());
 
         map.put(player,v);
     }

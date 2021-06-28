@@ -5,13 +5,22 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class PlayerManager {
     public static HashMap<String, PlayerWrapper> playersMap = new HashMap<>();
+
+    public static void enable(){
+        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+            PlayerManager.initPlayer(p);
+        }
+        //restorePlayer();
+    }
+
+    public static void disable(){
+
+        //savePlayer();
+    }
 
     public static void initPlayer(Player p) {
         String uuid = p.getUniqueId().toString();
@@ -23,14 +32,13 @@ public class PlayerManager {
 
     public static void update(){
         for(Map.Entry<String, PlayerWrapper> entry : playersMap.entrySet()) {
-            PlayerWrapper cp = entry.getValue();
-            cp.update();
+            PlayerWrapper playerWrapper = entry.getValue();
+            playerWrapper.update();
             /*
             if (cp.playerRole.isDead) {
                 PlayerManager.remove(entry.getKey());
             }
-
-             */
+            */
         }
     }
 
@@ -50,51 +58,66 @@ public class PlayerManager {
         playersMap.remove(uuid);
     }
 
-    public static void savePlayer() {
+    public static void saveAllPlayers() {
         if(playersMap.isEmpty())
             return;
         for (Map.Entry<String, PlayerWrapper> entry : playersMap.entrySet()) {
-            PlayerWrapper playerWrapper = entry.getValue();
-            PlayerRole playerRole = playerWrapper.getRole();
-
-            Main.getPlugin().getConfig().set("data.player." + entry.getKey() + ".karma", 696969);
-            Main.getPlugin().getConfig().set("data.player." + entry.getKey() + ".role.age", playerRole.am.ageInYears);
-            Main.getPlugin().getConfig().set("data.player." + entry.getKey() + ".role.name", playerRole.firstName);
-            Main.getPlugin().getConfig().set("data.player." + entry.getKey() + ".role.generation", playerRole.generation);
-            Main.getPlugin().getConfig().set("data.player." + entry.getKey() + ".role.time", System.currentTimeMillis());
-
+            Player player = Bukkit.getPlayer(UUID.fromString(entry.getKey()));
+            savePlayer(player);
         }
+    }
+
+    public static void savePlayer(Player player){
+        FileConfiguration config = Main.getPlugin().getConfig();
+        PlayerWrapper playerWrapper = get(player);
+        PlayerRole playerRole = playerWrapper.getRole();
+        String uuid = player.getUniqueId().toString();
+
+        config.set("data.player." + uuid + ".karma", playerWrapper.getKarma());
+        config.set("data.player." + uuid + ".lives", playerWrapper.getLives());
+        config.set("data.player." + uuid + ".playtime", 696969);
+        config.set("data.player." + uuid + ".role.age", playerRole.am.ageInYears);
+        config.set("data.player." + uuid + ".role.name", playerRole.getName());
+        config.set("data.player." + uuid + ".role.familyname", playerRole.family.getName());
+        config.set("data.player." + uuid + ".role.family", playerRole.family.getUuid());
+        config.set("data.player." + uuid + ".role.generation", playerRole.generation);
+        config.set("data.player." + uuid + ".role.time", System.currentTimeMillis());
         Main.getPlugin().saveConfig();
     }
 
-    public static void restorePlayer() {
 
+
+    public static void restoreAllPlayers() {
+        // Todo What if player is not online?
         Main.getPlugin().getConfig().getConfigurationSection("data.player").getKeys(false).forEach(key -> {
-            //PlayerWrapper playerWrapper = (PlayerWrapper) Main.getPlugin().getConfig().get("data.player." + key + ".object");
+            //FileConfiguration c = Main.getPlugin().getConfig();
+
             PlayerWrapper playerWrapper = get(key);
-            Player player = playerWrapper.player;
-            playerWrapper.setRole(new PlayerRole(player));
-
-            FileConfiguration c = Main.getPlugin().getConfig();
-
-            int age = c.getInt("data.player." + key + ".role.age");
-            playerWrapper.getRole().am.setAge(age);
-
-            String name = c.getString("data.player." + key + ".role.name");
-            playerWrapper.getRole().setName(name);
-            player.sendMessage("test123");
-            //playersMap.put(key,playerWrapper);
+            restorePlayer(playerWrapper);
         });
     }
 
-    public static void enable(){
-        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-            PlayerManager.initPlayer(p);
-        }
-        //restorePlayer();
-    }
+    public static void restorePlayer(PlayerWrapper playerWrapper){
+        FileConfiguration c = Main.getPlugin().getConfig();
+        Player player = playerWrapper.player;
+        String uuid = player.getUniqueId().toString();
+        // Add new role
+        playerWrapper.setRole(new PlayerRole(player));
+        PlayerRole playerRole = playerWrapper.getRole();
 
-    public static void disable(){
-        //savePlayer();
+        int lives = c.getInt("data.player." + uuid + ".lives");
+        playerWrapper.setLives(lives);
+
+        double karma = c.getDouble("data.player." + uuid + ".karma");
+        playerWrapper.setKarma(karma);
+
+        long playTime = c.getLong("data.player." + uuid + ".playtime");
+        playerWrapper.setPlayTime(playTime);
+
+        int age = c.getInt("data.player." + uuid + ".role.age");
+        playerRole.am.setAge(age);
+
+        String name = c.getString("data.player." + uuid + ".role.name");
+        playerRole.setName(name);
     }
 }

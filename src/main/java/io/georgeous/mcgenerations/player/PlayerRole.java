@@ -1,7 +1,8 @@
 package io.georgeous.mcgenerations.player;
 
 
-import io.georgeous.mcgenerations.Family;
+import io.georgeous.mcgenerations.family.Family;
+import io.georgeous.mcgenerations.family.FamilyManager;
 import io.georgeous.mcgenerations.gadgets.PetManager;
 import io.georgeous.mcgenerations.lifephase.PhaseManager;
 import io.georgeous.mcgenerations.utils.ItemManager;
@@ -14,13 +15,12 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
-import java.util.UUID;
 
 public class PlayerRole {
     // Player
     public final Player player;
     public PlayerWrapper playerWrapper;
-    public String firstName;
+    private String name;
     private boolean isNamed;
     public boolean isDead = false;
 
@@ -56,10 +56,11 @@ public class PlayerRole {
     }
 
     public void setIdentity(){
-        this.firstName = NameGenerator.randomName(NameGenerator.firstNames);
-        this.family = new Family(NameGenerator.randomName(NameGenerator.lastNames));
-        isNamed = false;
-        player.sendMessage("Your family: " + family.getName());
+        this.setName(NameGenerator.randomName(NameGenerator.firstNames));
+        //this.family = new Family(NameGenerator.randomName(NameGenerator.lastNames));
+        this.family = FamilyManager.addFamily(NameGenerator.randomName(NameGenerator.lastNames));
+        //isNamed = false;
+        player.sendMessage("You are " + this.getName() + " " + family.getName());
     }
 
     public void childUpdate() {
@@ -90,11 +91,11 @@ public class PlayerRole {
 
     // Naming
     public void setName(String n) {
-        this.firstName = n;
+        this.name = n;
     }
 
     public String getName(){
-        return firstName;
+        return name;
     }
 
     public void setNamed(boolean value){

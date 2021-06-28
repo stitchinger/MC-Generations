@@ -1,5 +1,6 @@
 package io.georgeous.mcgenerations.commands;
 
+import io.georgeous.mcgenerations.family.FamilyManager;
 import io.georgeous.mcgenerations.player.PlayerManager;
 import io.georgeous.mcgenerations.manager.SurroManager;
 
@@ -24,34 +25,33 @@ public class Debug implements CommandExecutor {
             return true;
         }
 
-        Player p = (Player) sender;
+        Player player = (Player) sender;
 
         if(args.length >= 1){
             if(args[0].equalsIgnoreCase("surrogate")){
-                if(SurroManager.map.get(p) != null){
-                    SurroManager.destroySurrogate(p);
+                if(SurroManager.map.get(player) != null){
+                    SurroManager.destroySurrogate(player);
                 }else{
-                    SurroManager.create(p);
+                    SurroManager.create(player);
                 }
 
             } else if(args[0].equalsIgnoreCase("pets")){
 
 
             } else if(args[0].equalsIgnoreCase("banner")){ // Banner
-                ItemStack hand = p.getInventory().getItemInMainHand();
+                ItemStack hand = player.getInventory().getItemInMainHand();
                 //p.sendMessage(hand.toString());
                 if(hand.getItemMeta() instanceof BannerMeta){
-                    p.sendMessage(((BannerMeta) hand.getItemMeta()).getPatterns().toString());
+                    player.sendMessage(((BannerMeta) hand.getItemMeta()).getPatterns().toString());
                     for(Pattern pat : ((BannerMeta) hand.getItemMeta()).getPatterns()){
                         pat.getPattern().equals(PatternType.CREEPER);
                     }
                 }
             } else if(args[0].equalsIgnoreCase("saveplayer")){ // Banner
-
-                PlayerManager.savePlayer();
+                PlayerManager.savePlayer(player);
 
             }else if(args[0].equalsIgnoreCase("council")){ // Council Teleport
-                p.teleport(new Location(p.getWorld(),0,250,0));
+                player.teleport(new Location(player.getWorld(),0,250,0));
 
             }
             else if(args[0].equalsIgnoreCase("exp")){ // Council Teleport
@@ -59,11 +59,17 @@ public class Debug implements CommandExecutor {
 
             }
             else if(args[0].equalsIgnoreCase("save")){ //
-                PlayerManager.savePlayer();
-
+                PlayerManager.saveAllPlayers();
             }
             else if(args[0].equalsIgnoreCase("load")){ //
-                PlayerManager.restorePlayer();
+                PlayerManager.restoreAllPlayers();
+            }
+            else if(args[0].equalsIgnoreCase("savefamily")){ //
+                FamilyManager.saveAllFamilies();
+            }
+            else if(args[0].equalsIgnoreCase("loadfamily")){ //
+                //PlayerManager.restorePlayer(PlayerManager.get(player));
+                //PlayerManager.restoreAllPlayers();
             }
         }
 

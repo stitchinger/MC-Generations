@@ -7,8 +7,9 @@ public class PlayerWrapper {
     public final Player player;
     private PlayerRole playerRole;
 
-    public boolean canCarry = false;
-    public boolean canBeCarried = false;
+    private double karma = 12345;
+    private int lives = 0;
+    private long playTime = 0;
 
     public PlayerWrapper(Player player) {
         this.player = player;
@@ -27,9 +28,33 @@ public class PlayerWrapper {
 
     public void setRole(PlayerRole playerRole) {
         this.playerRole = playerRole;
+        this.lives++;
     }
 
+    public int getLives(){
+        return this.lives;
+    }
     public void removeRole(){
         this.setRole(null);
+    }
+
+    public void setLives(int lives){
+        this.lives = lives;
+    }
+
+    public double getKarma(){
+        return this.karma;
+    }
+
+    public void setKarma(double karma){
+        this.karma = karma;
+    }
+
+    public long getPlayTime() {
+        return playTime;
+    }
+
+    public void setPlayTime(long playTime) {
+        this.playTime = playTime;
     }
 }

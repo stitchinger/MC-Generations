@@ -36,7 +36,7 @@ public class PlayerChat implements Listener {
 
         for (Player other : Bukkit.getOnlinePlayers()) {
             if (other.getLocation().distance(player.getLocation()) <= CHAT_RANGE) {
-                player.sendMessage(playerWrapper.getRole().firstName + " " + playerWrapper.getRole().family.getName() + "§f: " + msg);
+                player.sendMessage(playerWrapper.getRole().getName() + " " + playerWrapper.getRole().family.getName() + "§f: " + msg);
             }
         }
 

@@ -45,7 +45,7 @@ public class YouAre implements CommandExecutor {
                 // if target wasnt named before
                 PlayerWrapper cpTarget = PlayerManager.get((Player)target);
                 if(!cpTarget.getRole().isNamed()){
-                    cpTarget.getRole().firstName = first;
+                    cpTarget.getRole().setName(first);
                     cpTarget.getRole().setNamed(true);
                 }
                 //NameManager.name((Player) target,first, cp.family.getName());
