@@ -23,6 +23,7 @@ public class PlayerRole {
     private String name;
     private boolean isNamed;
     public boolean isDead = false;
+    private long lastChildTime;
 
 
     // Family
@@ -34,6 +35,7 @@ public class PlayerRole {
     // Managers
     public AgeManager am;
     public PhaseManager pm;
+    public MotherController mc;
 
     public PlayerRole(Player player) {
         this.player = player;
@@ -75,6 +77,16 @@ public class PlayerRole {
             ItemStack[] stack = inventory.getContents();
             updateBabyHandlerDamage(stack, damage);
         }
+    }
+
+    public boolean canHaveBaby(){
+        if(
+                am.ageInYears > 16 &&
+                       System.currentTimeMillis() - lastChildTime > 300000
+        ){
+            return true;
+        }
+        return false;
     }
 
     public void updateBabyHandlerDamage(ItemStack[] stack, float damage) {

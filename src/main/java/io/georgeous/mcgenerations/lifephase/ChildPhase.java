@@ -9,9 +9,9 @@ public class ChildPhase extends LifePhase{
 
     private Player player;
     private PotionEffect[] effects = {
-            new PotionEffect(PotionEffectType.SLOW, 2, 1, false, false, false),
+            //new PotionEffect(PotionEffectType.SLOW, 2, 1, false, false, false),
             //new PotionEffect(PotionEffectType.HUNGER, 2, 1, false, false, false),
-            new PotionEffect(PotionEffectType.SLOW_DIGGING, 2, 1, false, false, false)
+            //new PotionEffect(PotionEffectType.SLOW_DIGGING, 2, 1, false, false, false)
     };
 
     public ChildPhase(Player player){

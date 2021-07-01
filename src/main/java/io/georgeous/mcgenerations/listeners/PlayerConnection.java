@@ -5,6 +5,7 @@ import io.georgeous.mcgenerations.player.PlayerManager;
 import io.georgeous.mcgenerations.SpawnManager;
 import io.georgeous.mcgenerations.player.PlayerRole;
 import io.georgeous.mcgenerations.player.PlayerWrapper;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -36,9 +37,11 @@ public class PlayerConnection implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        //Player p = event.getPlayer();
+        Player p = event.getPlayer();
         //PlayerWrapper cp = PlayerManager.get(p);
         //PlayerManager.playersMap.remove(p);
+        Bukkit.broadcastMessage(p.getName() + "Left the game");
+        System.out.println(p.getName() + "Left the game");
     }
 
     @EventHandler
@@ -75,8 +78,6 @@ public class PlayerConnection implements Listener {
         Player p = event.getPlayer();
         PlayerWrapper playerWrapper = PlayerManager.get(p);
 
-
-        //PlayerManager.initPlayer(p);
         SpawnManager.spawnPlayer(p,main);
     }
 

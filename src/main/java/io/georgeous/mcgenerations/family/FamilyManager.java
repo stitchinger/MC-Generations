@@ -1,10 +1,8 @@
 package io.georgeous.mcgenerations.family;
 
 import io.georgeous.mcgenerations.Main;
-import io.georgeous.mcgenerations.player.PlayerRole;
-import io.georgeous.mcgenerations.player.PlayerWrapper;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +40,7 @@ public class FamilyManager {
         config.set("data.family." + uuid + ".established", family.getEstablished());
         config.set("data.family." + uuid + ".color", family.getColor());
 
-        Main.getPlugin().saveConfig();
+        //Main.getPlugin().saveConfig();
     }
 
     public static void restoreAllFamilies(){

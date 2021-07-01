@@ -21,6 +21,7 @@ public abstract class LifePhase {
     public abstract  void end();
     public abstract void update();
 
+
     public static void applyPotionEffects(Player player, PotionEffect[] effects){
         for(PotionEffect effect : effects){
             player.addPotionEffect(effect);

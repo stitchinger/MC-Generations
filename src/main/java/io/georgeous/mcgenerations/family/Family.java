@@ -2,6 +2,7 @@ package io.georgeous.mcgenerations.family;
 
 import org.bukkit.block.Banner;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 import java.util.UUID;

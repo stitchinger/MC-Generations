@@ -21,7 +21,7 @@ public class SpawnManager {
     private static int timeInLobby = 10; // in seconds
 
     public static void spawnPlayer(Player player, Main main){
-        Entity finalMom = getMom(player);
+        Entity finalMom = findViableMother(player);
         player.sendMessage("You will be reborn in 10 seconds");
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(main, new Runnable() {
@@ -42,7 +42,7 @@ public class SpawnManager {
 
         playerWrapper.setRole(new PlayerRole(player));
 
-        //Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),"spreadplayers 0 0 200 10000 false " + player.getName());
+        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),"spreadplayers 0 0 200 10000 false " + player.getName());
 
         playerWrapper.getRole().am.setAge(10);
 
@@ -72,19 +72,18 @@ public class SpawnManager {
         player.addPotionEffect(glow);
     }
 
-    public static Entity getMom(Player player){
+    public static Entity findViableMother(Player player){
         //List<Entity> moms = Bukkit.getServer().selectEntities(player,"@e[type=villager,sort=random,name=!Council]");
-        List<Entity> moms = Bukkit.getServer().selectEntities(player,"@a[name=!"+player.getName()+", sort=random]");
+        List<Entity> onlinePlayers = Bukkit.getServer().selectEntities(player,"@a[name=!"+player.getName()+", sort=random]");
         Entity mom = null;
-        if(moms.size() > 0){
-            mom = moms.get(0);
+        if(onlinePlayers.size() > 0){
+            mom = onlinePlayers.get(0);
         }
         return mom;
     }
 
     public static void inheritFromMother(PlayerWrapper playerWrapper, Entity mom, Main main){
         PlayerWrapper cMom = PlayerManager.get((Player)mom);
-
         playerWrapper.getRole().generation = cMom.getRole().generation + 1;
         playerWrapper.getRole().family = cMom.getRole().family;
 

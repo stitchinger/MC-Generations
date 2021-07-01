@@ -15,32 +15,35 @@ public class PlayerChat implements Listener {
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event){
+        event.setCancelled(true);
         Player player = event.getPlayer();
         PlayerWrapper playerWrapper = PlayerManager.get(player);
-        PhaseManager pm = playerWrapper.getRole().pm;
-        //pm.getCurrentPhase().maxCharsInChat;
-
-        String msg = event.getMessage();
-        msg = msg.trim();
-        msg = msg.substring(0,Math.min(msg.length(),pm.getCurrentPhase().maxCharsInChat));
-        //String[] words = msg.trim().substring(0,Math.min(msg.length(),10)).split(" ");
-
-        /*
-        String newMsg = "";
-        for(String s : words){
-            newMsg = newMsg + " " + s.substring(0,Math.min(s.length(),3));
+        if(playerWrapper.getRole() == null){
+            return;
         }
+        PhaseManager pm = playerWrapper.getRole().pm;
 
-        newMsg = newMsg.trim();
-         */
+        String prefix = playerWrapper.getRole().getName() + " " + playerWrapper.getRole().family.getName() + "§f: ";
+        String msg = prepareMsg(event.getMessage(), prefix, pm.getCurrentPhase().maxCharsInChat);
 
+        rangedBroadcast(player, msg, CHAT_RANGE);
+    }
+
+    public String prepareMsg(String msg, String prefix, int maxLength){
+        msg = msg.trim();
+        msg = msg.substring(0,Math.min(msg.length(),maxLength));
+        msg = prefix + msg;
+
+        return msg;
+    }
+
+    public void rangedBroadcast(Player sender, String msg, double range){
         for (Player other : Bukkit.getOnlinePlayers()) {
-            if (other.getLocation().distance(player.getLocation()) <= CHAT_RANGE) {
-                player.sendMessage(playerWrapper.getRole().getName() + " " + playerWrapper.getRole().family.getName() + "§f: " + msg);
+            double distanceBetweenPlayers = other.getLocation().distance(sender.getLocation());
+            if (distanceBetweenPlayers <= range) {
+                other.sendMessage(msg);
             }
         }
-
-        event.setCancelled(true);
     }
 
 }
