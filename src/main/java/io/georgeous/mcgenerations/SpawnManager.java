@@ -61,7 +61,7 @@ public class SpawnManager {
         playerWrapper.getRole().am.ageInYears = 0;
         playerWrapper.getRole().am.ageInSeconds = 0;
 
-        PlayerManager.get((Player) mom).getRole().child = player;
+        PlayerManager.get((Player) mom).getRole().mc.child = player;
 
         // Messages
         player.sendMessage("You spawned as a Baby");

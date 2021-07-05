@@ -57,4 +57,26 @@ public class Util {
         }
         return null;
     }
+
+    public static ItemStack findInInventory(ItemStack searchItem, PlayerInventory inventory) {
+
+        ItemStack[] stack = inventory.getContents();
+
+        for (ItemStack item : stack) {
+            if (item != null) {
+                if(item.getType() == searchItem.getType()){
+                    return item;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public static void giveItemIfNotInInventory(ItemStack item, PlayerInventory inventory) {
+        if (Util.findInInventory(item, inventory) == null) {
+            inventory.addItem(item);
+        }
+    }
+
 }

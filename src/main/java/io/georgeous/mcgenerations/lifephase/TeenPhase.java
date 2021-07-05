@@ -2,6 +2,8 @@ package io.georgeous.mcgenerations.lifephase;
 
 import io.georgeous.mcgenerations.manager.SurroManager;
 import io.georgeous.mcgenerations.player.PlayerWrapper;
+import io.georgeous.mcgenerations.utils.ItemManager;
+import io.georgeous.mcgenerations.utils.Util;
 import org.bukkit.entity.Player;
 
 public class TeenPhase extends LifePhase{
@@ -18,7 +20,7 @@ public class TeenPhase extends LifePhase{
     @Override
     public void start() {
         player.sendMessage("You are a §ateen");
-        playerWrapper.getRole().receiveBabyHandler();
+        Util.giveItemIfNotInInventory(ItemManager.getBabyHandler(),player.getInventory());
         //NameManager.changeSkin(this.player, PhaseManager.skinIds[3]);
         SurroManager.destroySurrogate(player);
     }

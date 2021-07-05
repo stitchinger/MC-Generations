@@ -5,7 +5,6 @@ import io.georgeous.mcgenerations.family.Family;
 import io.georgeous.mcgenerations.family.FamilyManager;
 import io.georgeous.mcgenerations.gadgets.PetManager;
 import io.georgeous.mcgenerations.lifephase.PhaseManager;
-import io.georgeous.mcgenerations.utils.ItemManager;
 import io.georgeous.mcgenerations.utils.NameGenerator;
 import io.georgeous.mcgenerations.utils.Util;
 import org.bukkit.entity.Player;
@@ -23,15 +22,11 @@ public class PlayerRole {
     private String name;
     private boolean isNamed;
     public boolean isDead = false;
-    private long lastChildTime;
-
 
     // Family
     public Family family;
     public int generation;
 
-    public Player child = null;
-    public List<Player> children;
     // Managers
     public AgeManager am;
     public PhaseManager pm;
@@ -45,19 +40,37 @@ public class PlayerRole {
 
         am = new AgeManager(playerWrapper);
         pm = new PhaseManager(this, am);
+        mc = new MotherController(this);
         //NameManager.name(this.player, this.firstName, family.getName());
     }
 
     // Update Functions
     public void update() {
         if (!isDead) {
-            childUpdate();
+            mc.update();
             am.update();
             pm.update();
         }
     }
 
-    public void setIdentity(){
+    // Naming
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String n) {
+        this.name = n;
+    }
+
+    public boolean isNamed() {
+        return isNamed;
+    }
+
+    public void setNamed(boolean value) {
+        isNamed = value;
+    }
+
+    public void setIdentity() {
         this.setName(NameGenerator.randomName(NameGenerator.firstNames));
         //this.family = new Family(NameGenerator.randomName(NameGenerator.lastNames));
         this.family = FamilyManager.addFamily(NameGenerator.randomName(NameGenerator.lastNames));
@@ -65,95 +78,42 @@ public class PlayerRole {
         player.sendMessage("You are " + this.getName() + " " + family.getName());
     }
 
-    public void childUpdate() {
-        // Shows childs foodlevel on baby-handler
-        if (this.child != null) { // has child?
-            if (this.child.getHealth() <= 0) {
-                this.child = null;
-            }
-            float damage;
-            damage = Util.map((float) this.child.getFoodLevel(), 0, 20f, 25, 0);
-            PlayerInventory inventory = player.getInventory();
-            ItemStack[] stack = inventory.getContents();
-            updateBabyHandlerDamage(stack, damage);
-        }
-    }
-
-    public boolean canHaveBaby(){
-        if(
-                am.ageInYears > 16 &&
-                       System.currentTimeMillis() - lastChildTime > 300000
-        ){
-            return true;
-        }
-        return false;
-    }
-
-    public void updateBabyHandlerDamage(ItemStack[] stack, float damage) {
-        for (ItemStack item : stack) {
-            if (item != null) {
-                ItemMeta meta = item.getItemMeta();
-                if (meta.getDisplayName().contains("Baby-Handler")) {
-                    ((Damageable) meta).setDamage((int) damage);
-                    item.setItemMeta(meta);
-                }
-            }
-        }
-    }
-
-    // Naming
-    public void setName(String n) {
-        this.name = n;
-    }
-
-    public String getName(){
-        return name;
-    }
-
-    public void setNamed(boolean value){
-        isNamed = value;
-    }
-
-    public boolean isNamed(){
-        return isNamed;
-    }
-
     // Dying
+
     public void die() {
         if (!isDead) {
             this.isDead = true;
-            passOnPets();
+            passOnPetsToDescendent();
             if (player.getHealth() != 0) {
                 player.setHealth(0);
             }
         }
     }
 
-    public void passOnPets(){
-        if(getOldestChild() != null){
-            PetManager.passPets(this.player, getOldestChild());
+    public void passOnPetsToDescendent() {
+        if (mc.getOldestChild() != null) {
+            PetManager.passPets(this.player, mc.getOldestChild());
         } else {
             PetManager.releasePets(this.player);
         }
     }
 
-    public Player getOldestChild() {
-        if(children == null)
-            return null;
+    public void setItemsDamage(ItemStack item, float damage) {
+        if (item != null) {
+            ItemMeta meta = item.getItemMeta();
+            if(meta != null){
+                if(meta.hasDisplayName()){
+                    if (meta.getDisplayName().contains("Baby-Handler")) {
+                        if(meta instanceof Damageable){
+                            ((Damageable) meta).setDamage((int) damage);
+                            item.setItemMeta(meta);
+                        }
 
-        for (int i = 0; i < children.size(); i++) {
-            if (children.get(i) != null) {
-                return children.get(i);
+                    }
+                }
             }
         }
-        return null;
     }
 
-    // Abstrahieren? Gib kein Item, wenn schon vorhanden fadkljflkadjflak
-    public void receiveBabyHandler() {
-        if (Util.findInInventory("Baby-Handler", player.getInventory()) == null) {
-            player.getInventory().addItem(ItemManager.getBabyHandler());
-        }
-    }
 
 }
