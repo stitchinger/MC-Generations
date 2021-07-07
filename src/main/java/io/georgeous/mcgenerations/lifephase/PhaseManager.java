@@ -6,6 +6,8 @@ import io.georgeous.mcgenerations.player.PlayerWrapper;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 
 public class PhaseManager {
@@ -13,25 +15,33 @@ public class PhaseManager {
     Player p;
     AgeManager am;
 
-    public static String[] skinIds = {"0", "1", " 2007359867", "297371", "584227931", "1144027445"};
+    //private final LifePhase[] phases = new LifePhase[6];
+    //private LifePhase currentPhase;
 
-    public static final String BABY_SKIN = "0",
-            TODDLER_SKIN = "0",
-            CHILD_SKIN = "2007359867",
-            TEEN_SKIN = "297371",
-            ADULT_SKIN = "584227931",
-            ELDER_SKIN = "1144027445";
-
-    private final LifePhase[] phases = new LifePhase[6];
-    private LifePhase currentPhase;
+    private final LifePhaseNew[] phases = new LifePhaseNew[6];
+    private LifePhaseNew currentPhase;
 
 
     public PhaseManager(PlayerRole playerRole, AgeManager am){
         this.playerRole = playerRole;
         this.p = playerRole.player;
         this.am = am;
+        LifePhaseNew babyPhase = new LifePhaseNew(this.p,5,3,false,false,"12456", "Baby",128,6,2);
+        LifePhaseNew toddlerPhase = new LifePhaseNew(this.p,2,6,false,false,"12456", "Toddler",128,6,2);
+        LifePhaseNew childPhase = new LifePhaseNew(this.p,0,10,false,false,"12456", "Child",0,0,0);
+        LifePhaseNew teenPhase = new LifePhaseNew(this.p,0,999,false,false,"12456", "Teen",0,0,0);
+        LifePhaseNew adultPhase = new LifePhaseNew(this.p,0,999,false,false,"12456", "Adult",0,0,0);
+        LifePhaseNew elderPhase = new LifePhaseNew(this.p,0,999,false,false,"12456", "Elder",0,0,0);
 
+        phases[0] = babyPhase;
+        phases[1] = toddlerPhase;
+        phases[2] = childPhase;
+        phases[3] = teenPhase;
+        phases[4] = adultPhase;
+        phases[5] = elderPhase;
+        currentPhase = phases[0];
 
+        /*
         phases[0] = new BabyPhase(this.p);
         phases[1] = new ToddlerPhase(this.p);
         phases[2] = new ChildPhase(this.p);
@@ -39,6 +49,8 @@ public class PhaseManager {
         phases[4] = new AdultPhase(this.p);
         phases[5] = new ElderPhase(this.p);
         currentPhase = phases[0];
+
+         */
     }
 
     public void update(){
@@ -46,7 +58,7 @@ public class PhaseManager {
         currentPhase.update();
     }
 
-    public LifePhase getCurrentPhase(){
+    public LifePhaseNew getCurrentPhase(){
         return currentPhase;
     }
 
@@ -103,7 +115,6 @@ public class PhaseManager {
     }
 
     public void phaseUpEffect(){
-
         this.p.getWorld().spawnParticle(Particle.COMPOSTER,this.p.getLocation(),100,0.5,1,0.5);
         this.p.playSound(this.p.getLocation(), Sound.BLOCK_BELL_USE, 4, 1);
         this.p.playSound(this.p.getLocation(), Sound.BLOCK_BELL_RESONATE, 1, 1);

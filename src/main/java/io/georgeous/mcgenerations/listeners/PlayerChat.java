@@ -24,7 +24,7 @@ public class PlayerChat implements Listener {
         PhaseManager pm = playerWrapper.getRole().pm;
 
         String prefix = playerWrapper.getRole().getName() + " " + playerWrapper.getRole().family.getName() + "§f: ";
-        String msg = prepareMsg(event.getMessage(), prefix, pm.getCurrentPhase().maxCharsInChat);
+        String msg = prepareMsg(event.getMessage(), prefix, pm.getCurrentPhase().getMaxCharsInChat());
 
         rangedBroadcast(player, msg, CHAT_RANGE);
     }

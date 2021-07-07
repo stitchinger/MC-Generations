@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Random;
@@ -76,6 +77,18 @@ public class Util {
     public static void giveItemIfNotInInventory(ItemStack item, PlayerInventory inventory) {
         if (Util.findInInventory(item, inventory) == null) {
             inventory.addItem(item);
+        }
+    }
+
+    public static void setItemsDamage(ItemStack item, float damage) {
+        if (item != null) {
+            ItemMeta meta = item.getItemMeta();
+            if (meta != null) {
+                if (meta instanceof Damageable) {
+                    ((Damageable) meta).setDamage((int) damage);
+                    item.setItemMeta(meta);
+                }
+            }
         }
     }
 

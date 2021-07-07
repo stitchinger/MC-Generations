@@ -83,11 +83,14 @@ public class SurroManager implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event){
-        /*
         Player player = event.getEntity();
         destroySurrogate(player);
+    }
 
-         */
+    public static void disable(){
+        for(Player player : Bukkit.getOnlinePlayers()){
+            destroySurrogate(player);
+        }
     }
 
 

@@ -47,10 +47,7 @@ public class Debug implements CommandExecutor {
                         pat.getPattern().equals(PatternType.CREEPER);
                     }
                 }
-            } else if(args[0].equalsIgnoreCase("saveplayer")){ // Banner
-                PlayerManager.savePlayer(player);
-
-            }else if(args[0].equalsIgnoreCase("council")){ // Council Teleport
+            } else if(args[0].equalsIgnoreCase("council")){ // Council Teleport
                 player.teleport(new Location(player.getWorld(),0,250,0));
 
             }
@@ -65,7 +62,7 @@ public class Debug implements CommandExecutor {
                 PlayerManager.restoreAllPlayers();
             }
             else if(args[0].equalsIgnoreCase("savefamily")){ //
-                FamilyManager.saveAllFamilies();
+                //FamilyManager.saveAllFamilies();
             }
             else if(args[0].equalsIgnoreCase("loadfamily")){ //
                 //PlayerManager.restorePlayer(PlayerManager.get(player));

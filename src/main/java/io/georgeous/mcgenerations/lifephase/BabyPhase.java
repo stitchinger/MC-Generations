@@ -47,7 +47,5 @@ public class BabyPhase extends LifePhase {
         if(Math.random() < hungerRate / 100d){
             player.setFoodLevel(player.getFoodLevel()-1);
         }
-
-        player.setSaturation(0);
     }
 }

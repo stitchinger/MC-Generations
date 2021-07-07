@@ -5,65 +5,89 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MotherController {
     private final PlayerRole playerRole;
     private long lastChildTime;
-    public Player child = null;
-    public List<Player> children;
+    private List<Player> children;
 
     public MotherController(PlayerRole playerRole) {
         this.playerRole = playerRole;
+        lastChildTime = 0;
+        children = new ArrayList<>();
     }
 
     public void update(){
-        childUpdate();
+        // Shows childs foodlevel on baby-handler
+        if (getYoungestChild() != null) { // has child?
+            updateBabyHandlerDamage();
+        }
+    }
+
+    // Children
+    public List<Player> getChildren() {
+        return children;
+    }
+
+    public void addChild(Player child){
+        getChildren().add(child);
+        lastChildTime = System.currentTimeMillis();
+    }
+
+    public long getLastChildTime() {
+        return lastChildTime;
     }
 
     public boolean canHaveBaby() {
         if (
                 playerRole.am.ageInYears > 16 &&
-                        System.currentTimeMillis() - lastChildTime > 300000
+                        System.currentTimeMillis() - getLastChildTime() > 300000
         ) {
             return true;
         }
         return false;
     }
 
-    public void childUpdate() {
-        // Shows childs foodlevel on baby-handler
-        if (this.child != null) { // has child?
-            if (this.child.getHealth() <= 0) {
-                this.child = null;
+    public Player getOldestChild() {
+        if (getChildren() == null)
+            return null;
+
+        for (int i = 0; i < getChildren().size(); i++) {
+            if (getChildren().get(i) != null) {
+                return getChildren().get(i);
             }
-            updateBabyHandlerDamage();
         }
+        return null;
     }
 
-    public void updateBabyHandlerDamage() {
-        PlayerInventory inventory = playerRole.player.getInventory();
-        float damage =
-                Util.map((float) this.child.getFoodLevel(),
+    public Player getYoungestChild() {
+        if (getChildren() == null)
+            return null;
+
+        for (int i = getChildren().size()-1; i >= 0; i--) {
+            if (getChildren().get(i) != null) {
+                return getChildren().get(i);
+            }
+        }
+        return null;
+    }
+
+    // BabyHandler
+    private float calcDamageForBabyHandler(){
+        float foodLevel = (float) getYoungestChild().getFoodLevel();
+        return Util.map(foodLevel,
                         0,
                         20f,
                         25,
                         0);
-
-        ItemStack babyHandler = Util.findInInventory("Baby-Handler", inventory);
-        playerRole.setItemsDamage(babyHandler,damage);
     }
 
-    public Player getOldestChild() {
-        if (children == null)
-            return null;
-
-        for (int i = 0; i < children.size(); i++) {
-            if (children.get(i) != null) {
-                return children.get(i);
-            }
-        }
-        return null;
+    private void updateBabyHandlerDamage() {
+        PlayerInventory inventory = playerRole.player.getInventory();
+        ItemStack babyHandler = Util.findInInventory("Baby-Handler", inventory);
+        Util.setItemsDamage(babyHandler,calcDamageForBabyHandler());
     }
 
 }

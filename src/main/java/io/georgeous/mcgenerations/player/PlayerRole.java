@@ -6,14 +6,10 @@ import io.georgeous.mcgenerations.family.FamilyManager;
 import io.georgeous.mcgenerations.gadgets.PetManager;
 import io.georgeous.mcgenerations.lifephase.PhaseManager;
 import io.georgeous.mcgenerations.utils.NameGenerator;
-import io.georgeous.mcgenerations.utils.Util;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.List;
 
 public class PlayerRole {
     // Player
@@ -36,13 +32,15 @@ public class PlayerRole {
         this.player = player;
         this.playerWrapper = PlayerManager.get(player);
         this.generation = 1;
-        setIdentity();
+        setRandomIdentity();
 
         am = new AgeManager(playerWrapper);
         pm = new PhaseManager(this, am);
         mc = new MotherController(this);
         //NameManager.name(this.player, this.firstName, family.getName());
+        //player.sendMessage("You are " + this.getName() + " " + family.getName());
     }
+
 
     // Update Functions
     public void update() {
@@ -70,12 +68,14 @@ public class PlayerRole {
         isNamed = value;
     }
 
-    public void setIdentity() {
+    public void setRandomIdentity() {
         this.setName(NameGenerator.randomName(NameGenerator.firstNames));
-        //this.family = new Family(NameGenerator.randomName(NameGenerator.lastNames));
         this.family = FamilyManager.addFamily(NameGenerator.randomName(NameGenerator.lastNames));
         //isNamed = false;
-        player.sendMessage("You are " + this.getName() + " " + family.getName());
+    }
+
+    public Family getFamily(){
+        return family;
     }
 
     // Dying
@@ -98,22 +98,7 @@ public class PlayerRole {
         }
     }
 
-    public void setItemsDamage(ItemStack item, float damage) {
-        if (item != null) {
-            ItemMeta meta = item.getItemMeta();
-            if(meta != null){
-                if(meta.hasDisplayName()){
-                    if (meta.getDisplayName().contains("Baby-Handler")) {
-                        if(meta instanceof Damageable){
-                            ((Damageable) meta).setDamage((int) damage);
-                            item.setItemMeta(meta);
-                        }
 
-                    }
-                }
-            }
-        }
-    }
 
 
 }

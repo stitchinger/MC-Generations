@@ -7,6 +7,7 @@ public abstract class LifePhase {
 
     public String skinID;
     public int maxCharsInChat = 999;
+    protected int hungerRate = 0;
     public boolean canCarry = true;
     public boolean canBeCarried = false;
 

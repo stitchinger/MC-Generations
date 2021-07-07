@@ -30,8 +30,8 @@ public class PlayerCarry implements Listener {
                 return;
             }
 
-            boolean canCarry = playerRole.pm.getCurrentPhase().canCarry;
-            boolean canBeCarried = targetRole.pm.getCurrentPhase().canBeCarried;
+            boolean canCarry = playerRole.pm.getCurrentPhase().canCarry();
+            boolean canBeCarried = targetRole.pm.getCurrentPhase().canBeCarried();
 
             if(!canBeCarried || !canCarry){
                 event.setCancelled(true);

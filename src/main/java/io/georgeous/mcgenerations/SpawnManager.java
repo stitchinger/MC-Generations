@@ -20,24 +20,24 @@ public class SpawnManager {
 
     private static int timeInLobby = 10; // in seconds
 
-    public static void spawnPlayer(Player player, Main main){
+    public static void spawnPlayer(Player player){
         Entity finalMom = findViableMother(player);
         player.sendMessage("You will be reborn in 10 seconds");
 
-        Bukkit.getScheduler().scheduleSyncDelayedTask(main, new Runnable() {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable() {
             @Override
             public void run() {
                 if(finalMom != null){
-                    spawnAsBaby(player, finalMom, main);
+                    spawnAsBaby(player, finalMom);
                 }else{
-                    spawnAsEve(player, main);
+                    spawnAsEve(player);
                 }
 
             }
         }, timeInLobby * 10L); //20 Tick (1 Second) delay before run() is called
     }
 
-    public static void spawnAsEve(Player player, Main main){
+    public static void spawnAsEve(Player player){
         PlayerWrapper playerWrapper = PlayerManager.get(player);
 
         playerWrapper.setRole(new PlayerRole(player));
@@ -45,30 +45,30 @@ public class SpawnManager {
         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),"spreadplayers 0 0 200 10000 false " + player.getName());
 
         playerWrapper.getRole().am.setAge(10);
+        player.setSaturation(0);
 
         player.playSound(player.getLocation(), Sound.AMBIENT_CAVE,1,1);
         player.sendMessage("You spawned as an Eve");
     }
 
-    public static void spawnAsBaby(Player player, Entity mom, Main main){
+    public static void spawnAsBaby(Player player, Entity mom){
         PlayerWrapper playerWrapper = PlayerManager.get(player);
+
         playerWrapper.setRole(new PlayerRole(player));
+
+        inheritFromMother(playerWrapper, mom);
 
         player.teleport(mom.getLocation().add(0,1,0));
 
-        inheritFromMother(playerWrapper, mom, main);
-
-        playerWrapper.getRole().am.ageInYears = 0;
-        playerWrapper.getRole().am.ageInSeconds = 0;
-
-        PlayerManager.get((Player) mom).getRole().mc.child = player;
+        //PlayerManager.get((Player) mom).getRole().mc.child = player;
+        PlayerManager.get((Player) mom).getRole().mc.addChild(player);
 
         // Messages
         player.sendMessage("You spawned as a Baby");
-        player.sendMessage(mom.getName() + ": Hello baby!");
         // Effects
         babyBornEffects(player,mom);
         PotionEffect glow = new PotionEffect(PotionEffectType.GLOWING,100,1,true,true,true);
+        // todo apply glow to surrogate
         player.addPotionEffect(glow);
     }
 
@@ -82,11 +82,10 @@ public class SpawnManager {
         return mom;
     }
 
-    public static void inheritFromMother(PlayerWrapper playerWrapper, Entity mom, Main main){
+    public static void inheritFromMother(PlayerWrapper playerWrapper, Entity mom){
         PlayerWrapper cMom = PlayerManager.get((Player)mom);
         playerWrapper.getRole().generation = cMom.getRole().generation + 1;
         playerWrapper.getRole().family = cMom.getRole().family;
-
         //NameManager.name(cp.player, cp.firstName, cp.family.getName());
     }
 

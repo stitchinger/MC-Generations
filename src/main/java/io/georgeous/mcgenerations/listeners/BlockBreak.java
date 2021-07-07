@@ -19,7 +19,7 @@ public class BlockBreak implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event){
         if(event.getBlock().getType().equals(Material.DIAMOND_ORE)){
-            /*
+
             Player player = event.getPlayer();
             player.sendMessage("You broke diamond ore");
             int amount = 0;
@@ -29,9 +29,6 @@ public class BlockBreak implements Listener {
 
             plugin.data.getConfig().set("players." + player.getUniqueId().toString() + ".total", (amount + 1));
             plugin.data.saveConfig();
-
-
-             */
         }
     }
 

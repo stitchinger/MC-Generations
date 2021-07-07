@@ -13,9 +13,6 @@ public class Family {
     private String name;
     private String color;
     private long established;
-    private Banner banner;
-    private Player leader;
-    //private Map<String,String> colorCodes = new HashMap<>();
     private String[] colorCodes = {"§1", "§2", "§3", "§4", "§5", "§6", "§7", "§8", "§9", "§a", "§b", "§c", "§d", "§e", "§f"};
     private String uuid;
 
@@ -47,15 +44,6 @@ public class Family {
         int i = (int)(Math.random() * colorCodes.length);
         return colorCodes[i];
     }
-
-    public void getLeader(){
-
-    }
-
-    public void setLeader(){
-
-    }
-
 
     public String getUuid() {
         return uuid;

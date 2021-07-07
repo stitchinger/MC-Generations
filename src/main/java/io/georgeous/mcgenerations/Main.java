@@ -1,6 +1,8 @@
 package io.georgeous.mcgenerations;
 
 import io.georgeous.mcgenerations.commands.*;
+import io.georgeous.mcgenerations.family.FamilyManager;
+import io.georgeous.mcgenerations.files.DataManager;
 import io.georgeous.mcgenerations.gadgets.*;
 import io.georgeous.mcgenerations.listeners.*;
 import io.georgeous.mcgenerations.manager.SurroManager;
@@ -20,7 +22,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public final class Main extends JavaPlugin {
     public static Main plugin;
-    //public DataManager data;
+    public DataManager data;
 
     public static World overworld;
     public static  Location councilLocation;
@@ -37,18 +39,12 @@ public final class Main extends JavaPlugin {
         overworld = Bukkit.getWorld("mc-generations");
         councilLocation = new Location(overworld,0, 250, 0);
         this.saveDefaultConfig();
-        //this.data = new DataManager();
+        this.data = new DataManager();
 
         registerEvents();
         registerCommands();
 
-        //if (this.getConfig().contains("data.player"))
-            //this.restorePlayer();
-
         PlayerManager.enable();
-        // Init Players
-
-
 
         startCouncil();
 
@@ -63,7 +59,10 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
+
+        SurroManager.disable();
         PlayerManager.disable();
+
     }
 
     public void printLoadupText(){

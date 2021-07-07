@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityBreedEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -20,17 +21,31 @@ public class PetManager implements Listener {
     public void onTaming(EntityTameEvent event){
         LivingEntity pet = event.getEntity();
         AnimalTamer owner = event.getOwner();
-        Bukkit.getServer().getLogger().info("TAMEEVENT!!!!!!!!!!!!!!!!!");
 
         if(owner instanceof Player){
-            Player p = (Player) owner;
-            if(ownerPets.get(p) == null){
-                ownerPets.put(p, new ArrayList<>());
-            }
-            ownerPets.get(p).add(pet);
-            p.sendMessage("Added pet to this player.");
-            p.sendMessage("Pets: " + ownerPets.get(p).size());
+            addPet((Player) owner,pet);
         }
+    }
+
+    @EventHandler
+    public void onBreeding(EntityBreedEvent event){
+        LivingEntity newBornAnimal = event.getEntity();
+        LivingEntity breeder = event.getBreeder();
+
+        if(breeder instanceof Player){
+            if(newBornAnimal instanceof Wolf || newBornAnimal instanceof Cat){
+                addPet((Player) breeder, newBornAnimal);
+            }
+        }
+    }
+
+    public void addPet(Player p, LivingEntity pet){
+        if(ownerPets.get(p) == null){
+            ownerPets.put(p, new ArrayList<>());
+        }
+        ownerPets.get(p).add(pet);
+        p.sendMessage("Added pet to this player.");
+        p.sendMessage("Pets: " + ownerPets.get(p).size());
     }
 
     public static void releasePets(Player player){
@@ -56,10 +71,7 @@ public class PetManager implements Listener {
                 iterator.remove();
             }
         }
-
         player.sendMessage("You released " + count + " pets");
-
-
     }
 
     public static void passPets(Player owner, Player receiver){

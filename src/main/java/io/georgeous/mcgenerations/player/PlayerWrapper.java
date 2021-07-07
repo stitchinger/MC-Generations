@@ -1,5 +1,6 @@
 package io.georgeous.mcgenerations.player;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 
@@ -34,6 +35,7 @@ public class PlayerWrapper {
     public int getLives(){
         return this.lives;
     }
+
     public void removeRole(){
         this.setRole(null);
     }
@@ -56,5 +58,33 @@ public class PlayerWrapper {
 
     public void setPlayTime(long playTime) {
         this.playTime = playTime;
+    }
+
+    public void restoreFrom(ConfigurationSection c){
+        // PlayerWrapper
+        int lives = c.getInt("lives");
+        setLives(lives);
+
+        double karma = c.getDouble("karma");
+        setKarma(karma);
+
+        long playTime = c.getLong("playtime");
+        setPlayTime(playTime);
+
+        setRole(new PlayerRole(player));
+
+
+
+        // PlayerRole
+        int age = c.getInt("role.age");
+        playerRole.am.setAge(age);
+
+        String name = c.getString("role.name");
+        playerRole.setName(name);
+
+        String family = c.getString("role.familyname");
+        playerRole.family.setName(family);
+
+        player.sendMessage("You are " + playerRole.getName() + " " + playerRole.family.getName());
     }
 }
