@@ -1,11 +1,11 @@
-package io.georgeous.mcgenerations.player;
+package io.georgeous.mcgenerations.player.role;
 
+import io.georgeous.mcgenerations.player.PlayerWrapper;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 
 public class AgeManager {
-    // TODO: Rename AgeController?
     PlayerWrapper playerWrapper;
     Player player;
 

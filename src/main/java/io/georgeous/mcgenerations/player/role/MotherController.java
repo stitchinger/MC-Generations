@@ -1,5 +1,6 @@
-package io.georgeous.mcgenerations.player;
+package io.georgeous.mcgenerations.player.role;
 
+import io.georgeous.mcgenerations.player.role.PlayerRole;
 import io.georgeous.mcgenerations.utils.Util;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -41,13 +42,8 @@ public class MotherController {
     }
 
     public boolean canHaveBaby() {
-        if (
-                playerRole.am.ageInYears > 16 &&
-                        System.currentTimeMillis() - getLastChildTime() > 300000
-        ) {
-            return true;
-        }
-        return false;
+        return playerRole.am.ageInYears > 16 &&
+                System.currentTimeMillis() - getLastChildTime() > 300000;
     }
 
     public Player getOldestChild() {

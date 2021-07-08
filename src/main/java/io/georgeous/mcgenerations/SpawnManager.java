@@ -1,6 +1,7 @@
 package io.georgeous.mcgenerations;
 
-import io.georgeous.mcgenerations.player.PlayerRole;
+import io.georgeous.mcgenerations.manager.SurroManager;
+import io.georgeous.mcgenerations.player.role.PlayerRole;
 import io.georgeous.mcgenerations.player.PlayerWrapper;
 import io.georgeous.mcgenerations.player.PlayerManager;
 import org.bukkit.Bukkit;
@@ -11,9 +12,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
-import java.util.List;
-
 
 
 public class SpawnManager {
@@ -32,7 +30,6 @@ public class SpawnManager {
                 }else{
                     spawnAsEve(player);
                 }
-
             }
         }, timeInLobby * 10L); //20 Tick (1 Second) delay before run() is called
     }
@@ -53,7 +50,6 @@ public class SpawnManager {
 
     public static void spawnAsBaby(Player player, Entity mom){
         PlayerWrapper playerWrapper = PlayerManager.get(player);
-
         playerWrapper.setRole(new PlayerRole(player));
 
         inheritFromMother(playerWrapper, mom);
@@ -67,19 +63,22 @@ public class SpawnManager {
         player.sendMessage("You spawned as a Baby");
         // Effects
         babyBornEffects(player,mom);
+
         PotionEffect glow = new PotionEffect(PotionEffectType.GLOWING,100,1,true,true,true);
-        // todo apply glow to surrogate
-        player.addPotionEffect(glow);
+        SurroManager.map.get(player).addPotionEffect(glow);
+        //player.addPotionEffect(glow);
     }
 
-    public static Entity findViableMother(Player player){
+    public static Player findViableMother(Player child){
         //List<Entity> moms = Bukkit.getServer().selectEntities(player,"@e[type=villager,sort=random,name=!Council]");
-        List<Entity> onlinePlayers = Bukkit.getServer().selectEntities(player,"@a[name=!"+player.getName()+", sort=random]");
-        Entity mom = null;
-        if(onlinePlayers.size() > 0){
-            mom = onlinePlayers.get(0);
+        //List<Entity> onlinePlayers = Bukkit.getServer().selectEntities(player,"@a[name=!"+player.getName()+", sort=random]");
+        Player mother = null;
+        for(Player player : Bukkit.getOnlinePlayers()){
+            if(child != player){
+                return player;
+            }
         }
-        return mom;
+        return mother;
     }
 
     public static void inheritFromMother(PlayerWrapper playerWrapper, Entity mom){

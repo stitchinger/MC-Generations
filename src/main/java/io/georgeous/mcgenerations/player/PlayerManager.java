@@ -2,6 +2,7 @@ package io.georgeous.mcgenerations.player;
 
 import io.georgeous.mcgenerations.Main;
 import io.georgeous.mcgenerations.SpawnManager;
+import io.georgeous.mcgenerations.player.role.PlayerRole;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -22,21 +23,23 @@ public class PlayerManager {
 
         for (Player player : Bukkit.getServer().getOnlinePlayers()) {
             initPlayer(player);
-
-
         }
         //restorePlayer();
     }
 
     public static void initPlayer(Player player){
         attachWrapperToPlayer(player);
-        if (Main.getPlugin().getConfig().contains("data.player." + player.getUniqueId().toString())) {
+        if (playerDataExists(player)) {
             // restore player
             restorePlayerWrapperFromConfig(get(player));
         } else {
             // attach new wrapper
             SpawnManager.spawnPlayer(player);
         }
+    }
+
+    public static boolean playerDataExists(Player player){
+        return Main.getPlugin().getConfig().contains("data.player." + player.getUniqueId().toString());
     }
 
     public static void disable() {
@@ -117,23 +120,12 @@ public class PlayerManager {
         FileConfiguration c = Main.getPlugin().getConfig();
         Player player = playerWrapper.player;
         String uuid = player.getUniqueId().toString();
-        // Add new role
 
         playerWrapper.restoreFrom(c.getConfigurationSection("data.player." + uuid));
 
-
         // delete Config entry after loaded
         c.set("data.player." + uuid, null);
-
         Main.getPlugin().saveConfig();
-
     }
 
-    public static void restoreAllPlayers() {
-        // Todo What if player is not online?
-        Main.getPlugin().getConfig().getConfigurationSection("data.player").getKeys(false).forEach(key -> {
-            PlayerWrapper playerWrapper = get(key);
-            restorePlayerWrapperFromConfig(playerWrapper);
-        });
-    }
 }

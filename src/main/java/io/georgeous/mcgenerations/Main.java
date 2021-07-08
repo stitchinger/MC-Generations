@@ -8,6 +8,7 @@ import io.georgeous.mcgenerations.listeners.*;
 import io.georgeous.mcgenerations.manager.SurroManager;
 
 import io.georgeous.mcgenerations.player.PlayerManager;
+import io.georgeous.mcgenerations.player.role.lifephase.listeners.PlayerPhaseUp;
 import io.georgeous.mcgenerations.utils.Util;
 
 import org.bukkit.Bukkit;
@@ -84,6 +85,7 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new InventoryListener(), this);
         getServer().getPluginManager().registerEvents(new BlockBreak(), this);
         getServer().getPluginManager().registerEvents(new PlayerCarry(), this);
+        getServer().getPluginManager().registerEvents(new PlayerPhaseUp(),this);
         // Manager
         getServer().getPluginManager().registerEvents(new PetManager(), this);
         getServer().getPluginManager().registerEvents(new SurroManager(), this);

@@ -2,7 +2,7 @@ package io.georgeous.mcgenerations.commands;
 
 import io.georgeous.mcgenerations.Main;
 import io.georgeous.mcgenerations.player.PlayerManager;
-import io.georgeous.mcgenerations.player.PlayerRole;
+import io.georgeous.mcgenerations.player.role.PlayerRole;
 import io.georgeous.mcgenerations.player.PlayerWrapper;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

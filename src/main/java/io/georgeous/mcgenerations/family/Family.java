@@ -15,6 +15,7 @@ public class Family {
     private long established;
     private String[] colorCodes = {"§1", "§2", "§3", "§4", "§5", "§6", "§7", "§8", "§9", "§a", "§b", "§c", "§d", "§e", "§f"};
     private String uuid;
+    private boolean namedByLeader;
 
 
     public Family(String name){
@@ -22,6 +23,7 @@ public class Family {
         this.color = getRandomColor();
         this.uuid = UUID.randomUUID().toString();
         this.established = System.currentTimeMillis();
+        namedByLeader = false;
     }
 
     public String getName(){
@@ -30,6 +32,15 @@ public class Family {
 
     public void setName(String name){
         this.name = name;
+    }
+
+    public void rename(String name){
+        if(namedByLeader){
+            System.out.println("Family name already defined by Leader");
+            return;
+        }
+        setName(name);
+        namedByLeader = true;
     }
 
     public String getColor(){

@@ -1,5 +1,6 @@
 package io.georgeous.mcgenerations.player;
 
+import io.georgeous.mcgenerations.player.role.PlayerRole;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
@@ -74,16 +75,9 @@ public class PlayerWrapper {
         setRole(new PlayerRole(player));
 
 
+        playerRole.restoreFrom(c.getConfigurationSection("role"));
 
-        // PlayerRole
-        int age = c.getInt("role.age");
-        playerRole.am.setAge(age);
 
-        String name = c.getString("role.name");
-        playerRole.setName(name);
-
-        String family = c.getString("role.familyname");
-        playerRole.family.setName(family);
 
         player.sendMessage("You are " + playerRole.getName() + " " + playerRole.family.getName());
     }

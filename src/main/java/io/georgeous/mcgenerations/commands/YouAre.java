@@ -44,9 +44,11 @@ public class YouAre implements CommandExecutor {
             if(target instanceof Player){
                 // if target wasnt named before
                 PlayerWrapper cpTarget = PlayerManager.get((Player)target);
-                if(!cpTarget.getRole().isNamed()){
+
+                if(!cpTarget.getRole().isNamedByMother()){
                     cpTarget.getRole().setName(first);
-                    cpTarget.getRole().setNamed(true);
+                }else{
+                    p.sendMessage("You can name your child only once");
                 }
                 //NameManager.name((Player) target,first, cp.family.getName());
             }else{

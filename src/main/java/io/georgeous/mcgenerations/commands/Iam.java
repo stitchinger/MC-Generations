@@ -3,7 +3,7 @@ package io.georgeous.mcgenerations.commands;
 
 import io.georgeous.mcgenerations.Main;
 import io.georgeous.mcgenerations.player.PlayerManager;
-import io.georgeous.mcgenerations.player.PlayerRole;
+import io.georgeous.mcgenerations.player.role.PlayerRole;
 import io.georgeous.mcgenerations.player.PlayerWrapper;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -39,13 +39,12 @@ public class Iam implements CommandExecutor {
         }
 
         if (args.length == 3) {
-            if(!playerRole.isNamed()){
+            if(!playerRole.isNamedByMother()){
                 String first = args[1].substring(0, 1).toUpperCase() + args[1].substring(1);
                 String last = args[2].substring(0, 1).toUpperCase() + args[2].substring(1);
 
-                playerRole.setName(first);
-                playerRole.family.setName(last);
-                playerRole.setNamed(true);
+                playerRole.rename(first);
+                playerRole.family.rename(last);
             } else{
                 player.sendMessage("You can name yourself only once");
             }

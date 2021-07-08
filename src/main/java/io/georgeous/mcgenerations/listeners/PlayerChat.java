@@ -1,7 +1,7 @@
 package io.georgeous.mcgenerations.listeners;
 
 import io.georgeous.mcgenerations.player.PlayerManager;
-import io.georgeous.mcgenerations.lifephase.PhaseManager;
+import io.georgeous.mcgenerations.player.role.lifephase.PhaseManager;
 import io.georgeous.mcgenerations.player.PlayerWrapper;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

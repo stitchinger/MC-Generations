@@ -3,20 +3,17 @@ package io.georgeous.mcgenerations.listeners;
 import io.georgeous.mcgenerations.Main;
 import io.georgeous.mcgenerations.player.PlayerManager;
 import io.georgeous.mcgenerations.SpawnManager;
-import io.georgeous.mcgenerations.player.PlayerRole;
+import io.georgeous.mcgenerations.player.role.PlayerRole;
 import io.georgeous.mcgenerations.player.PlayerWrapper;
-import org.bukkit.Bukkit;
+import io.georgeous.mcgenerations.utils.ItemManager;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.Objects;
 
 public class PlayerConnection implements Listener {
     private final Main main;
@@ -64,24 +61,10 @@ public class PlayerConnection implements Listener {
 
     public void removeBabyHandlerFromDrops(PlayerDeathEvent event){
         for(ItemStack item : event.getDrops()){
-            if(item.hasItemMeta()){
-                try {
-                    if(item.getItemMeta().hasDisplayName()){
-                        if(item.getItemMeta().getDisplayName().contains("Baby-Handler")){
-                            item.setAmount(0);
-                        }
-                    }
-
-                } catch (NullPointerException e){
-                    System.out.println("NullpointerException in removeBabyHandlerFromDrops");
-                }
-
+            if(ItemManager.isBabyHandler(item)){
+                item.setAmount(0);
             }
         }
     }
-
-
-
-
 
 }

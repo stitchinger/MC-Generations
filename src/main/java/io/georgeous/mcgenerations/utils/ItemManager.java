@@ -26,4 +26,19 @@ public class ItemManager {
         item.setItemMeta(meta);
         return item;
     }
+
+    public static boolean isBabyHandler(ItemStack item){
+        return isItemByName(item, "Baby-Handler");
+    }
+
+    public static boolean isItemByName(ItemStack item, String needle){
+        if(item.hasItemMeta()){
+            ItemMeta meta = item.getItemMeta();
+            assert meta != null;
+            if(meta.hasDisplayName()){
+                return item.getItemMeta().getDisplayName().contains(needle);
+            }
+        }
+        return false;
+    }
 }
