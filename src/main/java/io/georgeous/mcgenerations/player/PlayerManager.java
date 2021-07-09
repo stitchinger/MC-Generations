@@ -2,7 +2,6 @@ package io.georgeous.mcgenerations.player;
 
 import io.georgeous.mcgenerations.Main;
 import io.georgeous.mcgenerations.SpawnManager;
-import io.georgeous.mcgenerations.player.role.PlayerRole;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -10,47 +9,37 @@ import org.bukkit.entity.Player;
 import java.util.*;
 
 public class PlayerManager {
-    public static HashMap<String, PlayerWrapper> playersMap = new HashMap<>();
+    private static HashMap<String, PlayerWrapper> playersMap = new HashMap<>();
 
     public static void enable() {
-        /*
-        if player found in config
-            restore player
-        else
-            attach new Playerwrapper
-            spawn player
-         */
-
         for (Player player : Bukkit.getServer().getOnlinePlayers()) {
             initPlayer(player);
         }
-        //restorePlayer();
-    }
-
-    public static void initPlayer(Player player){
-        attachWrapperToPlayer(player);
-        if (playerDataExists(player)) {
-            // restore player
-            restorePlayerWrapperFromConfig(get(player));
-        } else {
-            // attach new wrapper
-            SpawnManager.spawnPlayer(player);
-        }
-    }
-
-    public static boolean playerDataExists(Player player){
-        return Main.getPlugin().getConfig().contains("data.player." + player.getUniqueId().toString());
     }
 
     public static void disable() {
         saveAllPlayers();
     }
 
+    public static void initPlayer(Player player){
+        attachWrapperToPlayer(player);
+        if (playerDataExists(player)) { // restore player
+            restorePlayerWrapperFromConfig(get(player));
+        } else {
+            SpawnManager.spawnPlayer(player);  // Spawn player
+        }
+    }
+
     public static void update() {
         for (Map.Entry<String, PlayerWrapper> entry : playersMap.entrySet()) {
-            PlayerWrapper playerWrapper = entry.getValue();
-            playerWrapper.update();
+            // todo Offline countdown for offline players
+            //PlayerWrapper playerWrapper = entry.getValue();
+            //playerWrapper.update();
         }
+    }
+
+    public static boolean playerDataExists(Player player){
+        return Main.getPlugin().getConfig().contains("data.player." + player.getUniqueId().toString());
     }
 
     public static void attachWrapperToPlayer(Player player) {
@@ -61,7 +50,6 @@ public class PlayerManager {
 
         PlayerWrapper cp = new PlayerWrapper(player);
         playersMap.put(uuid, cp);
-
     }
 
     public static PlayerWrapper get(Player player) {
@@ -97,7 +85,8 @@ public class PlayerManager {
         FileConfiguration config = Main.getPlugin().getConfig();
         PlayerWrapper playerWrapper = get(player);
         String uuid = player.getUniqueId().toString();
-        PlayerRole playerRole = playerWrapper.getRole();
+
+
 
         config.set("data.player." + uuid, null);
 
@@ -105,6 +94,8 @@ public class PlayerManager {
         config.set("data.player." + uuid + ".lives", playerWrapper.getLives());
         config.set("data.player." + uuid + ".playtime", 696969);
 
+        /*
+        PlayerRole playerRole = playerWrapper.getRole();
         if (playerRole != null) {
             config.set("data.player." + uuid + ".role.name", playerRole.getName());
             config.set("data.player." + uuid + ".role.age", playerRole.am.ageInYears);
@@ -113,6 +104,8 @@ public class PlayerManager {
             config.set("data.player." + uuid + ".role.generation", playerRole.generation);
             config.set("data.player." + uuid + ".role.time", System.currentTimeMillis());
         }
+
+         */
         Main.getPlugin().saveConfig();
     }
 

@@ -4,6 +4,7 @@ package io.georgeous.mcgenerations.listeners;
 import io.georgeous.mcgenerations.Main;
 import io.georgeous.mcgenerations.player.PlayerManager;
 import io.georgeous.mcgenerations.player.role.PlayerRole;
+import io.georgeous.mcgenerations.player.role.RoleManager;
 import io.georgeous.mcgenerations.player.role.lifephase.PhaseManager;
 import io.georgeous.mcgenerations.utils.ItemManager;
 import org.bukkit.entity.Player;
@@ -26,10 +27,10 @@ public class InventoryListener implements Listener {
     public void stopBabyItemPickup(EntityPickupItemEvent event) {
         if(event.getEntity() instanceof Player){
             Player player = ((Player) event.getEntity()).getPlayer();
-            PlayerRole role = PlayerManager.get(player).getRole();
+            PlayerRole role = RoleManager.get(player);
             if(role == null)
                 return;
-            PhaseManager phaseManager = PlayerManager.get(player).getRole().pm;
+            PhaseManager phaseManager = RoleManager.get(player).pm;
             if(phaseManager == null)
                 return;
             if(phaseManager.getCurrentPhase().getName().equalsIgnoreCase("baby")){

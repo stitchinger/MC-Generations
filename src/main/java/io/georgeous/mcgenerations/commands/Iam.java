@@ -5,6 +5,7 @@ import io.georgeous.mcgenerations.Main;
 import io.georgeous.mcgenerations.player.PlayerManager;
 import io.georgeous.mcgenerations.player.role.PlayerRole;
 import io.georgeous.mcgenerations.player.PlayerWrapper;
+import io.georgeous.mcgenerations.player.role.RoleManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -26,8 +27,7 @@ public class Iam implements CommandExecutor {
         }
 
         Player player = (Player) sender;
-        PlayerWrapper playerWrapper = PlayerManager.get(player);
-        PlayerRole playerRole = playerWrapper.getRole();
+        PlayerRole playerRole = RoleManager.get(player);
 
         if(playerRole == null){
             sender.sendMessage("No PlayerRole attached");

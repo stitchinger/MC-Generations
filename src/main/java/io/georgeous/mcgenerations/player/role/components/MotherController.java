@@ -1,8 +1,7 @@
-package io.georgeous.mcgenerations.player.role;
+package io.georgeous.mcgenerations.player.role.components;
 
 import io.georgeous.mcgenerations.player.role.PlayerRole;
 import io.georgeous.mcgenerations.utils.Util;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -12,7 +11,7 @@ import java.util.List;
 public class MotherController {
     private final PlayerRole playerRole;
     private long lastChildTime;
-    private List<Player> children;
+    private List<PlayerRole> children;
 
     public MotherController(PlayerRole playerRole) {
         this.playerRole = playerRole;
@@ -28,12 +27,12 @@ public class MotherController {
     }
 
     // Children
-    public List<Player> getChildren() {
+    public List<PlayerRole> getChildren() {
         return children;
     }
 
-    public void addChild(Player child){
-        getChildren().add(child);
+    public void addChild(PlayerRole child){
+        children.add(child);
         lastChildTime = System.currentTimeMillis();
     }
 
@@ -46,7 +45,7 @@ public class MotherController {
                 System.currentTimeMillis() - getLastChildTime() > 300000;
     }
 
-    public Player getOldestChild() {
+    public PlayerRole getOldestChild() {
         if (getChildren() == null)
             return null;
 
@@ -58,7 +57,7 @@ public class MotherController {
         return null;
     }
 
-    public Player getYoungestChild() {
+    public PlayerRole getYoungestChild() {
         if (getChildren() == null)
             return null;
 
@@ -70,9 +69,10 @@ public class MotherController {
         return null;
     }
 
+
     // BabyHandler
     private float calcDamageForBabyHandler(){
-        float foodLevel = (float) getYoungestChild().getFoodLevel();
+        float foodLevel = (float) getYoungestChild().getPlayer().getFoodLevel();
         return Util.map(foodLevel,
                         0,
                         20f,
@@ -81,7 +81,7 @@ public class MotherController {
     }
 
     private void updateBabyHandlerDamage() {
-        PlayerInventory inventory = playerRole.player.getInventory();
+        PlayerInventory inventory = playerRole.getPlayer().getInventory();
         ItemStack babyHandler = Util.findInInventory("Baby-Handler", inventory);
         Util.setItemsDamage(babyHandler,calcDamageForBabyHandler());
     }

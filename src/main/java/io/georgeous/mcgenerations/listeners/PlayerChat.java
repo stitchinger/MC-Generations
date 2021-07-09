@@ -1,6 +1,8 @@
 package io.georgeous.mcgenerations.listeners;
 
 import io.georgeous.mcgenerations.player.PlayerManager;
+import io.georgeous.mcgenerations.player.role.PlayerRole;
+import io.georgeous.mcgenerations.player.role.RoleManager;
 import io.georgeous.mcgenerations.player.role.lifephase.PhaseManager;
 import io.georgeous.mcgenerations.player.PlayerWrapper;
 import org.bukkit.Bukkit;
@@ -17,13 +19,15 @@ public class PlayerChat implements Listener {
     public void onChat(AsyncPlayerChatEvent event){
         event.setCancelled(true);
         Player player = event.getPlayer();
-        PlayerWrapper playerWrapper = PlayerManager.get(player);
-        if(playerWrapper.getRole() == null){
+        PlayerRole playerRole = RoleManager.get(player);
+
+        if(playerRole == null){
             return;
         }
-        PhaseManager pm = playerWrapper.getRole().pm;
 
-        String prefix = playerWrapper.getRole().getName() + " " + playerWrapper.getRole().family.getName() + "§f: ";
+        PhaseManager pm = playerRole.pm;
+
+        String prefix = playerRole.getName() + " " + playerRole.family.getName() + "§f: ";
         String msg = prepareMsg(event.getMessage(), prefix, pm.getCurrentPhase().getMaxCharsInChat());
 
         rangedBroadcast(player, msg, CHAT_RANGE);

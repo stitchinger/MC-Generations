@@ -3,6 +3,8 @@ package io.georgeous.mcgenerations.commands;
 import io.georgeous.mcgenerations.Main;
 import io.georgeous.mcgenerations.player.PlayerManager;
 import io.georgeous.mcgenerations.player.PlayerWrapper;
+import io.georgeous.mcgenerations.player.role.PlayerRole;
+import io.georgeous.mcgenerations.player.role.RoleManager;
 import io.georgeous.piggyback.Piggyback;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,6 +22,7 @@ public class YouAre implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
         if(!(sender instanceof Player)){
             sender.sendMessage("This command is for players only!");
             return true;
@@ -30,32 +33,35 @@ public class YouAre implements CommandExecutor {
         }
 
         if(args.length == 2){
-            Player p = (Player) sender;
-            PlayerWrapper cp = PlayerManager.get(p);
-            nameChild(p,cp, args[1]);
+            Player player = (Player) sender;
+            PlayerRole playerRole = RoleManager.get(player);
+            nameChild(player, playerRole, args[1]);
         }
         return true;
     }
 
-    public void nameChild(Player p, PlayerWrapper cp, String rawName){
-        if(Piggyback.carryPairs.get(p) != null){
-            Entity target = Piggyback.carryPairs.get(p);
-            String first = rawName.substring(0, 1).toUpperCase() + rawName.substring(1);
-            if(target instanceof Player){
-                // if target wasnt named before
-                PlayerWrapper cpTarget = PlayerManager.get((Player)target);
-
-                if(!cpTarget.getRole().isNamedByMother()){
-                    cpTarget.getRole().setName(first);
-                }else{
-                    p.sendMessage("You can name your child only once");
-                }
-                //NameManager.name((Player) target,first, cp.family.getName());
-            }else{
-                target.setCustomName(first + " " + cp.getRole().family.getName());
-            }
-        }else{
-            p.sendMessage("You need to hold your baby for naming it.");
+    public void nameChild(Player nameGiver, PlayerRole playerRole, String rawName){
+        if(Piggyback.carryPairs.get(nameGiver) != null){
+            nameGiver.sendMessage("You need to hold your baby for naming it.");
+            return;
         }
+
+        Entity target = Piggyback.carryPairs.get(nameGiver);
+        String first = rawName.substring(0, 1).toUpperCase() + rawName.substring(1);
+
+        if(target instanceof Player){
+            PlayerRole targetsPlayerRole = RoleManager.get((Player)target);
+
+            if(!targetsPlayerRole.isNamedByMother()){
+                targetsPlayerRole.setName(first);
+            }else{
+                nameGiver.sendMessage("You can name your child only once");
+            }
+            //NameManager.name((Player) target,first, cp.family.getName());
+        }else{
+            target.setCustomName(first + " " + playerRole.family.getName());
+        }
+
     }
+
 }

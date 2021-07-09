@@ -3,6 +3,8 @@ package io.georgeous.mcgenerations.manager;
 
 import io.georgeous.mcgenerations.player.PlayerManager;
 import io.georgeous.mcgenerations.player.PlayerWrapper;
+import io.georgeous.mcgenerations.player.role.PlayerRole;
+import io.georgeous.mcgenerations.player.role.RoleManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -49,10 +51,10 @@ public class SurroManager implements Listener {
             destroySurrogate(player);
         }
 
-        PlayerWrapper cp = PlayerManager.get(player);
+        PlayerRole playerRole = RoleManager.get(player);
         Villager v = (Villager) player.getWorld().spawnEntity(player.getLocation(), EntityType.VILLAGER);
         v = prepareSurro(v);
-        v.setCustomName(cp.getRole().getName() + " " + cp.getRole().family.getName());
+        v.setCustomName(playerRole.getName() + " " + playerRole.family.getName());
 
         map.put(player,v);
     }

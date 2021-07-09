@@ -2,6 +2,8 @@ package io.georgeous.mcgenerations.commands;
 
 import io.georgeous.mcgenerations.player.PlayerManager;
 import io.georgeous.mcgenerations.player.PlayerWrapper;
+import io.georgeous.mcgenerations.player.role.PlayerRole;
+import io.georgeous.mcgenerations.player.role.RoleManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,14 +17,14 @@ public class SecInYear implements CommandExecutor {
             return true;
         }
 
-        Player p = (Player) sender;
-        PlayerWrapper cp = PlayerManager.get(p);
+        Player player = (Player) sender;
+        PlayerRole playerRole = RoleManager.get(player);
 
         if (args.length != 1) {
             sender.sendMessage("Usage: /secinyear 60");
         }
 
-        cp.getRole().am.setSecInYear(Integer.parseInt(args[0]));
+        playerRole.am.setSecInYear(Integer.parseInt(args[0]));
 
 
         return false;

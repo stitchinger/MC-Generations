@@ -4,6 +4,8 @@ import io.georgeous.mcgenerations.manager.SurroManager;
 import io.georgeous.mcgenerations.player.role.PlayerRole;
 import io.georgeous.mcgenerations.player.PlayerWrapper;
 import io.georgeous.mcgenerations.player.PlayerManager;
+import io.georgeous.mcgenerations.player.role.RoleManager;
+import io.georgeous.mcgenerations.player.role.components.MotherController;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -13,13 +15,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import javax.management.relation.Role;
+
 
 public class SpawnManager {
 
     private static int timeInLobby = 10; // in seconds
 
     public static void spawnPlayer(Player player){
-        Entity finalMom = findViableMother(player);
+        PlayerRole finalMom = findViableMother(player);
         player.sendMessage("You will be reborn in 10 seconds");
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable() {
@@ -35,57 +39,56 @@ public class SpawnManager {
     }
 
     public static void spawnAsEve(Player player){
-        PlayerWrapper playerWrapper = PlayerManager.get(player);
-
-        playerWrapper.setRole(new PlayerRole(player));
-
         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),"spreadplayers 0 0 200 10000 false " + player.getName());
 
-        playerWrapper.getRole().am.setAge(10);
+
+        RoleManager.createRole(player);
+        RoleManager.get(player).am.setAge(10);
         player.setSaturation(0);
 
         player.playSound(player.getLocation(), Sound.AMBIENT_CAVE,1,1);
         player.sendMessage("You spawned as an Eve");
     }
 
-    public static void spawnAsBaby(Player player, Entity mom){
-        PlayerWrapper playerWrapper = PlayerManager.get(player);
-        playerWrapper.setRole(new PlayerRole(player));
+    public static void spawnAsBaby(Player newBorn, PlayerRole mother){
 
-        inheritFromMother(playerWrapper, mom);
+        RoleManager.createRole(newBorn);
+        PlayerRole playerRole = RoleManager.get(newBorn);
 
-        player.teleport(mom.getLocation().add(0,1,0));
+        newBorn.teleport(mother.getPlayer().getLocation().add(0,1,0));
 
-        //PlayerManager.get((Player) mom).getRole().mc.child = player;
-        PlayerManager.get((Player) mom).getRole().mc.addChild(player);
+
+        PlayerRole mothersRole = RoleManager.get((Player) mother);
+        MotherController mc = mothersRole.mc;
+
+        inheritFromMother(playerRole, mothersRole);
+
+        mc.addChild(playerRole);
 
         // Messages
-        player.sendMessage("You spawned as a Baby");
+        newBorn.sendMessage("You spawned as a Baby");
         // Effects
-        babyBornEffects(player,mom);
+        babyBornEffects(newBorn,mother.getPlayer());
 
         PotionEffect glow = new PotionEffect(PotionEffectType.GLOWING,100,1,true,true,true);
-        SurroManager.map.get(player).addPotionEffect(glow);
-        //player.addPotionEffect(glow);
+        SurroManager.map.get(newBorn).addPotionEffect(glow);
     }
 
-    public static Player findViableMother(Player child){
-        //List<Entity> moms = Bukkit.getServer().selectEntities(player,"@e[type=villager,sort=random,name=!Council]");
-        //List<Entity> onlinePlayers = Bukkit.getServer().selectEntities(player,"@a[name=!"+player.getName()+", sort=random]");
-        Player mother = null;
+    public static PlayerRole findViableMother(Player child){
         for(Player player : Bukkit.getOnlinePlayers()){
-            if(child != player){
-                return player;
+            PlayerRole m = RoleManager.get(player);
+            boolean hasRole = RoleManager.get(player) != null;
+            boolean notSelf = child != player;
+            if(hasRole && notSelf){
+                return m;
             }
         }
-        return mother;
+        return null;
     }
 
-    public static void inheritFromMother(PlayerWrapper playerWrapper, Entity mom){
-        PlayerWrapper cMom = PlayerManager.get((Player)mom);
-        playerWrapper.getRole().generation = cMom.getRole().generation + 1;
-        playerWrapper.getRole().family = cMom.getRole().family;
-        //NameManager.name(cp.player, cp.firstName, cp.family.getName());
+    public static void inheritFromMother(PlayerRole playerRole, PlayerRole mothersRole){
+        playerRole.generation = mothersRole.generation + 1;
+        playerRole.family = mothersRole.family;
     }
 
     private static void babyBornEffects(Player player, Entity mom){

@@ -5,6 +5,7 @@ import io.georgeous.mcgenerations.player.PlayerManager;
 import io.georgeous.mcgenerations.SpawnManager;
 import io.georgeous.mcgenerations.player.role.PlayerRole;
 import io.georgeous.mcgenerations.player.PlayerWrapper;
+import io.georgeous.mcgenerations.player.role.RoleManager;
 import io.georgeous.mcgenerations.utils.ItemManager;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -41,16 +42,15 @@ public class PlayerConnection implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
-        Player p = event.getEntity();
-        PlayerWrapper playerWrapper = PlayerManager.get(p);
-        PlayerRole playerRole = playerWrapper.getRole();
+        Player player = event.getEntity();
+        PlayerRole playerRole = RoleManager.get(player);
 
         removeBabyHandlerFromDrops(event);
 
         if(playerRole != null){
             playerRole.die();
         }
-        p.setBedSpawnLocation(Main.councilLocation, true);
+        player.setBedSpawnLocation(Main.councilLocation, true);
     }
 
     @EventHandler

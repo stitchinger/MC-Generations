@@ -2,13 +2,14 @@ package io.georgeous.mcgenerations.listeners;
 
 import io.georgeous.mcgenerations.player.PlayerManager;
 import io.georgeous.mcgenerations.player.role.PlayerRole;
-import io.georgeous.mcgenerations.player.PlayerWrapper;
+import io.georgeous.mcgenerations.player.role.RoleManager;
 import io.georgeous.piggyback.events.PlayerStartCarryEvent;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Sheep;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+
+import javax.management.relation.Role;
 
 
 public class PlayerCarry implements Listener {
@@ -19,11 +20,8 @@ public class PlayerCarry implements Listener {
         Entity target = event.getTarget();
 
         if(target instanceof Player){
-            PlayerWrapper targetPw = PlayerManager.get(((Player)target));
-            PlayerRole targetRole = targetPw.getRole();
-
-            PlayerWrapper playerPw = PlayerManager.get(player);
-            PlayerRole playerRole = playerPw.getRole();
+            PlayerRole targetRole = RoleManager.get((Player)target);
+            PlayerRole playerRole = RoleManager.get(player);
 
             if(playerRole == null || targetRole == null){
                 event.setCancelled(true);
@@ -36,10 +34,6 @@ public class PlayerCarry implements Listener {
             if(!canBeCarried || !canCarry){
                 event.setCancelled(true);
             }
-        }
-
-        if(target instanceof Sheep){
-            player.sendMessage("Sheep");
         }
     }
 }

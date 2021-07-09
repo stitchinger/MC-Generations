@@ -1,6 +1,6 @@
 package io.georgeous.mcgenerations.player.role.lifephase;
 
-import io.georgeous.mcgenerations.player.role.AgeManager;
+import io.georgeous.mcgenerations.player.role.components.AgeManager;
 import io.georgeous.mcgenerations.player.role.PlayerRole;
 import io.georgeous.mcgenerations.player.role.lifephase.events.PlayerPhaseUpEvent;
 import org.bukkit.Bukkit;
@@ -21,7 +21,7 @@ public class PhaseManager {
 
     public PhaseManager(PlayerRole playerRole, AgeManager am){
         this.playerRole = playerRole;
-        this.player = playerRole.player;
+        this.player = playerRole.getPlayer();
         this.am = am;
 
         LifePhase babyPhase = new LifePhase(this.player,0,3,1,3,false,true,"12456", "Baby",128,6,2, true);

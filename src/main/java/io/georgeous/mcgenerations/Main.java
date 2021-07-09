@@ -8,6 +8,7 @@ import io.georgeous.mcgenerations.listeners.*;
 import io.georgeous.mcgenerations.manager.SurroManager;
 
 import io.georgeous.mcgenerations.player.PlayerManager;
+import io.georgeous.mcgenerations.player.role.RoleManager;
 import io.georgeous.mcgenerations.player.role.lifephase.listeners.PlayerPhaseUp;
 import io.georgeous.mcgenerations.utils.Util;
 
@@ -18,6 +19,8 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import javax.management.relation.Role;
 //import org.bukkit.scoreboard.Team;
 
 
@@ -46,6 +49,7 @@ public final class Main extends JavaPlugin {
         registerCommands();
 
         PlayerManager.enable();
+        RoleManager.enable();
 
         startCouncil();
 
@@ -63,6 +67,7 @@ public final class Main extends JavaPlugin {
 
         SurroManager.disable();
         PlayerManager.disable();
+        RoleManager.disable();
 
     }
 
@@ -75,6 +80,7 @@ public final class Main extends JavaPlugin {
 
     private void update() {
         PlayerManager.update();
+        RoleManager.update();
         SurroManager.update();
     }
 

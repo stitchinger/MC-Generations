@@ -1,22 +1,19 @@
-package io.georgeous.mcgenerations.player.role;
-
-import io.georgeous.mcgenerations.player.PlayerWrapper;
+package io.georgeous.mcgenerations.player.role.components;
+import io.georgeous.mcgenerations.player.role.PlayerRole;
 import org.bukkit.Sound;
-import org.bukkit.entity.Player;
+
 
 
 public class AgeManager {
-    PlayerWrapper playerWrapper;
-    Player player;
+    PlayerRole playerRole;
 
     public int ageInYears = 0;
     public long ageInSeconds = 0;
     private int secInYear = 60;
     private long lastTime;
 
-    public AgeManager(PlayerWrapper cp){
-        this.playerWrapper = cp;
-        this.player = cp.player;
+    public AgeManager(PlayerRole playerRole){
+        this.playerRole = playerRole;
         this.lastTime = System.currentTimeMillis() / 1000;
     }
 
@@ -43,8 +40,8 @@ public class AgeManager {
 
     public void setAge(int age) {
         ageInYears = age;
-        player.setLevel(ageInYears);
-        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 0.5f, 1);
+        playerRole.getPlayer().setLevel(ageInYears);
+        playerRole.getPlayer().playSound(playerRole.getPlayer().getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 0.5f, 1);
     }
 
     public void setSecInYear(int s){

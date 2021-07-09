@@ -4,6 +4,8 @@ package io.georgeous.mcgenerations.player.role;
 import io.georgeous.mcgenerations.family.Family;
 import io.georgeous.mcgenerations.family.FamilyManager;
 import io.georgeous.mcgenerations.gadgets.PetManager;
+import io.georgeous.mcgenerations.player.role.components.AgeManager;
+import io.georgeous.mcgenerations.player.role.components.MotherController;
 import io.georgeous.mcgenerations.player.role.lifephase.PhaseManager;
 import io.georgeous.mcgenerations.manager.SurroManager;
 import io.georgeous.mcgenerations.player.PlayerManager;
@@ -16,8 +18,7 @@ public class PlayerRole {
     // todo Ablaufdatum
     // Wenn player länger als 5min offline, töte Role
     // Player
-    public final Player player;
-    public PlayerWrapper playerWrapper;
+    private final Player player;
     private String name;
     private boolean namedByMother;
     public boolean isDead = false;
@@ -33,11 +34,11 @@ public class PlayerRole {
 
     public PlayerRole(Player player) {
         this.player = player;
-        this.playerWrapper = PlayerManager.get(player);
+
         this.generation = 1;
         setRandomIdentity();
 
-        am = new AgeManager(playerWrapper);
+        am = new AgeManager(this);
         pm = new PhaseManager(this, am);
         mc = new MotherController(this);
         //NameManager.name(this.player, this.firstName, family.getName());
@@ -61,9 +62,9 @@ public class PlayerRole {
 
     public void setName(String name) {
         this.name = name;
-        if(SurroManager.map.get(player) != null){
-            SurroManager.destroySurrogate(player);
-            SurroManager.create(player);
+        if(SurroManager.map.get(getPlayer()) != null){
+            SurroManager.destroySurrogate(getPlayer());
+            SurroManager.create(getPlayer());
         }
     }
 
@@ -98,8 +99,8 @@ public class PlayerRole {
         if (!isDead) {
             this.isDead = true;
             passOnPetsToDescendent();
-            if (player.getHealth() != 0) {
-                player.setHealth(0);
+            if (getPlayer().getHealth() != 0) {
+                getPlayer().setHealth(0);
             }
         }
     }
@@ -112,13 +113,13 @@ public class PlayerRole {
 
     public void passOnPetsToDescendent() {
         if (mc.getOldestChild() != null) {
-            PetManager.passPets(this.player, mc.getOldestChild());
+            PetManager.passPets(this.getPlayer(), mc.getOldestChild().getPlayer());
         } else {
-            PetManager.releasePets(this.player);
+            PetManager.releasePets(this.getPlayer());
         }
     }
 
-
-
-
+    public Player getPlayer() {
+        return player;
+    }
 }
