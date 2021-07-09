@@ -6,9 +6,17 @@ public class NameGenerator {
     public static final String[] lastNames = {"Smith","Johnson","Williams","Brown","Jones","Garcia","Miller","Davis","Taylor","Moore","White","Walker","Hill","Nelson","Baker","Adams", "Mitchell"};
 
 
-    public static String randomName(String[] list){
+    private static String randomName(String[] list){
         int i = (int) (Math.random() * (list.length - 1));
         return list[i];
+    }
+
+    public static String randomFirst(){
+        return randomName(firstNames);
+    }
+
+    public static String randomLast(){
+        return randomName(lastNames);
     }
 
 }

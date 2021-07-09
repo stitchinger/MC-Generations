@@ -86,26 +86,12 @@ public class PlayerManager {
         PlayerWrapper playerWrapper = get(player);
         String uuid = player.getUniqueId().toString();
 
+        config.set("data.player." + uuid + ".wrapper", null);
 
+        config.set("data.player." + uuid + ".wrapper.karma", playerWrapper.getKarma());
+        config.set("data.player." + uuid + ".wrapper.lives", playerWrapper.getLives());
+        config.set("data.player." + uuid + ".wrapper.playtime", 696969);
 
-        config.set("data.player." + uuid, null);
-
-        config.set("data.player." + uuid + ".karma", playerWrapper.getKarma());
-        config.set("data.player." + uuid + ".lives", playerWrapper.getLives());
-        config.set("data.player." + uuid + ".playtime", 696969);
-
-        /*
-        PlayerRole playerRole = playerWrapper.getRole();
-        if (playerRole != null) {
-            config.set("data.player." + uuid + ".role.name", playerRole.getName());
-            config.set("data.player." + uuid + ".role.age", playerRole.am.ageInYears);
-            config.set("data.player." + uuid + ".role.familyname", playerRole.family.getName());
-            config.set("data.player." + uuid + ".role.family", playerRole.family.getUuid());
-            config.set("data.player." + uuid + ".role.generation", playerRole.generation);
-            config.set("data.player." + uuid + ".role.time", System.currentTimeMillis());
-        }
-
-         */
         Main.getPlugin().saveConfig();
     }
 
@@ -114,10 +100,10 @@ public class PlayerManager {
         Player player = playerWrapper.player;
         String uuid = player.getUniqueId().toString();
 
-        playerWrapper.restoreFrom(c.getConfigurationSection("data.player." + uuid));
+        playerWrapper.restoreFrom(c.getConfigurationSection("data.player." + uuid + ".wrapper"));
 
         // delete Config entry after loaded
-        c.set("data.player." + uuid, null);
+        c.set("data.player." + uuid + ".wrapper", null);
         Main.getPlugin().saveConfig();
     }
 

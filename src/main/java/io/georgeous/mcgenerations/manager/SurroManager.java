@@ -46,15 +46,14 @@ public class SurroManager implements Listener {
 
 
     // Surrogates
-    public static void create(Player player) {
+    public static void create(Player player, String name) {
         if(map.get(player) != null){
             destroySurrogate(player);
         }
 
-        PlayerRole playerRole = RoleManager.get(player);
         Villager v = (Villager) player.getWorld().spawnEntity(player.getLocation(), EntityType.VILLAGER);
         v = prepareSurro(v);
-        v.setCustomName(playerRole.getName() + " " + playerRole.family.getName());
+        v.setCustomName(name);
 
         map.put(player,v);
     }

@@ -1,11 +1,14 @@
 package io.georgeous.mcgenerations;
 
+import io.georgeous.mcgenerations.family.Family;
+import io.georgeous.mcgenerations.family.FamilyManager;
 import io.georgeous.mcgenerations.manager.SurroManager;
 import io.georgeous.mcgenerations.player.role.PlayerRole;
 import io.georgeous.mcgenerations.player.PlayerWrapper;
 import io.georgeous.mcgenerations.player.PlayerManager;
 import io.georgeous.mcgenerations.player.role.RoleManager;
 import io.georgeous.mcgenerations.player.role.components.MotherController;
+import io.georgeous.mcgenerations.utils.NameGenerator;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -41,9 +44,11 @@ public class SpawnManager {
     public static void spawnAsEve(Player player){
         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),"spreadplayers 0 0 200 10000 false " + player.getName());
 
+        String name = NameGenerator.randomFirst();
+        Family family = FamilyManager.addFamily(NameGenerator.randomLast());
 
-        RoleManager.createRole(player);
-        RoleManager.get(player).am.setAge(10);
+        PlayerRole playerRole = RoleManager.createRole(player, name, 10, family);
+
         player.setSaturation(0);
 
         player.playSound(player.getLocation(), Sound.AMBIENT_CAVE,1,1);
@@ -51,19 +56,16 @@ public class SpawnManager {
     }
 
     public static void spawnAsBaby(Player newBorn, PlayerRole mother){
+        String name = NameGenerator.randomFirst();
+        Family family = mother.getFamily();
 
-        RoleManager.createRole(newBorn);
-        PlayerRole playerRole = RoleManager.get(newBorn);
+        PlayerRole playerRole = RoleManager.createRole(newBorn, name, 0, family);
+        playerRole.generation = mother.generation + 1;
+
+        MotherController mc = mother.mc;
+        mc.addChild(playerRole);
 
         newBorn.teleport(mother.getPlayer().getLocation().add(0,1,0));
-
-
-        PlayerRole mothersRole = RoleManager.get((Player) mother);
-        MotherController mc = mothersRole.mc;
-
-        inheritFromMother(playerRole, mothersRole);
-
-        mc.addChild(playerRole);
 
         // Messages
         newBorn.sendMessage("You spawned as a Baby");
@@ -86,10 +88,6 @@ public class SpawnManager {
         return null;
     }
 
-    public static void inheritFromMother(PlayerRole playerRole, PlayerRole mothersRole){
-        playerRole.generation = mothersRole.generation + 1;
-        playerRole.family = mothersRole.family;
-    }
 
     private static void babyBornEffects(Player player, Entity mom){
         World world = player.getWorld();

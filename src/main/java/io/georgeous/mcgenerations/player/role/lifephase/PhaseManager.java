@@ -24,12 +24,12 @@ public class PhaseManager {
         this.player = playerRole.getPlayer();
         this.am = am;
 
-        LifePhase babyPhase = new LifePhase(this.player,0,3,1,3,false,true,"12456", "Baby",128,6,2, true);
-        LifePhase toddlerPhase = new LifePhase(this.player,3,6,2,6,false,true,"12456", "Toddler",200,2,1, true);
-        LifePhase childPhase = new LifePhase(this.player,6,15,0,10,false,false,"12456", "Child",0,1,0, false);
-        LifePhase teenPhase = new LifePhase(this.player,15,21,0,999,true,false,"12456", "Teen",0,0,0, false);
-        LifePhase adultPhase = new LifePhase(this.player,21,40,0,999,true,false,"12456", "Adult",0,0,0, false);
-        LifePhase elderPhase = new LifePhase(this.player,40,60,0,999,true,false,"12456", "Elder",0,0,0, false);
+        LifePhase babyPhase = new LifePhase(playerRole,0,3,1,3,false,true,"12456", "Baby",128,6,2, true);
+        LifePhase toddlerPhase = new LifePhase(playerRole,3,6,2,6,false,true,"12456", "Toddler",200,2,1, true);
+        LifePhase childPhase = new LifePhase(playerRole,6,15,0,10,false,false,"12456", "Child",0,1,0, false);
+        LifePhase teenPhase = new LifePhase(playerRole,15,21,0,999,true,false,"12456", "Teen",0,0,0, false);
+        LifePhase adultPhase = new LifePhase(playerRole,21,40,0,999,true,false,"12456", "Adult",0,0,0, false);
+        LifePhase elderPhase = new LifePhase(playerRole,40,60,0,999,true,false,"12456", "Elder",0,0,0, false);
 
         phases[0] = babyPhase;
         phases[1] = toddlerPhase;
@@ -37,8 +37,11 @@ public class PhaseManager {
         phases[3] = teenPhase;
         phases[4] = adultPhase;
         phases[5] = elderPhase;
-        currentPhase = phases[0];
 
+        checkPhaseUp(am.getAge());
+        //currentPhase = phases[0];
+
+        //currentPhase.start();
     }
 
     public void update(){

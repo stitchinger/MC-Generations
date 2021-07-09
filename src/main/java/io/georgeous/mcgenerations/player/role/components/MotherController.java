@@ -41,7 +41,7 @@ public class MotherController {
     }
 
     public boolean canHaveBaby() {
-        return playerRole.am.ageInYears > 16 &&
+        return playerRole.am.getAge() > 16 &&
                 System.currentTimeMillis() - getLastChildTime() > 300000;
     }
 

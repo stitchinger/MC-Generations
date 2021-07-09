@@ -1,7 +1,6 @@
 package io.georgeous.mcgenerations;
 
 import io.georgeous.mcgenerations.commands.*;
-import io.georgeous.mcgenerations.family.FamilyManager;
 import io.georgeous.mcgenerations.files.DataManager;
 import io.georgeous.mcgenerations.gadgets.*;
 import io.georgeous.mcgenerations.listeners.*;
@@ -16,11 +15,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import javax.management.relation.Role;
 //import org.bukkit.scoreboard.Team;
 
 
@@ -64,11 +61,9 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
         SurroManager.disable();
         PlayerManager.disable();
         RoleManager.disable();
-
     }
 
     public void printLoadupText(){

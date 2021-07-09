@@ -1,9 +1,7 @@
 package io.georgeous.mcgenerations.commands;
 
 import io.georgeous.mcgenerations.Main;
-import io.georgeous.mcgenerations.player.PlayerManager;
 import io.georgeous.mcgenerations.player.role.PlayerRole;
-import io.georgeous.mcgenerations.player.PlayerWrapper;
 import io.georgeous.mcgenerations.player.role.RoleManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -33,8 +31,8 @@ public class Me implements CommandExecutor {
             return true;
         }
 
-        sender.sendMessage("You are " + playerRole.getName() + " " + playerRole.family.getName() + ".");
-        sender.sendMessage("You are " + playerRole.am.ageInYears +  " year(s) old.");
+        sender.sendMessage("You are " + playerRole.getName() + " " + playerRole.getFamily().getName() + ".");
+        sender.sendMessage("You are " + playerRole.am.getAge() +  " year(s) old.");
 
         return true;
     }

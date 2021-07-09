@@ -32,13 +32,14 @@ public class PlayerRole {
     public PhaseManager pm;
     public MotherController mc;
 
-    public PlayerRole(Player player) {
+    public PlayerRole(Player player, String name, int age, Family family) {
         this.player = player;
-
         this.generation = 1;
-        setRandomIdentity();
 
-        am = new AgeManager(this);
+        this.name = name;
+        this.family = family;
+
+        am = new AgeManager(this, age);
         pm = new PhaseManager(this, am);
         mc = new MotherController(this);
         //NameManager.name(this.player, this.firstName, family.getName());
@@ -64,7 +65,7 @@ public class PlayerRole {
         this.name = name;
         if(SurroManager.map.get(getPlayer()) != null){
             SurroManager.destroySurrogate(getPlayer());
-            SurroManager.create(getPlayer());
+            SurroManager.create(getPlayer(), name + " " + family.getName());
         }
     }
 
@@ -84,8 +85,8 @@ public class PlayerRole {
 
     public void setRandomIdentity() {
         //this.setName(NameGenerator.randomName(NameGenerator.firstNames));
-        name = NameGenerator.randomName(NameGenerator.firstNames);
-        this.family = FamilyManager.addFamily(NameGenerator.randomName(NameGenerator.lastNames));
+        //name = NameGenerator.randomName(NameGenerator.firstNames);
+
         //isNamed = false;
     }
 

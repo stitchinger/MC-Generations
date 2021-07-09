@@ -16,6 +16,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 
+import javax.management.relation.Role;
+
 public class PlayerConnection implements Listener {
     private final Main main;
 
@@ -26,16 +28,17 @@ public class PlayerConnection implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        //PlayerManager.attachWrapperToPlayer(player);
-        //event.setJoinMessage("Welcome to One Hour One Life!");
-        //SpawnManager.spawnAsEve(player);
-        //PlayerManager.get(player).setRole(new PlayerRole(player));
         PlayerManager.initPlayer(player);
+        RoleManager.initPlayer(player);
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
+
+        RoleManager.saveRole(RoleManager.get(player));
+        RoleManager.remove(player);
+
         PlayerManager.savePlayer(player);
         PlayerManager.remove(player);
     }
@@ -66,5 +69,6 @@ public class PlayerConnection implements Listener {
             }
         }
     }
+
 
 }

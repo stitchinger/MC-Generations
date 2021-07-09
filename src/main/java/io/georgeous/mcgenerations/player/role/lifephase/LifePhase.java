@@ -1,6 +1,7 @@
 package io.georgeous.mcgenerations.player.role.lifephase;
 
 import io.georgeous.mcgenerations.manager.SurroManager;
+import io.georgeous.mcgenerations.player.role.PlayerRole;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -10,7 +11,7 @@ import java.util.List;
 
 public class LifePhase {
 
-    protected final Player player;
+    protected final PlayerRole playerRole;
     protected final String name;
     protected int startAge;
     protected int endAge;
@@ -29,8 +30,8 @@ public class LifePhase {
             ELDER_PHASE = 5;
 
 
-    public LifePhase(Player player, int startAge, int endAge, int hungerRate, int maxCharsInChat, boolean canCarry, boolean canBeCarried, String skinID, String name, int jump, int slowness, int digging, boolean surrogate){
-        this.player = player;
+    public LifePhase(PlayerRole playerRole, int startAge, int endAge, int hungerRate, int maxCharsInChat, boolean canCarry, boolean canBeCarried, String skinID, String name, int jump, int slowness, int digging, boolean surrogate){
+        this.playerRole = playerRole;
         this.startAge = startAge;
         this.endAge = endAge;
         this.hungerRate = hungerRate;
@@ -72,30 +73,30 @@ public class LifePhase {
     }
 
     public void start() {
-        player.sendMessage("You are a §a"+ name);
+        playerRole.getPlayer().sendMessage("You are a §a"+ name);
         //player.setWalkSpeed(0.2f);
 
         //player.getInventory().clear();
         if(surrogate){
-            SurroManager.create(player);
+            SurroManager.create(playerRole.getPlayer(), playerRole.getName() + " " + playerRole.family.getName());
         }
     }
 
     public void end() {
         if(surrogate){
-            SurroManager.destroySurrogate(player);
+            SurroManager.destroySurrogate(playerRole.getPlayer());
         }
 
-        for (PotionEffect p : player.getActivePotionEffects()) {
-            player.removePotionEffect(p.getType());
+        for (PotionEffect p : playerRole.getPlayer().getActivePotionEffects()) {
+            playerRole.getPlayer().removePotionEffect(p.getType());
         }
     }
 
     public void update() {
-        applyPotionEffects(player, effects);
+        applyPotionEffects(playerRole.getPlayer(), effects);
 
         if(Math.random() < hungerRate / 100d){
-            player.setFoodLevel(player.getFoodLevel()-1);
+            playerRole.getPlayer().setFoodLevel(playerRole.getPlayer().getFoodLevel()-1);
         }
     }
 

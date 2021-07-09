@@ -7,14 +7,16 @@ import org.bukkit.Sound;
 public class AgeManager {
     PlayerRole playerRole;
 
-    public int ageInYears = 0;
-    public long ageInSeconds = 0;
+    private int ageInYears = 0;
+    private long ageInSeconds = 0;
     private int secInYear = 60;
     private long lastTime;
 
-    public AgeManager(PlayerRole playerRole){
+    public AgeManager(PlayerRole playerRole, int startAge){
         this.playerRole = playerRole;
         this.lastTime = System.currentTimeMillis() / 1000;
+
+        setAge(startAge);
     }
 
     public void update(){
@@ -47,6 +49,7 @@ public class AgeManager {
     public void setSecInYear(int s){
         secInYear = s;
     }
+
 
 
 }
