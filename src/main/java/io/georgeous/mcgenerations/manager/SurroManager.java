@@ -1,10 +1,6 @@
 package io.georgeous.mcgenerations.manager;
 
 
-import io.georgeous.mcgenerations.player.PlayerManager;
-import io.georgeous.mcgenerations.player.PlayerWrapper;
-import io.georgeous.mcgenerations.player.role.PlayerRole;
-import io.georgeous.mcgenerations.player.role.RoleManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;

@@ -6,7 +6,7 @@ import io.georgeous.mcgenerations.gadgets.*;
 import io.georgeous.mcgenerations.listeners.*;
 import io.georgeous.mcgenerations.manager.SurroManager;
 
-import io.georgeous.mcgenerations.player.PlayerManager;
+import io.georgeous.mcgenerations.player.wrapper.PlayerManager;
 import io.georgeous.mcgenerations.player.role.RoleManager;
 import io.georgeous.mcgenerations.player.role.lifephase.listeners.PlayerPhaseUp;
 import io.georgeous.mcgenerations.utils.Util;
@@ -15,8 +15,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.World;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Villager;
+import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.Team;
+
+import java.util.HashMap;
+import java.util.UUID;
 
 //import org.bukkit.scoreboard.Team;
 
@@ -27,7 +34,6 @@ public final class Main extends JavaPlugin {
 
     public static World overworld;
     public static  Location councilLocation;
-    public static double councilSoundChance = 0.25;
 
     public static Main getPlugin() {
         return plugin;
@@ -48,7 +54,13 @@ public final class Main extends JavaPlugin {
         PlayerManager.enable();
         RoleManager.enable();
 
-        startCouncil();
+        //startCouncil();
+        Council council = new Council();
+
+        for(Team team : Bukkit.getScoreboardManager().getMainScoreboard().getTeams()){
+            //team.unregister();
+        }
+
 
         // Start Update-Function
         new BukkitRunnable() {
@@ -77,6 +89,7 @@ public final class Main extends JavaPlugin {
         PlayerManager.update();
         RoleManager.update();
         SurroManager.update();
+        //overworld.setTime(overworld.getTime() + 10);
     }
 
     public void registerEvents() {
@@ -94,20 +107,26 @@ public final class Main extends JavaPlugin {
     }
 
     public void registerCommands() {
+        getServer().getPluginCommand("nick").setExecutor(new NickCommand());
         getServer().getPluginCommand("age").setExecutor(new Age(this));
         getServer().getPluginCommand("you").setExecutor(new YouAre(this));
-        getServer().getPluginCommand("i").setExecutor(new Iam(this));
         getServer().getPluginCommand("me").setExecutor(new Me(this));
-        getServer().getPluginCommand("skintest").setExecutor(new SkinTest());
+        getServer().getPluginCommand("renamefamily").setExecutor(new RenameFamilyCommand());
         getServer().getPluginCommand("secinyear").setExecutor(new SecInYear());
-        getServer().getPluginCommand("pv").setExecutor(new VaultCommand());
         getServer().getPluginCommand("debug").setExecutor(new Debug());
-        getCommand("debug").setTabCompleter(new TabCompletion());
         getServer().getPluginCommand("pets").setExecutor(new PetCommand());
+
+        getCommand("debug").setTabCompleter(new TabCompletion());
         getCommand("pets").setTabCompleter(new TabComplete());
     }
 
+    /*
     public void startCouncil(){
+        // Spawn Gods if necessary
+        Villager v = (Villager) overworld.spawnEntity(player.getLocation(), EntityType.VILLAGER);
+        v = prepareSurro(v);
+        v.setCustomName(name);
+
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -132,6 +151,8 @@ public final class Main extends JavaPlugin {
             world.playSound(loc, sounds[rand],1,0.1f);
         }
     }
+
+     */
 
     // restore Inventory
     /*

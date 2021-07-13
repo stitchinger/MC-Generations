@@ -1,7 +1,5 @@
 package io.georgeous.mcgenerations.commands;
 
-import io.georgeous.mcgenerations.player.PlayerManager;
-import io.georgeous.mcgenerations.player.PlayerWrapper;
 import io.georgeous.mcgenerations.player.role.PlayerRole;
 import io.georgeous.mcgenerations.player.role.RoleManager;
 import org.bukkit.command.Command;
@@ -18,6 +16,10 @@ public class SecInYear implements CommandExecutor {
         }
 
         Player player = (Player) sender;
+        if(!player.isOp()){
+            sender.sendMessage("This command is only for OPs");
+            return true;
+        }
         PlayerRole playerRole = RoleManager.get(player);
 
         if (args.length != 1) {

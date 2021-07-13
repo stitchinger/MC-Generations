@@ -6,13 +6,11 @@ commands:
   age:
     description: Set age of player
   you:
-  i:
   me:
   pets:
-  skintest:
+  renamefamily:
   secinyear:
-  ride:
   debug:
-  pv:
-depend: [Piggyback]
+  nick:
+depend: [Piggyback, NickAPI]
 

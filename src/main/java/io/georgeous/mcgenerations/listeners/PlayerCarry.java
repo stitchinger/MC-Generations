@@ -1,6 +1,5 @@
 package io.georgeous.mcgenerations.listeners;
 
-import io.georgeous.mcgenerations.player.PlayerManager;
 import io.georgeous.mcgenerations.player.role.PlayerRole;
 import io.georgeous.mcgenerations.player.role.RoleManager;
 import io.georgeous.piggyback.events.PlayerStartCarryEvent;
@@ -8,8 +7,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-
-import javax.management.relation.Role;
 
 
 public class PlayerCarry implements Listener {

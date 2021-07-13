@@ -2,8 +2,6 @@ package io.georgeous.mcgenerations.commands;
 
 
 import io.georgeous.mcgenerations.Main;
-import io.georgeous.mcgenerations.player.PlayerManager;
-import io.georgeous.mcgenerations.player.PlayerWrapper;
 import io.georgeous.mcgenerations.player.role.PlayerRole;
 import io.georgeous.mcgenerations.player.role.RoleManager;
 import org.bukkit.command.Command;
@@ -26,12 +24,20 @@ public class Age implements CommandExecutor {
             return true;
         }
 
+        Player player = (Player) sender;
+
+        if(!player.isOp()){
+            sender.sendMessage("This command is only for OPs");
+            return true;
+        }
+
+
         if(args.length == 0){
             sender.sendMessage("Usage: /Age 13");
         }
 
         if(args.length == 1){
-            Player player = (Player) sender;
+
             PlayerRole playerRole = RoleManager.get(player);
             if(playerRole == null){
                 player.sendMessage("No PlayerRole attached");

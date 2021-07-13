@@ -39,7 +39,7 @@ public class Util {
     }
 
 
-    public static int getRandom(int length){
+    public static int getRandomInt(int length){
         int rnd = new Random().nextInt(length);
         return rnd;
     }

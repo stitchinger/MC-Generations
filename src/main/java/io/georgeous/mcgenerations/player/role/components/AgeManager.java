@@ -42,7 +42,8 @@ public class AgeManager {
 
     public void setAge(int age) {
         ageInYears = age;
-        playerRole.getPlayer().setLevel(ageInYears);
+        //playerRole.getPlayer().setLevel(ageInYears);
+
         playerRole.getPlayer().playSound(playerRole.getPlayer().getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 0.5f, 1);
     }
 

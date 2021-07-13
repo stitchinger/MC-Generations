@@ -1,8 +1,6 @@
 package io.georgeous.mcgenerations.commands;
 
 import io.georgeous.mcgenerations.Main;
-import io.georgeous.mcgenerations.player.PlayerManager;
-import io.georgeous.mcgenerations.player.PlayerWrapper;
 import io.georgeous.mcgenerations.player.role.PlayerRole;
 import io.georgeous.mcgenerations.player.role.RoleManager;
 import io.georgeous.piggyback.Piggyback;
@@ -41,7 +39,7 @@ public class YouAre implements CommandExecutor {
     }
 
     public void nameChild(Player nameGiver, PlayerRole playerRole, String rawName){
-        if(Piggyback.carryPairs.get(nameGiver) != null){
+        if(Piggyback.carryPairs.get(nameGiver) == null){
             nameGiver.sendMessage("You need to hold your baby for naming it.");
             return;
         }
@@ -51,17 +49,16 @@ public class YouAre implements CommandExecutor {
 
         if(target instanceof Player){
             PlayerRole targetsPlayerRole = RoleManager.get((Player)target);
-
+            
             if(!targetsPlayerRole.isNamedByMother()){
+                Piggyback.stopCarry(nameGiver,target);
                 targetsPlayerRole.setName(first);
             }else{
                 nameGiver.sendMessage("You can name your child only once");
             }
             //NameManager.name((Player) target,first, cp.family.getName());
         }else{
-            target.setCustomName(first + " " + playerRole.family.getName());
+            target.setCustomName(first + " " + playerRole.family.getColoredName());
         }
-
     }
-
 }

@@ -73,7 +73,7 @@ public class RoleManager {
 
         config.set("data.player." + uuid + ".role.name", playerRole.getName());
         config.set("data.player." + uuid + ".role.age", playerRole.am.getAge());
-        config.set("data.player." + uuid + ".role.familyname", playerRole.family.getName());
+        config.set("data.player." + uuid + ".role.familyname", playerRole.family.getColoredName());
         config.set("data.player." + uuid + ".role.family", playerRole.family.getUuid());
         config.set("data.player." + uuid + ".role.generation", playerRole.generation);
         config.set("data.player." + uuid + ".role.time", System.currentTimeMillis());

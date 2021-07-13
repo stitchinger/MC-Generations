@@ -11,7 +11,9 @@ import java.util.List;
 public class MotherController {
     private final PlayerRole playerRole;
     private long lastChildTime;
+    private long babyCooldown = 60; // in seconds
     private List<PlayerRole> children;
+
 
     public MotherController(PlayerRole playerRole) {
         this.playerRole = playerRole;
@@ -36,13 +38,14 @@ public class MotherController {
         lastChildTime = System.currentTimeMillis();
     }
 
-    public long getLastChildTime() {
-        return lastChildTime;
-    }
-
     public boolean canHaveBaby() {
         return playerRole.am.getAge() > 16 &&
-                System.currentTimeMillis() - getLastChildTime() > 300000;
+                playerRole.am.getAge() < 40 &&
+                secSinceLastBaby() > babyCooldown;
+    }
+
+    private long secSinceLastBaby(){
+        return (System.currentTimeMillis() - lastChildTime) / 1000;
     }
 
     public PlayerRole getOldestChild() {

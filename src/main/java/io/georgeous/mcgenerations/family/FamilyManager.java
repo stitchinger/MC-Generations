@@ -1,7 +1,6 @@
 package io.georgeous.mcgenerations.family;
 
 import io.georgeous.mcgenerations.Main;
-import io.georgeous.mcgenerations.player.PlayerWrapper;
 import org.bukkit.configuration.file.FileConfiguration;
 
 
@@ -37,7 +36,7 @@ public class FamilyManager {
     public static void saveFamily(Family family){
         FileConfiguration config = Main.getPlugin().getConfig();
         String uuid = family.getUuid();
-        config.set("data.family." + uuid + ".name", family.getName());
+        config.set("data.family." + uuid + ".name", family.getColoredName());
         config.set("data.family." + uuid + ".established", family.getEstablished());
         config.set("data.family." + uuid + ".color", family.getColor());
 

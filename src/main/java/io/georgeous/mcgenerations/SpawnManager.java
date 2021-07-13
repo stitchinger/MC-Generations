@@ -4,11 +4,10 @@ import io.georgeous.mcgenerations.family.Family;
 import io.georgeous.mcgenerations.family.FamilyManager;
 import io.georgeous.mcgenerations.manager.SurroManager;
 import io.georgeous.mcgenerations.player.role.PlayerRole;
-import io.georgeous.mcgenerations.player.PlayerWrapper;
-import io.georgeous.mcgenerations.player.PlayerManager;
 import io.georgeous.mcgenerations.player.role.RoleManager;
 import io.georgeous.mcgenerations.player.role.components.MotherController;
 import io.georgeous.mcgenerations.utils.NameGenerator;
+import io.georgeous.mcgenerations.utils.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -18,7 +17,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import javax.management.relation.Role;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class SpawnManager {
@@ -26,8 +26,8 @@ public class SpawnManager {
     private static int timeInLobby = 10; // in seconds
 
     public static void spawnPlayer(Player player){
-        PlayerRole finalMom = findViableMother(player);
         player.sendMessage("You will be reborn in 10 seconds");
+        PlayerRole finalMom = findViableMother(player);
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable() {
             @Override
@@ -44,7 +44,7 @@ public class SpawnManager {
     public static void spawnAsEve(Player player){
         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),"spreadplayers 0 0 200 10000 false " + player.getName());
 
-        String name = NameGenerator.randomFirst();
+        String name = "Eve";
         Family family = FamilyManager.addFamily(NameGenerator.randomLast());
 
         PlayerRole playerRole = RoleManager.createRole(player, name, 10, family);
@@ -77,15 +77,29 @@ public class SpawnManager {
     }
 
     public static PlayerRole findViableMother(Player child){
+        List<PlayerRole> viableMothers = new ArrayList<>();
+
+        // find viable Mothers on Server
         for(Player player : Bukkit.getOnlinePlayers()){
-            PlayerRole m = RoleManager.get(player);
+            PlayerRole playerRole = RoleManager.get(player);
             boolean hasRole = RoleManager.get(player) != null;
             boolean notSelf = child != player;
             if(hasRole && notSelf){
-                return m;
+
+
+                if(playerRole.mc.canHaveBaby()){
+                    viableMothers.add(playerRole);
+                }
             }
         }
-        return null;
+
+        if(viableMothers.size() != 0){
+            // get random mother
+            return viableMothers.get(Util.getRandomInt(viableMothers.size()));
+        } else{
+            return null;
+        }
+
     }
 
 

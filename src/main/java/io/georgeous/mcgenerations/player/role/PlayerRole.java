@@ -1,18 +1,18 @@
 package io.georgeous.mcgenerations.player.role;
 
-
+import io.georgeous.mcgenerations.Main;
 import io.georgeous.mcgenerations.family.Family;
-import io.georgeous.mcgenerations.family.FamilyManager;
 import io.georgeous.mcgenerations.gadgets.PetManager;
 import io.georgeous.mcgenerations.player.role.components.AgeManager;
 import io.georgeous.mcgenerations.player.role.components.MotherController;
 import io.georgeous.mcgenerations.player.role.lifephase.PhaseManager;
 import io.georgeous.mcgenerations.manager.SurroManager;
-import io.georgeous.mcgenerations.player.PlayerManager;
-import io.georgeous.mcgenerations.player.PlayerWrapper;
-import io.georgeous.mcgenerations.utils.NameGenerator;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import xyz.haoshoku.nick.api.NickAPI;
+import xyz.haoshoku.nick.api.NickScoreboard;
 
 public class PlayerRole {
     // todo Ablaufdatum
@@ -35,42 +35,64 @@ public class PlayerRole {
     public PlayerRole(Player player, String name, int age, Family family) {
         this.player = player;
         this.generation = 1;
-
-        this.name = name;
         this.family = family;
+        setName(name);
 
         am = new AgeManager(this, age);
         pm = new PhaseManager(this, am);
         mc = new MotherController(this);
-        //NameManager.name(this.player, this.firstName, family.getName());
-        //player.sendMessage("You are " + this.getName() + " " + family.getName());
     }
 
-
-    // Update Functions
     public void update() {
         if (!isDead) {
             mc.update();
             am.update();
             pm.update();
+            if(player.getSaturation() > 0){
+                player.setSaturation(0);
+            }
         }
     }
 
-    // Naming
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-        if(SurroManager.map.get(getPlayer()) != null){
+
+        nickPlayer(player,name);
+        if (SurroManager.map.get(getPlayer()) != null) {
             SurroManager.destroySurrogate(getPlayer());
-            SurroManager.create(getPlayer(), name + " " + family.getName());
+            SurroManager.create(getPlayer(), name + " " + family.getColoredName());
         }
     }
 
-    public void rename(String name){
-        if(namedByMother){
+    public void nickPlayer(Player player, String name) {
+        NickAPI.nick(player, name);
+        NickAPI.refreshPlayer(player);
+
+        updateScoreboard();
+        refreshHealthBar();
+    }
+
+    public void updateScoreboard(){
+        NickScoreboard.write(this.name, this.player.getUniqueId().toString().substring(0,15), "", " " + getFamily().getColoredName(), false, ChatColor.WHITE);
+        NickScoreboard.updateScoreboard(name);
+    }
+
+    public void refreshHealthBar(){
+        player.setFoodLevel(player.getFoodLevel() + 2);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                player.setFoodLevel(player.getFoodLevel() - 2);
+            }
+        }.runTaskLater(Main.getPlugin(),10);
+    }
+
+    public void rename(String name) {
+        if (namedByMother) {
             System.out.println("Role already named by mother");
             return;
         }
@@ -82,31 +104,21 @@ public class PlayerRole {
         return namedByMother;
     }
 
-
-    public void setRandomIdentity() {
-        //this.setName(NameGenerator.randomName(NameGenerator.firstNames));
-        //name = NameGenerator.randomName(NameGenerator.firstNames);
-
-        //isNamed = false;
-    }
-
-    public Family getFamily(){
+    public Family getFamily() {
         return family;
     }
 
-    // Dying
-
     public void die() {
         if (!isDead) {
-            this.isDead = true;
+            isDead = true;
             passOnPetsToDescendent();
-            if (getPlayer().getHealth() != 0) {
-                getPlayer().setHealth(0);
+            if (player.getHealth() != 0) {
+                player.setHealth(0);
             }
         }
     }
 
-    public void restoreFrom(ConfigurationSection config){
+    public void restoreFrom(ConfigurationSection config) {
         am.setAge(config.getInt("age"));
         name = config.getString("name");
         family.setName(config.getString("familyname"));
@@ -116,7 +128,7 @@ public class PlayerRole {
         if (mc.getOldestChild() != null) {
             PetManager.passPets(this.getPlayer(), mc.getOldestChild().getPlayer());
         } else {
-            PetManager.releasePets(this.getPlayer());
+            PetManager.releaseAllPets(this.getPlayer());
         }
     }
 

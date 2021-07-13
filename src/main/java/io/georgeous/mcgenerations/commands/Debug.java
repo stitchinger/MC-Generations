@@ -1,18 +1,12 @@
 package io.georgeous.mcgenerations.commands;
 
-import io.georgeous.mcgenerations.family.FamilyManager;
-import io.georgeous.mcgenerations.player.PlayerManager;
-import io.georgeous.mcgenerations.manager.SurroManager;
+import io.georgeous.mcgenerations.player.wrapper.PlayerManager;
 
 import org.bukkit.Location;
-import org.bukkit.block.banner.Pattern;
-import org.bukkit.block.banner.PatternType;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BannerMeta;
 
 
 public class Debug implements CommandExecutor {
@@ -24,6 +18,10 @@ public class Debug implements CommandExecutor {
             return true;
         }
         Player player = (Player) sender;
+        if(!player.isOp()){
+            sender.sendMessage("This command is only for OPs");
+            return true;
+        }
 
         if (args.length >= 1) {
             // Council Teleport

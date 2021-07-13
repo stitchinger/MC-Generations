@@ -31,7 +31,7 @@ public class Me implements CommandExecutor {
             return true;
         }
 
-        sender.sendMessage("You are " + playerRole.getName() + " " + playerRole.getFamily().getName() + ".");
+        sender.sendMessage("You are " + playerRole.getName() + " " + playerRole.getFamily().getColoredName() + ".");
         sender.sendMessage("You are " + playerRole.am.getAge() +  " year(s) old.");
 
         return true;

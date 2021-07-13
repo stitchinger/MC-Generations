@@ -1,12 +1,13 @@
 package io.georgeous.mcgenerations.listeners;
 
 import io.georgeous.mcgenerations.Main;
-import io.georgeous.mcgenerations.player.PlayerManager;
+import io.georgeous.mcgenerations.player.wrapper.PlayerManager;
 import io.georgeous.mcgenerations.SpawnManager;
 import io.georgeous.mcgenerations.player.role.PlayerRole;
-import io.georgeous.mcgenerations.player.PlayerWrapper;
 import io.georgeous.mcgenerations.player.role.RoleManager;
 import io.georgeous.mcgenerations.utils.ItemManager;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,8 +16,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
-
-import javax.management.relation.Role;
+import xyz.haoshoku.nick.api.NickAPI;
 
 public class PlayerConnection implements Listener {
     private final Main main;
@@ -51,6 +51,10 @@ public class PlayerConnection implements Listener {
         removeBabyHandlerFromDrops(event);
 
         if(playerRole != null){
+            String roleName = playerRole.getName() + " " + playerRole.getFamily().getColoredName() + ChatColor.RESET;
+            String msg = event.getDeathMessage().replace(player.getName(), roleName);
+            event.setDeathMessage(msg);
+            //Bukkit.broadcastMessage(msg);
             playerRole.die();
         }
         player.setBedSpawnLocation(Main.councilLocation, true);

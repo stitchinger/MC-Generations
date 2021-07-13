@@ -3,6 +3,7 @@ package io.georgeous.mcgenerations.player.role.lifephase;
 import io.georgeous.mcgenerations.player.role.components.AgeManager;
 import io.georgeous.mcgenerations.player.role.PlayerRole;
 import io.georgeous.mcgenerations.player.role.lifephase.events.PlayerPhaseUpEvent;
+import io.georgeous.mcgenerations.skins.SkinManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -24,12 +25,12 @@ public class PhaseManager {
         this.player = playerRole.getPlayer();
         this.am = am;
 
-        LifePhase babyPhase = new LifePhase(playerRole,0,3,1,3,false,true,"12456", "Baby",128,6,2, true);
-        LifePhase toddlerPhase = new LifePhase(playerRole,3,6,2,6,false,true,"12456", "Toddler",200,2,1, true);
-        LifePhase childPhase = new LifePhase(playerRole,6,15,0,10,false,false,"12456", "Child",0,1,0, false);
-        LifePhase teenPhase = new LifePhase(playerRole,15,21,0,999,true,false,"12456", "Teen",0,0,0, false);
-        LifePhase adultPhase = new LifePhase(playerRole,21,40,0,999,true,false,"12456", "Adult",0,0,0, false);
-        LifePhase elderPhase = new LifePhase(playerRole,40,60,0,999,true,false,"12456", "Elder",0,0,0, false);
+        LifePhase babyPhase = new LifePhase(playerRole,0,3,1,3,false,true,"", "Baby",128,6,2, true, SkinManager.BABY);
+        LifePhase toddlerPhase = new LifePhase(playerRole,3,6,2,6,false,true,"", "Toddler",200,2,1, true, SkinManager.TODDLER);
+        LifePhase childPhase = new LifePhase(playerRole,6,15,0,10,false,false,"2007359867", "Child",0,1,0, false, SkinManager.CHILD);
+        LifePhase teenPhase = new LifePhase(playerRole,15,21,0,999,true,false,"297371", "Teen",0,0,0, false, SkinManager.TEEN);
+        LifePhase adultPhase = new LifePhase(playerRole,21,40,0,999,true,false,"584227931", "Adult",0,0,0, false, SkinManager.ADULT);
+        LifePhase elderPhase = new LifePhase(playerRole,40,60,0,999,true,false,"1144027445", "Elder",0,0,0, false, SkinManager.ELDER);
 
         phases[0] = babyPhase;
         phases[1] = toddlerPhase;
@@ -69,7 +70,9 @@ public class PhaseManager {
                 }
                 return;
             }
+
         }
+        playerRole.die();
     }
 
     public void changePhase(LifePhase phase){

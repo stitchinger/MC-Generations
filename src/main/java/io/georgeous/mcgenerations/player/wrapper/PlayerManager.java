@@ -1,4 +1,4 @@
-package io.georgeous.mcgenerations.player;
+package io.georgeous.mcgenerations.player.wrapper;
 
 import io.georgeous.mcgenerations.Main;
 import io.georgeous.mcgenerations.SpawnManager;
@@ -87,7 +87,7 @@ public class PlayerManager {
         String uuid = player.getUniqueId().toString();
 
         config.set("data.player." + uuid + ".wrapper", null);
-
+        config.set("data.player." + uuid + ".wrapper.name", player.getName());
         config.set("data.player." + uuid + ".wrapper.karma", playerWrapper.getKarma());
         config.set("data.player." + uuid + ".wrapper.lives", playerWrapper.getLives());
         config.set("data.player." + uuid + ".wrapper.playtime", 696969);

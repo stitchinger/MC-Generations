@@ -2,9 +2,11 @@ package io.georgeous.mcgenerations.player.role.lifephase;
 
 import io.georgeous.mcgenerations.manager.SurroManager;
 import io.georgeous.mcgenerations.player.role.PlayerRole;
+import io.georgeous.mcgenerations.skins.Skin;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import xyz.haoshoku.nick.api.NickAPI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,7 @@ public class LifePhase {
     protected int startAge;
     protected int endAge;
     protected final String skinID;
+    protected final Skin skin;
     protected int maxCharsInChat;
     protected int hungerRate;
     protected boolean canCarry;
@@ -30,7 +33,7 @@ public class LifePhase {
             ELDER_PHASE = 5;
 
 
-    public LifePhase(PlayerRole playerRole, int startAge, int endAge, int hungerRate, int maxCharsInChat, boolean canCarry, boolean canBeCarried, String skinID, String name, int jump, int slowness, int digging, boolean surrogate){
+    public LifePhase(PlayerRole playerRole, int startAge, int endAge, int hungerRate, int maxCharsInChat, boolean canCarry, boolean canBeCarried, String skinID, String name, int jump, int slowness, int digging, boolean surrogate, Skin skin){
         this.playerRole = playerRole;
         this.startAge = startAge;
         this.endAge = endAge;
@@ -39,6 +42,7 @@ public class LifePhase {
         this.canCarry = canCarry;
         this.canBeCarried = canBeCarried;
         this.skinID = skinID;
+        this.skin = skin;
         this.name = name;
         this.surrogate = surrogate;
 
@@ -74,11 +78,12 @@ public class LifePhase {
 
     public void start() {
         playerRole.getPlayer().sendMessage("You are a §a"+ name);
-        //player.setWalkSpeed(0.2f);
+        NickAPI.setSkin( playerRole.getPlayer(), skin.value, skin.signature);
+        NickAPI.refreshPlayer(  playerRole.getPlayer() );
+        playerRole.refreshHealthBar();
 
-        //player.getInventory().clear();
         if(surrogate){
-            SurroManager.create(playerRole.getPlayer(), playerRole.getName() + " " + playerRole.family.getName());
+            SurroManager.create(playerRole.getPlayer(), playerRole.getName() + " " + playerRole.family.getColoredName());
         }
     }
 
@@ -119,5 +124,7 @@ public class LifePhase {
     public String getName(){
         return name;
     }
+
+
 
 }

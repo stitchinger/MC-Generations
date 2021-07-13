@@ -8,8 +8,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
 
-import java.util.List;
-
 public class PetCommand implements CommandExecutor {
 
     private final Main main;
@@ -30,7 +28,7 @@ public class PetCommand implements CommandExecutor {
 
         if(args.length >= 1){
             if(args[0].equalsIgnoreCase("release")){
-                PetManager.releasePets(p);
+                PetManager.releaseAllPets(p);
             } else if(args[0].equalsIgnoreCase("passon")){
                 PetManager.passPets(p,playerB);
             } else if(args[0].equalsIgnoreCase("count")){

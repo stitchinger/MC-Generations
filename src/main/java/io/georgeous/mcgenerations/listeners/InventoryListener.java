@@ -2,7 +2,6 @@ package io.georgeous.mcgenerations.listeners;
 
 
 import io.georgeous.mcgenerations.Main;
-import io.georgeous.mcgenerations.player.PlayerManager;
 import io.georgeous.mcgenerations.player.role.PlayerRole;
 import io.georgeous.mcgenerations.player.role.RoleManager;
 import io.georgeous.mcgenerations.player.role.lifephase.PhaseManager;
@@ -13,7 +12,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 
 public class InventoryListener implements Listener {

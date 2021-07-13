@@ -1,4 +1,4 @@
-package io.georgeous.mcgenerations.player;
+package io.georgeous.mcgenerations.player.wrapper;
 
 import io.georgeous.mcgenerations.player.role.PlayerRole;
 import org.bukkit.configuration.ConfigurationSection;

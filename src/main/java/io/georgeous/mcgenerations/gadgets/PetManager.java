@@ -39,7 +39,7 @@ public class PetManager implements Listener {
         }
     }
 
-    public void addPet(Player p, LivingEntity pet){
+    public static void addPet(Player p, LivingEntity pet){
         if(ownerPets.get(p) == null){
             ownerPets.put(p, new ArrayList<>());
         }
@@ -48,25 +48,39 @@ public class PetManager implements Listener {
         p.sendMessage("Pets: " + ownerPets.get(p).size());
     }
 
-    public static void releasePets(Player player){
+    public static void removePet(Player player, LivingEntity pet){
+        if(ownerPets.get(player) == null){
+            return;
+        }
+        ownerPets.get(player).remove(pet);
+    }
+
+    public static void releasePet(Entity entity){
+        if(entity instanceof Sittable){
+            ((Sittable) entity).setSitting(false);
+        }
+        if(entity instanceof Tameable){
+            ((Tameable) entity).setTamed(false);
+            ((Tameable) entity).setOwner(null);
+        }
+    }
+
+    public static void releaseAllPets(Player player){
         if(ownerPets.get(player) == null)
             return;
+
         int count = 0;
+
         for (Iterator<LivingEntity> iterator = ownerPets.get(player).iterator(); iterator.hasNext(); ) {
             LivingEntity e = iterator.next();
+
             if(e instanceof Tameable){
-                if(e instanceof Wolf){
-                    ((Wolf) e).setSitting(false);
-                }
-                if(e instanceof Cat){
-                    ((Cat) e).setSitting(false);
-                }
-                if(e instanceof Parrot){
-                    ((Parrot) e).setSitting(false);
+                if(e instanceof Sittable){
+                    ((Sittable) e).setSitting(false);
                 }
                 ((Tameable) e).setTamed(false);
                 ((Tameable) e).setOwner(null);
-                //ownerPets.get(player).remove(e);
+
                 count++;
                 iterator.remove();
             }
@@ -85,10 +99,13 @@ public class PetManager implements Listener {
             return;
         }
         for (Iterator<LivingEntity> iterator = ownerPets.get(owner).iterator(); iterator.hasNext(); ) {
-            LivingEntity e = iterator.next();
-            if(e instanceof Tameable){
-                ((Tameable) e).setOwner(receiver);
-                ownerPets.get(owner).remove(e);
+            LivingEntity entity = iterator.next();
+
+            if(entity instanceof Tameable){
+                //ownerPets.get(owner).remove(entity);
+                ((Tameable) entity).setOwner(receiver);
+                addPet(receiver, entity);
+                iterator.remove();
             }
         }
     }

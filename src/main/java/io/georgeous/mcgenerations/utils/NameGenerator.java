@@ -3,7 +3,7 @@ package io.georgeous.mcgenerations.utils;
 public class NameGenerator {
 
     public static final String[] firstNames = {"Martha","Lisa","Julia","Sarah","Anna","Maria","Emma","Sophia","Charlotte","Mia","Chloe","Victoria","Scarlett", "Amy", "Madison", "Ellie", "Natalie"};
-    public static final String[] lastNames = {"Smith","Johnson","Williams","Brown","Jones","Garcia","Miller","Davis","Taylor","Moore","White","Walker","Hill","Nelson","Baker","Adams", "Mitchell"};
+    public static final String[] lastNames = {"Smith","Johnson","Williams","Brown","Jones","Garcia","Miller","Davis","Taylor","Moore","White","Walker","Hill","Nelson","Baker","Adams", "Mitchell", "Clinton", "Bush", "Merkel", "Musk", "Einstein", "Simpson", "Jefferson", "Rogan", "Ronan", "Ericson", "Bjornson", "Mueller", "Freundl", "Goldberg"};
 
 
     private static String randomName(String[] list){

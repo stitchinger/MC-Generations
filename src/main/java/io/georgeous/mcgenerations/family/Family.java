@@ -26,8 +26,12 @@ public class Family {
         namedByLeader = false;
     }
 
+    public String getColoredName(){
+        return color + getName();
+    }
+
     public String getName(){
-        return color + name;
+        return name;
     }
 
     public void setName(String name){
@@ -35,12 +39,16 @@ public class Family {
     }
 
     public void rename(String name){
-        if(namedByLeader){
+        if(false){
             System.out.println("Family name already defined by Leader");
             return;
         }
         setName(name);
         namedByLeader = true;
+    }
+
+    public boolean isRenamed(){
+        return namedByLeader;
     }
 
     public String getColor(){
