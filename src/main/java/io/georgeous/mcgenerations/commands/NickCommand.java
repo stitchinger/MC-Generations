@@ -1,7 +1,7 @@
 package io.georgeous.mcgenerations.commands;
 
-import io.georgeous.mcgenerations.player.role.PlayerRole;
-import io.georgeous.mcgenerations.player.role.RoleManager;
+import io.georgeous.mcgenerations.role.PlayerRole;
+import io.georgeous.mcgenerations.role.RoleManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 

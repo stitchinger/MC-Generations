@@ -1,8 +1,9 @@
 name: MC-Generations
 version: ${project.version}
-main: io.georgeous.mcgenerations.Main
+main: io.georgeous.mcgenerations.MCG
 api-version: 1.17
 commands:
+  gm:
   age:
     description: Set age of player
   you:
@@ -12,5 +13,7 @@ commands:
   secinyear:
   debug:
   nick:
+  family:
+  role:
 depend: [Piggyback, NickAPI]
 

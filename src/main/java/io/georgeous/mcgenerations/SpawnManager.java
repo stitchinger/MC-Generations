@@ -1,11 +1,10 @@
 package io.georgeous.mcgenerations;
 
-import io.georgeous.mcgenerations.family.Family;
-import io.georgeous.mcgenerations.family.FamilyManager;
-import io.georgeous.mcgenerations.manager.SurroManager;
-import io.georgeous.mcgenerations.player.role.PlayerRole;
-import io.georgeous.mcgenerations.player.role.RoleManager;
-import io.georgeous.mcgenerations.player.role.components.MotherController;
+import io.georgeous.mcgenerations.systems.family.Family;
+import io.georgeous.mcgenerations.systems.family.FamilyManager;
+import io.georgeous.mcgenerations.systems.surrogate.SurroManager;
+import io.georgeous.mcgenerations.role.PlayerRole;
+import io.georgeous.mcgenerations.role.RoleManager;
 import io.georgeous.mcgenerations.utils.NameGenerator;
 import io.georgeous.mcgenerations.utils.Util;
 import org.bukkit.Bukkit;
@@ -29,7 +28,7 @@ public class SpawnManager {
         player.sendMessage("You will be reborn in 10 seconds");
         PlayerRole finalMom = findViableMother(player);
 
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable() {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(MCG.getInstance(), new Runnable() {
             @Override
             public void run() {
                 if(finalMom != null){
@@ -46,8 +45,9 @@ public class SpawnManager {
 
         String name = "Eve";
         Family family = FamilyManager.addFamily(NameGenerator.randomLast());
-
-        PlayerRole playerRole = RoleManager.createRole(player, name, 10, family);
+        PlayerRole playerRole = RoleManager.createAndAddRole(player, name, 10, family);
+        family.addMember(playerRole);
+        family.setLeader(playerRole);
 
         player.setSaturation(0);
 
@@ -57,13 +57,13 @@ public class SpawnManager {
 
     public static void spawnAsBaby(Player newBorn, PlayerRole mother){
         String name = NameGenerator.randomFirst();
+
         Family family = mother.getFamily();
 
-        PlayerRole playerRole = RoleManager.createRole(newBorn, name, 0, family);
-        playerRole.generation = mother.generation + 1;
+        PlayerRole newBornRole = RoleManager.createAndAddRole(newBorn, name, 0, family);
+        family.addMember(newBornRole);
 
-        MotherController mc = mother.mc;
-        mc.addChild(playerRole);
+        mother.mc.bornBaby(newBornRole);
 
         newBorn.teleport(mother.getPlayer().getLocation().add(0,1,0));
 
@@ -82,11 +82,11 @@ public class SpawnManager {
         // find viable Mothers on Server
         for(Player player : Bukkit.getOnlinePlayers()){
             PlayerRole playerRole = RoleManager.get(player);
-            boolean hasRole = RoleManager.get(player) != null;
-            boolean notSelf = child != player;
-            if(hasRole && notSelf){
-
-
+            boolean playerHasRole
+                    = RoleManager.get(player) != null;
+            boolean notSelf
+                    = child != player;
+            if(playerHasRole && notSelf){
                 if(playerRole.mc.canHaveBaby()){
                     viableMothers.add(playerRole);
                 }
@@ -99,9 +99,7 @@ public class SpawnManager {
         } else{
             return null;
         }
-
     }
-
 
     private static void babyBornEffects(Player player, Entity mom){
         World world = player.getWorld();

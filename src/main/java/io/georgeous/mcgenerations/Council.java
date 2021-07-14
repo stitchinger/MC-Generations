@@ -18,7 +18,7 @@ public class Council {
     private final Location pillagerLocation;
 
     public Council(){
-        world = Main.overworld;
+        world = MCG.overworld;
         endermanLocation = new Location(world, 0.5, 252, 11.5);
         piglinLocation = new Location(world, 0.5, 252, -10.5);
         pillagerLocation = new Location(world, 11.5, 252, 0.5);
@@ -41,7 +41,7 @@ public class Council {
             public void run() {
                 councilNoises();
             }
-        }.runTaskTimer(Main.getPlugin(), 0L, 20L);
+        }.runTaskTimer(MCG.getInstance(), 0L, 20L);
     }
 
     public void spawnEnderman(){

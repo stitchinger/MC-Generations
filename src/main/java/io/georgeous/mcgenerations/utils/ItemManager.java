@@ -10,8 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemManager {
-    // Item -- könnte ausgelagert werden
-    public static ItemStack getBabyHandler() {
+
+
+    public static ItemStack createBabyHandler() {
         ItemStack item = new ItemStack(Material.CARROT_ON_A_STICK);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Baby-Handler");
@@ -32,6 +33,9 @@ public class ItemManager {
     }
 
     public static boolean isItemByName(ItemStack item, String needle){
+        if(item == null){
+            return false;
+        }
         if(item.hasItemMeta()){
             ItemMeta meta = item.getItemMeta();
             assert meta != null;

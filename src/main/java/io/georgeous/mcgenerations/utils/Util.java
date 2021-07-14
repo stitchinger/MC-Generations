@@ -11,6 +11,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.Random;
 
 public class Util {
+
+    private static String[] colorCodes = {"§1", "§2", "§3", "§4", "§5", "§6", "§7", "§8", "§9", "§a", "§b", "§c", "§d", "§e", "§f"};
+
     // Map Function
     public static final float map(float value,
                                   float istart,
@@ -38,14 +41,12 @@ public class Util {
         return closest;
     }
 
-
     public static int getRandomInt(int length){
         int rnd = new Random().nextInt(length);
         return rnd;
     }
 
     public static ItemStack findInInventory(String name, PlayerInventory inventory) {
-
         ItemStack[] stack = inventory.getContents();
 
         for (ItemStack item : stack) {
@@ -60,7 +61,6 @@ public class Util {
     }
 
     public static ItemStack findInInventory(ItemStack searchItem, PlayerInventory inventory) {
-
         ItemStack[] stack = inventory.getContents();
 
         for (ItemStack item : stack) {
@@ -70,8 +70,12 @@ public class Util {
                 }
             }
         }
-
         return null;
+    }
+
+    public static String getRandomColor(){
+        int i = (int)(Math.random() * colorCodes.length);
+        return colorCodes[i];
     }
 
     public static void giveItemIfNotInInventory(ItemStack item, PlayerInventory inventory) {

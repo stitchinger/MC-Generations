@@ -1,7 +1,7 @@
 package io.georgeous.mcgenerations.files;
 
 
-import io.georgeous.mcgenerations.Main;
+import io.georgeous.mcgenerations.MCG;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -13,12 +13,12 @@ import java.io.InputStreamReader;
 import java.util.logging.Level;
 
 public class DataManager {
-    private Main plugin;
+    private MCG plugin;
     private FileConfiguration dataConfig = null;
     private File configFile = null;
 
     public DataManager(){
-        this.plugin = Main.getPlugin();
+        this.plugin = MCG.getInstance();
         // saves/inits the config
         saveDefaultConfig();
     }

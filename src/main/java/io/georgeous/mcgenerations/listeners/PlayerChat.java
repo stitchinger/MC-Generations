@@ -1,8 +1,8 @@
 package io.georgeous.mcgenerations.listeners;
 
-import io.georgeous.mcgenerations.player.role.PlayerRole;
-import io.georgeous.mcgenerations.player.role.RoleManager;
-import io.georgeous.mcgenerations.player.role.lifephase.PhaseManager;
+import io.georgeous.mcgenerations.role.PlayerRole;
+import io.georgeous.mcgenerations.role.RoleManager;
+import io.georgeous.mcgenerations.role.lifephase.PhaseManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

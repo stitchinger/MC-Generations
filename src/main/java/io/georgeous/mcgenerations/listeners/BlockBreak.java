@@ -1,7 +1,7 @@
 package io.georgeous.mcgenerations.listeners;
 
 
-import io.georgeous.mcgenerations.Main;
+import io.georgeous.mcgenerations.MCG;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,10 +10,10 @@ import org.bukkit.event.block.BlockBreakEvent;
 
 public class BlockBreak implements Listener {
 
-    private Main plugin;
+    private MCG plugin;
 
     public BlockBreak(){
-        this.plugin = Main.getPlugin();
+        this.plugin = MCG.getInstance();
     }
 
     @EventHandler

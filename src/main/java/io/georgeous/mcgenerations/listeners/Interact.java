@@ -1,11 +1,10 @@
 package io.georgeous.mcgenerations.listeners;
 
 
-import com.sun.jna.platform.win32.OaIdl;
-import io.georgeous.mcgenerations.Main;
-import io.georgeous.mcgenerations.player.wrapper.PlayerManager;
-import io.georgeous.mcgenerations.player.role.PlayerRole;
-import io.georgeous.mcgenerations.player.role.RoleManager;
+import io.georgeous.mcgenerations.MCG;
+import io.georgeous.mcgenerations.player.PlayerManager;
+import io.georgeous.mcgenerations.role.PlayerRole;
+import io.georgeous.mcgenerations.role.RoleManager;
 import io.georgeous.mcgenerations.utils.ItemManager;
 import org.bukkit.*;
 import org.bukkit.entity.*;
@@ -18,9 +17,9 @@ import org.bukkit.inventory.ItemStack;
 
 public class Interact implements Listener {
 
-    private final Main main;
+    private final MCG main;
 
-    public Interact(Main main) {
+    public Interact(MCG main) {
         this.main = main;
     }
 
