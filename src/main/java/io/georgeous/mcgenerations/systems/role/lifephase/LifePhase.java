@@ -1,8 +1,9 @@
-package io.georgeous.mcgenerations.role.lifephase;
+package io.georgeous.mcgenerations.systems.role.lifephase;
 
 import io.georgeous.mcgenerations.systems.surrogate.SurroManager;
-import io.georgeous.mcgenerations.role.PlayerRole;
+import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.utils.Skin;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -77,7 +78,8 @@ public class LifePhase {
     }
 
     public void start() {
-        playerRole.getPlayer().sendMessage("You are a §a"+ name);
+        //playerRole.getPlayer().sendMessage("You are a §a"+ name);
+        playerRole.getPlayer().sendMessage(ChatColor.YELLOW + "" + "You are a §a"+ name);
         NickAPI.setSkin( playerRole.getPlayer(), skin.value, skin.signature);
         NickAPI.refreshPlayer(  playerRole.getPlayer() );
         playerRole.refreshHealthBar();
@@ -101,7 +103,11 @@ public class LifePhase {
         applyPotionEffects(playerRole.getPlayer(), effects);
 
         if(Math.random() < hungerRate / 100d){
-            playerRole.getPlayer().setFoodLevel(playerRole.getPlayer().getFoodLevel()-1);
+            int foodLevel = playerRole.getPlayer().getFoodLevel();
+            if(foodLevel > 0){
+                playerRole.getPlayer().setFoodLevel(foodLevel - 1);
+            }
+
         }
     }
 

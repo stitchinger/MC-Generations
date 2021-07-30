@@ -11,26 +11,33 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class Council {
 
     private final World world;
-    private final double councilSoundChance = 0.25;
+    public final Location councilLocation;
     private final Location endermanLocation;
     private final Location piglinLocation;
     private final Location villagerLocation;
     private final Location pillagerLocation;
+    private final double councilSoundChance = 0.25;
 
-    public Council(){
-        world = MCG.overworld;
-        endermanLocation = new Location(world, 0.5, 252, 11.5);
-        piglinLocation = new Location(world, 0.5, 252, -10.5);
-        pillagerLocation = new Location(world, 11.5, 252, 0.5);
-        villagerLocation = new Location(world, -10.5, 252, 0.5);
+    public Council(World world){
+        this.world = world;
+        councilLocation = new Location(world,-13, 239, 16);
+        endermanLocation = councilLocation.clone().add(0.5, 2, 11.5);
+        piglinLocation = councilLocation.clone().add(0.5, 2, -10.5);
+        pillagerLocation = councilLocation.clone().add(11.5, 2, 0.5);
+        villagerLocation = councilLocation.clone().add(-10.5, 2, 0.5);
+
         init();
     }
 
     public void init(){
         for(Entity entity : Bukkit.selectEntities(Bukkit.getConsoleSender(),"@e[tag=council]")){
+            if(entity instanceof Minecart){
+                ((Minecart) entity).setDamage(40);
+            }
             if(entity instanceof LivingEntity){
                 ((LivingEntity) entity).setHealth(0);
             }
+
         }
         spawnEnderman();
         spawnPiglin();
@@ -48,6 +55,7 @@ public class Council {
         Minecart cart = (Minecart) world.spawnEntity(endermanLocation, EntityType.MINECART);
         cart.setInvulnerable(true);
         cart.addScoreboardTag("council");
+
 
         Enderman enderman = (Enderman) world.spawnEntity(endermanLocation, EntityType.ENDERMAN);
         enderman.setSilent(true);
@@ -88,8 +96,6 @@ public class Council {
         illusioner.addScoreboardTag("council");
         illusioner.setAI(false);
         //illusioner.setRotation();
-        //illusioner.setAware(false);
-        //illusioner.setArrowCooldown(999999999);
 
 
         cow.addPassenger(illusioner);
@@ -105,6 +111,9 @@ public class Council {
         Villager villager = (Villager) world.spawnEntity(villagerLocation, EntityType.VILLAGER);
         villager.setInvulnerable(true);
         villager.setSilent(true);
+        villager.setVillagerType(Villager.Type.JUNGLE);
+        villager.setProfession(Villager.Profession.CLERIC);
+        villager.setVillagerLevel(5);
         villager.setAdult();
         villager.addScoreboardTag("council");
 
@@ -113,8 +122,8 @@ public class Council {
 
     public void councilNoises(){
         if(Math.random() > 1 - councilSoundChance){
-            World world = Bukkit.getWorld("mc-generations");
-            Location loc = new Location(world,0,250,0);
+
+            World world = MCG.overworld;
 
             Sound[] sounds = {
                     Sound.ENTITY_ENDERMAN_AMBIENT,
@@ -124,7 +133,7 @@ public class Council {
             };
 
             int rand = Util.getRandomInt(sounds.length);
-            world.playSound(loc, sounds[rand],1,0.1f);
+            world.playSound(councilLocation, sounds[rand],1,0.1f);
         }
     }
 }

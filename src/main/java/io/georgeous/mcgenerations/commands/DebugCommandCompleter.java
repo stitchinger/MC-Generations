@@ -18,7 +18,7 @@ public class DebugCommandCompleter implements TabCompleter {
                 Player player = (Player) sender;
 
                 List<String> list = new ArrayList<>();
-                l.add("surrogate");
+                l.add("council");
 
                 return l;
             }

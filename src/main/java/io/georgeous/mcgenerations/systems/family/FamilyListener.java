@@ -1,7 +1,7 @@
 package io.georgeous.mcgenerations.systems.family;
 
-import io.georgeous.mcgenerations.role.PlayerRole;
-import io.georgeous.mcgenerations.role.RoleManager;
+import io.georgeous.mcgenerations.systems.role.PlayerRole;
+import io.georgeous.mcgenerations.systems.role.RoleManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

@@ -1,7 +1,7 @@
-package io.georgeous.mcgenerations.role.lifephase.events;
+package io.georgeous.mcgenerations.systems.role.lifephase.events;
 
-import io.georgeous.mcgenerations.role.lifephase.LifePhase;
-import io.georgeous.mcgenerations.role.lifephase.PhaseManager;
+import io.georgeous.mcgenerations.systems.role.lifephase.LifePhase;
+import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;

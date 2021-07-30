@@ -1,8 +1,8 @@
 package io.georgeous.mcgenerations.listeners;
 
-import io.georgeous.mcgenerations.role.PlayerRole;
-import io.georgeous.mcgenerations.role.RoleManager;
-import io.georgeous.mcgenerations.role.lifephase.PhaseManager;
+import io.georgeous.mcgenerations.systems.role.PlayerRole;
+import io.georgeous.mcgenerations.systems.role.RoleManager;
+import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,7 +15,6 @@ public class PlayerChat implements Listener {
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event){
-
         event.setCancelled(true);
         Player player = event.getPlayer();
         PlayerRole playerRole = RoleManager.get(player);

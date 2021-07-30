@@ -1,7 +1,7 @@
-package io.georgeous.mcgenerations.role.commands;
+package io.georgeous.mcgenerations.systems.role.commands;
 
-import io.georgeous.mcgenerations.role.PlayerRole;
-import io.georgeous.mcgenerations.role.RoleManager;
+import io.georgeous.mcgenerations.systems.role.PlayerRole;
+import io.georgeous.mcgenerations.systems.role.RoleManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

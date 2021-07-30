@@ -3,17 +3,18 @@ package io.georgeous.mcgenerations;
 import io.georgeous.mcgenerations.commands.*;
 import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.files.DataManager;
-import io.georgeous.mcgenerations.systems.pets.*;
+
 import io.georgeous.mcgenerations.listeners.*;
 import io.georgeous.mcgenerations.systems.surrogate.SurroManager;
 
-import io.georgeous.mcgenerations.player.PlayerManager;
-import io.georgeous.mcgenerations.role.RoleManager;
-import io.georgeous.mcgenerations.role.lifephase.listeners.PlayerPhaseUp;
+import io.georgeous.mcgenerations.systems.player.PlayerManager;
+import io.georgeous.mcgenerations.systems.role.RoleManager;
+import io.georgeous.mcgenerations.systems.role.lifephase.listeners.PlayerPhaseUp;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Team;
@@ -25,10 +26,12 @@ public final class MCG extends JavaPlugin {
     public static MCG plugin;
     public DataManager data;
 
-    public PetManager petManager;
+
+    //public PetManager petManager;
 
     public static World overworld;
-    public static  Location councilLocation;
+    public static Council council;
+
 
     public static MCG getInstance() {
         return plugin;
@@ -38,27 +41,37 @@ public final class MCG extends JavaPlugin {
     public void onEnable() {
         printLoadupText();
         plugin = this;
-        overworld = Bukkit.getWorld("mc-generations");
-        councilLocation = new Location(overworld,0, 250, 0);
+        overworld = Bukkit.getWorld("world");
+        //startCouncil();
+        council = new Council(overworld);
         this.saveDefaultConfig();
         this.data = new DataManager();
 
         registerEvents();
         registerCommands();
 
-        petManager = new PetManager(this);
+        //petManager = new PetManager(this);
+
 
         SurroManager.enable();
         PlayerManager.enable();
         FamilyManager.enable();
         RoleManager.enable();
 
-        //startCouncil();
-        Council council = new Council();
+        makeBundleCraftable();
+
+
+        overworld.setSpawnLocation(council.councilLocation);
 
         for(Team team : Bukkit.getScoreboardManager().getMainScoreboard().getTeams()){
             //team.unregister();
         }
+
+
+        getServer().dispatchCommand(Bukkit.getConsoleSender(), "veryspicy true");
+
+
+
 
         // Start Update-Function
         new BukkitRunnable() {
@@ -71,7 +84,7 @@ public final class MCG extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        petManager.disable();
+        //petManager.disable();
         SurroManager.disable();
         PlayerManager.disable();
         RoleManager.disable();
@@ -86,7 +99,6 @@ public final class MCG extends JavaPlugin {
     }
 
     private void update() {
-        PlayerManager.update();
         RoleManager.update();
         SurroManager.update();
     }
@@ -105,8 +117,33 @@ public final class MCG extends JavaPlugin {
         getServer().getPluginCommand("gm").setExecutor(new GamemodeCommand());
         getServer().getPluginCommand("nick").setExecutor(new NickCommand());
 
+
+
         getServer().getPluginCommand("debug").setExecutor(new DebugCommand());
         getCommand("debug").setTabCompleter(new DebugCommandCompleter());
+
+        //Deactivate Vanilla commands
+        getServer().getPluginCommand("msg").setExecutor(new CommandDeactivator());
+        getServer().getPluginCommand("w").setExecutor(new CommandDeactivator());
+        getServer().getPluginCommand("say").setExecutor(new CommandDeactivator());
+    }
+
+    public void makeBundleCraftable(){
+        ItemStack item = new ItemStack(Material.BUNDLE);
+        NamespacedKey key = new NamespacedKey(this, "Bundle");
+
+        ShapedRecipe recipe = new ShapedRecipe(key, item);
+        recipe.shape("SLS", "LAL", "LLL");
+        recipe.setIngredient('S', Material.STRING);
+        recipe.setIngredient('L', Material.LEATHER);
+        recipe.setIngredient('A', Material.AIR);
+
+        Bukkit.addRecipe(recipe);
+
+
+        for(Player player : Bukkit.getOnlinePlayers()){
+            player.discoverRecipe(key);
+        }
     }
 
 

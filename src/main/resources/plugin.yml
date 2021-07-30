@@ -4,8 +4,6 @@ main: io.georgeous.mcgenerations.MCG
 api-version: 1.17
 commands:
   gm:
-  age:
-    description: Set age of player
   you:
   me:
   pets:
@@ -15,5 +13,8 @@ commands:
   nick:
   family:
   role:
-depend: [Piggyback, NickAPI]
+  msg:
+  w:
+  say:
+depend: [Piggyback, NickAPI, Petmanager]
 

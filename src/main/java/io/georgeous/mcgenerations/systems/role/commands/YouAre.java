@@ -1,8 +1,8 @@
-package io.georgeous.mcgenerations.role.commands;
+package io.georgeous.mcgenerations.systems.role.commands;
 
 import io.georgeous.mcgenerations.MCG;
-import io.georgeous.mcgenerations.role.PlayerRole;
-import io.georgeous.mcgenerations.role.RoleManager;
+import io.georgeous.mcgenerations.systems.role.PlayerRole;
+import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.piggyback.Piggyback;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -39,12 +39,13 @@ public class YouAre implements CommandExecutor {
     }
 
     public void nameChild(Player nameGiver, PlayerRole playerRole, String rawName){
-        if(Piggyback.carryPairs.get(nameGiver) == null){
+        if(Piggyback.carryCoupleMap.get(nameGiver) == null){
             nameGiver.sendMessage("You need to hold your baby for naming it.");
             return;
+
         }
 
-        Entity target = Piggyback.carryPairs.get(nameGiver).getTarget();
+        Entity target = Piggyback.carryCoupleMap.get(nameGiver).getTarget();
         String first = rawName.substring(0, 1).toUpperCase() + rawName.substring(1);
 
         if(target instanceof Player){
@@ -56,7 +57,6 @@ public class YouAre implements CommandExecutor {
             }else{
                 nameGiver.sendMessage("You can name your child only once");
             }
-            //NameManager.name((Player) target,first, cp.family.getName());
         }else{
             target.setCustomName(first + " " + playerRole.family.getColoredName());
         }

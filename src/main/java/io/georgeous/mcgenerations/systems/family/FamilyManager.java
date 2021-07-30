@@ -61,7 +61,9 @@ public class FamilyManager {
             Family family = entry.getValue();
             saveFamily(family);
         }
+
     }
+
 
     public static void saveFamily(Family family){
         if(family.isDead || family.memberCount() == 0){
@@ -79,6 +81,9 @@ public class FamilyManager {
     }
 
     public static void restoreAllFamilies(){
+        if(MCG.getInstance().getConfig().getConfigurationSection("data.family") == null){
+            return;
+        }
         MCG.getInstance().getConfig().getConfigurationSection("data.family").getKeys(false).forEach(key -> {
             restoreFamily(key);
         });

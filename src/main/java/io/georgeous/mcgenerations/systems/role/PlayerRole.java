@@ -1,11 +1,13 @@
-package io.georgeous.mcgenerations.role;
+package io.georgeous.mcgenerations.systems.role;
 
 import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.systems.family.Family;
-import io.georgeous.mcgenerations.role.components.AgeManager;
-import io.georgeous.mcgenerations.role.components.MotherController;
-import io.georgeous.mcgenerations.role.lifephase.PhaseManager;
+import io.georgeous.mcgenerations.systems.role.components.AgeManager;
+import io.georgeous.mcgenerations.systems.role.components.MotherController;
+import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
 import io.georgeous.mcgenerations.systems.surrogate.SurroManager;
+import io.georgeous.petmanager.PetManager;
+import io.georgeous.piggyback.Piggyback;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -135,9 +137,10 @@ public class PlayerRole {
 
     public void passOnPetsToDescendent() {
         if (mc.getOldestChild() != null) {
-            MCG.getInstance().petManager.passPets(this.getPlayer(), mc.getOldestChild().getPlayer());
+            PetManager.passPets(this.getPlayer(), mc.getOldestChild().getPlayer());
+
         } else {
-            MCG.getInstance().petManager.releaseAllPets(this.getPlayer());
+            PetManager.releaseAllPets(this.getPlayer());
         }
     }
 

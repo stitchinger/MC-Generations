@@ -3,14 +3,11 @@ package io.georgeous.mcgenerations;
 import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.systems.surrogate.SurroManager;
-import io.georgeous.mcgenerations.role.PlayerRole;
-import io.georgeous.mcgenerations.role.RoleManager;
+import io.georgeous.mcgenerations.systems.role.PlayerRole;
+import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.NameGenerator;
 import io.georgeous.mcgenerations.utils.Util;
-import org.bukkit.Bukkit;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -21,11 +18,10 @@ import java.util.List;
 
 
 public class SpawnManager {
-
-    private static int timeInLobby = 10; // in seconds
+    private static int timeInLobby = 5; // in seconds
 
     public static void spawnPlayer(Player player){
-        player.sendMessage("You will be reborn in 10 seconds");
+        player.sendMessage(ChatColor.YELLOW + "" + "You will be reborn soon");
         PlayerRole finalMom = findViableMother(player);
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(MCG.getInstance(), new Runnable() {
@@ -37,22 +33,21 @@ public class SpawnManager {
                     spawnAsEve(player);
                 }
             }
-        }, timeInLobby * 10L); //20 Tick (1 Second) delay before run() is called
+        }, timeInLobby * 20L); //20 Tick (1 Second) delay before run() is called
     }
 
     public static void spawnAsEve(Player player){
-        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),"spreadplayers 0 0 200 10000 false " + player.getName());
+        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),"spreadplayers 780 460 50 1000 false " + player.getName());
 
-        String name = "Eve";
+        String name = NameGenerator.randomFirst();
         Family family = FamilyManager.addFamily(NameGenerator.randomLast());
         PlayerRole playerRole = RoleManager.createAndAddRole(player, name, 10, family);
         family.addMember(playerRole);
-        family.setLeader(playerRole);
-
+        //family.setLeader(playerRole);
         player.setSaturation(0);
 
         player.playSound(player.getLocation(), Sound.AMBIENT_CAVE,1,1);
-        player.sendMessage("You spawned as an Eve");
+        player.sendMessage(ChatColor.YELLOW + "" + "You were reincarnated as an Eve");
     }
 
     public static void spawnAsBaby(Player newBorn, PlayerRole mother){
@@ -68,7 +63,7 @@ public class SpawnManager {
         newBorn.teleport(mother.getPlayer().getLocation().add(0,1,0));
 
         // Messages
-        newBorn.sendMessage("You spawned as a Baby");
+        newBorn.sendMessage(ChatColor.YELLOW + "" + "You were reincarnated as a Baby");
         // Effects
         babyBornEffects(newBorn,mother.getPlayer());
 

@@ -1,7 +1,11 @@
 package io.georgeous.mcgenerations.systems.family;
 
-import io.georgeous.mcgenerations.role.PlayerRole;
+import io.georgeous.mcgenerations.systems.player.PlayerManager;
+import io.georgeous.mcgenerations.systems.role.PlayerRole;
+import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.Util;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +49,7 @@ public class Family {
     }
 
     public String getColoredName(){
-        return color + getName();
+        return color + getName() + ChatColor.RESET;
     }
 
     private void setName(String name){
@@ -80,7 +84,8 @@ public class Family {
     }
 
     public void setLeader(PlayerRole leader) {
-        leader.getPlayer().sendMessage("You are now leader of the family " + name);
+        //leader.getPlayer().sendMessage("You are now leader of the family " + name);
+        leader.getPlayer().sendMessage(ChatColor.YELLOW + "" + "You are now leader of the family " + this.color  + "" + name);
         this.leader = leader;
     }
 
@@ -111,6 +116,20 @@ public class Family {
 
     public void setEstablished(long established) {
         this.established = established;
+    }
+
+    public static boolean inSameFamily(PlayerRole one, PlayerRole two){
+        return one.getFamily() == two.getFamily();
+    }
+
+    public static boolean inSameFamily(Player one, Player two){
+        if(RoleManager.get(one) == null || PlayerManager.get(two) == null){
+            return false;
+        }
+        PlayerRole roleOne = RoleManager.get(one);
+        PlayerRole roleTwo = RoleManager.get(two);
+
+        return inSameFamily(roleOne, roleTwo);
     }
 }
 

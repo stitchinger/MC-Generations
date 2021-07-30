@@ -1,11 +1,11 @@
-package io.georgeous.mcgenerations.role;
+package io.georgeous.mcgenerations.systems.role;
 
 import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.SpawnManager;
 import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.family.FamilyManager;
-import io.georgeous.mcgenerations.player.PlayerManager;
-import io.georgeous.mcgenerations.role.commands.RoleCommand;
+import io.georgeous.mcgenerations.systems.player.PlayerManager;
+import io.georgeous.mcgenerations.systems.role.commands.RoleCommand;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -16,9 +16,11 @@ import static org.bukkit.Bukkit.getServer;
 
 public class RoleManager {
     private static HashMap<String, PlayerRole> roles = new HashMap<>();
+    private static final long VALID_OFFLINE_TIME_SEC = 999999999999999999L;
 
     public static void enable() {
         registerCommands();
+        getServer().getPluginManager().registerEvents(new RoleListener(), MCG.getInstance());
         for (Player player : getServer().getOnlinePlayers()) {
             initPlayer(player);
         }
@@ -51,7 +53,7 @@ public class RoleManager {
     }
 
     public static void initPlayer(Player player){
-        boolean isValid = PlayerManager.get(player).getLastOfflineTime() < 60000;
+        boolean isValid = PlayerManager.get(player).getLastOfflineTime() < (VALID_OFFLINE_TIME_SEC * 1000);
 
         if (playerDataExists(player) && isValid) { // restore player
             restoreRole(player);

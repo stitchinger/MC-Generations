@@ -1,6 +1,6 @@
-package io.georgeous.mcgenerations.role.lifephase.listeners;
+package io.georgeous.mcgenerations.systems.role.lifephase.listeners;
 
-import io.georgeous.mcgenerations.role.lifephase.events.PlayerPhaseUpEvent;
+import io.georgeous.mcgenerations.systems.role.lifephase.events.PlayerPhaseUpEvent;
 import io.georgeous.mcgenerations.utils.ItemManager;
 import io.georgeous.mcgenerations.utils.Util;
 import org.bukkit.entity.Player;

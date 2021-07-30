@@ -2,9 +2,11 @@ package io.georgeous.mcgenerations.listeners;
 
 
 import io.georgeous.mcgenerations.MCG;
-import io.georgeous.mcgenerations.player.PlayerManager;
-import io.georgeous.mcgenerations.role.PlayerRole;
-import io.georgeous.mcgenerations.role.RoleManager;
+import io.georgeous.mcgenerations.systems.family.Family;
+import io.georgeous.mcgenerations.systems.family.FriendlyTalk;
+import io.georgeous.mcgenerations.systems.player.PlayerManager;
+import io.georgeous.mcgenerations.systems.role.PlayerRole;
+import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.ItemManager;
 import org.bukkit.*;
 import org.bukkit.entity.*;
@@ -47,7 +49,6 @@ public class Interact implements Listener {
 
                 babyFeedEffect(baby.getWorld(), baby.getLocation());
             }
-
         }
     }
 
@@ -65,7 +66,7 @@ public class Interact implements Listener {
         Player damager = (Player) event.getDamager();
         Player receiver = (Player) event.getEntity();
 
-        if(inSameFamily(damager, receiver)){
+        if(Family.inSameFamily(damager, receiver)){
             event.setCancelled(true);
             friendlyFamilyTalk(RoleManager.get(damager), RoleManager.get(receiver));
         }
@@ -84,32 +85,16 @@ public class Interact implements Listener {
         Player damager = (Player) event.getEntity().getShooter();
         Player receiver = (Player) event.getHitEntity();
 
-        if(inSameFamily(damager, receiver)){
+        if(Family.inSameFamily(damager, receiver)){
             event.setCancelled(true);
             friendlyFamilyTalk(RoleManager.get(damager), RoleManager.get(receiver));
         }
     }
 
-
-
     public void friendlyFamilyTalk(PlayerRole damager, PlayerRole receiver){
-        damager.getPlayer().sendMessage("You gave " + receiver.getName() + " a big hug");
-        receiver.getPlayer().sendMessage(damager.getName() + " gave you a big hug");
-    }
-
-    public boolean inSameFamily(PlayerRole one, PlayerRole two){
-        return one.getFamily() == two.getFamily();
-    }
-
-    public boolean inSameFamily(Player one, Player two){
-        if(RoleManager.get(one) == null || PlayerManager.get(two) == null){
-            return false;
-        }
-        PlayerRole roleOne = RoleManager.get(one);
-        PlayerRole roleTwo = RoleManager.get(two);
-
-        return inSameFamily(roleOne, roleTwo);
-        //return roleOne.getFamily() == role.getFamily();
+        FriendlyTalk ft = new FriendlyTalk(damager, receiver);
+        damager.getPlayer().sendMessage(ft.getSenderMessage());
+        receiver.getPlayer().sendMessage(ft.getReceiverMessage());
     }
 
 }

@@ -1,7 +1,7 @@
 package io.georgeous.mcgenerations.listeners;
 
-import io.georgeous.mcgenerations.role.PlayerRole;
-import io.georgeous.mcgenerations.role.RoleManager;
+import io.georgeous.mcgenerations.systems.role.PlayerRole;
+import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.piggyback.events.PlayerStartCarryEvent;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;

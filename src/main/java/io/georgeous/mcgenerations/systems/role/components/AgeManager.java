@@ -1,5 +1,5 @@
-package io.georgeous.mcgenerations.role.components;
-import io.georgeous.mcgenerations.role.PlayerRole;
+package io.georgeous.mcgenerations.systems.role.components;
+import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import org.bukkit.Sound;
 
 

@@ -1,7 +1,7 @@
 package io.georgeous.mcgenerations.systems.family;
 
-import io.georgeous.mcgenerations.role.PlayerRole;
-import io.georgeous.mcgenerations.role.RoleManager;
+import io.georgeous.mcgenerations.systems.role.PlayerRole;
+import io.georgeous.mcgenerations.systems.role.RoleManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -34,7 +34,7 @@ public class FamilyCommand implements CommandExecutor, TabCompleter {
         switch (args[0]){
 
             case "info":
-                player.sendMessage("Family: " + family.getName());
+                player.sendMessage("Family: " + family.getColoredName());
                 player.sendMessage("Members: " + family.memberCount());
                 if(family.getLeader() != null){
                     player.sendMessage("Leader: " + family.getLeader().getName());
