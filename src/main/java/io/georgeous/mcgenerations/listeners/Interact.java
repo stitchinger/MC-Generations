@@ -17,9 +17,12 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
+
 public class Interact implements Listener {
 
     private final MCG main;
+    HashMap<String, Long> friendlyTalkCooldown = new HashMap<>();
 
     public Interact(MCG main) {
         this.main = main;
@@ -68,7 +71,16 @@ public class Interact implements Listener {
 
         if(Family.inSameFamily(damager, receiver)){
             event.setCancelled(true);
-            friendlyFamilyTalk(RoleManager.get(damager), RoleManager.get(receiver));
+            if(friendlyTalkCooldown.containsKey(damager.getUniqueId().toString())){
+                if(friendlyTalkCooldown.get(damager.getUniqueId().toString()) > System.currentTimeMillis()){
+                    return;
+                }else{
+                    friendlyFamilyTalk(RoleManager.get(damager), RoleManager.get(receiver));
+                    friendlyTalkCooldown.put(damager.getUniqueId().toString(),System.currentTimeMillis() + 5000);
+                }
+            }
+
+
         }
     }
 

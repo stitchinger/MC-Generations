@@ -12,10 +12,8 @@ import org.bukkit.entity.Player;
 
 public class YouAre implements CommandExecutor {
 
-    private final MCG main;
+    public YouAre() {
 
-    public YouAre(MCG main) {
-        this.main = main;
     }
 
     @Override

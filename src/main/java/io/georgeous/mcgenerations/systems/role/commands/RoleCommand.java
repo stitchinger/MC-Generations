@@ -20,6 +20,10 @@ public class RoleCommand implements CommandExecutor, TabCompleter {
             return true;
 
         Player player = (Player) sender;
+        if(!player.isOp()){
+            sender.sendMessage("This command is only for OPs");
+            return true;
+        }
 
         if(RoleManager.get(player) == null){
             player.sendMessage("No role found");

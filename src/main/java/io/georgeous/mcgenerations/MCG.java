@@ -5,6 +5,8 @@ import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.files.DataManager;
 
 import io.georgeous.mcgenerations.listeners.*;
+import io.georgeous.mcgenerations.systems.role.commands.SecInYear;
+import io.georgeous.mcgenerations.systems.role.commands.YouAre;
 import io.georgeous.mcgenerations.systems.surrogate.SurroManager;
 
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
@@ -19,19 +21,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Team;
 
-//import org.bukkit.scoreboard.Team;
-
-
 public final class MCG extends JavaPlugin {
     public static MCG plugin;
     public DataManager data;
 
-
-    //public PetManager petManager;
-
     public static World overworld;
     public static Council council;
-
 
     public static MCG getInstance() {
         return plugin;
@@ -42,16 +37,12 @@ public final class MCG extends JavaPlugin {
         printLoadupText();
         plugin = this;
         overworld = Bukkit.getWorld("world");
-        //startCouncil();
         council = new Council(overworld);
         this.saveDefaultConfig();
         this.data = new DataManager();
 
         registerEvents();
         registerCommands();
-
-        //petManager = new PetManager(this);
-
 
         SurroManager.enable();
         PlayerManager.enable();
@@ -60,18 +51,13 @@ public final class MCG extends JavaPlugin {
 
         makeBundleCraftable();
 
-
         overworld.setSpawnLocation(council.councilLocation);
 
         for(Team team : Bukkit.getScoreboardManager().getMainScoreboard().getTeams()){
             //team.unregister();
         }
 
-
         getServer().dispatchCommand(Bukkit.getConsoleSender(), "veryspicy true");
-
-
-
 
         // Start Update-Function
         new BukkitRunnable() {
@@ -84,7 +70,6 @@ public final class MCG extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        //petManager.disable();
         SurroManager.disable();
         PlayerManager.disable();
         RoleManager.disable();
@@ -116,9 +101,8 @@ public final class MCG extends JavaPlugin {
     public void registerCommands() {
         getServer().getPluginCommand("gm").setExecutor(new GamemodeCommand());
         getServer().getPluginCommand("nick").setExecutor(new NickCommand());
-
-
-
+        getServer().getPluginCommand("you").setExecutor(new YouAre());
+        getServer().getPluginCommand("secinyear").setExecutor(new SecInYear());
         getServer().getPluginCommand("debug").setExecutor(new DebugCommand());
         getCommand("debug").setTabCompleter(new DebugCommandCompleter());
 
