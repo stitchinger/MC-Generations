@@ -1,6 +1,7 @@
 package io.georgeous.mcgenerations.systems.role.components;
 
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
+import io.georgeous.mcgenerations.utils.Notification;
 import io.georgeous.mcgenerations.utils.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
@@ -35,12 +36,13 @@ public class MotherController {
     }
 
     public void bornBaby(PlayerRole child){
+        child.getPlayer().teleport(playerRole.getPlayer().getLocation().add(0,1,0));
         children.add(child);
         // Inherit from mother
         child.generation = playerRole.generation + 1;
         lastChildTime = System.currentTimeMillis();
-        playerRole.getPlayer().sendMessage(ChatColor.YELLOW + "" + "You just had a baby. Congrats");
-        playerRole.getPlayer().sendMessage(ChatColor.YELLOW + "" + "You can rename your baby with [/you are Lisa] while holding it");
+        Notification.neutralMsg(playerRole.getPlayer(), "You just had a baby. Congrats");
+        Notification.neutralMsg(playerRole.getPlayer(), "You can rename your baby with [/you are Lisa] while holding it");
     }
 
     public boolean canHaveBaby() {

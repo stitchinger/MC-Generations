@@ -3,6 +3,7 @@ package io.georgeous.mcgenerations.systems.family;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
+import io.georgeous.mcgenerations.utils.Notification;
 import io.georgeous.mcgenerations.utils.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -84,8 +85,7 @@ public class Family {
     }
 
     public void setLeader(PlayerRole leader) {
-        //leader.getPlayer().sendMessage("You are now leader of the family " + name);
-        leader.getPlayer().sendMessage(ChatColor.YELLOW + "" + "You are now leader of the family " + this.color  + "" + name);
+        Notification.neutralMsg(leader.getPlayer(), "You are now leader of the family " + this.color  + "" + name);
         this.leader = leader;
     }
 
@@ -102,7 +102,6 @@ public class Family {
         if(members.size() == 0){
             isDead = true;
         }
-
     }
 
     public int memberCount(){

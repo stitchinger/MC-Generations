@@ -23,7 +23,7 @@ public class PlayerRole {
     public Family family;
 
     public int generation = 1;
-    private boolean  isRenamed = false;
+    private boolean isRenamed = false;
     public boolean isDead = false;
 
     // Managers
@@ -61,8 +61,7 @@ public class PlayerRole {
 
     public void setName(String name) {
         this.name = name;
-
-        nickPlayer(player,name);
+        nickPlayer(player, name);
         if (SurroManager.map.get(getPlayer()) != null) {
             SurroManager.destroy(getPlayer());
             SurroManager.create(getPlayer(), name + " " + family.getColoredName());

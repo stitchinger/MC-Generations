@@ -2,6 +2,7 @@ package io.georgeous.mcgenerations.systems.role.lifephase;
 
 import io.georgeous.mcgenerations.systems.surrogate.SurroManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
+import io.georgeous.mcgenerations.utils.Notification;
 import io.georgeous.mcgenerations.utils.Skin;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -78,8 +79,7 @@ public class LifePhase {
     }
 
     public void start() {
-        //playerRole.getPlayer().sendMessage("You are a §a"+ name);
-        playerRole.getPlayer().sendMessage(ChatColor.YELLOW + "" + "You are a §a"+ name);
+        Notification.neutralMsg(playerRole.getPlayer(), "You are a §a"+ name);
         NickAPI.setSkin( playerRole.getPlayer(), skin.value, skin.signature);
         NickAPI.refreshPlayer(  playerRole.getPlayer() );
         playerRole.refreshHealthBar();

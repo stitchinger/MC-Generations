@@ -19,7 +19,7 @@ public class FamilyListener implements Listener {
     @EventHandler
     public void familyMemberQuit(PlayerQuitEvent event){
         Player player = event.getPlayer();
-        removeMember(player);
+        //removeMember(player);
     }
 
     private void removeMember(Player player){

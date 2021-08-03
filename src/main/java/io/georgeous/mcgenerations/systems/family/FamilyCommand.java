@@ -2,6 +2,7 @@ package io.georgeous.mcgenerations.systems.family;
 
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
+import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -48,7 +49,7 @@ public class FamilyCommand implements CommandExecutor, TabCompleter {
                 player.sendMessage(familiesToString());
                 break;
             default:
-                player.sendMessage("Command not found");
+                Notification.errorMsg(player, "Command not found");
         }
 
         return false;
@@ -56,27 +57,27 @@ public class FamilyCommand implements CommandExecutor, TabCompleter {
 
     public void attemptFamilyRename(PlayerRole role, Family family, String name){
         if (!role.pm.getCurrentPhase().getName().equalsIgnoreCase("child")) {
-            role.getPlayer().sendMessage("You are too old to rename your Family");
+            Notification.errorMsg(role.getPlayer(), "You are too old to rename your Family");
             return;
         }
 
         if (family.isRenamed()) {
-            role.getPlayer().sendMessage("Families can be renamed only once");
+            Notification.errorMsg(role.getPlayer(), "Families can be renamed only one");
             return;
         }
 
         String last = name.substring(0, 1).toUpperCase() + name.substring(1);
         if (last.length() <= 2) {
-            role.getPlayer().sendMessage("Families name is too short");
+            Notification.errorMsg(role.getPlayer(), "Families name is too short" );
             return;
         }
 
         family.rename(last);
-        role.getPlayer().sendMessage("Successfully changed families name to " + last);
+        Notification.successMsg(role.getPlayer(), "You changed your families name to " + family.getColoredName() );
         role.updateScoreboard();
     }
 
-    public String familiesToString(){
+    private String familiesToString(){
         String msg = "";
         for(Family f : FamilyManager.getAll()){
             msg += (f.getColoredName() + ", ");
@@ -89,9 +90,7 @@ public class FamilyCommand implements CommandExecutor, TabCompleter {
         List<String> l = new ArrayList<String>();
         if(cmd.getName().equalsIgnoreCase("family") && args.length >= 0){
             if(sender instanceof Player){
-                Player player = (Player) sender;
 
-                List<String> list = new ArrayList<>();
                 l.add("list");
                 l.add("rename");
                 l.add("info");

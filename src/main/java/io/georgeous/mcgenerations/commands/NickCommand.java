@@ -2,6 +2,7 @@ package io.georgeous.mcgenerations.commands;
 
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
+import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
@@ -26,7 +27,7 @@ public class NickCommand implements CommandExecutor {
 
         Player player = (Player) sender;
         if(!player.isOp()){
-            sender.sendMessage("This command is only for OPs");
+            Notification.onlyForOp(player);
             return true;
         }
 

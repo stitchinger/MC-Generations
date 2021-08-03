@@ -1,5 +1,6 @@
 package io.georgeous.mcgenerations.commands;
 
+import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,7 +16,7 @@ public class GamemodeCommand implements CommandExecutor {
         Player player = (Player) sender;
 
         if(!player.isOp()){
-            sender.sendMessage("This command is only for OPs");
+            Notification.onlyForOp(player);
             return true;
         }
 

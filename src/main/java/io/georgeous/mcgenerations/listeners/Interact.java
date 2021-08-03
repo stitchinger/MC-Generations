@@ -42,8 +42,9 @@ public class Interact implements Listener {
 
     public void feedBaby(Player feeder, LivingEntity baby){
         if(baby instanceof Player){
-            feeder.sendMessage(((Player) baby).getFoodLevel() + "");
+            //feeder.sendMessage(((Player) baby).getFoodLevel() + "");
             if(((Player) baby).getFoodLevel() < 20){
+                //int difference = ((Player) baby).getFoodLevel() - 20;
                 feeder.setFoodLevel(feeder.getFoodLevel() - 2);
 
                 Player targetPlayer = (Player) baby;
@@ -71,16 +72,7 @@ public class Interact implements Listener {
 
         if(Family.inSameFamily(damager, receiver)){
             event.setCancelled(true);
-            if(friendlyTalkCooldown.containsKey(damager.getUniqueId().toString())){
-                if(friendlyTalkCooldown.get(damager.getUniqueId().toString()) > System.currentTimeMillis()){
-                    return;
-                }else{
-                    friendlyFamilyTalk(RoleManager.get(damager), RoleManager.get(receiver));
-                    friendlyTalkCooldown.put(damager.getUniqueId().toString(),System.currentTimeMillis() + 5000);
-                }
-            }
-
-
+            friendlyFamilyTalk(RoleManager.get(damager), RoleManager.get(receiver));
         }
     }
 

@@ -3,6 +3,7 @@ package io.georgeous.mcgenerations.commands;
 import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 
+import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,7 +20,7 @@ public class DebugCommand implements CommandExecutor {
         }
         Player player = (Player) sender;
         if(!player.isOp()){
-            sender.sendMessage("This command is only for OPs");
+            Notification.onlyForOp(player);
             return true;
         }
 

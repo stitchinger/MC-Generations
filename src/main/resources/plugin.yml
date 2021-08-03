@@ -3,6 +3,7 @@ version: ${project.version}
 main: io.georgeous.mcgenerations.MCG
 api-version: 1.17
 commands:
+  dayspeed:
   gm:
   you:
   me:

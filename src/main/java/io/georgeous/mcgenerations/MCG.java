@@ -19,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.Team;
 
 public final class MCG extends JavaPlugin {
@@ -27,6 +28,7 @@ public final class MCG extends JavaPlugin {
 
     public static World overworld;
     public static Council council;
+    public static long daySpeed = 2;
 
     public static MCG getInstance() {
         return plugin;
@@ -86,6 +88,10 @@ public final class MCG extends JavaPlugin {
     private void update() {
         RoleManager.update();
         SurroManager.update();
+
+        overworld.setTime(overworld.getTime() + daySpeed);
+        // one day 24000
+        // 20 ticks = 1 sec
     }
 
     public void registerEvents() {
@@ -103,6 +109,7 @@ public final class MCG extends JavaPlugin {
         getServer().getPluginCommand("nick").setExecutor(new NickCommand());
         getServer().getPluginCommand("you").setExecutor(new YouAre());
         getServer().getPluginCommand("secinyear").setExecutor(new SecInYear());
+        getServer().getPluginCommand("dayspeed").setExecutor(new DaySpeedCommand());
         getServer().getPluginCommand("debug").setExecutor(new DebugCommand());
         getCommand("debug").setTabCompleter(new DebugCommandCompleter());
 

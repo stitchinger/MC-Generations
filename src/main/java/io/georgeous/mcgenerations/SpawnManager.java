@@ -6,6 +6,7 @@ import io.georgeous.mcgenerations.systems.surrogate.SurroManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.NameGenerator;
+import io.georgeous.mcgenerations.utils.Notification;
 import io.georgeous.mcgenerations.utils.Util;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
@@ -21,7 +22,8 @@ public class SpawnManager {
     private static int timeInLobby = 5; // in seconds
 
     public static void spawnPlayer(Player player){
-        player.sendMessage(ChatColor.YELLOW + "" + "You will be reborn soon");
+
+        Notification.neutralMsg(player, "You will be reborn in " + timeInLobby + " seconds");
         PlayerRole finalMom = findViableMother(player);
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(MCG.getInstance(), new Runnable() {
@@ -43,11 +45,12 @@ public class SpawnManager {
         Family family = FamilyManager.addFamily(NameGenerator.randomLast());
         PlayerRole playerRole = RoleManager.createAndAddRole(player, name, 10, family);
         family.addMember(playerRole);
-        //family.setLeader(playerRole);
+
         player.setSaturation(0);
 
         player.playSound(player.getLocation(), Sound.AMBIENT_CAVE,1,1);
-        player.sendMessage(ChatColor.YELLOW + "" + "You were reincarnated as an Eve");
+        Notification.neutralMsg(player, "You were reincarnated as an Eve");
+        Notification.neutralMsg(player, "Use [/family rename name] to rename your family");
     }
 
     public static void spawnAsBaby(Player newBorn, PlayerRole mother){
@@ -60,10 +63,8 @@ public class SpawnManager {
 
         mother.mc.bornBaby(newBornRole);
 
-        newBorn.teleport(mother.getPlayer().getLocation().add(0,1,0));
 
-        // Messages
-        newBorn.sendMessage(ChatColor.YELLOW + "" + "You were reincarnated as a Baby");
+        Notification.neutralMsg(newBorn, "You were reincarnated as a Baby");
         // Effects
         babyBornEffects(newBorn,mother.getPlayer());
 
