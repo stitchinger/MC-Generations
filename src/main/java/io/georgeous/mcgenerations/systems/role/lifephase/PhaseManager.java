@@ -24,12 +24,12 @@ public class PhaseManager {
         this.player = playerRole.getPlayer();
         this.am = am;
 
-        LifePhase babyPhase = new LifePhase(playerRole,0,3,1,999,false,true,"", "Baby",128,6,2, true, Skin.BABY);
-        LifePhase toddlerPhase = new LifePhase(playerRole,3,6,2,999,false,true,"", "Toddler",200,2,1, true, Skin.TODDLER);
-        LifePhase childPhase = new LifePhase(playerRole,6,15,0,999,false,false,"2007359867", "Child",0,1,0, false, Skin.CHILD);
-        LifePhase teenPhase = new LifePhase(playerRole,15,21,0,999,true,false,"297371", "Teen",0,0,0, false, Skin.TEEN);
-        LifePhase adultPhase = new LifePhase(playerRole,21,40,0,999,true,false,"584227931", "Adult",0,0,0, false, Skin.ADULT);
-        LifePhase elderPhase = new LifePhase(playerRole,40,9999999,0,999,true,false,"1144027445", "Elder",0,0,0, false, Skin.ELDER);
+        LifePhase babyPhase = new LifePhase(playerRole,0,3,1,999,false,true,"", "Baby",128,6,2, true, Skin.BABY, true);
+        LifePhase toddlerPhase = new LifePhase(playerRole,3,6,2,999,false,true,"", "Toddler",200,2,1, true, Skin.TODDLER, true);
+        LifePhase childPhase = new LifePhase(playerRole,6,15,0,999,false,false,"2007359867", "Child",0,1,0, false, Skin.CHILD, true);
+        LifePhase teenPhase = new LifePhase(playerRole,15,21,0,999,true,false,"297371", "Teen",0,0,0, false, Skin.TEEN, false);
+        LifePhase adultPhase = new LifePhase(playerRole,21,40,0,999,true,false,"584227931", "Adult",0,0,0, false, Skin.ADULT, false);
+        LifePhase elderPhase = new LifePhase(playerRole,40,9999999,0,999,true,false,"1144027445", "Elder",0,0,0, false, Skin.ELDER, false);
 
         phases[0] = babyPhase;
         phases[1] = toddlerPhase;
@@ -84,7 +84,7 @@ public class PhaseManager {
     public void phaseUpEffect(){
         Location location = player.getLocation();
         player.getWorld().spawnParticle(Particle.COMPOSTER, location,100,0.5,1,0.5);
-        player.playSound(location, Sound.BLOCK_BELL_USE, 4, 1);
-        player.playSound(location, Sound.BLOCK_BELL_RESONATE, 1, 1);
+        player.getWorld().playSound(location, Sound.BLOCK_BELL_USE, 4, 1);
+        player.getWorld().playSound(location, Sound.BLOCK_BELL_RESONATE, 4, 1);
     }
 }

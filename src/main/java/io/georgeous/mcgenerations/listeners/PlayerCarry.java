@@ -3,6 +3,8 @@ package io.georgeous.mcgenerations.listeners;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.piggyback.events.PlayerStartCarryEvent;
+import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,7 +32,20 @@ public class PlayerCarry implements Listener {
 
             if(!canBeCarried || !canCarry){
                 event.setCancelled(true);
+                return;
             }
+
+            startCarryEffects(target.getLocation());
+
         }
+    }
+
+    private void startCarryEffects(Location location){
+        try{
+            location.getWorld().spawnParticle(Particle.HEART,location,10,0.5,0.5,0.5);
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+
     }
 }

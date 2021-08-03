@@ -5,6 +5,7 @@ import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.files.DataManager;
 
 import io.georgeous.mcgenerations.listeners.*;
+import io.georgeous.mcgenerations.systems.role.commands.DieCommand;
 import io.georgeous.mcgenerations.systems.role.commands.SecInYear;
 import io.georgeous.mcgenerations.systems.role.commands.YouAre;
 import io.georgeous.mcgenerations.systems.surrogate.SurroManager;
@@ -109,7 +110,9 @@ public final class MCG extends JavaPlugin {
         getServer().getPluginCommand("nick").setExecutor(new NickCommand());
         getServer().getPluginCommand("you").setExecutor(new YouAre());
         getServer().getPluginCommand("secinyear").setExecutor(new SecInYear());
+        getServer().getPluginCommand("die").setExecutor(new DieCommand());
         getServer().getPluginCommand("dayspeed").setExecutor(new DaySpeedCommand());
+        getServer().getPluginCommand("me").setExecutor(new MeCommand());
         getServer().getPluginCommand("debug").setExecutor(new DebugCommand());
         getCommand("debug").setTabCompleter(new DebugCommandCompleter());
 
@@ -130,7 +133,6 @@ public final class MCG extends JavaPlugin {
         recipe.setIngredient('A', Material.AIR);
 
         Bukkit.addRecipe(recipe);
-
 
         for(Player player : Bukkit.getOnlinePlayers()){
             player.discoverRecipe(key);

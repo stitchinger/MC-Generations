@@ -64,7 +64,6 @@ public class FamilyManager {
 
     }
 
-
     public static void saveFamily(Family family){
         if(family.isDead || family.memberCount() == 0){
             return;

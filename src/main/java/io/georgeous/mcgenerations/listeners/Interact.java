@@ -35,28 +35,31 @@ public class Interact implements Listener {
         Entity target = event.getRightClicked();
         ItemStack usedItem = player.getInventory().getItemInMainHand();
 
-        if(ItemManager.isBabyHandler(usedItem) && target instanceof LivingEntity){
-            feedBaby(player, (LivingEntity) target);
+        if(ItemManager.isBabyHandler(usedItem) && target instanceof Player){
+            feedBaby(player, (Player) target);
         }
     }
 
-    public void feedBaby(Player feeder, LivingEntity baby){
-        if(baby instanceof Player){
-            //feeder.sendMessage(((Player) baby).getFoodLevel() + "");
-            if(((Player) baby).getFoodLevel() < 20){
-                //int difference = ((Player) baby).getFoodLevel() - 20;
-                feeder.setFoodLevel(feeder.getFoodLevel() - 2);
+    public void feedBaby(Player feeder, Player baby){
+        if(RoleManager.get(baby) == null)
+            return;
+        PlayerRole role = RoleManager.get(baby);
 
-                Player targetPlayer = (Player) baby;
-                int newFoodLevel = targetPlayer.getFoodLevel() + 5;
-                targetPlayer.setFoodLevel(newFoodLevel);
+        if(baby.getFoodLevel() >= 20)
+            return;
 
-                babyFeedEffect(baby.getWorld(), baby.getLocation());
-            }
-        }
+        if(!role.pm.getCurrentPhase().isFeedable())
+            return;
+
+        feeder.setFoodLevel(feeder.getFoodLevel() - 2);
+        int newFoodLevel = Math.min(baby.getFoodLevel() + 5, 20);
+        baby.setFoodLevel(newFoodLevel);
+
+        babyFeedEffect(baby.getLocation());
     }
 
-    public void babyFeedEffect(World world, Location location){
+    public void babyFeedEffect(Location location){
+        World world = location.getWorld();
         world.spawnParticle(Particle.COMPOSTER,location,40,0.5,0.5,0.5);
         world.playSound(location, Sound.ENTITY_GENERIC_DRINK,1,1);
     }
@@ -96,9 +99,9 @@ public class Interact implements Listener {
     }
 
     public void friendlyFamilyTalk(PlayerRole damager, PlayerRole receiver){
-        FriendlyTalk ft = new FriendlyTalk(damager, receiver);
-        damager.getPlayer().sendMessage(ft.getSenderMessage());
-        receiver.getPlayer().sendMessage(ft.getReceiverMessage());
+        //FriendlyTalk ft = new FriendlyTalk(damager, receiver);
+        damager.getPlayer().sendMessage("You gave " + receiver.getName() + " a big hug");
+        receiver.getPlayer().sendMessage(damager.getName() + " gave you a big hug");
     }
 
 }

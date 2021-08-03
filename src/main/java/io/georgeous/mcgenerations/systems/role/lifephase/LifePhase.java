@@ -26,6 +26,7 @@ public class LifePhase {
     protected boolean canCarry;
     protected boolean canBeCarried;
     protected boolean surrogate;
+    protected boolean feedable;
     protected final List<PotionEffect> effects = new ArrayList<>();
     public static final int BABY_PHASE = 0,
             TODDLER_PHASE = 1,
@@ -35,7 +36,7 @@ public class LifePhase {
             ELDER_PHASE = 5;
 
 
-    public LifePhase(PlayerRole playerRole, int startAge, int endAge, int hungerRate, int maxCharsInChat, boolean canCarry, boolean canBeCarried, String skinID, String name, int jump, int slowness, int digging, boolean surrogate, Skin skin){
+    public LifePhase(PlayerRole playerRole, int startAge, int endAge, int hungerRate, int maxCharsInChat, boolean canCarry, boolean canBeCarried, String skinID, String name, int jump, int slowness, int digging, boolean surrogate, Skin skin, boolean feedable){
         this.playerRole = playerRole;
         this.startAge = startAge;
         this.endAge = endAge;
@@ -47,6 +48,7 @@ public class LifePhase {
         this.skin = skin;
         this.name = name;
         this.surrogate = surrogate;
+        this.feedable = feedable;
 
         if(slowness > 0){
             effects.add(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, slowness, false, false, false));
@@ -129,6 +131,10 @@ public class LifePhase {
 
     public String getName(){
         return name;
+    }
+
+    public boolean isFeedable(){
+        return feedable;
     }
 
 
