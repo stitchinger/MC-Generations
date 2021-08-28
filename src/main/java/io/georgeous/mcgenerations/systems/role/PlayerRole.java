@@ -7,7 +7,6 @@ import io.georgeous.mcgenerations.systems.role.components.MotherController;
 import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
 import io.georgeous.mcgenerations.systems.surrogate.SurroManager;
 import io.georgeous.petmanager.PetManager;
-import io.georgeous.piggyback.Piggyback;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -15,9 +14,7 @@ import xyz.haoshoku.nick.api.NickAPI;
 import xyz.haoshoku.nick.api.NickScoreboard;
 
 public class PlayerRole {
-    // todo Ablaufdatum
-    // Wenn player länger als 5min offline, töte Role
-    // Player
+    // todo Kill role if player is offline for more than 5 min
     private final Player player;
     private String name;
     public Family family;
@@ -99,7 +96,7 @@ public class PlayerRole {
     }
 
     public void updateScoreboard(){
-        NickScoreboard.write(this.name, this.player.getUniqueId().toString().substring(0,15), "", " " + getFamily().getColoredName(), false, ChatColor.WHITE);
+        NickScoreboard.write(name, player.getUniqueId().toString().substring(0,15), "", " " + getFamily().getColoredName(), false, ChatColor.WHITE);
         NickScoreboard.updateScoreboard(name);
     }
 

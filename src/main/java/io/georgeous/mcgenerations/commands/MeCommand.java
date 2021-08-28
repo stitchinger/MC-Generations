@@ -24,6 +24,7 @@ public class MeCommand implements CommandExecutor {
 
         Notification.neutralMsg(player, role.getName() + " " + role.getFamily().getColoredName());
         Notification.neutralMsg(player, "Age: " + role.am.getAge());
+        Notification.neutralMsg(player, "Phase: " + role.pm.getCurrentPhase().getName());
 
         return false;
     }

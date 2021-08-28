@@ -4,6 +4,7 @@ import io.georgeous.mcgenerations.systems.role.components.AgeManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.lifephase.events.PlayerPhaseUpEvent;
 import io.georgeous.mcgenerations.utils.Skin;
+import io.georgeous.piggyback.Piggyback;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -25,7 +26,7 @@ public class PhaseManager {
         this.am = am;
 
         LifePhase babyPhase = new LifePhase(playerRole,0,3,1,999,false,true,"", "Baby",128,6,2, true, Skin.BABY, true);
-        LifePhase toddlerPhase = new LifePhase(playerRole,3,6,2,999,false,true,"", "Toddler",200,2,1, true, Skin.TODDLER, true);
+        LifePhase toddlerPhase = new LifePhase(playerRole,3,6,1,999,false,true,"", "Toddler",200,2,1, true, Skin.TODDLER, true);
         LifePhase childPhase = new LifePhase(playerRole,6,15,0,999,false,false,"2007359867", "Child",0,1,0, false, Skin.CHILD, true);
         LifePhase teenPhase = new LifePhase(playerRole,15,21,0,999,true,false,"297371", "Teen",0,0,0, false, Skin.TEEN, false);
         LifePhase adultPhase = new LifePhase(playerRole,21,40,0,999,true,false,"584227931", "Adult",0,0,0, false, Skin.ADULT, false);
@@ -75,6 +76,19 @@ public class PhaseManager {
             currentPhase.end();
             currentPhase = null;
         }
+
+        // Cancel carrying
+        // todo extract to Piggyback?
+        if(Piggyback.carryCoupleMap.containsKey(player)){
+            if(Piggyback.carryCoupleMap.carried.get(player) != null){
+                Player carrier = Piggyback.carryCoupleMap.carried.get(player).getCarrier();
+                Piggyback.stopCarry(carrier);
+            }else if(Piggyback.carryCoupleMap.carriers.get(player) != null){
+                Piggyback.stopCarry(player);
+            }
+        }
+
+
         currentPhase = phase;
         currentPhase.start();
 

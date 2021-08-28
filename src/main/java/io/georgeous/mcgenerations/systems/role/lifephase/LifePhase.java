@@ -4,6 +4,7 @@ import io.georgeous.mcgenerations.systems.surrogate.SurroManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.utils.Notification;
 import io.georgeous.mcgenerations.utils.Skin;
+import io.georgeous.piggyback.Piggyback;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -82,6 +83,7 @@ public class LifePhase {
 
     public void start() {
         Notification.neutralMsg(playerRole.getPlayer(), "You are a §a"+ name);
+
         NickAPI.setSkin( playerRole.getPlayer(), skin.value, skin.signature);
         NickAPI.refreshPlayer(  playerRole.getPlayer() );
         playerRole.refreshHealthBar();
