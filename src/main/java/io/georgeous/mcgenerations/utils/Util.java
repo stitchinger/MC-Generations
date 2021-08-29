@@ -27,6 +27,7 @@ public class Util {
 
         double closestDist = 99999;
         for (Player other : Bukkit.getOnlinePlayers()) {
+
             if (!other.getUniqueId().equals(player.getUniqueId())) { // Not Self
                 double dist = player.getLocation().distance(other.getLocation());
                 if (dist < range) { // In range
