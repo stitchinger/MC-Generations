@@ -33,6 +33,7 @@ public class SurroManager implements Listener {
     }
 
     public static void update(){
+
         for(Map.Entry<Player, Villager> entry : map.entrySet()) {
             Player p = entry.getKey();
             Villager v = entry.getValue();
