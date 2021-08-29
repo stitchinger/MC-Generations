@@ -11,7 +11,6 @@ import java.util.List;
 
 public class ItemManager {
 
-
     public static ItemStack createBabyHandler() {
         ItemStack item = new ItemStack(Material.CARROT_ON_A_STICK);
         ItemMeta meta = item.getItemMeta();
@@ -28,18 +27,18 @@ public class ItemManager {
         return item;
     }
 
-    public static boolean isBabyHandler(ItemStack item){
+    public static boolean isBabyHandler(ItemStack item) {
         return isItemByName(item, "Baby-Handler");
     }
 
-    public static boolean isItemByName(ItemStack item, String needle){
-        if(item == null){
+    public static boolean isItemByName(ItemStack item, String needle) {
+        if (item == null) {
             return false;
         }
-        if(item.hasItemMeta()){
+        if (item.hasItemMeta()) {
             ItemMeta meta = item.getItemMeta();
             assert meta != null;
-            if(meta.hasDisplayName()){
+            if (meta.hasDisplayName()) {
                 return item.getItemMeta().getDisplayName().contains(needle);
             }
         }

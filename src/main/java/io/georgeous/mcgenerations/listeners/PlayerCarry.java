@@ -10,19 +10,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-
 public class PlayerCarry implements Listener {
 
     @EventHandler
-    public void onCarryStart(PlayerStartCarryEvent event){
+    public void onCarryStart(PlayerStartCarryEvent event) {
         Player player = event.getPlayer();
         Entity target = event.getTarget();
 
-        if(target instanceof Player){
-            PlayerRole targetRole = RoleManager.get((Player)target);
+        if (target instanceof Player) {
+            PlayerRole targetRole = RoleManager.get((Player) target);
             PlayerRole playerRole = RoleManager.get(player);
 
-            if(playerRole == null || targetRole == null){
+            if (playerRole == null || targetRole == null) {
                 event.setCancelled(true);
                 return;
             }
@@ -30,7 +29,7 @@ public class PlayerCarry implements Listener {
             boolean canCarry = playerRole.pm.getCurrentPhase().canCarry();
             boolean canBeCarried = targetRole.pm.getCurrentPhase().canBeCarried();
 
-            if(!canBeCarried || !canCarry){
+            if (!canBeCarried || !canCarry) {
                 event.setCancelled(true);
                 return;
             }
@@ -40,10 +39,10 @@ public class PlayerCarry implements Listener {
         }
     }
 
-    private void startCarryEffects(Location location){
-        try{
-            location.getWorld().spawnParticle(Particle.HEART,location,10,0.5,0.5,0.5);
-        }catch (NullPointerException e){
+    private void startCarryEffects(Location location) {
+        try {
+            location.getWorld().spawnParticle(Particle.HEART, location, 10, 0.5, 0.5, 0.5);
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
 

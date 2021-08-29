@@ -18,7 +18,7 @@ public class PlayerPhaseUpEvent extends Event implements Cancellable {
     LifePhase newPhase;
     boolean canceled;
 
-    public PlayerPhaseUpEvent(Player player, PhaseManager phaseManager, LifePhase oldPhase, LifePhase newPhase){
+    public PlayerPhaseUpEvent(Player player, PhaseManager phaseManager, LifePhase oldPhase, LifePhase newPhase) {
         this.player = player;
         this.canceled = false;
         this.phaseManager = phaseManager;
@@ -30,25 +30,24 @@ public class PlayerPhaseUpEvent extends Event implements Cancellable {
         return player;
     }
 
-    public PhaseManager getPhaseManager(){
+    public PhaseManager getPhaseManager() {
         return phaseManager;
     }
 
-    public LifePhase getOldPhase(){
+    public LifePhase getOldPhase() {
         return oldPhase;
     }
 
-    public LifePhase getNewPhase(){
+    public LifePhase getNewPhase() {
         return newPhase;
     }
-
 
     @Override
     public @NotNull HandlerList getHandlers() {
         return handlers;
     }
 
-    public static HandlerList getHandlerList(){
+    public static HandlerList getHandlerList() {
         return handlers;
     }
 

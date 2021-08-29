@@ -1,29 +1,29 @@
 package io.georgeous.mcgenerations;
 
 import io.georgeous.mcgenerations.commands.*;
-import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.files.DataManager;
-
 import io.georgeous.mcgenerations.listeners.*;
+import io.georgeous.mcgenerations.systems.family.FamilyManager;
+import io.georgeous.mcgenerations.systems.player.PlayerManager;
+import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.role.commands.DieCommand;
 import io.georgeous.mcgenerations.systems.role.commands.SecInYear;
 import io.georgeous.mcgenerations.systems.role.commands.YouAre;
-import io.georgeous.mcgenerations.systems.surrogate.SurroManager;
-
-import io.georgeous.mcgenerations.systems.player.PlayerManager;
-import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.role.lifephase.listeners.PlayerPhaseUp;
-
-import org.bukkit.*;
+import io.georgeous.mcgenerations.systems.surrogate.SurroManager;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.Team;
 
 public final class MCG extends JavaPlugin {
+
     public static MCG plugin;
     public DataManager data;
 
@@ -56,7 +56,7 @@ public final class MCG extends JavaPlugin {
 
         overworld.setSpawnLocation(council.councilLocation);
 
-        for(Team team : Bukkit.getScoreboardManager().getMainScoreboard().getTeams()){
+        for (Team team : Bukkit.getScoreboardManager().getMainScoreboard().getTeams()) {
             //team.unregister();
         }
 
@@ -79,7 +79,7 @@ public final class MCG extends JavaPlugin {
         FamilyManager.disable();
     }
 
-    public void printLoadupText(){
+    public void printLoadupText() {
         System.out.println("MCG ? ========== [ MC Generations ] ==========");
         System.out.println("MCG ? Version: 0.1");
         System.out.println("MCG ? Plugin by: Georgeous.io");
@@ -102,7 +102,7 @@ public final class MCG extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new InventoryListener(), this);
 
         getServer().getPluginManager().registerEvents(new PlayerCarry(), this);
-        getServer().getPluginManager().registerEvents(new PlayerPhaseUp(),this);
+        getServer().getPluginManager().registerEvents(new PlayerPhaseUp(), this);
     }
 
     public void registerCommands() {
@@ -122,7 +122,7 @@ public final class MCG extends JavaPlugin {
         getServer().getPluginCommand("say").setExecutor(new CommandDeactivator());
     }
 
-    public void makeBundleCraftable(){
+    public void makeBundleCraftable() {
         ItemStack item = new ItemStack(Material.BUNDLE);
         NamespacedKey key = new NamespacedKey(this, "Bundle");
 
@@ -134,11 +134,10 @@ public final class MCG extends JavaPlugin {
 
         Bukkit.addRecipe(recipe);
 
-        for(Player player : Bukkit.getOnlinePlayers()){
+        for (Player player : Bukkit.getOnlinePlayers()) {
             player.discoverRecipe(key);
         }
     }
-
 
     // restore Inventory
     /*
@@ -160,5 +159,3 @@ public final class MCG extends JavaPlugin {
      */
 
 }
-
-

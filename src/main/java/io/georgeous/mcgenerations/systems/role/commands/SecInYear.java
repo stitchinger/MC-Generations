@@ -16,7 +16,7 @@ public class SecInYear implements CommandExecutor {
         }
 
         Player player = (Player) sender;
-        if(!player.isOp()){
+        if (!player.isOp()) {
             Notification.onlyForOp(player);
             return true;
         }
@@ -26,16 +26,15 @@ public class SecInYear implements CommandExecutor {
             Notification.errorMsg(player, "Usage: /secinyear 60");
             return true;
         }
-        try{
+        try {
             int secs = Integer.parseInt(args[0]);
             playerRole.am.setSecInYear(secs);
             Notification.successMsg(player, "You changed your sec in year to " + secs);
 
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             Notification.errorMsg(player, "Argument must be a number");
             return true;
         }
-
 
 
         return false;

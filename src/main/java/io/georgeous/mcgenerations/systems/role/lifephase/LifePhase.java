@@ -1,11 +1,9 @@
 package io.georgeous.mcgenerations.systems.role.lifephase;
 
-import io.georgeous.mcgenerations.systems.surrogate.SurroManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
+import io.georgeous.mcgenerations.systems.surrogate.SurroManager;
 import io.georgeous.mcgenerations.utils.Notification;
 import io.georgeous.mcgenerations.utils.Skin;
-import io.georgeous.piggyback.Piggyback;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -36,8 +34,7 @@ public class LifePhase {
             ADULT_PHASE = 4,
             ELDER_PHASE = 5;
 
-
-    public LifePhase(PlayerRole playerRole, int startAge, int endAge, int hungerRate, int maxCharsInChat, boolean canCarry, boolean canBeCarried, String skinID, String name, int jump, int slowness, int digging, boolean surrogate, Skin skin, boolean feedable){
+    public LifePhase(PlayerRole playerRole, int startAge, int endAge, int hungerRate, int maxCharsInChat, boolean canCarry, boolean canBeCarried, String skinID, String name, int jump, int slowness, int digging, boolean surrogate, Skin skin, boolean feedable) {
         this.playerRole = playerRole;
         this.startAge = startAge;
         this.endAge = endAge;
@@ -51,50 +48,50 @@ public class LifePhase {
         this.surrogate = surrogate;
         this.feedable = feedable;
 
-        if(slowness > 0){
+        if (slowness > 0) {
             effects.add(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, slowness, false, false, false));
         }
 
-        if(digging > 0){
+        if (digging > 0) {
             effects.add(new PotionEffect(PotionEffectType.SLOW_DIGGING, Integer.MAX_VALUE, digging, false, false, false));
         }
 
-        if(jump > 0){
+        if (jump > 0) {
             effects.add(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, jump, false, false, false));
         }
     }
 
-    public int getStartAge(){
+    public int getStartAge() {
         return startAge;
     }
 
-    public int getEndAge(){
+    public int getEndAge() {
         return endAge;
     }
 
-    public void applyPotionEffects(Player player, List<PotionEffect> effects){
-        if(effects == null){
+    public void applyPotionEffects(Player player, List<PotionEffect> effects) {
+        if (effects == null) {
             return;
         }
-        for(PotionEffect effect : effects){
+        for (PotionEffect effect : effects) {
             player.addPotionEffect(effect);
         }
     }
 
     public void start() {
-        Notification.neutralMsg(playerRole.getPlayer(), "You are a §a"+ name);
+        Notification.neutralMsg(playerRole.getPlayer(), "You are a §a" + name);
 
-        NickAPI.setSkin( playerRole.getPlayer(), skin.value, skin.signature);
-        NickAPI.refreshPlayer(  playerRole.getPlayer() );
+        NickAPI.setSkin(playerRole.getPlayer(), skin.value, skin.signature);
+        NickAPI.refreshPlayer(playerRole.getPlayer());
         playerRole.refreshHealthBar();
 
-        if(surrogate){
+        if (surrogate) {
             SurroManager.create(playerRole.getPlayer(), playerRole.getName() + " " + playerRole.family.getColoredName());
         }
     }
 
     public void end() {
-        if(surrogate){
+        if (surrogate) {
             SurroManager.destroy(playerRole.getPlayer());
         }
 
@@ -106,9 +103,9 @@ public class LifePhase {
     public void update() {
         applyPotionEffects(playerRole.getPlayer(), effects);
 
-        if(Math.random() < hungerRate / 100d){
+        if (Math.random() < hungerRate / 100d) {
             int foodLevel = playerRole.getPlayer().getFoodLevel();
-            if(foodLevel > 0){
+            if (foodLevel > 0) {
                 playerRole.getPlayer().setFoodLevel(foodLevel - 1);
             }
 
@@ -131,14 +128,11 @@ public class LifePhase {
         return canBeCarried;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    public boolean isFeedable(){
+    public boolean isFeedable() {
         return feedable;
     }
-
-
-
 }

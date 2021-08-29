@@ -11,10 +11,10 @@ import java.util.List;
 public class DebugCommandCompleter implements TabCompleter {
 
     @Override
-    public List<String> onTabComplete (CommandSender sender, Command cmd, String label, String[] args){
+    public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
         List<String> l = new ArrayList<String>();
-        if(cmd.getName().equalsIgnoreCase("debug") && args.length >= 0){
-            if(sender instanceof Player){
+        if (cmd.getName().equalsIgnoreCase("debug") && args.length >= 0) {
+            if (sender instanceof Player) {
                 Player player = (Player) sender;
 
                 List<String> list = new ArrayList<>();

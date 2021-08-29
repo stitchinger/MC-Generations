@@ -1,15 +1,11 @@
 package io.georgeous.mcgenerations.commands;
 
 import io.georgeous.mcgenerations.MCG;
-import io.georgeous.mcgenerations.systems.player.PlayerManager;
-
 import io.georgeous.mcgenerations.utils.Notification;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
 
 public class DebugCommand implements CommandExecutor {
 
@@ -19,7 +15,7 @@ public class DebugCommand implements CommandExecutor {
             return true;
         }
         Player player = (Player) sender;
-        if(!player.isOp()){
+        if (!player.isOp()) {
             Notification.onlyForOp(player);
             return true;
         }
@@ -28,7 +24,7 @@ public class DebugCommand implements CommandExecutor {
             return true;
         }
 
-        switch (args[0]){
+        switch (args[0]) {
             case "council":
                 player.teleport(MCG.council.councilLocation);
                 break;

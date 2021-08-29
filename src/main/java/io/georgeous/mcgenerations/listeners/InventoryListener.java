@@ -1,6 +1,5 @@
 package io.georgeous.mcgenerations.listeners;
 
-
 import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
@@ -13,25 +12,24 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 
-
 public class InventoryListener implements Listener {
     private final MCG plugin;
 
-    public InventoryListener(){
+    public InventoryListener() {
         this.plugin = MCG.getInstance();
     }
 
     @EventHandler
     public void stopBabyItemPickup(EntityPickupItemEvent event) {
-        if(event.getEntity() instanceof Player){
+        if (event.getEntity() instanceof Player) {
             Player player = ((Player) event.getEntity()).getPlayer();
             PlayerRole role = RoleManager.get(player);
-            if(role == null)
+            if (role == null)
                 return;
             PhaseManager phaseManager = RoleManager.get(player).pm;
-            if(phaseManager == null)
+            if (phaseManager == null)
                 return;
-            if(phaseManager.getCurrentPhase().getName().equalsIgnoreCase("baby")){
+            if (phaseManager.getCurrentPhase().getName().equalsIgnoreCase("baby")) {
                 event.setCancelled(true);
             }
         }
@@ -40,9 +38,8 @@ public class InventoryListener implements Listener {
     @EventHandler
     public void cancelBabyHandlerDrop(PlayerDropItemEvent event) {
         ItemStack item = event.getItemDrop().getItemStack();
-        if(ItemManager.isBabyHandler(item)){
+        if (ItemManager.isBabyHandler(item)) {
             event.setCancelled(true);
         }
     }
-
 }

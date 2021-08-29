@@ -9,23 +9,22 @@ import org.bukkit.entity.Player;
 
 public class GamemodeCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender sender,  Command command,  String label, String[] args) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
             return true;
         }
         Player player = (Player) sender;
 
-        if(!player.isOp()){
+        if (!player.isOp()) {
             Notification.onlyForOp(player);
             return true;
         }
 
-        if(player.getGameMode().equals(GameMode.CREATIVE)){
+        if (player.getGameMode().equals(GameMode.CREATIVE)) {
             player.setGameMode(GameMode.SURVIVAL);
-        } else{
+        } else {
             player.setGameMode(GameMode.CREATIVE);
         }
-
 
         return true;
     }

@@ -1,8 +1,6 @@
 package io.georgeous.mcgenerations.systems.player;
 
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-
 
 public class PlayerWrapper {
     private final Player player;
@@ -12,25 +10,24 @@ public class PlayerWrapper {
     private long lastOfflineTime = 0;
     private long timeOfJoin;
 
-
     public PlayerWrapper(Player player) {
         this.player = player;
         this.timeOfJoin = System.currentTimeMillis();
     }
 
-    public int getLives(){
+    public int getLives() {
         return this.lives;
     }
 
-    public void setLives(int lives){
+    public void setLives(int lives) {
         this.lives = lives;
     }
 
-    public double getKarma(){
+    public double getKarma() {
         return this.karma;
     }
 
-    public void setKarma(double karma){
+    public void setKarma(double karma) {
         this.karma = karma;
     }
 
@@ -42,11 +39,11 @@ public class PlayerWrapper {
         this.playTime = playTime;
     }
 
-    public void setLastOfflineTime(long lastOfflineTime){
+    public void setLastOfflineTime(long lastOfflineTime) {
         this.lastOfflineTime = lastOfflineTime;
     }
 
-    public long getLastOfflineTime(){
+    public long getLastOfflineTime() {
         return lastOfflineTime;
     }
 
@@ -54,11 +51,11 @@ public class PlayerWrapper {
         return player;
     }
 
-    public long getTimeOfJoin(){
+    public long getTimeOfJoin() {
         return timeOfJoin;
     }
 
-    public void setTimeOfJoin(long timeOfJoin){
+    public void setTimeOfJoin(long timeOfJoin) {
         this.timeOfJoin = timeOfJoin;
     }
 }
