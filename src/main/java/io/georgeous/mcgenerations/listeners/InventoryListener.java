@@ -9,7 +9,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
 public class InventoryListener implements Listener {
@@ -40,6 +42,23 @@ public class InventoryListener implements Listener {
         ItemStack item = event.getItemDrop().getItemStack();
         if (ItemManager.isBabyHandler(item)) {
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void disableBabyInventory(InventoryMoveItemEvent event) {
+        InventoryHolder ih = event.getInitiator().getHolder();
+        if (ih instanceof Player) {
+            Player player = (Player) ih;
+            PlayerRole role = RoleManager.get(player);
+            if (role == null)
+                return;
+            PhaseManager phaseManager = RoleManager.get(player).pm;
+            if (phaseManager == null)
+                return;
+            if (phaseManager.getCurrentPhase().getName().equalsIgnoreCase("baby")) {
+                event.setCancelled(true);
+            }
         }
     }
 }
