@@ -1,8 +1,7 @@
 package io.georgeous.mcgenerations.systems.role.components;
+
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import org.bukkit.Sound;
-
-
 
 public class AgeManager {
     PlayerRole playerRole;
@@ -12,14 +11,14 @@ public class AgeManager {
     private int secInYear = 60;
     private long lastTime;
 
-    public AgeManager(PlayerRole playerRole, int startAge){
+    public AgeManager(PlayerRole playerRole, int startAge) {
         this.playerRole = playerRole;
         this.lastTime = System.currentTimeMillis() / 1000;
 
         setAge(startAge);
     }
 
-    public void update(){
+    public void update() {
         long time = System.currentTimeMillis() / 1000;
         long timeSinceLastUpdate = time - lastTime;
         ageInSeconds += timeSinceLastUpdate;
@@ -31,12 +30,11 @@ public class AgeManager {
         lastTime = time;
     }
 
-
     public void ageUp() {
         setAge(ageInYears + 1);
     }
 
-    public int getAge(){
+    public int getAge() {
         return ageInYears;
     }
 
@@ -47,10 +45,7 @@ public class AgeManager {
         playerRole.getPlayer().playSound(playerRole.getPlayer().getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 0.5f, 1);
     }
 
-    public void setSecInYear(int s){
+    public void setSecInYear(int s) {
         secInYear = s;
     }
-
-
-
 }

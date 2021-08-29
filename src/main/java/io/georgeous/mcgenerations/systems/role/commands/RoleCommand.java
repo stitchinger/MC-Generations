@@ -17,24 +17,24 @@ public class RoleCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if(!(sender instanceof Player))
+        if (!(sender instanceof Player))
             return true;
 
         Player player = (Player) sender;
-        if(!player.isOp()){
+        if (!player.isOp()) {
             Notification.onlyForOp(player);
             return true;
         }
 
-        if(RoleManager.get(player) == null){
+        if (RoleManager.get(player) == null) {
             Notification.errorMsg(player, "No role found");
             return true;
         }
         PlayerRole playerRole = RoleManager.get(player);
 
-        switch (args[0]){
+        switch (args[0]) {
             case "age":
-                if(args.length < 2 || args[1].length() == 0){
+                if (args.length < 2 || args[1].length() == 0) {
                     Notification.errorMsg(player, "e.g.: /role age 13");
                     return true;
                 }
@@ -42,7 +42,7 @@ public class RoleCommand implements CommandExecutor, TabCompleter {
                     int age = Integer.parseInt(args[1]);
                     playerRole.am.setAge(age);
                     Notification.successMsg(player, "You changed your age to " + age);
-                } catch (NumberFormatException e){
+                } catch (NumberFormatException e) {
                     Notification.errorMsg(player, "Invalid age");
                 }
 
@@ -61,10 +61,10 @@ public class RoleCommand implements CommandExecutor, TabCompleter {
     }
 
     @Override
-    public List<String> onTabComplete (CommandSender sender, Command cmd, String label, String[] args){
+    public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
         List<String> l = new ArrayList<String>();
-        if(cmd.getName().equalsIgnoreCase("role") && args.length >= 0){
-            if(sender instanceof Player){
+        if (cmd.getName().equalsIgnoreCase("role") && args.length >= 0) {
+            if (sender instanceof Player) {
                 l.add("age");
                 l.add("info");
                 l.add("count");

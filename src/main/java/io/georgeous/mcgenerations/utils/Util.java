@@ -2,7 +2,6 @@ package io.georgeous.mcgenerations.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.Damageable;
@@ -41,7 +40,7 @@ public class Util {
         return closest;
     }
 
-    public static int getRandomInt(int length){
+    public static int getRandomInt(int length) {
         int rnd = new Random().nextInt(length);
         return rnd;
     }
@@ -65,7 +64,7 @@ public class Util {
 
         for (ItemStack item : stack) {
             if (item != null) {
-                if(item.getType() == searchItem.getType()){
+                if (item.getType() == searchItem.getType()) {
                     return item;
                 }
             }
@@ -73,8 +72,8 @@ public class Util {
         return null;
     }
 
-    public static String getRandomColor(){
-        int i = (int)(Math.random() * colorCodes.length);
+    public static String getRandomColor() {
+        int i = (int) (Math.random() * colorCodes.length);
         return colorCodes[i];
     }
 
@@ -95,5 +94,4 @@ public class Util {
             }
         }
     }
-
 }

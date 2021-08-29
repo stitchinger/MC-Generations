@@ -1,10 +1,8 @@
 package io.georgeous.mcgenerations.files;
 
-
 import io.georgeous.mcgenerations.MCG;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-
 
 import java.io.File;
 import java.io.IOException;
@@ -17,34 +15,34 @@ public class DataManager {
     private FileConfiguration dataConfig = null;
     private File configFile = null;
 
-    public DataManager(){
+    public DataManager() {
         this.plugin = MCG.getInstance();
         // saves/inits the config
         saveDefaultConfig();
     }
 
-    public void reloadConfig(){
-        if(this.configFile == null)
+    public void reloadConfig() {
+        if (this.configFile == null)
             this.configFile = new File(this.plugin.getDataFolder(), "data.yml");
 
         this.dataConfig = YamlConfiguration.loadConfiguration(this.configFile);
 
         InputStream defaultStream = this.plugin.getResource("data.yml");
-        if(defaultStream != null){
+        if (defaultStream != null) {
             YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defaultStream));
             this.dataConfig.setDefaults(defaultConfig);
         }
     }
 
-    public FileConfiguration getConfig(){
-        if(this.dataConfig == null)
+    public FileConfiguration getConfig() {
+        if (this.dataConfig == null)
             reloadConfig();
 
         return this.dataConfig;
     }
 
-    public void saveConfig(){
-        if(this.dataConfig == null || this.configFile == null)
+    public void saveConfig() {
+        if (this.dataConfig == null || this.configFile == null)
             return;
 
         try {
@@ -54,14 +52,12 @@ public class DataManager {
         }
     }
 
-    public void saveDefaultConfig(){
-        if(this.configFile == null)
+    public void saveDefaultConfig() {
+        if (this.configFile == null)
             this.configFile = new File(this.plugin.getDataFolder(), "data.yml");
 
-        if(!this.configFile.exists()){
+        if (!this.configFile.exists()) {
             this.plugin.saveResource("data.yml", false);
         }
     }
-
-
 }

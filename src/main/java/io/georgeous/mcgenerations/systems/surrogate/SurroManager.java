@@ -1,6 +1,5 @@
 package io.georgeous.mcgenerations.systems.surrogate;
 
-
 import io.georgeous.mcgenerations.MCG;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -17,30 +16,29 @@ import java.util.Map;
 
 import static org.bukkit.Bukkit.getServer;
 
-
 public class SurroManager implements Listener {
 
     public static HashMap<Player, Villager> map = new HashMap<>();
 
-    public static void enable(){
+    public static void enable() {
         getServer().getPluginManager().registerEvents(new SurroListener(), MCG.getInstance());
     }
 
-    public static void disable(){
-        for(Player player : Bukkit.getOnlinePlayers()){
+    public static void disable() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
             destroy(player);
         }
     }
 
-    public static void update(){
-        for(Map.Entry<Player, Villager> entry : map.entrySet()) {
+    public static void update() {
+        for (Map.Entry<Player, Villager> entry : map.entrySet()) {
             Player p = entry.getKey();
             Villager v = entry.getValue();
 
-            if(!p.isOnline()){
+            if (!p.isOnline()) {
                 destroy(p);
                 continue;
-            }else{
+            } else {
                 PotionEffect invis = new PotionEffect(PotionEffectType.INVISIBILITY, 10, 1, false, false, true);
                 p.addPotionEffect(invis);
                 Vector dir = p.getLocation().getDirection().setY(0).multiply(0);
@@ -51,7 +49,7 @@ public class SurroManager implements Listener {
     }
 
     public static void create(Player player, String name) {
-        if(map.get(player) != null){
+        if (map.get(player) != null) {
             destroy(player);
         }
 
@@ -59,11 +57,11 @@ public class SurroManager implements Listener {
         v = prepareSurro(v);
         v.setCustomName(name);
 
-        map.put(player,v);
+        map.put(player, v);
     }
 
     public static void destroy(Player player) {
-        if(map.get(player) != null){
+        if (map.get(player) != null) {
             Villager v = map.get(player);
             Location loc = new Location(v.getWorld(), v.getLocation().getX(), 200, v.getLocation().getZ());
             v.teleport(loc);
@@ -72,7 +70,7 @@ public class SurroManager implements Listener {
         }
     }
 
-    private static Villager prepareSurro(Villager v){
+    private static Villager prepareSurro(Villager v) {
         v.setAI(false);
         v.setCollidable(false);
         v.setAge(-1);
@@ -85,7 +83,4 @@ public class SurroManager implements Listener {
         getServer().dispatchCommand(Bukkit.getConsoleSender(), "team join nocollision @e[tag=surrogate,limit=3,sort=nearest,team=!nocollision]");
         return v;
     }
-
 }
-
-

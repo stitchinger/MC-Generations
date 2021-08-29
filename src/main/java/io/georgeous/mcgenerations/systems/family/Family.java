@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-
 public class Family {
 
     private String name;
@@ -25,8 +24,7 @@ public class Family {
     private boolean namedByLeader;
     public boolean isDead = false;
 
-
-    public Family(String name){
+    public Family(String name) {
         this.name = name;
         this.color = Util.getRandomColor();
         this.uuid = UUID.randomUUID().toString();
@@ -35,7 +33,7 @@ public class Family {
         namedByLeader = false;
     }
 
-    public Family(String name, String uuid){
+    public Family(String name, String uuid) {
         this(name);
         this.uuid = uuid;
     }
@@ -45,20 +43,20 @@ public class Family {
     }
 
     // Name
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    public String getColoredName(){
+    public String getColoredName() {
         return color + getName() + ChatColor.RESET;
     }
 
-    private void setName(String name){
+    private void setName(String name) {
         this.name = name;
     }
 
-    public void rename(String name){
-        if(false){
+    public void rename(String name) {
+        if (false) {
             System.out.println("Family name already defined by Leader");
             return;
         }
@@ -66,16 +64,16 @@ public class Family {
         namedByLeader = true;
     }
 
-    public boolean isRenamed(){
+    public boolean isRenamed() {
         return namedByLeader;
     }
 
     // Color
-    public String getColor(){
+    public String getColor() {
         return color;
     }
 
-    public void setColor(String color){
+    public void setColor(String color) {
         this.color = color;
     }
 
@@ -85,26 +83,26 @@ public class Family {
     }
 
     public void setLeader(PlayerRole leader) {
-        Notification.neutralMsg(leader.getPlayer(), "You are now leader of the family " + this.color  + "" + name);
+        Notification.neutralMsg(leader.getPlayer(), "You are now leader of the family " + this.color + "" + name);
         this.leader = leader;
     }
 
     // Members
-    public void addMember(PlayerRole role){
-        if(members.size() == 0){
+    public void addMember(PlayerRole role) {
+        if (members.size() == 0) {
             setLeader(role);
         }
         members.add(role);
     }
 
-    public void removeMember(PlayerRole role){
+    public void removeMember(PlayerRole role) {
         members.remove(role);
-        if(members.size() == 0){
+        if (members.size() == 0) {
             isDead = true;
         }
     }
 
-    public int memberCount(){
+    public int memberCount() {
         return members.size();
     }
 
@@ -117,12 +115,12 @@ public class Family {
         this.established = established;
     }
 
-    public static boolean inSameFamily(PlayerRole one, PlayerRole two){
+    public static boolean inSameFamily(PlayerRole one, PlayerRole two) {
         return one.getFamily() == two.getFamily();
     }
 
-    public static boolean inSameFamily(Player one, Player two){
-        if(RoleManager.get(one) == null || PlayerManager.get(two) == null){
+    public static boolean inSameFamily(Player one, Player two) {
+        if (RoleManager.get(one) == null || PlayerManager.get(two) == null) {
             return false;
         }
         PlayerRole roleOne = RoleManager.get(one);
@@ -131,4 +129,3 @@ public class Family {
         return inSameFamily(roleOne, roleTwo);
     }
 }
-

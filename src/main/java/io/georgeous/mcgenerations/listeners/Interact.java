@@ -1,15 +1,16 @@
 package io.georgeous.mcgenerations.listeners;
 
-
 import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.systems.family.Family;
-import io.georgeous.mcgenerations.systems.family.FriendlyTalk;
-import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.ItemManager;
-import org.bukkit.*;
-import org.bukkit.entity.*;
+import org.bukkit.Location;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
+import org.bukkit.World;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -28,27 +29,26 @@ public class Interact implements Listener {
         this.main = main;
     }
 
-
     @EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
         Entity target = event.getRightClicked();
         ItemStack usedItem = player.getInventory().getItemInMainHand();
 
-        if(ItemManager.isBabyHandler(usedItem) && target instanceof Player){
+        if (ItemManager.isBabyHandler(usedItem) && target instanceof Player) {
             feedBaby(player, (Player) target);
         }
     }
 
-    public void feedBaby(Player feeder, Player baby){
-        if(RoleManager.get(baby) == null)
+    public void feedBaby(Player feeder, Player baby) {
+        if (RoleManager.get(baby) == null)
             return;
         PlayerRole role = RoleManager.get(baby);
 
-        if(baby.getFoodLevel() >= 20)
+        if (baby.getFoodLevel() >= 20)
             return;
 
-        if(!role.pm.getCurrentPhase().isFeedable())
+        if (!role.pm.getCurrentPhase().isFeedable())
             return;
 
         feeder.setFoodLevel(feeder.getFoodLevel() - 2);
@@ -58,50 +58,49 @@ public class Interact implements Listener {
         babyFeedEffect(baby.getLocation());
     }
 
-    public void babyFeedEffect(Location location){
+    public void babyFeedEffect(Location location) {
         World world = location.getWorld();
-        world.spawnParticle(Particle.COMPOSTER,location,40,0.5,0.5,0.5);
-        world.playSound(location, Sound.ENTITY_GENERIC_DRINK,1,1);
+        world.spawnParticle(Particle.COMPOSTER, location, 40, 0.5, 0.5, 0.5);
+        world.playSound(location, Sound.ENTITY_GENERIC_DRINK, 1, 1);
     }
 
     @EventHandler
-    public void disableFriendlyFire(EntityDamageByEntityEvent event){
-        if(!(event.getDamager() instanceof Player)
+    public void disableFriendlyFire(EntityDamageByEntityEvent event) {
+        if (!(event.getDamager() instanceof Player)
                 || !(event.getEntity() instanceof Player)) {
             return;
         }
         Player damager = (Player) event.getDamager();
         Player receiver = (Player) event.getEntity();
 
-        if(Family.inSameFamily(damager, receiver)){
+        if (Family.inSameFamily(damager, receiver)) {
             event.setCancelled(true);
             friendlyFamilyTalk(RoleManager.get(damager), RoleManager.get(receiver));
         }
     }
 
     @EventHandler
-    public void onProjectileHit(ProjectileHitEvent event){
-        if(!(event.getEntity().getShooter() instanceof Player)){
+    public void onProjectileHit(ProjectileHitEvent event) {
+        if (!(event.getEntity().getShooter() instanceof Player)) {
             return;
         }
 
-        if(!(event.getHitEntity() instanceof Player)){
+        if (!(event.getHitEntity() instanceof Player)) {
             return;
         }
 
         Player damager = (Player) event.getEntity().getShooter();
         Player receiver = (Player) event.getHitEntity();
 
-        if(Family.inSameFamily(damager, receiver)){
+        if (Family.inSameFamily(damager, receiver)) {
             event.setCancelled(true);
             friendlyFamilyTalk(RoleManager.get(damager), RoleManager.get(receiver));
         }
     }
 
-    public void friendlyFamilyTalk(PlayerRole damager, PlayerRole receiver){
+    public void friendlyFamilyTalk(PlayerRole damager, PlayerRole receiver) {
         //FriendlyTalk ft = new FriendlyTalk(damager, receiver);
         damager.getPlayer().sendMessage("You gave " + receiver.getName() + " a big hug");
         receiver.getPlayer().sendMessage(damager.getName() + " gave you a big hug");
     }
-
 }

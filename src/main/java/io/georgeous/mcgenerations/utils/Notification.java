@@ -5,22 +5,22 @@ import org.bukkit.entity.Player;
 
 public class Notification {
 
-    public static void neutralMsg(Player player, String msg){
-        String prefix = ChatColor.YELLOW + "[i] "+ ChatColor.RESET;
+    public static void neutralMsg(Player player, String msg) {
+        String prefix = ChatColor.YELLOW + "[i] " + ChatColor.RESET;
         player.sendMessage(prefix + msg);
     }
 
-    public static void errorMsg(Player player, String msg){
-        String prefix = ChatColor.RED + "[!] "+ ChatColor.RESET;
+    public static void errorMsg(Player player, String msg) {
+        String prefix = ChatColor.RED + "[!] " + ChatColor.RESET;
         player.sendMessage(prefix + msg);
     }
 
-    public static void successMsg(Player player, String msg){
-        String prefix = ChatColor.GREEN + "[!] "+ ChatColor.RESET;
+    public static void successMsg(Player player, String msg) {
+        String prefix = ChatColor.GREEN + "[!] " + ChatColor.RESET;
         player.sendMessage(prefix + msg);
     }
 
-    public static void onlyForOp(Player player){
+    public static void onlyForOp(Player player) {
         errorMsg(player, "This command is only for OPs");
     }
 }

@@ -1,8 +1,6 @@
 package io.georgeous.mcgenerations.commands;
 
 import io.georgeous.mcgenerations.MCG;
-import io.georgeous.mcgenerations.systems.role.PlayerRole;
-import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,13 +16,13 @@ public class DaySpeedCommand implements CommandExecutor {
         }
 
         Player player = (Player) sender;
-        if(!player.isOp()){
+        if (!player.isOp()) {
             Notification.onlyForOp(player);
             return true;
         }
 
         if (args.length != 1) {
-            Notification.errorMsg(player,"Usage: /dayspeed 100");
+            Notification.errorMsg(player, "Usage: /dayspeed 100");
         }
 
         //playerRole.am.setSecInYear(Integer.parseInt(args[0]));

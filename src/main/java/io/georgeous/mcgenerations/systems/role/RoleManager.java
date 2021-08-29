@@ -8,12 +8,12 @@ import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.commands.RoleCommand;
 import io.georgeous.mcgenerations.utils.NameGenerator;
 import io.georgeous.mcgenerations.utils.Notification;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.bukkit.Bukkit.getServer;
 
@@ -55,7 +55,7 @@ public class RoleManager {
         return roles.get(uuid);
     }
 
-    public static void initPlayer(Player player){
+    public static void initPlayer(Player player) {
         boolean isValid = PlayerManager.get(player).getLastOfflineTime() < (VALID_OFFLINE_TIME_SEC * 1000);
 
         if (playerDataExists(player) && isValid) { // restore player
@@ -91,7 +91,7 @@ public class RoleManager {
         if (roles.isEmpty())
             return;
         for (Map.Entry<String, PlayerRole> entry : roles.entrySet()) {
-            if(entry.getValue() != null){
+            if (entry.getValue() != null) {
                 saveRole(entry.getValue());
             }
         }
@@ -111,7 +111,7 @@ public class RoleManager {
         MCG.getInstance().saveConfig();
     }
 
-    public static void restoreRole(Player player){
+    public static void restoreRole(Player player) {
         String uuid = player.getUniqueId().toString();
         FileConfiguration config = MCG.getInstance().getConfig();
         ConfigurationSection configSection = config.getConfigurationSection("data.player." + uuid + ".role");
@@ -123,7 +123,7 @@ public class RoleManager {
         // Family
         String familyUUID = configSection.getString("family");
         Family family = FamilyManager.getFamily(familyUUID);
-        if(family == null){
+        if (family == null) {
             Notification.errorMsg(player, "Error in role-restore. Family not found");
             family = FamilyManager.addFamily(NameGenerator.randomLast());
         }
@@ -136,12 +136,11 @@ public class RoleManager {
         MCG.getInstance().saveConfig();
     }
 
-    public static boolean playerDataExists(Player player){
+    public static boolean playerDataExists(Player player) {
         return MCG.getInstance().getConfig().contains("data.player." + player.getUniqueId().toString() + ".role");
     }
 
-    public static int getRoleCount(){
+    public static int getRoleCount() {
         return roles.size();
     }
-
 }

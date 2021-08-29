@@ -11,23 +11,23 @@ public class FriendlyTalk {
     public static List<String[]> sentences;
     private int index;
 
-    public FriendlyTalk(PlayerRole sender, PlayerRole receiver){
+    public FriendlyTalk(PlayerRole sender, PlayerRole receiver) {
         this.sender = sender;
         this.receiver = receiver;
 
         initSentences();
-        index = (int)(Math.random() * sentences.size());
+        index = (int) (Math.random() * sentences.size());
     }
 
-    public String getSenderMessage(){
+    public String getSenderMessage() {
         return insertPlaceholder(sentences.get(index)[0], receiver.getName());
     }
 
-    public String getReceiverMessage(){
+    public String getReceiverMessage() {
         return insertPlaceholder(sentences.get(index)[1], sender.getName());
     }
 
-    private void initSentences(){
+    private void initSentences() {
         String[] one = {"You gave $$$ a big hug", "$$$ gave you a big hug"};
         sentences.add(one);
         String[] two = {"You told $$$ that you appreciate them", "$$$ told you, that they appreciate you"};
@@ -38,7 +38,7 @@ public class FriendlyTalk {
         sentences.add(four);
     }
 
-    public String insertPlaceholder(String text, String insert){
+    public String insertPlaceholder(String text, String insert) {
         return text.replace("$$$", insert);
     }
 }

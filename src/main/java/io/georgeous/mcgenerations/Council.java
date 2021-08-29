@@ -18,9 +18,9 @@ public class Council {
     private final Location pillagerLocation;
     private final double councilSoundChance = 0.25;
 
-    public Council(World world){
+    public Council(World world) {
         this.world = world;
-        councilLocation = new Location(world,-13, 239, 16);
+        councilLocation = new Location(world, -13, 239, 16);
         endermanLocation = councilLocation.clone().add(0.5, 2, 11.5);
         piglinLocation = councilLocation.clone().add(0.5, 2, -10.5);
         pillagerLocation = councilLocation.clone().add(11.5, 2, 0.5);
@@ -29,12 +29,12 @@ public class Council {
         init();
     }
 
-    public void init(){
-        for(Entity entity : Bukkit.selectEntities(Bukkit.getConsoleSender(),"@e[tag=council]")){
-            if(entity instanceof Minecart){
+    public void init() {
+        for (Entity entity : Bukkit.selectEntities(Bukkit.getConsoleSender(), "@e[tag=council]")) {
+            if (entity instanceof Minecart) {
                 ((Minecart) entity).setDamage(40);
             }
-            if(entity instanceof LivingEntity){
+            if (entity instanceof LivingEntity) {
                 ((LivingEntity) entity).setHealth(0);
             }
 
@@ -51,7 +51,7 @@ public class Council {
         }.runTaskTimer(MCG.getInstance(), 0L, 20L);
     }
 
-    public void spawnEnderman(){
+    public void spawnEnderman() {
         Minecart cart = (Minecart) world.spawnEntity(endermanLocation, EntityType.MINECART);
         cart.setInvulnerable(true);
         cart.addScoreboardTag("council");
@@ -65,7 +65,7 @@ public class Council {
         cart.addPassenger(enderman);
     }
 
-    public void spawnPiglin(){
+    public void spawnPiglin() {
         Cow cow = (Cow) world.spawnEntity(piglinLocation, EntityType.COW);
         cow.setInvulnerable(true);
         cow.setInvisible(true);
@@ -83,7 +83,7 @@ public class Council {
         cow.addPassenger(piglin);
     }
 
-    public void spawnPillager(){
+    public void spawnPillager() {
         Cow cow = (Cow) world.spawnEntity(pillagerLocation, EntityType.COW);
         cow.setInvulnerable(true);
         cow.setInvisible(true);
@@ -101,7 +101,7 @@ public class Council {
         cow.addPassenger(illusioner);
     }
 
-    public void spawnVillager(){
+    public void spawnVillager() {
         Wolf wolf = (Wolf) world.spawnEntity(villagerLocation, EntityType.WOLF);
         wolf.setInvisible(true);
         wolf.setInvulnerable(true);
@@ -120,8 +120,8 @@ public class Council {
         wolf.addPassenger(villager);
     }
 
-    public void councilNoises(){
-        if(Math.random() > 1 - councilSoundChance){
+    public void councilNoises() {
+        if (Math.random() > 1 - councilSoundChance) {
 
             World world = MCG.overworld;
 
@@ -133,7 +133,7 @@ public class Council {
             };
 
             int rand = Util.getRandomInt(sounds.length);
-            world.playSound(councilLocation, sounds[rand],1,0.1f);
+            world.playSound(councilLocation, sounds[rand], 1, 0.1f);
         }
     }
 }

@@ -7,7 +7,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class SurroListener implements Listener {
     @EventHandler
-    public void onPlayerDeath(PlayerDeathEvent event){
+    public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
         SurroManager.destroy(player);
     }

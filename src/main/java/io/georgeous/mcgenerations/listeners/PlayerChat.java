@@ -14,12 +14,12 @@ public class PlayerChat implements Listener {
     private final double CHAT_RANGE = 50;
 
     @EventHandler
-    public void onChat(AsyncPlayerChatEvent event){
+    public void onChat(AsyncPlayerChatEvent event) {
         event.setCancelled(true);
         Player player = event.getPlayer();
         PlayerRole playerRole = RoleManager.get(player);
 
-        if(playerRole == null){
+        if (playerRole == null) {
             return;
         }
 
@@ -31,15 +31,15 @@ public class PlayerChat implements Listener {
         rangedBroadcast(player, msg, CHAT_RANGE);
     }
 
-    public String prepareMsg(String msg, String prefix, int maxLength){
+    public String prepareMsg(String msg, String prefix, int maxLength) {
         msg = msg.trim();
-        msg = msg.substring(0,Math.min(msg.length(),maxLength));
+        msg = msg.substring(0, Math.min(msg.length(), maxLength));
         msg = prefix + msg;
 
         return msg;
     }
 
-    public void rangedBroadcast(Player sender, String msg, double range){
+    public void rangedBroadcast(Player sender, String msg, double range) {
         for (Player other : Bukkit.getOnlinePlayers()) {
             double distanceBetweenPlayers = other.getLocation().distance(sender.getLocation());
             if (distanceBetweenPlayers <= range) {
@@ -47,5 +47,4 @@ public class PlayerChat implements Listener {
             }
         }
     }
-
 }

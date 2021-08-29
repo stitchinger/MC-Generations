@@ -20,31 +20,31 @@ import java.util.Collection;
 
 public class NickCommand implements CommandExecutor {
 
-    public boolean onCommand( CommandSender sender, Command command, String label, String[] args ) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if ( ! ( sender instanceof Player) )
+        if (!(sender instanceof Player))
             return true;
 
         Player player = (Player) sender;
-        if(!player.isOp()){
+        if (!player.isOp()) {
             Notification.onlyForOp(player);
             return true;
         }
 
-        if ( args.length == 0 ) {
-            player.sendMessage( ChatColor.YELLOW + "/nick reset" );
-            player.sendMessage( ChatColor.YELLOW + "/nick <Name>" );
+        if (args.length == 0) {
+            player.sendMessage(ChatColor.YELLOW + "/nick reset");
+            player.sendMessage(ChatColor.YELLOW + "/nick <Name>");
             return true;
         }
 
-        switch ( args[0].toLowerCase() ) {
+        switch (args[0].toLowerCase()) {
             case "reset":
-                NickAPI.resetNick( player );
-                NickAPI.resetSkin( player );
-                NickAPI.resetUniqueId( player );
-                NickAPI.resetGameProfileName( player );
-                NickAPI.refreshPlayer( player );
-                player.sendMessage( ChatColor.DARK_RED + "Successfully reset nick" );
+                NickAPI.resetNick(player);
+                NickAPI.resetSkin(player);
+                NickAPI.resetUniqueId(player);
+                NickAPI.resetGameProfileName(player);
+                NickAPI.refreshPlayer(player);
+                player.sendMessage(ChatColor.DARK_RED + "Successfully reset nick");
                 break;
 
             default:
@@ -57,38 +57,38 @@ public class NickCommand implements CommandExecutor {
         return true;
     }
 
-    public void nickPlayer(Player player, String name){
-        NickAPI.nick( player, name );
-        NickAPI.refreshPlayer( player );
+    public void nickPlayer(Player player, String name) {
+        NickAPI.nick(player, name);
+        NickAPI.refreshPlayer(player);
 
-        if(RoleManager.get(player) != null){
+        if (RoleManager.get(player) != null) {
             PlayerRole playerRole = RoleManager.get(player);
-            NickScoreboard.write(name,"admin","", " " + playerRole.getFamily().getColoredName(), false, ChatColor.WHITE);
+            NickScoreboard.write(name, "admin", "", " " + playerRole.getFamily().getColoredName(), false, ChatColor.WHITE);
             NickScoreboard.updateScoreboard(name);
         }
-        player.sendMessage( ChatColor.DARK_GREEN + "Successfully set the nickname to " + ChatColor.YELLOW + name );
+        player.sendMessage(ChatColor.DARK_GREEN + "Successfully set the nickname to " + ChatColor.YELLOW + name);
     }
 
-    private void updateNickNamesToScoreboard( Player player ) {
-        if ( player == null )
-            throw new NullPointerException( "Player cannot be null" );
+    private void updateNickNamesToScoreboard(Player player) {
+        if (player == null)
+            throw new NullPointerException("Player cannot be null");
 
         Scoreboard scoreboard;
         // Change it, if you are using main scoreboard
-        if ( player.getScoreboard() == Bukkit.getScoreboardManager().getMainScoreboard() ) {
+        if (player.getScoreboard() == Bukkit.getScoreboardManager().getMainScoreboard()) {
             scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-            player.setScoreboard( scoreboard );
+            player.setScoreboard(scoreboard);
         } else
             scoreboard = player.getScoreboard();
 
-        if ( scoreboard.getTeam( "nickedTeam" ) != null ) scoreboard.getTeam( "nickedTeam" ).unregister();
+        if (scoreboard.getTeam("nickedTeam") != null) scoreboard.getTeam("nickedTeam").unregister();
 
-        Team team = scoreboard.registerNewTeam( "nickedTeam" );
-        team.setPrefix( "MyPrefix " );
-        team.setSuffix( "MySuffix " );
+        Team team = scoreboard.registerNewTeam("nickedTeam");
+        team.setPrefix("MyPrefix ");
+        team.setSuffix("MySuffix ");
 
         Collection<String> values = NickAPI.getNickedPlayers().values();
-        for ( String name : values )
-            scoreboard.getTeam( "nickedTeam" ).addEntry( name );
+        for (String name : values)
+            scoreboard.getTeam("nickedTeam").addEntry(name);
     }
 }

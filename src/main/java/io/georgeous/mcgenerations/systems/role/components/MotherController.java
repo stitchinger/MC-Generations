@@ -3,7 +3,6 @@ package io.georgeous.mcgenerations.systems.role.components;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.utils.Notification;
 import io.georgeous.mcgenerations.utils.Util;
-import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -23,7 +22,7 @@ public class MotherController {
         children = new ArrayList<>();
     }
 
-    public void update(){
+    public void update() {
         // Shows childs foodlevel on baby-handler
         if (getYoungestChild() != null) { // has child?
             updateBabyHandlerDamage();
@@ -35,8 +34,8 @@ public class MotherController {
         return children;
     }
 
-    public void bornBaby(PlayerRole child){
-        child.getPlayer().teleport(playerRole.getPlayer().getLocation().add(0,1,0));
+    public void bornBaby(PlayerRole child) {
+        child.getPlayer().teleport(playerRole.getPlayer().getLocation().add(0, 1, 0));
         children.add(child);
         // Inherit from mother
         child.generation = playerRole.generation + 1;
@@ -51,7 +50,7 @@ public class MotherController {
                 secSinceLastBaby() > babyCooldown;
     }
 
-    private long secSinceLastBaby(){
+    private long secSinceLastBaby() {
         return (System.currentTimeMillis() - lastChildTime) / 1000;
     }
 
@@ -71,7 +70,7 @@ public class MotherController {
         if (getChildren() == null)
             return null;
 
-        for (int i = getChildren().size()-1; i >= 0; i--) {
+        for (int i = getChildren().size() - 1; i >= 0; i--) {
             if (getChildren().get(i) != null) {
                 return getChildren().get(i);
             }
@@ -79,21 +78,19 @@ public class MotherController {
         return null;
     }
 
-
     // BabyHandler
-    private float calcDamageForBabyHandler(){
+    private float calcDamageForBabyHandler() {
         float foodLevel = (float) getYoungestChild().getPlayer().getFoodLevel();
         return Util.map(foodLevel,
-                        0,
-                        20f,
-                        25,
-                        0);
+                0,
+                20f,
+                25,
+                0);
     }
 
     private void updateBabyHandlerDamage() {
         PlayerInventory inventory = playerRole.getPlayer().getInventory();
         ItemStack babyHandler = Util.findInInventory("Baby-Handler", inventory);
-        Util.setItemsDamage(babyHandler,calcDamageForBabyHandler());
+        Util.setItemsDamage(babyHandler, calcDamageForBabyHandler());
     }
-
 }

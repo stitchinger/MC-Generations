@@ -1,29 +1,23 @@
 package io.georgeous.mcgenerations.systems.player;
 
 import io.georgeous.mcgenerations.MCG;
-import io.georgeous.mcgenerations.systems.role.RoleManager;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-
-import java.util.Map;
-import java.util.UUID;
 
 public class PlayerData {
 
     private MCG plugin;
     private FileConfiguration config;
 
-    public PlayerData(){
+    public PlayerData() {
         plugin = MCG.getInstance();
         config = plugin.getConfig();
     }
 
-    private String getPath(String uuid){
+    private String getPath(String uuid) {
         return "data.player." + uuid + ".wrapper";
     }
-
 
     public void savePlayer(PlayerWrapper playerWrapper) {
         String uuid = playerWrapper.getPlayer().getUniqueId().toString();
@@ -39,7 +33,7 @@ public class PlayerData {
         plugin.saveConfig();
     }
 
-    public void restoreFrom(PlayerWrapper playerWrapper, ConfigurationSection cs){
+    public void restoreFrom(PlayerWrapper playerWrapper, ConfigurationSection cs) {
         int lives = cs.getInt("lives");
         playerWrapper.setLives(lives);
 
@@ -63,12 +57,12 @@ public class PlayerData {
         deleteEntry(uuid);
     }
 
-    public void deleteEntry(String uuid){
+    public void deleteEntry(String uuid) {
         config.set(getPath(uuid), null);
         MCG.getInstance().saveConfig();
     }
 
-    public boolean playerDataExists(Player player){
+    public boolean playerDataExists(Player player) {
         return MCG.getInstance().getConfig().contains(getPath(player.getUniqueId().toString()));
     }
 }
