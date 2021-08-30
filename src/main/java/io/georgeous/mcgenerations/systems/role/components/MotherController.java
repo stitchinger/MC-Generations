@@ -34,7 +34,7 @@ public class MotherController {
     }
 
     public void bornBaby(PlayerRole child) {
-        child.getPlayer().teleport(playerRole.getPlayer().getLocation().add(0, 1, 0));
+        child.getPlayer().teleport(playerRole.getPlayer().getLocation().add(0, 0, 0));
         children.add(child);
         // Inherit from mother
         child.generation = playerRole.generation + 1;
