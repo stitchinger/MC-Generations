@@ -18,7 +18,7 @@ import java.util.Map;
 import static org.bukkit.Bukkit.getServer;
 
 public class RoleManager {
-    private static HashMap<String, PlayerRole> roles = new HashMap<>();
+    private static final HashMap<String, PlayerRole> roles = new HashMap<>();
     private static final long VALID_OFFLINE_TIME_SEC = 999999999999999999L;
 
     public static void enable() {

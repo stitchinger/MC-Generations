@@ -9,7 +9,7 @@ import java.util.*;
 import static org.bukkit.Bukkit.getServer;
 
 public class PlayerManager {
-    private static HashMap<String, PlayerWrapper> playersMap = new HashMap<>();
+    private static final HashMap<String, PlayerWrapper> playersMap = new HashMap<>();
     public static PlayerData data;
 
     public static void enable() {

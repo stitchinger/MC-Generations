@@ -20,7 +20,7 @@ import java.util.List;
 
 public class SpawnManager {
 
-    private static int timeInLobby = 5; // in seconds
+    private static final int timeInLobby = 5; // in seconds
 
     public static void spawnPlayer(Player player) {
 
@@ -36,7 +36,7 @@ public class SpawnManager {
                     spawnAsEve(player);
                 }
             }
-        }, timeInLobby * 20L); //20 Tick (1 Second) delay before run() is called
+        }, timeInLobby * 20L); // 20 Tick (1 Second) delay before run() is called
     }
 
     public static void spawnAsEve(Player player) {

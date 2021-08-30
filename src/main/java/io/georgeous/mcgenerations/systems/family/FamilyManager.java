@@ -12,8 +12,7 @@ import java.util.Map;
 import static org.bukkit.Bukkit.getServer;
 
 public class FamilyManager {
-    private static HashMap<String, Family> families = new HashMap<>();
-
+    private static final HashMap<String, Family> families = new HashMap<>();
 
     public static void enable() {
         registerCommands();

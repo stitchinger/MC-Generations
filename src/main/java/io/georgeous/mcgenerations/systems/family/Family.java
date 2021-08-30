@@ -1,6 +1,5 @@
 package io.georgeous.mcgenerations.systems.family;
 
-import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.Notification;
@@ -18,8 +17,8 @@ public class Family {
     private String color;
     private long established;
 
-    private String uuid;
-    private List<PlayerRole> members;
+    private final String uuid;
+    private final List<PlayerRole> members;
     private PlayerRole leader;
     private boolean namedByLeader;
     public boolean isDead = false;
@@ -55,10 +54,6 @@ public class Family {
     }
 
     public void rename(String name) {
-        if (false) {
-            System.out.println("Family name already defined by Leader");
-            return;
-        }
         setName(name);
         namedByLeader = true;
     }
