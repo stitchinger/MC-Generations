@@ -96,7 +96,7 @@ public class FamilyManager {
         String color = configSection.getString("color");
         family.setColor(color);
 
-        Long established = configSection.getLong("established");
+        long established = configSection.getLong("established");
         family.setEstablished(established);
 
         // Delete FAmily Data

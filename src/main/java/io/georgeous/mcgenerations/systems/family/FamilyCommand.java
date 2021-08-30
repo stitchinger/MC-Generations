@@ -8,13 +8,14 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FamilyCommand implements CommandExecutor, TabCompleter {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
 
         if (!(sender instanceof Player)) {
             return true;
@@ -78,19 +79,18 @@ public class FamilyCommand implements CommandExecutor, TabCompleter {
     }
 
     private String familiesToString() {
-        String msg = "";
+        StringBuilder msg = new StringBuilder();
         for (Family f : FamilyManager.getAll()) {
-            msg += (f.getColoredName() + ", ");
+            msg.append(f.getColoredName()).append(", ");
         }
-        return msg;
+        return msg.toString();
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
-        List<String> l = new ArrayList<String>();
-        if (cmd.getName().equalsIgnoreCase("family") && args.length >= 0) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, Command cmd, @NotNull String label, String[] args) {
+        List<String> l = new ArrayList<>();
+        if (cmd.getName().equalsIgnoreCase("family")) {
             if (sender instanceof Player) {
-
                 l.add("list");
                 l.add("rename");
                 l.add("info");

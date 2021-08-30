@@ -52,7 +52,9 @@ public class PlayerData {
         String uuid = playerWrapper.getPlayer().getUniqueId().toString();
 
         ConfigurationSection cs = config.getConfigurationSection(getPath(uuid));
-        restoreFrom(playerWrapper, cs);
+        if (cs != null) {
+            restoreFrom(playerWrapper, cs);
+        }
 
         deleteEntry(uuid);
     }

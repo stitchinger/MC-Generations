@@ -6,10 +6,10 @@ import java.util.List;
 
 public class FriendlyTalk {
 
-    private PlayerRole sender;
-    private PlayerRole receiver;
+    private final PlayerRole sender;
+    private final PlayerRole receiver;
     public static List<String[]> sentences;
-    private int index;
+    private final int index;
 
     public FriendlyTalk(PlayerRole sender, PlayerRole receiver) {
         this.sender = sender;

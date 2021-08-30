@@ -42,8 +42,7 @@ public class Util {
     }
 
     public static int getRandomInt(int length) {
-        int rnd = new Random().nextInt(length);
-        return rnd;
+        return new Random().nextInt(length);
     }
 
     public static ItemStack findInInventory(String name, PlayerInventory inventory) {
@@ -52,7 +51,7 @@ public class Util {
         for (ItemStack item : stack) {
             if (item != null) {
                 ItemMeta meta = item.getItemMeta();
-                if (meta.getDisplayName().contains(name)) {
+                if (meta != null && meta.getDisplayName().contains(name)) {
                     return item;
                 }
             }

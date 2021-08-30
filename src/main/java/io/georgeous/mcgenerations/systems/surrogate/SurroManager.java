@@ -37,7 +37,6 @@ public class SurroManager implements Listener {
 
             if (!p.isOnline()) {
                 destroy(p);
-                continue;
             } else {
                 PotionEffect invis = new PotionEffect(PotionEffectType.INVISIBILITY, 10, 1, false, false, true);
                 p.addPotionEffect(invis);

@@ -116,6 +116,11 @@ public class RoleManager {
         FileConfiguration config = MCG.getInstance().getConfig();
         ConfigurationSection configSection = config.getConfigurationSection("data.player." + uuid + ".role");
 
+        if (configSection == null) {
+            // TODO: could not find player, recreate player
+            return;
+        }
+
         // PlayerRole
         int age = configSection.getInt("age");
         String name = configSection.getString("name");

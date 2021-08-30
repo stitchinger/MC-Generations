@@ -14,16 +14,18 @@ public class ItemManager {
     public static ItemStack createBabyHandler() {
         ItemStack item = new ItemStack(Material.CARROT_ON_A_STICK);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Baby-Handler");
-        List<String> lore = new ArrayList<String>();
-        lore.add("");
-        lore.add(ChatColor.GOLD + "" + ChatColor.ITALIC + "-Right-click baby to feed");
-        lore.add(ChatColor.GOLD + "" + ChatColor.ITALIC + "-Sneak near baby to carry");
-        lore.add(ChatColor.GOLD + "" + ChatColor.ITALIC + "-Shows the babys hunger");
-        meta.setLore(lore);
-        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        item.setItemMeta(meta);
+        if (meta != null) {
+            meta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Baby-Handler");
+            List<String> lore = new ArrayList<String>();
+            lore.add("");
+            lore.add(ChatColor.GOLD + "" + ChatColor.ITALIC + "-Right-click baby to feed");
+            lore.add(ChatColor.GOLD + "" + ChatColor.ITALIC + "-Sneak near baby to carry");
+            lore.add(ChatColor.GOLD + "" + ChatColor.ITALIC + "-Shows the babys hunger");
+            meta.setLore(lore);
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+            item.setItemMeta(meta);
+        }
         return item;
     }
 
