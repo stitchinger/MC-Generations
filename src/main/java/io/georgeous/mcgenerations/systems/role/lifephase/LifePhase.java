@@ -5,11 +5,13 @@ import io.georgeous.mcgenerations.systems.surrogate.SurroManager;
 import io.georgeous.mcgenerations.utils.Notification;
 import io.georgeous.mcgenerations.utils.Skin;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import xyz.haoshoku.nick.api.NickAPI;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class LifePhase {
@@ -81,9 +83,16 @@ public class LifePhase {
     public void start() {
         Notification.neutralMsg(playerRole.getPlayer(), "You are a §a" + name);
 
-        NickAPI.setSkin(playerRole.getPlayer(), skin.value, skin.signature);
-        NickAPI.refreshPlayer(playerRole.getPlayer());
+        Player player = playerRole.getPlayer();
+        // Save current potioneffects
+        Collection<PotionEffect> pe = player.getActivePotionEffects();
+
+        NickAPI.setSkin(player, skin.value, skin.signature);
+        NickAPI.refreshPlayer(player);
         playerRole.refreshHealthBar();
+
+        // Reapply potioneffects
+        player.addPotionEffects(pe);
 
         if (surrogate) {
             SurroManager.create(playerRole.getPlayer(), playerRole.getName() + " " + playerRole.family.getColoredName());
