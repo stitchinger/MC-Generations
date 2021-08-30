@@ -51,15 +51,15 @@ public class LifePhase {
         this.feedable = feedable;
 
         if (slowness > 0) {
-            effects.add(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, slowness, false, false, false));
+            effects.add(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, slowness, false, false, true));
         }
 
         if (digging > 0) {
-            effects.add(new PotionEffect(PotionEffectType.SLOW_DIGGING, Integer.MAX_VALUE, digging, false, false, false));
+            effects.add(new PotionEffect(PotionEffectType.SLOW_DIGGING, Integer.MAX_VALUE, digging, false, false, true));
         }
 
         if (jump > 0) {
-            effects.add(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, jump, false, false, false));
+            effects.add(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, jump, false, false, true));
         }
     }
 
@@ -84,15 +84,9 @@ public class LifePhase {
         Notification.neutralMsg(playerRole.getPlayer(), "You are a §a" + name);
 
         Player player = playerRole.getPlayer();
-        // Save current potioneffects
-        Collection<PotionEffect> pe = player.getActivePotionEffects();
-
         NickAPI.setSkin(player, skin.value, skin.signature);
         NickAPI.refreshPlayer(player);
         playerRole.refreshHealthBar();
-
-        // Reapply potioneffects
-        player.addPotionEffects(pe);
 
         if (surrogate) {
             SurroManager.create(playerRole.getPlayer(), playerRole.getName() + " " + playerRole.family.getColoredName());
@@ -104,9 +98,9 @@ public class LifePhase {
             SurroManager.destroy(playerRole.getPlayer());
         }
 
-        for (PotionEffect p : playerRole.getPlayer().getActivePotionEffects()) {
-            playerRole.getPlayer().removePotionEffect(p.getType());
-        }
+        playerRole.getPlayer().removePotionEffect(PotionEffectType.SLOW);
+        playerRole.getPlayer().removePotionEffect(PotionEffectType.SLOW_DIGGING);
+        playerRole.getPlayer().removePotionEffect(PotionEffectType.JUMP);
     }
 
     public void update() {
