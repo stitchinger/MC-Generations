@@ -46,9 +46,6 @@ public class PlayerRole {
             mc.update();
             am.update();
             pm.update();
-            if(player.getSaturation() > 0){
-                player.setSaturation(0);
-            }
         }
     }
 

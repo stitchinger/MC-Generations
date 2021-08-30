@@ -39,6 +39,17 @@ public class RoleListener implements Listener {
 
         String roleName = playerRole.getName() + " " + playerRole.getFamily().getColoredName() + ChatColor.RESET;
         String msg = event.getDeathMessage().replace(player.getName(), roleName);
+
+        // Replace killers real name with character name
+        Player killer = player.getKiller();
+        if (killer != null) {
+            PlayerRole killerRole = RoleManager.get(killer);
+            if (killerRole != null) {
+                String killersCharName = killerRole.getName() + " " + killerRole.getFamily().getColoredName() + ChatColor.RESET;
+                msg = msg.replace(killer.getName(), killersCharName);
+            }
+        }
+
         event.setDeathMessage(msg);
 
         boolean diedOfOldAge = playerRole.am.getAge() >= 60;
@@ -49,6 +60,7 @@ public class RoleListener implements Listener {
 
         player.setBedSpawnLocation(MCG.council.councilLocation, true);
     }
+
 
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {

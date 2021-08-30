@@ -5,11 +5,13 @@ import io.georgeous.mcgenerations.systems.surrogate.SurroManager;
 import io.georgeous.mcgenerations.utils.Notification;
 import io.georgeous.mcgenerations.utils.Skin;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import xyz.haoshoku.nick.api.NickAPI;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class LifePhase {
@@ -49,15 +51,15 @@ public class LifePhase {
         this.feedable = feedable;
 
         if (slowness > 0) {
-            effects.add(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, slowness, false, false, false));
+            effects.add(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, slowness, false, false, true));
         }
 
         if (digging > 0) {
-            effects.add(new PotionEffect(PotionEffectType.SLOW_DIGGING, Integer.MAX_VALUE, digging, false, false, false));
+            effects.add(new PotionEffect(PotionEffectType.SLOW_DIGGING, Integer.MAX_VALUE, digging, false, false, true));
         }
 
         if (jump > 0) {
-            effects.add(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, jump, false, false, false));
+            effects.add(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, jump, false, false, true));
         }
     }
 
@@ -81,8 +83,9 @@ public class LifePhase {
     public void start() {
         Notification.neutralMsg(playerRole.getPlayer(), "You are a §a" + name);
 
-        NickAPI.setSkin(playerRole.getPlayer(), skin.value, skin.signature);
-        NickAPI.refreshPlayer(playerRole.getPlayer());
+        Player player = playerRole.getPlayer();
+        NickAPI.setSkin(player, skin.value, skin.signature);
+        NickAPI.refreshPlayer(player);
         playerRole.refreshHealthBar();
 
         if (surrogate) {
@@ -95,9 +98,9 @@ public class LifePhase {
             SurroManager.destroy(playerRole.getPlayer());
         }
 
-        for (PotionEffect p : playerRole.getPlayer().getActivePotionEffects()) {
-            playerRole.getPlayer().removePotionEffect(p.getType());
-        }
+        playerRole.getPlayer().removePotionEffect(PotionEffectType.SLOW);
+        playerRole.getPlayer().removePotionEffect(PotionEffectType.SLOW_DIGGING);
+        playerRole.getPlayer().removePotionEffect(PotionEffectType.JUMP);
     }
 
     public void update() {
