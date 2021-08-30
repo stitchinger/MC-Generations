@@ -13,13 +13,14 @@ public class MeCommand implements CommandExecutor {
     public boolean onCommand( CommandSender sender,  Command command, String label, String[] args) {
         if(!(sender instanceof Player))
             return true;
-        Player player = (Player) sender;
 
-        if(RoleManager.get(player) == null){
+        Player player = (Player) sender;
+        PlayerRole role = RoleManager.get(player);
+
+        if(role == null){
             Notification.errorMsg(player, "No role found");
             return true;
         }
-        PlayerRole role = RoleManager.get(player);
 
         Notification.neutralMsg(player, role.getName() + " " + role.getFamily().getColoredName());
         Notification.neutralMsg(player, "Age: " + role.am.getAge());

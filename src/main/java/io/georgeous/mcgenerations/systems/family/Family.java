@@ -119,11 +119,12 @@ public class Family {
     }
 
     public static boolean inSameFamily(Player one, Player two) {
-        if (RoleManager.get(one) == null || PlayerManager.get(two) == null) {
-            return false;
-        }
         PlayerRole roleOne = RoleManager.get(one);
         PlayerRole roleTwo = RoleManager.get(two);
+
+        if (roleOne == null || roleTwo == null) {
+            return false;
+        }
 
         return inSameFamily(roleOne, roleTwo);
     }

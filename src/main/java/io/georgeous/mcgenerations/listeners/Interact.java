@@ -43,9 +43,9 @@ public class Interact implements Listener {
     }
 
     public void feedBaby(Player feeder, Player baby) {
-        if (RoleManager.get(baby) == null)
-            return;
         PlayerRole role = RoleManager.get(baby);
+        if (role == null)
+            return;
 
         if (baby.getFoodLevel() >= 20)
             return;
@@ -61,10 +61,10 @@ public class Interact implements Listener {
     }
 
     public void babyFeedEffect(Location location) {
-        World world = location.getWorld();
-        world.spawnParticle(Particle.COMPOSTER, location, 40, 0.5, 0.5, 0.5);
-        world.playSound(location, Sound.ENTITY_GENERIC_DRINK, 1, 1);
-    }
+            World world = location.getWorld();
+            world.spawnParticle(Particle.COMPOSTER, location, 40, 0.5, 0.5, 0.5);
+            world.playSound(location, Sound.ENTITY_GENERIC_DRINK, 1, 1);
+        }
 
     @EventHandler
     public void disableFriendlyFire(EntityDamageByEntityEvent event) {

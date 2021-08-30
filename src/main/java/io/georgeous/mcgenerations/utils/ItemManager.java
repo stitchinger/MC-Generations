@@ -39,7 +39,7 @@ public class ItemManager {
             ItemMeta meta = item.getItemMeta();
             assert meta != null;
             if (meta.hasDisplayName()) {
-                return item.getItemMeta().getDisplayName().contains(needle);
+                return meta.getDisplayName().contains(needle);
             }
         }
         return false;

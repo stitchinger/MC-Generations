@@ -11,23 +11,23 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class FamilyListener implements Listener {
 
     @EventHandler
-    public void familyMemberDeath(PlayerDeathEvent event){
+    public void familyMemberDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
         removeMember(player);
     }
 
     @EventHandler
-    public void familyMemberQuit(PlayerQuitEvent event){
+    public void familyMemberQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         //removeMember(player);
     }
 
-    private void removeMember(Player player){
-        if(RoleManager.get(player) == null){
+    private void removeMember(Player player) {
+        PlayerRole role = RoleManager.get(player);
+        if (role == null) {
             return;
         }
 
-        PlayerRole role = RoleManager.get(player);
         role.getFamily().removeMember(role);
     }
 }

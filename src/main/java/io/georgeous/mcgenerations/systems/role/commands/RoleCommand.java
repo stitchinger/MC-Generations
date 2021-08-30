@@ -26,11 +26,11 @@ public class RoleCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if (RoleManager.get(player) == null) {
+        PlayerRole playerRole = RoleManager.get(player);
+        if (playerRole == null) {
             Notification.errorMsg(player, "No role found");
             return true;
         }
-        PlayerRole playerRole = RoleManager.get(player);
 
         switch (args[0]) {
             case "age":

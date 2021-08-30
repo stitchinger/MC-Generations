@@ -61,9 +61,10 @@ public class PlayerManager {
     }
 
     public static void remove(Player player) {
-        if (get(player) == null)
-            return;
         PlayerWrapper playerWrapper = get(player);
+        if (playerWrapper == null)
+            return;
+
         data.savePlayer(playerWrapper);
         playersMap.remove(player.getUniqueId().toString());
     }

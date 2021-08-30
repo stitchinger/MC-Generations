@@ -67,12 +67,13 @@ public class MotherController {
     }
 
     public PlayerRole getYoungestChild() {
-        if (getChildren() == null)
+        List<PlayerRole> children = getChildren();
+        if (children == null)
             return null;
 
-        for (int i = getChildren().size() - 1; i >= 0; i--) {
-            if (getChildren().get(i) != null) {
-                return getChildren().get(i);
+        for (int i = children.size() - 1; i >= 0; i--) {
+            if (children.get(i) != null) {
+                return children.get(i);
             }
         }
         return null;
