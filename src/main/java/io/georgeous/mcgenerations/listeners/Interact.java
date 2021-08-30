@@ -61,10 +61,15 @@ public class Interact implements Listener {
     }
 
     public void babyFeedEffect(Location location) {
+        try {
             World world = location.getWorld();
             world.spawnParticle(Particle.COMPOSTER, location, 40, 0.5, 0.5, 0.5);
             world.playSound(location, Sound.ENTITY_GENERIC_DRINK, 1, 1);
         }
+        catch (Exception e) {
+            // Fail silently
+        }
+    }
 
     @EventHandler
     public void disableFriendlyFire(EntityDamageByEntityEvent event) {
