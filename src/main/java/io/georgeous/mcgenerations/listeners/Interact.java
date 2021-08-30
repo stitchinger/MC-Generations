@@ -4,6 +4,7 @@ import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
+import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
 import io.georgeous.mcgenerations.utils.ItemManager;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -13,6 +14,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -102,5 +104,19 @@ public class Interact implements Listener {
         //FriendlyTalk ft = new FriendlyTalk(damager, receiver);
         damager.getPlayer().sendMessage("You gave " + receiver.getName() + " a big hug");
         receiver.getPlayer().sendMessage(damager.getName() + " gave you a big hug");
+    }
+
+    @EventHandler
+    public void disableBabyBlockPlacement(BlockPlaceEvent event) {
+        Player player = event.getPlayer();
+        PlayerRole role = RoleManager.get(player);
+        if (role == null)
+            return;
+        PhaseManager phaseManager = RoleManager.get(player).pm;
+        if (phaseManager == null)
+            return;
+        if (phaseManager.getCurrentPhase().getName().equalsIgnoreCase("baby")) {
+            event.setCancelled(true);
+        }
     }
 }
