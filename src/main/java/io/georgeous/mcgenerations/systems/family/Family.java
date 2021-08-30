@@ -113,7 +113,6 @@ public class Family {
         boolean notSelf = one != two;
         boolean sameFamily = one.getFamily() == two.getFamily();
         return notSelf && sameFamily;
-
     }
 
     public static boolean inSameFamily(Player one, Player two) {
