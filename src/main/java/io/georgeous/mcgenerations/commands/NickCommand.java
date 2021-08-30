@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
+import org.jetbrains.annotations.NotNull;
 import xyz.haoshoku.nick.api.NickAPI;
 import xyz.haoshoku.nick.api.NickScoreboard;
 
@@ -20,7 +21,7 @@ import java.util.Collection;
 
 public class NickCommand implements CommandExecutor {
 
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
 
         if (!(sender instanceof Player))
             return true;
@@ -37,22 +38,17 @@ public class NickCommand implements CommandExecutor {
             return true;
         }
 
-        switch (args[0].toLowerCase()) {
-            case "reset":
-                NickAPI.resetNick(player);
-                NickAPI.resetSkin(player);
-                NickAPI.resetUniqueId(player);
-                NickAPI.resetGameProfileName(player);
-                NickAPI.refreshPlayer(player);
-                player.sendMessage(ChatColor.DARK_RED + "Successfully reset nick");
-                break;
-
-            default:
-                String name = args[0].substring(0, 1).toUpperCase() + args[0].substring(1);
-                nickPlayer(player, name);
-                NickAPI.setSkin(player, name);
-
-                break;
+        if ("reset".equalsIgnoreCase(args[0])) {
+            NickAPI.resetNick(player);
+            NickAPI.resetSkin(player);
+            NickAPI.resetUniqueId(player);
+            NickAPI.resetGameProfileName(player);
+            NickAPI.refreshPlayer(player);
+            player.sendMessage(ChatColor.DARK_RED + "Successfully reset nick");
+        } else {
+            String name = args[0].substring(0, 1).toUpperCase() + args[0].substring(1);
+            nickPlayer(player, name);
+            NickAPI.setSkin(player, name);
         }
         return true;
     }
@@ -69,6 +65,7 @@ public class NickCommand implements CommandExecutor {
         player.sendMessage(ChatColor.DARK_GREEN + "Successfully set the nickname to " + ChatColor.YELLOW + name);
     }
 
+    // TODO: remove private method that is never used
     private void updateNickNamesToScoreboard(Player player) {
         if (player == null)
             throw new NullPointerException("Player cannot be null");

@@ -7,8 +7,8 @@ import org.bukkit.entity.Player;
 
 public class PlayerData {
 
-    private MCG plugin;
-    private FileConfiguration config;
+    private final MCG plugin;
+    private final FileConfiguration config;
 
     public PlayerData() {
         plugin = MCG.getInstance();
@@ -52,7 +52,9 @@ public class PlayerData {
         String uuid = playerWrapper.getPlayer().getUniqueId().toString();
 
         ConfigurationSection cs = config.getConfigurationSection(getPath(uuid));
-        restoreFrom(playerWrapper, cs);
+        if (cs != null) {
+            restoreFrom(playerWrapper, cs);
+        }
 
         deleteEntry(uuid);
     }

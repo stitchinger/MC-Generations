@@ -12,8 +12,7 @@ import java.util.Map;
 import static org.bukkit.Bukkit.getServer;
 
 public class FamilyManager {
-    private static HashMap<String, Family> families = new HashMap<>();
-
+    private static final HashMap<String, Family> families = new HashMap<>();
 
     public static void enable() {
         registerCommands();
@@ -97,7 +96,7 @@ public class FamilyManager {
         String color = configSection.getString("color");
         family.setColor(color);
 
-        Long established = configSection.getLong("established");
+        long established = configSection.getLong("established");
         family.setEstablished(established);
 
         // Delete FAmily Data

@@ -11,7 +11,7 @@ import java.util.Random;
 
 public class Util {
 
-    private static String[] colorCodes = {"§1", "§2", "§3", "§4", "§5", "§6", "§7", "§8", "§9", "§a", "§b", "§c", "§d", "§e", "§f"};
+    private static final String[] colorCodes = {"§1", "§2", "§3", "§4", "§5", "§6", "§7", "§8", "§9", "§a", "§b", "§c", "§d", "§e", "§f"};
 
     // Map Function
     public static final float map(float value,
@@ -42,8 +42,7 @@ public class Util {
     }
 
     public static int getRandomInt(int length) {
-        int rnd = new Random().nextInt(length);
-        return rnd;
+        return new Random().nextInt(length);
     }
 
     public static ItemStack findInInventory(String name, PlayerInventory inventory) {
@@ -52,7 +51,7 @@ public class Util {
         for (ItemStack item : stack) {
             if (item != null) {
                 ItemMeta meta = item.getItemMeta();
-                if (meta.getDisplayName().contains(name)) {
+                if (meta != null && meta.getDisplayName().contains(name)) {
                     return item;
                 }
             }

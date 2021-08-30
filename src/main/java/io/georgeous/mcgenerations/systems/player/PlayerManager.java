@@ -9,7 +9,7 @@ import java.util.*;
 import static org.bukkit.Bukkit.getServer;
 
 public class PlayerManager {
-    private static HashMap<String, PlayerWrapper> playersMap = new HashMap<>();
+    private static final HashMap<String, PlayerWrapper> playersMap = new HashMap<>();
     public static PlayerData data;
 
     public static void enable() {
@@ -61,9 +61,10 @@ public class PlayerManager {
     }
 
     public static void remove(Player player) {
-        if (get(player) == null)
-            return;
         PlayerWrapper playerWrapper = get(player);
+        if (playerWrapper == null)
+            return;
+
         data.savePlayer(playerWrapper);
         playersMap.remove(player.getUniqueId().toString());
     }

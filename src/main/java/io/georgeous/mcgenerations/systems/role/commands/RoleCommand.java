@@ -26,11 +26,11 @@ public class RoleCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if (RoleManager.get(player) == null) {
+        PlayerRole playerRole = RoleManager.get(player);
+        if (playerRole == null) {
             Notification.errorMsg(player, "No role found");
             return true;
         }
-        PlayerRole playerRole = RoleManager.get(player);
 
         switch (args[0]) {
             case "age":
@@ -61,9 +61,9 @@ public class RoleCommand implements CommandExecutor, TabCompleter {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
-        List<String> l = new ArrayList<String>();
-        if (cmd.getName().equalsIgnoreCase("role") && args.length >= 0) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, Command cmd, @NotNull String label, String[] args) {
+        List<String> l = new ArrayList<>();
+        if (cmd.getName().equalsIgnoreCase("role")) {
             if (sender instanceof Player) {
                 l.add("age");
                 l.add("info");

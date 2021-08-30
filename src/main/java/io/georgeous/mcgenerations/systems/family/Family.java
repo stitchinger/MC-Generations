@@ -1,6 +1,5 @@
 package io.georgeous.mcgenerations.systems.family;
 
-import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.Notification;
@@ -18,24 +17,23 @@ public class Family {
     private String color;
     private long established;
 
-    private String uuid;
-    private List<PlayerRole> members;
+    private final String uuid;
+    private final List<PlayerRole> members;
     private PlayerRole leader;
     private boolean namedByLeader;
     public boolean isDead = false;
 
     public Family(String name) {
-        this.name = name;
-        this.color = Util.getRandomColor();
-        this.uuid = UUID.randomUUID().toString();
-        this.established = System.currentTimeMillis();
-        this.members = new ArrayList<>();
-        namedByLeader = false;
+        this(name, UUID.randomUUID().toString());
     }
 
     public Family(String name, String uuid) {
-        this(name);
+        this.name = name;
+        this.color = Util.getRandomColor();
         this.uuid = uuid;
+        this.established = System.currentTimeMillis();
+        this.members = new ArrayList<>();
+        namedByLeader = false;
     }
 
     public String getUuid() {
@@ -56,10 +54,6 @@ public class Family {
     }
 
     public void rename(String name) {
-        if (false) {
-            System.out.println("Family name already defined by Leader");
-            return;
-        }
         setName(name);
         namedByLeader = true;
     }
@@ -120,11 +114,12 @@ public class Family {
     }
 
     public static boolean inSameFamily(Player one, Player two) {
-        if (RoleManager.get(one) == null || PlayerManager.get(two) == null) {
-            return false;
-        }
         PlayerRole roleOne = RoleManager.get(one);
         PlayerRole roleTwo = RoleManager.get(two);
+
+        if (roleOne == null || roleTwo == null) {
+            return false;
+        }
 
         return inSameFamily(roleOne, roleTwo);
     }

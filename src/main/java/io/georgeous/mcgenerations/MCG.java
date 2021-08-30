@@ -23,7 +23,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Team;
 
 public final class MCG extends JavaPlugin {
-
+    // test comment
     public static MCG plugin;
     public DataManager data;
 

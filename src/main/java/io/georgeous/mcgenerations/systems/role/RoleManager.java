@@ -18,7 +18,7 @@ import java.util.Map;
 import static org.bukkit.Bukkit.getServer;
 
 public class RoleManager {
-    private static HashMap<String, PlayerRole> roles = new HashMap<>();
+    private static final HashMap<String, PlayerRole> roles = new HashMap<>();
     private static final long VALID_OFFLINE_TIME_SEC = 999999999999999999L;
 
     public static void enable() {
@@ -115,6 +115,11 @@ public class RoleManager {
         String uuid = player.getUniqueId().toString();
         FileConfiguration config = MCG.getInstance().getConfig();
         ConfigurationSection configSection = config.getConfigurationSection("data.player." + uuid + ".role");
+
+        if (configSection == null) {
+            // TODO: could not find player, recreate player
+            return;
+        }
 
         // PlayerRole
         int age = configSection.getInt("age");

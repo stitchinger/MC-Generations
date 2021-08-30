@@ -30,10 +30,10 @@ public class RoleListener implements Listener {
     @EventHandler
     public void onRoleDead(PlayerDeathEvent event) {
         Player player = event.getEntity();
-        if (RoleManager.get(player) == null) {
+        PlayerRole playerRole = RoleManager.get(player);
+        if (playerRole == null) {
             return;
         }
-        PlayerRole playerRole = RoleManager.get(player);
 
         removeBabyHandlerFromDrops(event);
 

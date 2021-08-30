@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
 import java.util.logging.Level;
 
 public class DataManager {
-    private MCG plugin;
+    private final MCG plugin;
     private FileConfiguration dataConfig = null;
     private File configFile = null;
 
