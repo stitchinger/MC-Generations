@@ -25,17 +25,16 @@ public class Family {
     public boolean isDead = false;
 
     public Family(String name) {
-        this.name = name;
-        this.color = Util.getRandomColor();
-        this.uuid = UUID.randomUUID().toString();
-        this.established = System.currentTimeMillis();
-        this.members = new ArrayList<>();
-        namedByLeader = false;
+        this(name, UUID.randomUUID().toString());
     }
 
     public Family(String name, String uuid) {
-        this(name);
+        this.name = name;
+        this.color = Util.getRandomColor();
         this.uuid = uuid;
+        this.established = System.currentTimeMillis();
+        this.members = new ArrayList<>();
+        namedByLeader = false;
     }
 
     public String getUuid() {
