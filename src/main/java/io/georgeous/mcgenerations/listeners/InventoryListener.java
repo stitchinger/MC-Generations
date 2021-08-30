@@ -27,6 +27,7 @@ public class InventoryListener implements Listener {
         ItemStack item = event.getItemDrop().getItemStack();
         if (ItemManager.isBabyHandler(item)) {
             event.setCancelled(true);
+            // Test
         }
     }
 
