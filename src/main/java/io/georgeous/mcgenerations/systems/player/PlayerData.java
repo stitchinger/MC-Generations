@@ -22,13 +22,13 @@ public class PlayerData {
     public void savePlayer(PlayerWrapper playerWrapper) {
         String uuid = playerWrapper.getPlayer().getUniqueId().toString();
 
-
         ConfigurationSection cs = config.createSection(getPath(uuid));
         cs.set("name", playerWrapper.getPlayer().getName());
         cs.set("karma", playerWrapper.getKarma());
         cs.set("lives", playerWrapper.getLives());
         cs.set("playtime", playerWrapper.getPlayTime());
         cs.set("timesinceoffline", System.currentTimeMillis());
+        cs.set("debug", playerWrapper.isDebugMode());
 
         plugin.saveConfig();
     }
@@ -46,6 +46,8 @@ public class PlayerData {
         long timeSinceOffline = cs.getLong("timesinceoffline");
         playerWrapper.setLastOfflineTime(System.currentTimeMillis() - timeSinceOffline);
 
+        boolean debugMode = cs.getBoolean("debug");
+        playerWrapper.setDebugMode(debugMode);
     }
 
     public void restorePlayerWrapperFromConfig(PlayerWrapper playerWrapper) {
