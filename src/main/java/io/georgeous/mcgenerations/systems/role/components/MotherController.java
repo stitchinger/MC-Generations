@@ -1,5 +1,6 @@
 package io.georgeous.mcgenerations.systems.role.components;
 
+import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.utils.Notification;
 import io.georgeous.mcgenerations.utils.Util;
@@ -44,9 +45,11 @@ public class MotherController {
     }
 
     public boolean canHaveBaby() {
+        boolean playerInDebug = PlayerManager.get(playerRole.getPlayer()).isDebugMode();
         return playerRole.am.getAge() > 16 &&
                 playerRole.am.getAge() < 9999999 &&
-                secSinceLastBaby() > babyCooldown;
+                secSinceLastBaby() > babyCooldown &&
+                !playerInDebug;
     }
 
     private long secSinceLastBaby() {

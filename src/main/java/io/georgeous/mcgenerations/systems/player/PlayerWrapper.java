@@ -9,6 +9,7 @@ public class PlayerWrapper {
     private long playTime = 0;
     private long lastOfflineTime = 0;
     private long timeOfJoin;
+    private boolean debugMode = false;
 
     public PlayerWrapper(Player player) {
         this.player = player;
@@ -57,5 +58,13 @@ public class PlayerWrapper {
 
     public void setTimeOfJoin(long timeOfJoin) {
         this.timeOfJoin = timeOfJoin;
+    }
+
+    public boolean isDebugMode() {
+        return debugMode;
+    }
+
+    public void setDebugMode(boolean debugMode) {
+        this.debugMode = debugMode;
     }
 }

@@ -1,5 +1,6 @@
 package io.georgeous.mcgenerations.systems.role.components;
 
+import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import org.bukkit.Sound;
 
@@ -23,7 +24,8 @@ public class AgeManager {
         long timeSinceLastUpdate = time - lastTime;
         ageInSeconds += timeSinceLastUpdate;
 
-        if (ageInSeconds >= secInYear) {
+        boolean playerInDebug = PlayerManager.get(playerRole.getPlayer()).isDebugMode();
+        if (ageInSeconds >= secInYear && !playerInDebug) {
             this.ageUp();
             ageInSeconds = 0;
         }
