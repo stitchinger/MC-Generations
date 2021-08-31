@@ -111,7 +111,6 @@ public class LifePhase {
             if (foodLevel > 0) {
                 playerRole.getPlayer().setFoodLevel(foodLevel - 1);
             }
-
         }
     }
 

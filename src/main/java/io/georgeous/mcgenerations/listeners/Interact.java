@@ -106,6 +106,12 @@ public class Interact implements Listener {
         //FriendlyTalk ft = new FriendlyTalk(damager, receiver);
         damager.getPlayer().sendMessage("You gave " + receiver.getName() + " a big hug");
         receiver.getPlayer().sendMessage(damager.getName() + " gave you a big hug");
+
+        try {
+            damager.getPlayer().getWorld().spawnParticle(Particle.HEART, damager.getPlayer().getLocation(), 5, 0.5, 0.5, 0.5);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     @EventHandler
