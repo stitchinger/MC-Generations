@@ -5,10 +5,7 @@ import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.lifephase.events.PlayerPhaseUpEvent;
 import io.georgeous.mcgenerations.utils.Skin;
 import io.georgeous.piggyback.Piggyback;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 
 public class PhaseManager {
@@ -44,6 +41,14 @@ public class PhaseManager {
     public void update() {
         checkPhaseUp(am.getAge());
         currentPhase.update();
+        // Baby screams when hungry
+        if(currentPhase.getName().equalsIgnoreCase("baby")){
+            if(player.getFoodLevel() <= 6){
+                if (Math.random() < 1d / 100d) {
+                    player.getWorld().playSound(player.getLocation(),Sound.ENTITY_GOAT_SCREAMING_AMBIENT, SoundCategory.MASTER,2,1);
+                }
+            }
+        }
     }
 
     public LifePhase getCurrentPhase() {
