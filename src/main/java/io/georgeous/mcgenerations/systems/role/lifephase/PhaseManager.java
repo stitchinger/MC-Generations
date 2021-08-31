@@ -4,6 +4,7 @@ import io.georgeous.mcgenerations.systems.role.components.AgeManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.lifephase.events.PlayerPhaseUpEvent;
 import io.georgeous.mcgenerations.utils.Skin;
+import io.georgeous.mcgenerations.utils.Util;
 import io.georgeous.piggyback.Piggyback;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -49,7 +50,8 @@ public class PhaseManager {
         // Might gonna make a subclass BabyPhase and put this in the update
         if(currentPhase.getName().equalsIgnoreCase("baby")){
             if(player.getFoodLevel() < 10){
-                if (Math.random() < 1d / 100d) { // triggers every 5 secs in average
+                double freq = (double) Util.map(player.getFoodLevel(),0,10, 10,1);
+                if (Math.random() < freq / 100d) { // triggers every 5 secs in average
                     player.getWorld().playSound(player.getLocation(),Sound.ENTITY_GOAT_SCREAMING_AMBIENT, SoundCategory.MASTER,1,2);
                 }
             }
