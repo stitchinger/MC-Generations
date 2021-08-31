@@ -1,5 +1,6 @@
 package io.georgeous.mcgenerations.systems.player;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class PlayerWrapper {
@@ -10,6 +11,8 @@ public class PlayerWrapper {
     private long lastOfflineTime = 0;
     private long timeOfJoin;
     private boolean debugMode = false;
+    private boolean diedOfOldAge = false;
+    private Location lastBedLocation = null;
 
     public PlayerWrapper(Player player) {
         this.player = player;
@@ -66,5 +69,21 @@ public class PlayerWrapper {
 
     public void setDebugMode(boolean debugMode) {
         this.debugMode = debugMode;
+    }
+
+    public boolean getDiedOfOldAge() {
+        return diedOfOldAge;
+    }
+
+    public void setDiedOfOldAge(boolean diedOfOldAge) {
+        this.diedOfOldAge = diedOfOldAge;
+    }
+
+    public void setLastBedLocation(Location loc) {
+        this.lastBedLocation = loc;
+    }
+
+    public Location getLastBedLocation() {
+        return lastBedLocation;
     }
 }

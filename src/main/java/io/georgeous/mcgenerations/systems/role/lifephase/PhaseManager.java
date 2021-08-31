@@ -27,7 +27,7 @@ public class PhaseManager {
         LifePhase childPhase = new LifePhase(playerRole, 6, 15, 0, 999, false, false, "2007359867", "Child", 0, 1, 0, false, Skin.CHILD, true);
         LifePhase teenPhase = new LifePhase(playerRole, 15, 21, 0, 999, true, false, "297371", "Teen", 0, 0, 0, false, Skin.TEEN, false);
         LifePhase adultPhase = new LifePhase(playerRole, 21, 40, 0, 999, true, false, "584227931", "Adult", 0, 0, 0, false, Skin.ADULT, false);
-        LifePhase elderPhase = new LifePhase(playerRole, 40, 9999999, 0, 999, true, false, "1144027445", "Elder", 0, 0, 0, false, Skin.ELDER, false);
+        LifePhase elderPhase = new LifePhase(playerRole, 40, 60, 0, 999, true, false, "1144027445", "Elder", 0, 0, 0, false, Skin.ELDER, false);
 
         phases[0] = babyPhase;
         phases[1] = toddlerPhase;
@@ -98,7 +98,6 @@ public class PhaseManager {
                 Piggyback.stopCarry(player);
             }
         }
-
 
         currentPhase = phase;
         currentPhase.start();

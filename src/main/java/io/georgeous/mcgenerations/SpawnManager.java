@@ -19,7 +19,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class SpawnManager {
 
     private static final int timeInLobby = 5; // in seconds
@@ -38,12 +37,27 @@ public class SpawnManager {
                 } else {
                     spawnAsEve(player);
                 }
+                PlayerManager.get(player).setDiedOfOldAge(false);
+                PlayerManager.get(player).setLastBedLocation(null);
             }
         }, timeInLobby * 20L); // 20 Tick (1 Second) delay before run() is called
     }
 
     public static void spawnAsEve(Player player) {
-        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "spreadplayers 780 460 50 1000 false " + player.getName());
+        // If diedOfOldAge
+        // Spawn at last bed
+        Location lastBed = PlayerManager.get(player).getLastBedLocation();
+        boolean bedIsValid = false;
+        if(lastBed != null){
+            bedIsValid = lastBed.distance(MCG.council.councilLocation) > 50;
+        }
+
+        if (PlayerManager.get(player).getDiedOfOldAge() && PlayerManager.get(player).getLastBedLocation() != null && bedIsValid) {
+            player.teleport(PlayerManager.get(player).getLastBedLocation());
+        } else {
+            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "spreadplayers 780 460 50 1000 false " + player.getName());
+        }
+
 
         String name = NameGenerator.randomFirst();
         Family family = FamilyManager.addFamily(NameGenerator.randomLast());
