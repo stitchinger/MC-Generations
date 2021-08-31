@@ -2,6 +2,7 @@ package io.georgeous.mcgenerations;
 
 import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.family.FamilyManager;
+import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.surrogate.SurroManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
@@ -26,11 +27,12 @@ public class SpawnManager {
 
         Notification.neutralMsg(player, "You will be reborn in " + timeInLobby + " seconds");
         PlayerRole finalMom = findViableMother(player);
+        boolean playerInDebug = PlayerManager.get(player).isDebugMode();
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(MCG.getInstance(), new Runnable() {
             @Override
             public void run() {
-                if (finalMom != null) {
+                if (finalMom != null && !playerInDebug) {
                     spawnAsBaby(player, finalMom);
                 } else {
                     spawnAsEve(player);
