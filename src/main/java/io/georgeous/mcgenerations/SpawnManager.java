@@ -14,6 +14,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +52,13 @@ public class SpawnManager {
 
         player.setSaturation(0);
 
-        player.playSound(player.getLocation(), Sound.AMBIENT_CAVE, 1, 1);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                player.playSound(player.getLocation(), Sound.AMBIENT_CAVE, SoundCategory.MASTER, 1, 1);
+            }
+        }.runTaskLater(MCG.getInstance(), 20);
+
         Notification.neutralMsg(player, "You were reincarnated as an Eve");
         Notification.neutralMsg(player, "Use [/family rename name] to rename your family");
     }
