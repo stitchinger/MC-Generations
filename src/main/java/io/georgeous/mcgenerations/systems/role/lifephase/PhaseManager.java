@@ -41,11 +41,16 @@ public class PhaseManager {
     public void update() {
         checkPhaseUp(am.getAge());
         currentPhase.update();
-        // Baby screams when hungry
+        babyHungerScream();
+    }
+
+    private void babyHungerScream(){
+        // Prolly not the best place for this function
+        // Might gonna make a subclass BabyPhase and put this in the update
         if(currentPhase.getName().equalsIgnoreCase("baby")){
-            if(player.getFoodLevel() <= 6){
-                if (Math.random() < 1d / 100d) {
-                    player.getWorld().playSound(player.getLocation(),Sound.ENTITY_GOAT_SCREAMING_AMBIENT, SoundCategory.MASTER,2,1);
+            if(player.getFoodLevel() < 10){
+                if (Math.random() < 1d / 100d) { // triggers every 5 secs in average
+                    player.getWorld().playSound(player.getLocation(),Sound.ENTITY_GOAT_SCREAMING_AMBIENT, SoundCategory.MASTER,1,2);
                 }
             }
         }
