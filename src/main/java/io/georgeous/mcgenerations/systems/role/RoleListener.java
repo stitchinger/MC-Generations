@@ -4,6 +4,7 @@ import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.SpawnManager;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.utils.ItemManager;
+import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -69,7 +70,8 @@ public class RoleListener implements Listener {
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
-        SpawnManager.spawnPlayer(player);
+        if (player.getHealth() == 0)
+            SpawnManager.spawnPlayer(player);
     }
 
     public void removeBabyHandlerFromDrops(PlayerDeathEvent event) {
