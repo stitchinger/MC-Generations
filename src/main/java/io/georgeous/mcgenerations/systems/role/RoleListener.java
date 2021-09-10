@@ -41,7 +41,8 @@ public class RoleListener implements Listener {
         removeBabyHandlerFromDrops(event);
 
         String roleName = playerRole.getName() + " " + playerRole.getFamily().getColoredName() + ChatColor.RESET;
-        String msg = event.getDeathMessage().replace(player.getName(), roleName);
+        String ageString = "(" + playerRole.am.getAge() + ")";
+        String msg = event.getDeathMessage().replace(player.getName(), roleName + " " + ageString);
 
         // Replace killers real name with character name
         Player killer = player.getKiller();

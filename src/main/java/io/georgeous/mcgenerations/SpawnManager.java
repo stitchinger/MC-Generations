@@ -50,7 +50,7 @@ public class SpawnManager {
         // Spawn at last bed
         Location lastBed = PlayerManager.get(player).getLastBedLocation();
         boolean bedIsValid = false;
-        if(lastBed != null){
+        if (lastBed != null) {
             bedIsValid = lastBed.distance(MCG.council.councilLocation) > 50;
         }
 
@@ -88,7 +88,6 @@ public class SpawnManager {
         family.addMember(newBornRole);
 
         mother.mc.bornBaby(newBornRole);
-
 
         Notification.neutralMsg(newBorn, "You were reincarnated as a Baby");
         // Effects
