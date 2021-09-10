@@ -26,6 +26,7 @@ public class SpawnManager {
     public static void spawnPlayer(Player player) {
 
         Notification.neutralMsg(player, "You will be reborn in " + timeInLobby + " seconds");
+        player.setGameMode(GameMode.ADVENTURE);
         PlayerRole finalMom = findViableMother(player);
         boolean playerInDebug = PlayerManager.get(player).isDebugMode();
 
@@ -37,6 +38,7 @@ public class SpawnManager {
                 } else {
                     spawnAsEve(player);
                 }
+                player.setGameMode(GameMode.SURVIVAL);
                 PlayerManager.get(player).setDiedOfOldAge(false);
                 PlayerManager.get(player).setLastBedLocation(null);
             }
