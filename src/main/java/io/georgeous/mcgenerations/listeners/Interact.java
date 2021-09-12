@@ -2,6 +2,7 @@ package io.georgeous.mcgenerations.listeners;
 
 import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.systems.family.Family;
+import io.georgeous.mcgenerations.systems.family.FriendlyTalk;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
@@ -103,12 +104,20 @@ public class Interact implements Listener {
     }
 
     public void friendlyFamilyTalk(PlayerRole damager, PlayerRole receiver) {
-        //FriendlyTalk ft = new FriendlyTalk(damager, receiver);
-        damager.getPlayer().sendMessage("You gave " + receiver.getName() + " a big hug");
-        receiver.getPlayer().sendMessage(damager.getName() + " gave you a big hug");
+        // if cooldown finished
 
+        Player pd = damager.getPlayer();
+        Player pr = receiver.getPlayer();
+
+        FriendlyTalk ft = new FriendlyTalk(damager, receiver);
+
+        pd.sendMessage(ft.getSenderMessage());
+        pr.sendMessage(ft.getReceiverMessage());
+
+        //damager.getPlayer().sendMessage("You gave " + receiver.getName() + " a big hug");
+        //receiver.getPlayer().sendMessage(damager.getName() + " gave you a big hug");
         try {
-            damager.getPlayer().getWorld().spawnParticle(Particle.HEART, damager.getPlayer().getLocation(), 5, 0.5, 0.5, 0.5);
+            pd.getWorld().spawnParticle(Particle.HEART, pd.getLocation(), 5, 0.5, 0.5, 0.5);
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

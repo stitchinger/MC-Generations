@@ -2,13 +2,17 @@ package io.georgeous.mcgenerations.systems.family;
 
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class FriendlyTalk {
 
+
     private final PlayerRole sender;
     private final PlayerRole receiver;
-    public static List<String[]> sentences;
+    public static List<String[]> sentences = new ArrayList<>();
+
     private final int index;
 
     public FriendlyTalk(PlayerRole sender, PlayerRole receiver) {
