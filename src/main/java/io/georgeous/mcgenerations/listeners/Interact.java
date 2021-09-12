@@ -22,11 +22,12 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 public class Interact implements Listener {
 
     private final MCG main;
-    HashMap<String, Long> friendlyTalkCooldown = new HashMap<>();
+
 
     public Interact(MCG main) {
         this.main = main;
@@ -104,22 +105,26 @@ public class Interact implements Listener {
     }
 
     public void friendlyFamilyTalk(PlayerRole damager, PlayerRole receiver) {
-        // if cooldown finished
+        long cld = 5000;
 
         Player pd = damager.getPlayer();
         Player pr = receiver.getPlayer();
 
-        FriendlyTalk ft = new FriendlyTalk(damager, receiver);
+        if(FriendlyTalk.cooldown.get(pd) == null || System.currentTimeMillis() > FriendlyTalk.cooldown.get(pd) + cld ){
+            FriendlyTalk ft = new FriendlyTalk(damager, receiver);
 
-        pd.sendMessage(ft.getSenderMessage());
-        pr.sendMessage(ft.getReceiverMessage());
+            pd.sendMessage(ft.getSenderMessage());
+            pr.sendMessage(ft.getReceiverMessage());
 
-        //damager.getPlayer().sendMessage("You gave " + receiver.getName() + " a big hug");
-        //receiver.getPlayer().sendMessage(damager.getName() + " gave you a big hug");
-        try {
-            pd.getWorld().spawnParticle(Particle.HEART, pd.getLocation(), 5, 0.5, 0.5, 0.5);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
+            //damager.getPlayer().sendMessage("You gave " + receiver.getName() + " a big hug");
+            //receiver.getPlayer().sendMessage(damager.getName() + " gave you a big hug");
+            try {
+                pd.getWorld().spawnParticle(Particle.HEART, pd.getLocation(), 5, 0.5, 0.5, 0.5);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+
+            FriendlyTalk.cooldown.put(pd, System.currentTimeMillis());
         }
     }
 
