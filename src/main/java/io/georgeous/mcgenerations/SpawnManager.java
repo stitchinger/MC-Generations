@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import xyz.haoshoku.nick.api.NickAPI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,8 @@ public class SpawnManager {
     public static void spawnPlayer(Player player) {
 
         Notification.neutralMsg(player, "You will be reborn in " + timeInLobby + " seconds");
+        NickAPI.refreshPlayer(player);
+        GameMode playerGM = player.getGameMode();
         player.setGameMode(GameMode.ADVENTURE);
         PlayerRole finalMom = findViableMother(player);
         boolean playerInDebug = PlayerManager.get(player).isDebugMode();
@@ -38,7 +41,8 @@ public class SpawnManager {
                 } else {
                     spawnAsEve(player);
                 }
-                player.setGameMode(GameMode.SURVIVAL);
+                //player.setGameMode(GameMode.SURVIVAL);
+                player.setGameMode(playerGM);
                 PlayerManager.get(player).setDiedOfOldAge(false);
                 PlayerManager.get(player).setLastBedLocation(null);
             }

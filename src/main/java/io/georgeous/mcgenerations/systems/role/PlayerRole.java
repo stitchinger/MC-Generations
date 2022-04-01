@@ -86,9 +86,9 @@ public class PlayerRole {
     public void unnickPlayer(Player player){
         NickAPI.resetNick(player);
         NickAPI.resetSkin(player);
-        NickAPI.refreshPlayer(player);
+        //NickAPI.refreshPlayer(player);
 
-        updateScoreboard();
+        //updateScoreboard();
         refreshHealthBar();
     }
 

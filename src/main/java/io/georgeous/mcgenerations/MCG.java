@@ -61,11 +61,13 @@ public final class MCG extends JavaPlugin {
 
         getServer().dispatchCommand(Bukkit.getConsoleSender(), "veryspicy true");
 
+
         // Start Update-Function
         new BukkitRunnable() {
             @Override
             public void run() {
                 update();
+
             }
         }.runTaskTimer(this, 0L, 1L);
     }

@@ -8,6 +8,8 @@ import org.bukkit.World;
 import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import static org.bukkit.Bukkit.getServer;
+
 public class Council {
 
     private final World world;
@@ -20,7 +22,7 @@ public class Council {
 
     public Council(World world) {
         this.world = world;
-        councilLocation = new Location(world, -13, 239, 16);
+        councilLocation = new Location(world, 0, 201, 0);
         endermanLocation = councilLocation.clone().add(0.5, 2, 11.5);
         piglinLocation = councilLocation.clone().add(0.5, 2, -10.5);
         pillagerLocation = councilLocation.clone().add(11.5, 2, 0.5);
@@ -30,15 +32,23 @@ public class Council {
     }
 
     public void init() {
+
         for (Entity entity : Bukkit.selectEntities(Bukkit.getConsoleSender(), "@e[tag=council]")) {
             if (entity instanceof Minecart) {
-                ((Minecart) entity).setDamage(40);
+                //entity.setInvulnerable(false);
+                ((Minecart) entity).setInvulnerable(false);
+                ((Minecart) entity).setDamage(9999);
+                entity.remove();
+
             }
             if (entity instanceof LivingEntity) {
                 ((LivingEntity) entity).setHealth(0);
             }
 
+
         }
+
+
         spawnEnderman();
         spawnPiglin();
         spawnPillager();
@@ -68,7 +78,7 @@ public class Council {
     public void spawnPiglin() {
         Cow cow = (Cow) world.spawnEntity(piglinLocation, EntityType.COW);
         cow.setInvulnerable(true);
-        cow.setInvisible(true);
+        cow.setInvisible(false);
         cow.setSilent(true);
         cow.addScoreboardTag("council");
 
@@ -86,7 +96,7 @@ public class Council {
     public void spawnPillager() {
         Cow cow = (Cow) world.spawnEntity(pillagerLocation, EntityType.COW);
         cow.setInvulnerable(true);
-        cow.setInvisible(true);
+        cow.setInvisible(false);
         cow.setSilent(true);
         cow.addScoreboardTag("council");
 
@@ -95,15 +105,12 @@ public class Council {
         illusioner.setSilent(true);
         illusioner.addScoreboardTag("council");
         illusioner.setAI(false);
-        //illusioner.setRotation();
-
-
         cow.addPassenger(illusioner);
     }
 
     public void spawnVillager() {
         Wolf wolf = (Wolf) world.spawnEntity(villagerLocation, EntityType.WOLF);
-        wolf.setInvisible(true);
+        wolf.setInvisible(false);
         wolf.setInvulnerable(true);
         wolf.setSilent(true);
         wolf.addScoreboardTag("council");

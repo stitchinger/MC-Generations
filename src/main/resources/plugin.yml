@@ -1,7 +1,7 @@
 name: MC-Generations
 version: ${project.version}
 main: io.georgeous.mcgenerations.MCG
-api-version: 1.17
+api-version: 1.18
 commands:
   dayspeed:
   gm:
