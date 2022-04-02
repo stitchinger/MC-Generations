@@ -55,9 +55,9 @@ public final class MCG extends JavaPlugin {
 
         overworld.setSpawnLocation(council.councilLocation);
 
-        for (Team team : Bukkit.getScoreboardManager().getMainScoreboard().getTeams()) {
-            //team.unregister();
-        }
+//        for (Team team : Bukkit.getScoreboardManager().getMainScoreboard().getTeams()) {
+//            //team.unregister();
+//        }
 
         getServer().dispatchCommand(Bukkit.getConsoleSender(), "veryspicy true");
 
@@ -160,3 +160,11 @@ public final class MCG extends JavaPlugin {
      */
 
 }
+
+
+/*
+TODO: Bug: Families have one additional phantom member
+TODO: Command for more Family info (Members, etc)
+Todo: Carried clips in ground/walls
+Todo: Setup config file for ...
+ */

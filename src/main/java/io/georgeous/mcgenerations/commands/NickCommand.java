@@ -23,10 +23,9 @@ public class NickCommand implements CommandExecutor {
 
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
 
-        if (!(sender instanceof Player))
+        if (!(sender instanceof Player player))
             return true;
 
-        Player player = (Player) sender;
         if (!player.isOp()) {
             Notification.onlyForOp(player);
             return true;
@@ -66,26 +65,27 @@ public class NickCommand implements CommandExecutor {
     }
 
     // TODO: remove private method that is never used
-    private void updateNickNamesToScoreboard(Player player) {
-        if (player == null)
-            throw new NullPointerException("Player cannot be null");
 
-        Scoreboard scoreboard;
-        // Change it, if you are using main scoreboard
-        if (player.getScoreboard() == Bukkit.getScoreboardManager().getMainScoreboard()) {
-            scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-            player.setScoreboard(scoreboard);
-        } else
-            scoreboard = player.getScoreboard();
-
-        if (scoreboard.getTeam("nickedTeam") != null) scoreboard.getTeam("nickedTeam").unregister();
-
-        Team team = scoreboard.registerNewTeam("nickedTeam");
-        team.setPrefix("MyPrefix ");
-        team.setSuffix("MySuffix ");
-
-        Collection<String> values = NickAPI.getNickedPlayers().values();
-        for (String name : values)
-            scoreboard.getTeam("nickedTeam").addEntry(name);
-    }
+//    private void updateNickNamesToScoreboard(Player player) {
+//        if (player == null)
+//            throw new NullPointerException("Player cannot be null");
+//
+//        Scoreboard scoreboard;
+//        // Change it, if you are using main scoreboard
+//        if (player.getScoreboard() == Bukkit.getScoreboardManager().getMainScoreboard()) {
+//            scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+//            player.setScoreboard(scoreboard);
+//        } else
+//            scoreboard = player.getScoreboard();
+//
+//        if (scoreboard.getTeam("nickedTeam") != null) scoreboard.getTeam("nickedTeam").unregister();
+//
+//        Team team = scoreboard.registerNewTeam("nickedTeam");
+//        team.setPrefix("MyPrefix ");
+//        team.setSuffix("MySuffix ");
+//
+//        Collection<String> values = NickAPI.getNickedPlayers().values();
+//        for (String name : values)
+//            scoreboard.getTeam("nickedTeam").addEntry(name);
+//    }
 }

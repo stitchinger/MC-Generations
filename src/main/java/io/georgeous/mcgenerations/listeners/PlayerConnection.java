@@ -2,17 +2,15 @@ package io.georgeous.mcgenerations.listeners;
 
 import io.georgeous.mcgenerations.MCG;
 import org.bukkit.ChatColor;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 public class PlayerConnection implements Listener {
-    private final MCG main;
-
-    public PlayerConnection() {
-        this.main = MCG.getInstance();
-    }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
