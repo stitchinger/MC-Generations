@@ -167,4 +167,6 @@ TODO: Bug: Families have one additional phantom member
 TODO: Command for more Family info (Members, etc)
 Todo: Carried clips in ground/walls
 Todo: Setup config file for ...
+Todo: Show baby cooldown in info command
+Todo: Graves Plugin
  */

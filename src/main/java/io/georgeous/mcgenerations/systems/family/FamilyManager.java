@@ -19,6 +19,8 @@ public class FamilyManager {
         registerEvents();
 
         restoreAllFamilies();
+
+
     }
 
     private static void registerCommands() {

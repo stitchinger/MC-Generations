@@ -38,6 +38,9 @@ public class FamilyCommand implements CommandExecutor, TabCompleter {
             case "info":
                 player.sendMessage("Family: " + family.getColoredName());
                 player.sendMessage("Members: " + family.memberCount());
+                family.getMembers().forEach(member -> {
+                    player.sendMessage(" - " + member.getName());
+                });
                 if (family.getLeader() != null) {
                     player.sendMessage("Leader: " + family.getLeader().getName());
                 }
@@ -47,7 +50,17 @@ public class FamilyCommand implements CommandExecutor, TabCompleter {
                 attemptFamilyRename(role, family, args[1]);
                 break;
             case "list":
-                player.sendMessage(familiesToString());
+                //player.sendMessage(familiesToString());
+                //StringBuilder msg = new StringBuilder();
+                for (Family f : FamilyManager.getAll()) {
+                    player.sendMessage(f.getColoredName());
+                    f.getMembers().forEach(member -> {
+                        player.sendMessage(" - " + member.getName());
+                    });
+                    //msg.append(f.getColoredName()).append(", ");
+
+                }
+
                 break;
             default:
                 Notification.errorMsg(player, "Command not found");

@@ -63,6 +63,7 @@ public class RoleListener implements Listener {
             PlayerManager.get(player).setLastBedLocation(player.getBedSpawnLocation());
         }
         player.setBedSpawnLocation(MCG.council.councilLocation, true);
+
         playerRole.die();
 
     }

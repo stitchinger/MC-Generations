@@ -82,6 +82,10 @@ public class Family {
     }
 
     // Members
+    public List<PlayerRole> getMembers(){
+        return this.members;
+    }
+
     public void addMember(PlayerRole role) {
         if (members.size() == 0) {
             setLeader(role);

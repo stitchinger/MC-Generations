@@ -79,6 +79,7 @@ public class SurroManager implements Listener {
         v.setInvulnerable(true);
         v.setSilent(true);
 
+
         getServer().dispatchCommand(Bukkit.getConsoleSender(), "team join nocollision @e[tag=surrogate,limit=3,sort=nearest,team=!nocollision]");
         return v;
     }

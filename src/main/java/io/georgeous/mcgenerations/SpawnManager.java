@@ -30,6 +30,7 @@ public class SpawnManager {
         NickAPI.refreshPlayer(player);
         GameMode playerGM = player.getGameMode();
         player.setGameMode(GameMode.ADVENTURE);
+        player.setInvulnerable(true);
         PlayerRole finalMom = findViableMother(player);
         boolean playerInDebug = PlayerManager.get(player).isDebugMode();
 
@@ -43,6 +44,7 @@ public class SpawnManager {
                 }
                 //player.setGameMode(GameMode.SURVIVAL);
                 player.setGameMode(playerGM);
+                player.setInvulnerable(false);
                 PlayerManager.get(player).setDiedOfOldAge(false);
                 PlayerManager.get(player).setLastBedLocation(null);
             }
@@ -68,7 +70,7 @@ public class SpawnManager {
         String name = NameGenerator.randomFirst();
         Family family = FamilyManager.addFamily(NameGenerator.randomLast());
         PlayerRole playerRole = RoleManager.createAndAddRole(player, name, 10, family);
-        family.addMember(playerRole);
+        //family.addMember(playerRole);
 
         player.setSaturation(0);
 
