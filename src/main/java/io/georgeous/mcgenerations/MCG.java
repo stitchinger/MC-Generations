@@ -11,10 +11,15 @@ import io.georgeous.mcgenerations.systems.role.commands.SecInYear;
 import io.georgeous.mcgenerations.systems.role.commands.YouAre;
 import io.georgeous.mcgenerations.systems.role.lifephase.listeners.PlayerPhaseUp;
 import io.georgeous.mcgenerations.systems.surrogate.SurroManager;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
+import org.bukkit.craftbukkit.v1_18_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_18_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
@@ -22,17 +27,22 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Team;
 
+import java.util.Collection;
+import java.util.Objects;
+import java.util.logging.Level;
+
 public final class MCG extends JavaPlugin {
     public static MCG plugin;
     public DataManager data;
 
     public static World overworld;
     public static Council council;
-    public static long daySpeed = 2;
+    public static long daySpeed = 2; // Default is 1
 
     public static MCG getInstance() {
         return plugin;
     }
+
 
     @Override
     public void onEnable() {
@@ -41,6 +51,9 @@ public final class MCG extends JavaPlugin {
         overworld = Bukkit.getWorld("world");
         council = new Council(overworld);
         this.saveDefaultConfig();
+
+        //log(String.valueOf(getConfig().getInt("")));
+
         this.data = new DataManager();
 
         registerEvents();
@@ -50,6 +63,7 @@ public final class MCG extends JavaPlugin {
         PlayerManager.enable();
         FamilyManager.enable();
         RoleManager.enable();
+
 
         makeBundleCraftable();
 
@@ -81,10 +95,10 @@ public final class MCG extends JavaPlugin {
     }
 
     public void printLoadupText() {
-        System.out.println("MCG ? ========== [ MC Generations ] ==========");
-        System.out.println("MCG ? Version: 0.1");
-        System.out.println("MCG ? Plugin by: Georgeous.io");
-        System.out.println("MCG ? ========== [ MC Generations ] ==========");
+        getLogger().log(Level.FINE,"MCG ? ========== [ MC Generations ] ==========");
+        getLogger().log(Level.FINE,"MCG ? Version: 0.1");
+        getLogger().log(Level.FINE,"MCG ? Plugin by: Georgeous.io");
+        getLogger().log(Level.FINE,"MCG ? ========== [ MC Generations ] ==========");
     }
 
     private void update() {
@@ -107,20 +121,20 @@ public final class MCG extends JavaPlugin {
     }
 
     public void registerCommands() {
-        getServer().getPluginCommand("gm").setExecutor(new GamemodeCommand());
-        getServer().getPluginCommand("nick").setExecutor(new NickCommand());
-        getServer().getPluginCommand("you").setExecutor(new YouAre());
-        getServer().getPluginCommand("secinyear").setExecutor(new SecInYear());
-        getServer().getPluginCommand("die").setExecutor(new DieCommand());
-        getServer().getPluginCommand("dayspeed").setExecutor(new DaySpeedCommand());
-        getServer().getPluginCommand("me").setExecutor(new MeCommand());
-        getServer().getPluginCommand("debug").setExecutor(new DebugCommand());
-        getCommand("debug").setTabCompleter(new DebugCommandCompleter());
+        Objects.requireNonNull(getServer().getPluginCommand("gm")).setExecutor(new GamemodeCommand());
+        Objects.requireNonNull(getServer().getPluginCommand("nick")).setExecutor(new NickCommand());
+        Objects.requireNonNull(getServer().getPluginCommand("you")).setExecutor(new YouAre());
+        Objects.requireNonNull(getServer().getPluginCommand("secinyear")).setExecutor(new SecInYear());
+        Objects.requireNonNull(getServer().getPluginCommand("die")).setExecutor(new DieCommand());
+        Objects.requireNonNull(getServer().getPluginCommand("dayspeed")).setExecutor(new DaySpeedCommand());
+        Objects.requireNonNull(getServer().getPluginCommand("me")).setExecutor(new MeCommand());
+        Objects.requireNonNull(getServer().getPluginCommand("debug")).setExecutor(new DebugCommand());
+        Objects.requireNonNull(getCommand("debug")).setTabCompleter(new DebugCommandCompleter());
 
         //Deactivate Vanilla commands
-        getServer().getPluginCommand("msg").setExecutor(new CommandDeactivator());
-        getServer().getPluginCommand("w").setExecutor(new CommandDeactivator());
-        getServer().getPluginCommand("say").setExecutor(new CommandDeactivator());
+        Objects.requireNonNull(getServer().getPluginCommand("msg")).setExecutor(new CommandDeactivator());
+        Objects.requireNonNull(getServer().getPluginCommand("w")).setExecutor(new CommandDeactivator());
+        Objects.requireNonNull(getServer().getPluginCommand("say")).setExecutor(new CommandDeactivator());
     }
 
     public void makeBundleCraftable() {
@@ -135,35 +149,18 @@ public final class MCG extends JavaPlugin {
 
         Bukkit.addRecipe(recipe);
 
+        /*
         for (Player player : Bukkit.getOnlinePlayers()) {
-            player.discoverRecipe(key);
+
         }
+
+         */
     }
-
-    // restore Inventory
-    /*
-    public void saveInvs() {
-        for (Map.Entry<String, ItemStack[]> entry : menus.entrySet()) {
-            this.getConfig().set("data.vaults." + entry.getKey(), entry.getValue());
-        }
-        this.saveConfig();
-    }
-
-    public void restoreInvs() {
-        this.getConfig().getConfigurationSection("data.vaults").getKeys(false).forEach(key -> {
-            @SuppressWarnings("unchecked")
-            ItemStack[] content = ((List<ItemStack>) this.getConfig().get("data.vaults." + key)).toArray(new ItemStack[0]);
-            menus.put(key, content);
-        });
-    }
-
-     */
-
 }
 
 
 /*
-TODO: Bug: Families have one additional phantom member
+Todo: Council countdown beeping
 TODO: Command for more Family info (Members, etc)
 Todo: Carried clips in ground/walls
 Todo: Setup config file for ...
