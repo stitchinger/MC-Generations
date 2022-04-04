@@ -1,0 +1,9 @@
+# MC-Generations
+
+This plugin is supposed to bring all of "One Hour one Life"s core-mechanics to Minecraft Multiplayer
+
+Features:
+- Player aging
+- Players spawn as babies of other players
+- Players can feed and carry babies
+- Player Families
