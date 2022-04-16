@@ -70,7 +70,7 @@ public class FamilyCommand implements CommandExecutor, TabCompleter {
     }
 
     public void attemptFamilyRename(PlayerRole role, Family family, String name) {
-        if (!role.pm.getCurrentPhase().getName().equalsIgnoreCase("child")) {
+        if (!role.getPhaseManager().getCurrentPhase().getName().equalsIgnoreCase("child")) {
             Notification.errorMsg(role.getPlayer(), "You are too old to rename your Family");
             return;
         }

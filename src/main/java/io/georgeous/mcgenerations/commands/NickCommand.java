@@ -37,7 +37,7 @@ public class NickCommand implements CommandExecutor {
             return true;
         }
 
-        if ("reset".equalsIgnoreCase(args[0])) {
+        if (args[0].equalsIgnoreCase("reset")) {
             NickAPI.resetNick(player);
             NickAPI.resetSkin(player);
             NickAPI.resetUniqueId(player);
@@ -56,11 +56,12 @@ public class NickCommand implements CommandExecutor {
         NickAPI.nick(player, name);
         NickAPI.refreshPlayer(player);
 
-        if (RoleManager.get(player) != null) {
-            PlayerRole playerRole = RoleManager.get(player);
+        PlayerRole playerRole = RoleManager.get(player);
+        if (playerRole != null) {
             NickScoreboard.write(name, "admin", "", " " + playerRole.getFamily().getColoredName(), false, ChatColor.WHITE);
             NickScoreboard.updateScoreboard(name);
         }
+
         player.sendMessage(ChatColor.DARK_GREEN + "Successfully set the nickname to " + ChatColor.YELLOW + name);
     }
 

@@ -8,12 +8,10 @@ import org.bukkit.World;
 import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import static org.bukkit.Bukkit.getServer;
-
 public class Council {
 
-    private final World world;
     public final Location councilLocation;
+    private final World world;
     private final Location endermanLocation;
     private final Location piglinLocation;
     private final Location villagerLocation;
@@ -36,7 +34,7 @@ public class Council {
         for (Entity entity : Bukkit.selectEntities(Bukkit.getConsoleSender(), "@e[tag=council]")) {
             if (entity instanceof Minecart) {
                 //entity.setInvulnerable(false);
-                ((Minecart) entity).setInvulnerable(false);
+                entity.setInvulnerable(false);
                 ((Minecart) entity).setDamage(9999);
                 entity.remove();
 
@@ -44,8 +42,6 @@ public class Council {
             if (entity instanceof LivingEntity) {
                 ((LivingEntity) entity).setHealth(0);
             }
-
-
         }
 
 
@@ -65,7 +61,6 @@ public class Council {
         Minecart cart = (Minecart) world.spawnEntity(endermanLocation, EntityType.MINECART);
         cart.setInvulnerable(true);
         cart.addScoreboardTag("council");
-
 
         Enderman enderman = (Enderman) world.spawnEntity(endermanLocation, EntityType.ENDERMAN);
         enderman.setSilent(true);
@@ -88,7 +83,6 @@ public class Council {
         piglin.setAdult();
         piglin.setSilent(true);
         piglin.addScoreboardTag("council");
-
 
         cow.addPassenger(piglin);
     }

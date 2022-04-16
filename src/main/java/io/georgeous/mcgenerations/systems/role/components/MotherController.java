@@ -46,8 +46,8 @@ public class MotherController {
 
     public boolean canHaveBaby() {
         boolean playerInDebug = PlayerManager.get(playerRole.getPlayer()).isDebugMode();
-        return playerRole.am.getAge() > 16 &&
-                playerRole.am.getAge() < 9999999 &&
+        return playerRole.getAgeManager().getAge() > 16 &&
+                playerRole.getAgeManager().getAge() < 9999999 &&
                 secSinceLastBaby() > babyCooldown &&
                 !playerInDebug;
     }

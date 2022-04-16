@@ -6,38 +6,29 @@ import io.georgeous.mcgenerations.listeners.*;
 import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
-import io.georgeous.mcgenerations.systems.role.commands.DieCommand;
-import io.georgeous.mcgenerations.systems.role.commands.SecInYear;
-import io.georgeous.mcgenerations.systems.role.commands.YouAre;
-import io.georgeous.mcgenerations.systems.role.lifephase.listeners.PlayerPhaseUp;
+import io.georgeous.mcgenerations.commands.DieCommand;
+import io.georgeous.mcgenerations.commands.SecInYear;
+import io.georgeous.mcgenerations.commands.YouAre;
+import io.georgeous.mcgenerations.listeners.PlayerPhaseUp;
 import io.georgeous.mcgenerations.systems.surrogate.SurroManager;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_18_R2.CraftServer;
-import org.bukkit.craftbukkit.v1_18_R2.entity.CraftPlayer;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scoreboard.Team;
 
-import java.util.Collection;
 import java.util.Objects;
 import java.util.logging.Level;
 
 public final class MCG extends JavaPlugin {
     public static MCG plugin;
-    public DataManager data;
-
     public static World overworld;
     public static Council council;
     public static long daySpeed = 2; // Default is 1
+    public DataManager data;
 
     public static MCG getInstance() {
         return plugin;
@@ -95,10 +86,10 @@ public final class MCG extends JavaPlugin {
     }
 
     public void printLoadupText() {
-        getLogger().log(Level.FINE,"MCG ? ========== [ MC Generations ] ==========");
-        getLogger().log(Level.FINE,"MCG ? Version: 0.1");
-        getLogger().log(Level.FINE,"MCG ? Plugin by: Georgeous.io");
-        getLogger().log(Level.FINE,"MCG ? ========== [ MC Generations ] ==========");
+        getLogger().log(Level.FINE, "MCG ? ========== [ MC Generations ] ==========");
+        getLogger().log(Level.FINE, "MCG ? Version: 0.1");
+        getLogger().log(Level.FINE, "MCG ? Plugin by: Georgeous.io");
+        getLogger().log(Level.FINE, "MCG ? ========== [ MC Generations ] ==========");
     }
 
     private void update() {
@@ -113,7 +104,7 @@ public final class MCG extends JavaPlugin {
     public void registerEvents() {
         getServer().getPluginManager().registerEvents(new PlayerConnection(), this);
         getServer().getPluginManager().registerEvents(new PlayerChat(), this);
-        getServer().getPluginManager().registerEvents(new Interact(this), this);
+        getServer().getPluginManager().registerEvents(new Interact(), this);
         getServer().getPluginManager().registerEvents(new InventoryListener(), this);
 
         getServer().getPluginManager().registerEvents(new PlayerCarry(), this);
@@ -129,7 +120,6 @@ public final class MCG extends JavaPlugin {
         Objects.requireNonNull(getServer().getPluginCommand("dayspeed")).setExecutor(new DaySpeedCommand());
         Objects.requireNonNull(getServer().getPluginCommand("me")).setExecutor(new MeCommand());
         Objects.requireNonNull(getServer().getPluginCommand("debug")).setExecutor(new DebugCommand());
-        Objects.requireNonNull(getCommand("debug")).setTabCompleter(new DebugCommandCompleter());
 
         //Deactivate Vanilla commands
         Objects.requireNonNull(getServer().getPluginCommand("msg")).setExecutor(new CommandDeactivator());
@@ -148,13 +138,6 @@ public final class MCG extends JavaPlugin {
         recipe.setIngredient('A', Material.AIR);
 
         Bukkit.addRecipe(recipe);
-
-        /*
-        for (Player player : Bukkit.getOnlinePlayers()) {
-
-        }
-
-         */
     }
 }
 

@@ -1,41 +1,31 @@
 package io.georgeous.mcgenerations.listeners;
 
-import io.georgeous.mcgenerations.MCG;
-import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
-import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
 import io.georgeous.mcgenerations.utils.ItemManager;
 import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
-import org.bukkit.event.inventory.*;
+import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
 public class InventoryListener implements Listener {
-    private final MCG plugin;
-
-    public InventoryListener() {
-        this.plugin = MCG.getInstance();
-    }
 
     @EventHandler
     public void disableBabyHandlerDrop(PlayerDropItemEvent event) {
         ItemStack item = event.getItemDrop().getItemStack();
         if (ItemManager.isBabyHandler(item)) {
             event.setCancelled(true);
-            // Test
         }
     }
 
     @EventHandler
     public void disableBabyItemPickup(EntityPickupItemEvent event) {
-        if (event.getEntity() instanceof Player) {
-            Player player = ((Player) event.getEntity()).getPlayer();
-            if (isABaby(player)) {
+        if (event.getEntity() instanceof Player player) {
+            if (RoleManager.isABaby(player)) {
                 event.setCancelled(true);
             }
         }
@@ -44,8 +34,8 @@ public class InventoryListener implements Listener {
     @EventHandler
     public void disableBabyInventoryOpening(InventoryOpenEvent event) {
         Player player = (Player) event.getPlayer();
-        if (isABaby(player)) {
-            Notification.errorMsg(player,"Babies cant interact with inventories");
+        if (RoleManager.isABaby(player)) {
+            Notification.errorMsg(player, "Babies cant interact with inventories");
             event.setCancelled(true);
         }
     }
@@ -53,28 +43,9 @@ public class InventoryListener implements Listener {
     @EventHandler
     public void disableEnderchest(InventoryOpenEvent event) {
         Player player = (Player) event.getPlayer();
-        if(event.getInventory().getType() == InventoryType.ENDER_CHEST){
-            Notification.errorMsg(player,"Enderchests do not work here");
+        if (event.getInventory().getType() == InventoryType.ENDER_CHEST) {
+            Notification.errorMsg(player, "Enderchests do not work here");
             event.setCancelled(true);
         }
-    }
-
-
-
-
-    private boolean isABaby(Player player) {
-        // Player has Character?
-        PlayerRole role = RoleManager.get(player);
-        if (role == null)
-            return false;
-        // Character has phasemanager?
-        PhaseManager phaseManager = RoleManager.get(player).pm;
-        if (phaseManager == null)
-            return false;
-        // Phase is Baby?
-        if (phaseManager.getCurrentPhase().getName().equalsIgnoreCase("baby")) {
-            return true;
-        }
-        return false;
     }
 }

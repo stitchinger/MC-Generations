@@ -114,9 +114,7 @@ public class Family {
     }
 
     public static boolean inSameFamily(PlayerRole one, PlayerRole two) {
-        boolean notSelf = one != two;
-        boolean sameFamily = one.getFamily() == two.getFamily();
-        return notSelf && sameFamily;
+        return !one.compare(two) && one.getFamily().compare(two.getFamily());
     }
 
     public static boolean inSameFamily(Player one, Player two) {
@@ -128,5 +126,9 @@ public class Family {
         }
 
         return inSameFamily(roleOne, roleTwo);
+    }
+
+    public boolean compare(Family family) {
+        return this == family;
     }
 }

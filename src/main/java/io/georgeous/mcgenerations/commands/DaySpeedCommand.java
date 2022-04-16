@@ -11,11 +11,10 @@ import org.jetbrains.annotations.NotNull;
 public class DaySpeedCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             return true;
         }
 
-        Player player = (Player) sender;
         if (!player.isOp()) {
             Notification.onlyForOp(player);
             return true;
@@ -27,7 +26,6 @@ public class DaySpeedCommand implements CommandExecutor {
 
         //playerRole.am.setSecInYear(Integer.parseInt(args[0]));
         MCG.daySpeed = Long.parseLong(args[0]);
-
 
         return false;
     }

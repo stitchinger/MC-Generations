@@ -34,20 +34,17 @@ public class SpawnManager {
         PlayerRole finalMom = findViableMother(player);
         boolean playerInDebug = PlayerManager.get(player).isDebugMode();
 
-        Bukkit.getScheduler().scheduleSyncDelayedTask(MCG.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                if (finalMom != null && !playerInDebug) {
-                    spawnAsBaby(player, finalMom);
-                } else {
-                    spawnAsEve(player);
-                }
-                //player.setGameMode(GameMode.SURVIVAL);
-                player.setGameMode(playerGM);
-                player.setInvulnerable(false);
-                PlayerManager.get(player).setDiedOfOldAge(false);
-                PlayerManager.get(player).setLastBedLocation(null);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(MCG.getInstance(), () -> {
+            if (finalMom != null && !playerInDebug) {
+                spawnAsBaby(player, finalMom);
+            } else {
+                spawnAsEve(player);
             }
+            //player.setGameMode(GameMode.SURVIVAL);
+            player.setGameMode(playerGM);
+            player.setInvulnerable(false);
+            PlayerManager.get(player).setDiedOfOldAge(false);
+            PlayerManager.get(player).setLastBedLocation(null);
         }, timeInLobby * 20L); // 20 Tick (1 Second) delay before run() is called
     }
 
@@ -93,7 +90,7 @@ public class SpawnManager {
         PlayerRole newBornRole = RoleManager.createAndAddRole(newBorn, name, 0, family);
         family.addMember(newBornRole);
 
-        mother.mc.bornBaby(newBornRole);
+        mother.getMotherController().bornBaby(newBornRole);
 
         Notification.neutralMsg(newBorn, "You were reincarnated as a Baby");
         // Effects
@@ -114,7 +111,7 @@ public class SpawnManager {
             boolean notSelf
                     = child != player;
             if (playerHasRole && notSelf) {
-                if (playerRole.mc.canHaveBaby()) {
+                if (playerRole.getMotherController().canHaveBaby()) {
                     viableMothers.add(playerRole);
                 }
             }

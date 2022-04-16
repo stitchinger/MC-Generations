@@ -1,4 +1,4 @@
-package io.georgeous.mcgenerations.systems.role.commands;
+package io.georgeous.mcgenerations.commands;
 
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
@@ -16,10 +16,9 @@ public class YouAre implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
 
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             return true;
         }
-        Player player = (Player) sender;
 
         if (args.length != 2) {
             Notification.errorMsg(player, "Usage: /You are Lisa");

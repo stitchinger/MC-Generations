@@ -4,20 +4,25 @@ import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 import io.georgeous.mcgenerations.utils.Notification;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class DebugCommand implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.List;
+
+public class DebugCommand implements CommandExecutor, TabCompleter {
+
+    public DebugCommand() {
+        CommandUtils.addTabComplete("debug", this);
+    }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             return true;
         }
-        Player player = (Player) sender;
+
         if (!player.isOp()) {
             Notification.onlyForOp(player);
             return true;
@@ -37,5 +42,17 @@ public class DebugCommand implements CommandExecutor {
             player.teleport(MCG.council.councilLocation);
         }
         return false;
+    }
+
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
+        List<String> l = new ArrayList<>();
+        if (cmd.getName().equalsIgnoreCase("debug")) {
+            if (sender instanceof Player) {
+                l.add("council");
+                return l;
+            }
+        }
+        return l;
     }
 }

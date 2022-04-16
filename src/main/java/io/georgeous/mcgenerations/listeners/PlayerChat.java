@@ -4,6 +4,7 @@ import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,9 +24,9 @@ public class PlayerChat implements Listener {
             return;
         }
 
-        PhaseManager pm = playerRole.pm;
+        PhaseManager pm = playerRole.getPhaseManager();
 
-        String prefix = playerRole.getName() + " " + playerRole.family.getColoredName() + "§f: ";
+        String prefix = playerRole.getName() + " " + playerRole.family.getColoredName() + ChatColor.WHITE + ": ";
         String msg = prepareMsg(event.getMessage(), prefix, pm.getCurrentPhase().getMaxCharsInChat());
 
         rangedBroadcast(player, msg, CHAT_RANGE);
@@ -40,11 +41,8 @@ public class PlayerChat implements Listener {
     }
 
     public void rangedBroadcast(Player sender, String msg, double range) {
-        for (Player other : Bukkit.getOnlinePlayers()) {
-            double distanceBetweenPlayers = other.getLocation().distance(sender.getLocation());
-            if (distanceBetweenPlayers <= range) {
+        for (Player other : Bukkit.getOnlinePlayers())
+            if (other.getLocation().distance(sender.getLocation()) <= range)
                 other.sendMessage(msg);
-            }
-        }
     }
 }

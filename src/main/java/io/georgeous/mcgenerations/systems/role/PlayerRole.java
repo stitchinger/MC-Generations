@@ -7,7 +7,7 @@ import io.georgeous.mcgenerations.systems.role.components.MotherController;
 import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
 import io.georgeous.mcgenerations.systems.surrogate.SurroManager;
 import io.georgeous.petmanager.PetManager;
-import org.bukkit.ChatColor;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.haoshoku.nick.api.NickAPI;
@@ -24,9 +24,9 @@ public class PlayerRole {
     public boolean isDead = false;
 
     // Managers
-    public AgeManager am;
-    public PhaseManager pm;
-    public MotherController mc;
+    private final AgeManager ageManager;
+    private final PhaseManager phaseManager;
+    private final MotherController motherController;
 
     public PlayerRole(Player player, String name, int age, Family family) {
         this.player = player;
@@ -34,18 +34,18 @@ public class PlayerRole {
 
         setName(name);
 
-        am = new AgeManager(this, age);
-        pm = new PhaseManager(this, am);
-        mc = new MotherController(this);
+        ageManager = new AgeManager(this, age);
+        phaseManager = new PhaseManager(this, ageManager);
+        motherController = new MotherController(this);
 
         this.family.addMember(this);
     }
 
     public void update() {
         if (!isDead) {
-            mc.update();
-            am.update();
-            pm.update();
+            motherController.update();
+            ageManager.update();
+            phaseManager.update();
         }
     }
 
@@ -83,7 +83,7 @@ public class PlayerRole {
         refreshHealthBar();
     }
 
-    public void unnickPlayer(Player player){
+    public void unnickPlayer(Player player) {
         NickAPI.resetNick(player);
         NickAPI.resetSkin(player);
         //NickAPI.refreshPlayer(player);
@@ -92,19 +92,19 @@ public class PlayerRole {
         refreshHealthBar();
     }
 
-    public void updateScoreboard(){
-        NickScoreboard.write(name, player.getUniqueId().toString().substring(0,15), "", " " + getFamily().getColoredName(), false, ChatColor.WHITE);
+    public void updateScoreboard() {
+        NickScoreboard.write(name, player.getUniqueId().toString().substring(0, 15), "", " " + getFamily().getColoredName(), false, ChatColor.WHITE);
         NickScoreboard.updateScoreboard(name);
     }
 
-    public void refreshHealthBar(){
+    public void refreshHealthBar() {
         player.setFoodLevel(player.getFoodLevel() + 2);
         new BukkitRunnable() {
             @Override
             public void run() {
                 player.setFoodLevel(player.getFoodLevel() - 2);
             }
-        }.runTaskLater(MCG.getInstance(),10);
+        }.runTaskLater(MCG.getInstance(), 10);
     }
 
     public Family getFamily() {
@@ -120,7 +120,7 @@ public class PlayerRole {
                 public void run() {
                     unnickPlayer(player);
                 }
-            }.runTaskLater(MCG.getInstance(),20);
+            }.runTaskLater(MCG.getInstance(), 20);
 
             if (player.getHealth() != 0) {
                 player.setHealth(0);
@@ -129,8 +129,8 @@ public class PlayerRole {
     }
 
     public void passOnPetsToDescendent() {
-        if (mc.getOldestChild() != null) {
-            PetManager.passPets(this.getPlayer(), mc.getOldestChild().getPlayer());
+        if (motherController.getOldestChild() != null) {
+            PetManager.passPets(this.getPlayer(), motherController.getOldestChild().getPlayer());
 
         } else {
             PetManager.releaseAllPets(this.getPlayer());
@@ -139,5 +139,30 @@ public class PlayerRole {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public void babyFeedEffect() {
+        Location location = player.getLocation();
+        World world = location.getWorld();
+        if (world != null) {
+            world.spawnParticle(Particle.COMPOSTER, location, 40, 0.5, 0.5, 0.5);
+            world.playSound(location, Sound.ENTITY_GENERIC_DRINK, 1, 1);
+        }
+    }
+
+    public boolean compare(PlayerRole role) {
+        return this == role;
+    }
+
+    public AgeManager getAgeManager() {
+        return ageManager;
+    }
+
+    public PhaseManager getPhaseManager() {
+        return phaseManager;
+    }
+
+    public MotherController getMotherController() {
+        return motherController;
     }
 }

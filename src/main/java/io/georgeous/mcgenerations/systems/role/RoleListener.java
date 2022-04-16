@@ -41,7 +41,7 @@ public class RoleListener implements Listener {
         removeBabyHandlerFromDrops(event);
 
         String roleName = playerRole.getName() + " " + playerRole.getFamily().getColoredName() + ChatColor.RESET;
-        String ageString = "(" + playerRole.am.getAge() + ")";
+        String ageString = "(" + playerRole.getAgeManager().getAge() + ")";
         String msg = event.getDeathMessage().replace(player.getName(), roleName + " " + ageString);
 
         // Replace killers real name with character name
@@ -56,7 +56,7 @@ public class RoleListener implements Listener {
 
         event.setDeathMessage(msg);
 
-        boolean diedOfOldAge = playerRole.am.getAge() >= 60;
+        boolean diedOfOldAge = playerRole.getAgeManager().getAge() >= 60;
         if (diedOfOldAge) {
             event.setDeathMessage(roleName + " died of old Age. RIP");
             PlayerManager.get(player).setDiedOfOldAge(true);

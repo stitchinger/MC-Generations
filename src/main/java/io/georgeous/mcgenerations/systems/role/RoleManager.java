@@ -5,7 +5,8 @@ import io.georgeous.mcgenerations.SpawnManager;
 import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
-import io.georgeous.mcgenerations.systems.role.commands.RoleCommand;
+import io.georgeous.mcgenerations.commands.RoleCommand;
+import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
 import io.georgeous.mcgenerations.utils.NameGenerator;
 import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.configuration.ConfigurationSection;
@@ -43,7 +44,6 @@ public class RoleManager {
     private static void registerCommands() {
         RoleCommand roleCommand = new RoleCommand();
         getServer().getPluginCommand("role").setExecutor(roleCommand);
-        MCG.getInstance().getCommand("role").setTabCompleter(roleCommand);
     }
 
     public static PlayerRole get(Player player) {
@@ -102,7 +102,7 @@ public class RoleManager {
         String uuid = playerRole.getPlayer().getUniqueId().toString();
 
         config.set("data.player." + uuid + ".role.name", playerRole.getName());
-        config.set("data.player." + uuid + ".role.age", playerRole.am.getAge());
+        config.set("data.player." + uuid + ".role.age", playerRole.getAgeManager().getAge());
         config.set("data.player." + uuid + ".role.familyname", playerRole.family.getName());
         config.set("data.player." + uuid + ".role.family", playerRole.family.getUuid());
         config.set("data.player." + uuid + ".role.generation", playerRole.generation);
@@ -142,10 +142,20 @@ public class RoleManager {
     }
 
     public static boolean playerDataExists(Player player) {
-        return MCG.getInstance().getConfig().contains("data.player." + player.getUniqueId().toString() + ".role");
+        return MCG.getInstance().getConfig().contains("data.player." + player.getUniqueId() + ".role");
     }
 
     public static int getRoleCount() {
         return roles.size();
+    }
+
+    public static boolean isABaby(Player player) {
+        PlayerRole role = RoleManager.get(player);
+        if (role == null)
+            return false;
+        PhaseManager phaseManager = RoleManager.get(player).getPhaseManager();
+        if (phaseManager == null)
+            return false;
+        return phaseManager.getCurrentPhase().getName().equalsIgnoreCase("baby");
     }
 }

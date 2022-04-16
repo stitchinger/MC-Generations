@@ -49,7 +49,7 @@ public class PhaseManager {
         // Prolly not the best place for this function
         // Might gonna make a subclass BabyPhase and put this in the update
         if(currentPhase.getName().equalsIgnoreCase("baby")
-        || currentPhase.getName().equalsIgnoreCase("toddler")){
+                || currentPhase.getName().equalsIgnoreCase("toddler")){
             if(player.getFoodLevel() < 10){
                 double freq = (double) Util.map(player.getFoodLevel(),0,10, 10,1);
                 if (Math.random() < freq / 100d) { // triggers every 5 secs in average

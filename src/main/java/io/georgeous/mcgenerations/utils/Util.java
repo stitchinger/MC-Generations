@@ -14,11 +14,7 @@ public class Util {
     private static final String[] colorCodes = {"§1", "§2", "§3", "§4", "§5", "§6", "§7", "§8", "§9", "§a", "§b", "§c", "§d", "§e", "§f"};
 
     // Map Function
-    public static final float map(float value,
-                                  float istart,
-                                  float istop,
-                                  float ostart,
-                                  float ostop) {
+    public static float map(float value, float istart, float istop, float ostart, float ostop) {
         return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
     }
 

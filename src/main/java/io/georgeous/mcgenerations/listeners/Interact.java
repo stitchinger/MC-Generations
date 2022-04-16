@@ -1,16 +1,12 @@
 package io.georgeous.mcgenerations.listeners;
 
-import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.family.FriendlyTalk;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
 import io.georgeous.mcgenerations.utils.ItemManager;
-import org.bukkit.Location;
 import org.bukkit.Particle;
-import org.bukkit.Sound;
-import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,63 +17,35 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.UUID;
-
 public class Interact implements Listener {
 
-    private final MCG main;
-
-
-    public Interact(MCG main) {
-        this.main = main;
-    }
-
     @EventHandler
-    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+    public void onBabyFeed(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
         Entity target = event.getRightClicked();
         ItemStack usedItem = player.getInventory().getItemInMainHand();
 
-        if (ItemManager.isBabyHandler(usedItem) && target instanceof Player) {
+        if (target instanceof Player && ItemManager.isBabyHandler(usedItem)) {
             feedBaby(player, (Player) target);
         }
     }
 
     public void feedBaby(Player feeder, Player baby) {
-        PlayerRole role = RoleManager.get(baby);
-        if (role == null)
+        PlayerRole babyRole = RoleManager.get(baby);
+        if (babyRole == null || (baby.getFoodLevel() >= 20 && feeder.getFoodLevel() > 0) || !babyRole.getPhaseManager().getCurrentPhase().isFeedable())
             return;
 
-        if (baby.getFoodLevel() >= 20)
-            return;
-
-        if (!role.pm.getCurrentPhase().isFeedable())
-            return;
-
-        feeder.setFoodLevel(feeder.getFoodLevel() - 2);
+        feeder.setFoodLevel(Math.max(feeder.getFoodLevel() - 2, 0));
         int newFoodLevel = Math.min(baby.getFoodLevel() + 5, 20);
         baby.setFoodLevel(newFoodLevel);
 
-        babyFeedEffect(baby.getLocation());
-    }
-
-    public void babyFeedEffect(Location location) {
-        World world = location.getWorld();
-        if (world != null) {
-            world.spawnParticle(Particle.COMPOSTER, location, 40, 0.5, 0.5, 0.5);
-            world.playSound(location, Sound.ENTITY_GENERIC_DRINK, 1, 1);
-        }
+        babyRole.babyFeedEffect();
     }
 
     @EventHandler
     public void disableFriendlyFire(EntityDamageByEntityEvent event) {
-        if (!(event.getDamager() instanceof Player)
-                || !(event.getEntity() instanceof Player)) {
+        if (!(event.getDamager() instanceof Player damager) || !(event.getEntity() instanceof Player receiver))
             return;
-        }
-        Player damager = (Player) event.getDamager();
-        Player receiver = (Player) event.getEntity();
 
         if (Family.inSameFamily(damager, receiver)) {
             event.setCancelled(true);
@@ -87,16 +55,9 @@ public class Interact implements Listener {
 
     @EventHandler
     public void onProjectileHit(ProjectileHitEvent event) {
-        if (!(event.getEntity().getShooter() instanceof Player)) {
+        if (!(event.getEntity().getShooter() instanceof Player damager) || !(event.getHitEntity() instanceof Player receiver)) {
             return;
         }
-
-        if (!(event.getHitEntity() instanceof Player)) {
-            return;
-        }
-
-        Player damager = (Player) event.getEntity().getShooter();
-        Player receiver = (Player) event.getHitEntity();
 
         if (Family.inSameFamily(damager, receiver)) {
             event.setCancelled(true);
@@ -105,26 +66,21 @@ public class Interact implements Listener {
     }
 
     public void friendlyFamilyTalk(PlayerRole damager, PlayerRole receiver) {
-        long cld = 5000;
-
         Player pd = damager.getPlayer();
         Player pr = receiver.getPlayer();
 
-        if(FriendlyTalk.cooldown.get(pd) == null || System.currentTimeMillis() > FriendlyTalk.cooldown.get(pd) + cld ){
-            FriendlyTalk ft = new FriendlyTalk(damager, receiver);
+        if (!FriendlyTalk.isCoolDown(pd)) {
+            String[] messages = FriendlyTalk.getMessages(damager.getName(), receiver.getName());
+            pr.sendMessage(messages[0]);
+            pd.sendMessage(messages[1]);
 
-            pd.sendMessage(ft.getSenderMessage());
-            pr.sendMessage(ft.getReceiverMessage());
-
-            //damager.getPlayer().sendMessage("You gave " + receiver.getName() + " a big hug");
-            //receiver.getPlayer().sendMessage(damager.getName() + " gave you a big hug");
             try {
                 pd.getWorld().spawnParticle(Particle.HEART, pd.getLocation(), 5, 0.5, 0.5, 0.5);
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
 
-            FriendlyTalk.cooldown.put(pd, System.currentTimeMillis());
+            FriendlyTalk.addCoolDown(pd);
         }
     }
 
@@ -134,7 +90,7 @@ public class Interact implements Listener {
         PlayerRole role = RoleManager.get(player);
         if (role == null)
             return;
-        PhaseManager phaseManager = RoleManager.get(player).pm;
+        PhaseManager phaseManager = RoleManager.get(player).getPhaseManager();
         if (phaseManager == null)
             return;
         if (phaseManager.getCurrentPhase().getName().equalsIgnoreCase("baby")) {

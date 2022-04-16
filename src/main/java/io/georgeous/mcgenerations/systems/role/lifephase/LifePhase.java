@@ -29,12 +29,6 @@ public class LifePhase {
     protected boolean surrogate;
     protected boolean feedable;
     protected final List<PotionEffect> effects = new ArrayList<>();
-    public static final int BABY_PHASE = 0,
-            TODDLER_PHASE = 1,
-            CHILD_PHASE = 2,
-            TEEN_PHASE = 3,
-            ADULT_PHASE = 4,
-            ELDER_PHASE = 5;
 
     public LifePhase(PlayerRole playerRole, int startAge, int endAge, int hungerRate, int maxCharsInChat, boolean canCarry, boolean canBeCarried, String skinID, String name, int jump, int slowness, int digging, boolean surrogate, Skin skin, boolean feedable) {
         this.playerRole = playerRole;

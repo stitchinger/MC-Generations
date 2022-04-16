@@ -1,4 +1,4 @@
-package io.georgeous.mcgenerations.systems.role.lifephase.listeners;
+package io.georgeous.mcgenerations.listeners;
 
 import io.georgeous.mcgenerations.systems.role.lifephase.events.PlayerPhaseUpEvent;
 import io.georgeous.mcgenerations.utils.ItemManager;
