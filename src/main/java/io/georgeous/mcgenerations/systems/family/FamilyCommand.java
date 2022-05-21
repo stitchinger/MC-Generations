@@ -1,5 +1,7 @@
 package io.georgeous.mcgenerations.systems.family;
 
+import io.georgeous.mcgenerations.systems.player.PlayerManager;
+import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.Notification;
@@ -28,8 +30,22 @@ public class FamilyCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+
+
         Family family = role.getFamily();
         if (family == null) {
+            return true;
+        }
+
+        if (args.length == 0) {
+            player.sendMessage("Family: " + family.getColoredName());
+            player.sendMessage("Members: " + family.memberCount());
+            family.getMembers().forEach(member -> {
+                player.sendMessage(" - " + member.getName());
+            });
+            if (family.getLeader() != null) {
+                player.sendMessage("Leader: " + family.getLeader().getName());
+            }
             return true;
         }
 

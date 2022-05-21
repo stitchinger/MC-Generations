@@ -5,38 +5,37 @@ import io.georgeous.mcgenerations.systems.surrogate.SurroManager;
 import io.georgeous.mcgenerations.utils.Notification;
 import io.georgeous.mcgenerations.utils.Skin;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import xyz.haoshoku.nick.api.NickAPI;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class LifePhase {
 
-    protected final PlayerRole playerRole;
-    protected final String name;
-    protected int startAge;
-    protected int endAge;
-    protected final String skinID;
-    protected final Skin skin;
-    protected int maxCharsInChat;
-    protected int hungerRate;
-    protected boolean canCarry;
-    protected boolean canBeCarried;
-    protected boolean surrogate;
-    protected boolean feedable;
-    protected final List<PotionEffect> effects = new ArrayList<>();
     public static final int BABY_PHASE = 0,
             TODDLER_PHASE = 1,
             CHILD_PHASE = 2,
             TEEN_PHASE = 3,
             ADULT_PHASE = 4,
             ELDER_PHASE = 5;
+    protected final PlayerRole playerRole;
+    protected final String name;
+    protected final String skinID;
+    protected final Skin skin;
+    protected final int phaseId;
+    protected final List<PotionEffect> effects = new ArrayList<>();
+    protected int startAge;
+    protected int endAge;
+    protected int maxCharsInChat;
+    protected int hungerRate;
+    protected boolean canCarry;
+    protected boolean canBeCarried;
+    protected boolean surrogate;
+    protected boolean feedable;
 
-    public LifePhase(PlayerRole playerRole, int startAge, int endAge, int hungerRate, int maxCharsInChat, boolean canCarry, boolean canBeCarried, String skinID, String name, int jump, int slowness, int digging, boolean surrogate, Skin skin, boolean feedable) {
+    public LifePhase(PlayerRole playerRole, int startAge, int endAge, int hungerRate, int maxCharsInChat, boolean canCarry, boolean canBeCarried, String skinID, String name, int jump, int slowness, int digging, boolean surrogate, Skin skin, boolean feedable, int phaseId) {
         this.playerRole = playerRole;
         this.startAge = startAge;
         this.endAge = endAge;
@@ -49,6 +48,7 @@ public class LifePhase {
         this.name = name;
         this.surrogate = surrogate;
         this.feedable = feedable;
+        this.phaseId = phaseId;
 
         if (slowness > 0) {
             effects.add(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, slowness, false, false, true));
@@ -137,4 +137,6 @@ public class LifePhase {
     public boolean isFeedable() {
         return feedable;
     }
+
+    public int getPhaseId()  { return this.phaseId; }
 }

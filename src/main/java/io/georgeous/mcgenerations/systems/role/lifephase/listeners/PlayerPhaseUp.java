@@ -12,11 +12,13 @@ public class PlayerPhaseUp implements Listener {
     @EventHandler
     public void onPlayerPhaseUp(PlayerPhaseUpEvent event){
         String phaseName = event.getNewPhase().getName();
+        int phaseId = event.getNewPhase().getPhaseId();
         Player player = event.getPlayer();
         if(phaseName.equalsIgnoreCase("baby")){
             player.getInventory().clear();
         }
-        if(phaseName.equalsIgnoreCase("teen")){
+
+        if(phaseId >= 3 && phaseId < 5){
             Util.giveItemIfNotInInventory(ItemManager.createBabyHandler(),player.getInventory());
         }
     }

@@ -29,19 +29,12 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                        </configuration>
-                    </execution>
-                </executions>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <outputDirectory>/Users/georg/Buildtools/plugins</outputDirectory>
+                    <finalName>MC-Generations</finalName>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>net.md-5</groupId>
@@ -119,6 +112,20 @@
             <artifactId>nickapi</artifactId>
             <version>6.3.3-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.georgeous</groupId>
+            <artifactId>Piggyback</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>/Users/georg/Buildtools/plugins/Piggyback.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>io.georgeous</groupId>
+            <artifactId>Petmanager</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>/Users/georg/Buildtools/plugins/Petmanager.jar</systemPath>
         </dependency>
     </dependencies>
 </project>
