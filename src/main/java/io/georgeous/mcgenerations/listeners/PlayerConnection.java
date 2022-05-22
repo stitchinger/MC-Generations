@@ -18,5 +18,7 @@ public class PlayerConnection implements Listener {
 
         player.sendMessage("Welcome to One Hour One Life");
         player.sendMessage("Join the Discord - " + ChatColor.BLUE + ChatColor.UNDERLINE + "https://discord.gg/U262bxT4jh");
+
+        event.setJoinMessage("");
     }
 }

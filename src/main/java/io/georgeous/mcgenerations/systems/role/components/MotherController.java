@@ -13,7 +13,7 @@ import java.util.List;
 public class MotherController {
     private final PlayerRole playerRole;
     private long lastChildTime;
-    private final long babyCooldown = 60; // in seconds
+    private final long babyCooldown = 180; // in seconds
     private final List<PlayerRole> children;
 
     public MotherController(PlayerRole playerRole) {

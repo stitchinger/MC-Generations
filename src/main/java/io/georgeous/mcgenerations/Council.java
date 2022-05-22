@@ -22,7 +22,7 @@ public class Council {
 
     public Council(World world) {
         this.world = world;
-        councilLocation = new Location(world, 0, 201, 0);
+-         councilLocation = new Location(world, 666, 201, 666);
         endermanLocation = councilLocation.clone().add(0.5, 2, 11.5);
         piglinLocation = councilLocation.clone().add(0.5, 2, -10.5);
         pillagerLocation = councilLocation.clone().add(11.5, 2, 0.5);
@@ -80,6 +80,7 @@ public class Council {
         cow.setInvulnerable(true);
         cow.setInvisible(false);
         cow.setSilent(true);
+
         cow.addScoreboardTag("council");
 
         PiglinBrute piglin = (PiglinBrute) world.spawnEntity(piglinLocation, EntityType.PIGLIN_BRUTE);
@@ -113,6 +114,7 @@ public class Council {
         wolf.setInvisible(false);
         wolf.setInvulnerable(true);
         wolf.setSilent(true);
+        wolf.setAI(false);
         wolf.addScoreboardTag("council");
 
         Villager villager = (Villager) world.spawnEntity(villagerLocation, EntityType.VILLAGER);

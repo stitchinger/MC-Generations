@@ -7,6 +7,12 @@ import io.georgeous.mcgenerations.utils.ItemManager;
 import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.Sign;
+import org.bukkit.block.data.Rotatable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -65,6 +71,26 @@ public class RoleListener implements Listener {
         player.setBedSpawnLocation(MCG.council.councilLocation, true);
 
         playerRole.die();
+
+        // Place Grave Sign
+        World world = player.getWorld();
+        player.getLocation();
+        Block block1 = world.getBlockAt(player.getLocation());
+        block1.setType(Material.OAK_SIGN);
+
+        ((Rotatable) block1.getBlockData()).setRotation(BlockFace.EAST_NORTH_EAST);
+        //rot.setRotation(player.getFacing());
+
+
+        Sign sig = (Sign) block1.getState();
+
+
+
+
+        sig.setLine(0, "R.I.P.");
+        sig.setLine(1, playerRole.getName() + " " + playerRole.getFamily().getName());
+        sig.setLine(2, 1989 + " - " + 2046);
+        sig.update();
 
     }
 

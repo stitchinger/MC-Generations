@@ -40,7 +40,7 @@ public final class MCG extends JavaPlugin {
     public void onEnable() {
         printLoadupText();
         plugin = this;
-        overworld = Bukkit.getWorld("world");
+        overworld = Bukkit.getWorld("familycraft-world");
         council = new Council(overworld);
         this.saveDefaultConfig();
 

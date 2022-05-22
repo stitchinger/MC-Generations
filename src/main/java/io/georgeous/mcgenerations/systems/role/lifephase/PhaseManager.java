@@ -22,8 +22,8 @@ public class PhaseManager {
         this.player = playerRole.getPlayer();
         this.am = am;
 
-        LifePhase babyPhase = new LifePhase(playerRole, 0, 3, 1, 999, false, true, "", "Baby", 128, 6, 2, true, Skin.BABY, true, 0);
-        LifePhase toddlerPhase = new LifePhase(playerRole, 3, 6, 1, 999, false, true, "", "Toddler", 200, 2, 1, true, Skin.TODDLER, true, 1);
+        LifePhase babyPhase = new LifePhase(playerRole, 0, 3, 1, 999, false, true, "", "Baby", 0, 3, 2, true, Skin.BABY, true, 0);
+        LifePhase toddlerPhase = new LifePhase(playerRole, 3, 6, 1, 999, false, true, "", "Toddler", 0, 2, 1, true, Skin.TODDLER, true, 1);
         LifePhase childPhase = new LifePhase(playerRole, 6, 15, 0, 999, false, false, "2007359867", "Child", 0, 1, 0, false, Skin.CHILD, true, 2);
         LifePhase teenPhase = new LifePhase(playerRole, 15, 21, 0, 999, true, false, "297371", "Teen", 0, 0, 0, false, Skin.TEEN, false, 3);
         LifePhase adultPhase = new LifePhase(playerRole, 21, 40, 0, 999, true, false, "584227931", "Adult", 0, 0, 0, false, Skin.ADULT, false, 4);

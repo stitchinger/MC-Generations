@@ -23,9 +23,9 @@ import java.util.List;
 public class SpawnManager {
 
     private static final int timeInLobby = 5; // in seconds
-    private static final int spawnCenterX = 0;
-    private static final int spawnCenterY = 0;
-    private static final int spawnRadius = 500;
+    private static final int spawnCenterX = 20;
+    private static final int spawnCenterY = -800;
+    private static final int spawnRadius = 120;
 
 
     public static void spawnPlayer(Player player) {
@@ -74,7 +74,7 @@ public class SpawnManager {
         if (PlayerManager.get(player).getDiedOfOldAge() && PlayerManager.get(player).getLastBedLocation() != null && bedIsValid) {
             player.teleport(PlayerManager.get(player).getLastBedLocation());
         } else {
-            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "spreadplayers " + spawnCenterX + " " + spawnCenterY + " 50 " + spawnRadius * 2 + " false " + player.getName());
+            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "spreadplayers " + spawnCenterX + " " + spawnCenterY + " 0 " + spawnRadius + " false " + player.getName());
         }
 
 

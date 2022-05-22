@@ -17,12 +17,15 @@ public class PlayerCarry implements Listener {
     public void onCarryStart(PlayerStartCarryEvent event) {
         Player player = event.getPlayer();
         Entity target = event.getTarget();
+        player.sendMessage("start carry");
 
         if (target instanceof Player) {
+            player.sendMessage("is player");
             PlayerRole targetRole = RoleManager.get((Player) target);
             PlayerRole playerRole = RoleManager.get(player);
 
             if (playerRole == null || targetRole == null) {
+                player.sendMessage("no role");
                 event.setCancelled(true);
                 return;
             }
@@ -31,14 +34,13 @@ public class PlayerCarry implements Listener {
             boolean canBeCarried = targetRole.pm.getCurrentPhase().canBeCarried();
 
             if (!canBeCarried || !canCarry) {
+                player.sendMessage("no carry");
                 event.setCancelled(true);
                 return;
             }
 
             startCarryEffects(target.getLocation());
-        }
-
-        if((target instanceof Chicken) == false){
+        } else if((target instanceof Chicken) == false){
             event.setCancelled(true);
         }
     }
