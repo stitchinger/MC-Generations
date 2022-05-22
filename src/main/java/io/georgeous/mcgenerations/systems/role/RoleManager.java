@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import static org.bukkit.Bukkit.getServer;
 
@@ -25,15 +26,15 @@ public class RoleManager {
     private static RoleManager instance;
 
     private RoleManager() {
-        getServer().getPluginManager().registerEvents(new RoleListener(), MCG.getInstance());
         for (Player player : getServer().getOnlinePlayers()) {
             initPlayer(player);
         }
     }
 
     public static RoleManager getInstance() {
-        if (instance == null)
+        if (instance == null) {
             instance = new RoleManager();
+        }
         return instance;
     }
 

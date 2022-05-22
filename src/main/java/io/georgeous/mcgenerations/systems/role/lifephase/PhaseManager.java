@@ -114,6 +114,8 @@ public class PhaseManager {
     }
 
     public void endPhase() {
+        if (phase == null)
+            return;
         if (phase.surrogate) {
             SurrogateManager.getInstance().destroyPlayer(playerRole.getPlayer());
         }

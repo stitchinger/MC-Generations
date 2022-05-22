@@ -20,6 +20,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.logging.Level;
 
+import static org.bukkit.Bukkit.getServer;
+
 public final class MCG extends JavaPlugin {
     public static MCG plugin;
     public static World overworld;
@@ -42,12 +44,12 @@ public final class MCG extends JavaPlugin {
 
         this.data = new DataManager();
 
-        registerEvents();
-        registerCommands();
-
         PlayerManager.getInstance();
         FamilyManager.enable();
         RoleManager.getInstance();
+
+        registerEvents();
+        registerCommands();
 
         makeBundleCraftable();
 
@@ -102,6 +104,7 @@ public final class MCG extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         getServer().getPluginManager().registerEvents(new SurrogateListener(), this);
+        getServer().getPluginManager().registerEvents(new RoleListener(), MCG.getInstance());
     }
 
     public void registerCommands() {

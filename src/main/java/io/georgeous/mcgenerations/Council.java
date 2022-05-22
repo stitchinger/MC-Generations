@@ -8,6 +8,8 @@ import org.bukkit.World;
 import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.logging.Level;
+
 public class Council {
 
     public final Location councilLocation;
@@ -32,6 +34,7 @@ public class Council {
     public void init() {
 
         Bukkit.selectEntities(Bukkit.getConsoleSender(), "@e[tag=council]").forEach(entity -> {
+            MCG.getInstance().getLogger().log(Level.INFO, "Entity killed: " + entity.getType());
             if (entity instanceof Minecart) {
                 entity.setInvulnerable(false);
                 ((Minecart) entity).setDamage(9999);
