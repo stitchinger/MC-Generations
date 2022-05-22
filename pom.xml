@@ -43,7 +43,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
+            <!--<plugin>
                 <groupId>net.md-5</groupId>
                 <artifactId>specialsource-maven-plugin</artifactId>
                 <version>1.2.2</version>
@@ -75,7 +75,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
         </plugins>
         <resources>
             <resource>
@@ -103,15 +103,15 @@
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
+            <artifactId>spigot-api</artifactId>
             <version>1.18.2-R0.1-SNAPSHOT</version>
-            <classifier>remapped-mojang</classifier>
+            <!--<classifier>remapped-mojang</classifier>-->
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
+            <version>23.0.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -119,6 +119,20 @@
             <artifactId>nickapi</artifactId>
             <version>6.3.3-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.georgeous</groupId>
+            <artifactId>Petmanager</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>/home/weston/Desktop/Output/Petmanager.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>io.georgeous</groupId>
+            <artifactId>Pubbyback</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>/home/weston/Desktop/Output/Piggyback.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

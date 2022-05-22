@@ -1,12 +1,12 @@
-package io.georgeous.mcgenerations.systems.role;
+package io.georgeous.mcgenerations.listeners;
 
 import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.SpawnManager;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
+import io.georgeous.mcgenerations.systems.role.PlayerRole;
+import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.ItemManager;
-import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,26 +14,28 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.inventory.ItemStack;
 
 public class RoleListener implements Listener {
+
+    private final RoleManager roleManager = RoleManager.getInstance();
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        RoleManager.initPlayer(event.getPlayer());
+        roleManager.initPlayer(event.getPlayer());
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        RoleManager.saveRole(RoleManager.get(player));
-        RoleManager.remove(player);
+        roleManager.saveRole(roleManager.get(player));
+        roleManager.remove(player);
     }
 
     @EventHandler
     public void onRoleDead(PlayerDeathEvent event) {
         Player player = event.getEntity();
-        PlayerRole playerRole = RoleManager.get(player);
+        PlayerRole playerRole = roleManager.get(player);
         if (playerRole == null) {
             return;
         }
@@ -42,12 +44,15 @@ public class RoleListener implements Listener {
 
         String roleName = playerRole.getName() + " " + playerRole.getFamily().getColoredName() + ChatColor.RESET;
         String ageString = "(" + playerRole.getAgeManager().getAge() + ")";
-        String msg = event.getDeathMessage().replace(player.getName(), roleName + " " + ageString);
+        String msg = event.getDeathMessage();
+        if (msg == null)
+            msg = "";
+        msg = msg.replace(player.getName(), roleName + " " + ageString);
 
         // Replace killers real name with character name
         Player killer = player.getKiller();
         if (killer != null) {
-            PlayerRole killerRole = RoleManager.get(killer);
+            PlayerRole killerRole = roleManager.get(killer);
             if (killerRole != null) {
                 String killersCharName = killerRole.getName() + " " + killerRole.getFamily().getColoredName() + ChatColor.RESET;
                 msg = msg.replace(killer.getName(), killersCharName);
@@ -59,15 +64,13 @@ public class RoleListener implements Listener {
         boolean diedOfOldAge = playerRole.getAgeManager().getAge() >= 60;
         if (diedOfOldAge) {
             event.setDeathMessage(roleName + " died of old Age. RIP");
-            PlayerManager.get(player).setDiedOfOldAge(true);
-            PlayerManager.get(player).setLastBedLocation(player.getBedSpawnLocation());
+            PlayerManager.getInstance().get(player).setDiedOfOldAge(true);
+            PlayerManager.getInstance().get(player).setLastBedLocation(player.getBedSpawnLocation());
         }
         player.setBedSpawnLocation(MCG.council.councilLocation, true);
 
         playerRole.die();
-
     }
-
 
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
@@ -77,10 +80,6 @@ public class RoleListener implements Listener {
     }
 
     public void removeBabyHandlerFromDrops(PlayerDeathEvent event) {
-        for (ItemStack item : event.getDrops()) {
-            if (ItemManager.isBabyHandler(item)) {
-                item.setAmount(0);
-            }
-        }
+        event.getDrops().stream().filter(ItemManager::isBabyHandler).toList().forEach(item -> item.setAmount(0));
     }
 }

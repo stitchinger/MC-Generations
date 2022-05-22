@@ -4,7 +4,10 @@ import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 import io.georgeous.mcgenerations.utils.Notification;
-import org.bukkit.command.*;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,12 +32,12 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 0) {
-            PlayerWrapper wrapper = PlayerManager.get(player);
-            if(wrapper == null){
+            PlayerWrapper wrapper = PlayerManager.getInstance().get(player);
+            if (wrapper == null) {
                 return true;
             }
             wrapper.setDebugMode(!(wrapper.isDebugMode()));
-            Notification.neutralMsg(player,"Debug Mode: " + wrapper.isDebugMode());
+            Notification.neutralMsg(player, "Debug Mode: " + wrapper.isDebugMode());
             return true;
         }
 
@@ -47,11 +50,8 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         List<String> l = new ArrayList<>();
-        if (cmd.getName().equalsIgnoreCase("debug")) {
-            if (sender instanceof Player) {
-                l.add("council");
-                return l;
-            }
+        if (sender instanceof Player) {
+            l.add("council");
         }
         return l;
     }

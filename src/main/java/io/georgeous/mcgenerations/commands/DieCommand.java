@@ -15,7 +15,7 @@ public class DieCommand implements CommandExecutor {
         if (!(sender instanceof Player player))
             return true;
 
-        if (RoleManager.get(player) == null) {
+        if (RoleManager.getInstance().get(player) == null) {
             Notification.errorMsg(player, "No role found");
         }
 

@@ -1,4 +1,4 @@
-package io.georgeous.mcgenerations.systems.family;
+package io.georgeous.mcgenerations.listeners;
 
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
@@ -23,7 +23,7 @@ public class FamilyListener implements Listener {
     }
 
     private void removeMember(Player player) {
-        PlayerRole role = RoleManager.get(player);
+        PlayerRole role = RoleManager.getInstance().get(player);
         if (role == null) {
             return;
         }

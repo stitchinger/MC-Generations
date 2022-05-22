@@ -30,17 +30,6 @@ public class DataManager {
         return this.dataConfig;
     }
 
-    /*public void saveConfig() {
-        if (this.dataConfig == null)
-            return;
-
-        try {
-            this.getConfig().save(this.dataFile);
-        } catch (IOException e) {
-            instance.getLogger().log(Level.SEVERE, "Could not save config to " + this.dataFile, e);
-        }
-    }*/
-
     private int createNewFile(File file) {
         if (!file.exists())
             try {

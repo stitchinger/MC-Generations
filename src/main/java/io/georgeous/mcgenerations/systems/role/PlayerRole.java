@@ -2,10 +2,10 @@ package io.georgeous.mcgenerations.systems.role;
 
 import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.systems.family.Family;
-import io.georgeous.mcgenerations.systems.role.components.AgeManager;
-import io.georgeous.mcgenerations.systems.role.components.MotherController;
+import io.georgeous.mcgenerations.systems.role.components.PlayerAge;
+import io.georgeous.mcgenerations.systems.role.components.PlayerMother;
 import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
-import io.georgeous.mcgenerations.systems.surrogate.SurroManager;
+import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
 import io.georgeous.petmanager.PetManager;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -16,17 +16,15 @@ import xyz.haoshoku.nick.api.NickScoreboard;
 public class PlayerRole {
     // todo Kill role if player is offline for more than 5 min
     private final Player player;
-    private String name;
-    public Family family;
-
-    public int generation = 1;
-    private boolean isRenamed = false;
-    public boolean isDead = false;
-
     // Managers
-    private final AgeManager ageManager;
+    private final PlayerAge playerAge;
     private final PhaseManager phaseManager;
-    private final MotherController motherController;
+    private final PlayerMother playerMother;
+    public Family family;
+    public int generation = 1;
+    public boolean isDead = false;
+    private String name;
+    private boolean isRenamed = false;
 
     public PlayerRole(Player player, String name, int age, Family family) {
         this.player = player;
@@ -34,17 +32,17 @@ public class PlayerRole {
 
         setName(name);
 
-        ageManager = new AgeManager(this, age);
-        phaseManager = new PhaseManager(this, ageManager);
-        motherController = new MotherController(this);
+        playerAge = new PlayerAge(this, age);
+        phaseManager = new PhaseManager(this, playerAge);
+        playerMother = new PlayerMother(this);
 
         this.family.addMember(this);
     }
 
     public void update() {
         if (!isDead) {
-            motherController.update();
-            ageManager.update();
+            playerMother.update();
+            playerAge.update();
             phaseManager.update();
         }
     }
@@ -56,9 +54,9 @@ public class PlayerRole {
     public void setName(String name) {
         this.name = name;
         nickPlayer(player, name);
-        if (SurroManager.map.get(getPlayer()) != null) {
-            SurroManager.destroy(getPlayer());
-            SurroManager.create(getPlayer(), name + " " + family.getColoredName());
+        if (SurrogateManager.map.get(getPlayer()) != null) {
+            SurrogateManager.getInstance().destroyPlayer(getPlayer());
+            SurrogateManager.getInstance().create(getPlayer(), name + " " + family.getColoredName());
         }
     }
 
@@ -86,9 +84,7 @@ public class PlayerRole {
     public void unnickPlayer(Player player) {
         NickAPI.resetNick(player);
         NickAPI.resetSkin(player);
-        //NickAPI.refreshPlayer(player);
 
-        //updateScoreboard();
         refreshHealthBar();
     }
 
@@ -129,8 +125,8 @@ public class PlayerRole {
     }
 
     public void passOnPetsToDescendent() {
-        if (motherController.getOldestChild() != null) {
-            PetManager.passPets(this.getPlayer(), motherController.getOldestChild().getPlayer());
+        if (playerMother.getOldestChild() != null) {
+            PetManager.passPets(this.getPlayer(), playerMother.getOldestChild().getPlayer());
 
         } else {
             PetManager.releaseAllPets(this.getPlayer());
@@ -154,15 +150,15 @@ public class PlayerRole {
         return this == role;
     }
 
-    public AgeManager getAgeManager() {
-        return ageManager;
+    public PlayerAge getAgeManager() {
+        return playerAge;
     }
 
     public PhaseManager getPhaseManager() {
         return phaseManager;
     }
 
-    public MotherController getMotherController() {
-        return motherController;
+    public PlayerMother getMotherController() {
+        return playerMother;
     }
 }

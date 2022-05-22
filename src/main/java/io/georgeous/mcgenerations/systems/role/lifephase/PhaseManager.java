@@ -1,77 +1,67 @@
 package io.georgeous.mcgenerations.systems.role.lifephase;
 
-import io.georgeous.mcgenerations.systems.role.components.AgeManager;
+import io.georgeous.mcgenerations.events.PlayerPhaseUpEvent;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
-import io.georgeous.mcgenerations.systems.role.lifephase.events.PlayerPhaseUpEvent;
-import io.georgeous.mcgenerations.utils.Skin;
+import io.georgeous.mcgenerations.systems.role.components.PlayerAge;
+import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
+import io.georgeous.mcgenerations.utils.Notification;
 import io.georgeous.mcgenerations.utils.Util;
 import io.georgeous.piggyback.Piggyback;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffectType;
+import xyz.haoshoku.nick.api.NickAPI;
 
 public class PhaseManager {
     PlayerRole playerRole;
     Player player;
-    AgeManager am;
+    PlayerAge am;
 
-    private final LifePhase[] phases = new LifePhase[6];
-    private LifePhase currentPhase;
+    private Phase phase;
 
-    public PhaseManager(PlayerRole playerRole, AgeManager am) {
+    public PhaseManager(PlayerRole playerRole, PlayerAge am) {
         this.playerRole = playerRole;
         this.player = playerRole.getPlayer();
         this.am = am;
-
-        LifePhase babyPhase = new LifePhase(playerRole, 0, 3, 1, 999, false, true, "", "Baby", 128, 6, 2, true, Skin.BABY, true);
-        LifePhase toddlerPhase = new LifePhase(playerRole, 3, 6, 1, 999, false, true, "", "Toddler", 200, 2, 1, true, Skin.TODDLER, true);
-        LifePhase childPhase = new LifePhase(playerRole, 6, 15, 0, 999, false, false, "2007359867", "Child", 0, 1, 0, false, Skin.CHILD, true);
-        LifePhase teenPhase = new LifePhase(playerRole, 15, 21, 0, 999, true, false, "297371", "Teen", 0, 0, 0, false, Skin.TEEN, false);
-        LifePhase adultPhase = new LifePhase(playerRole, 21, 40, 0, 999, true, false, "584227931", "Adult", 0, 0, 0, false, Skin.ADULT, false);
-        LifePhase elderPhase = new LifePhase(playerRole, 40, 60, 0, 999, true, false, "1144027445", "Elder", 0, 0, 0, false, Skin.ELDER, false);
-
-        phases[0] = babyPhase;
-        phases[1] = toddlerPhase;
-        phases[2] = childPhase;
-        phases[3] = teenPhase;
-        phases[4] = adultPhase;
-        phases[5] = elderPhase;
 
         checkPhaseUp(am.getAge());
     }
 
     public void update() {
         checkPhaseUp(am.getAge());
-        currentPhase.update();
+        phaseUpdate();
         babyHungerScream();
     }
 
-    private void babyHungerScream(){
-        // Prolly not the best place for this function
-        // Might gonna make a subclass BabyPhase and put this in the update
-        if(currentPhase.getName().equalsIgnoreCase("baby")
-                || currentPhase.getName().equalsIgnoreCase("toddler")){
-            if(player.getFoodLevel() < 10){
-                double freq = (double) Util.map(player.getFoodLevel(),0,10, 10,1);
+    private void babyHungerScream() {
+        if (phase == Phase.BABY || phase == Phase.TODDLER) {
+            if (player.getFoodLevel() < 10) {
+                double freq = Util.map(
+                        player.getFoodLevel(),
+                        0,
+                        10,
+                        10,
+                        1);
                 if (Math.random() < freq / 100d) { // triggers every 5 secs in average
-                    player.getWorld().playSound(player.getLocation(),Sound.ENTITY_GOAT_SCREAMING_AMBIENT, SoundCategory.MASTER,1,2);
+                    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_GOAT_SCREAMING_AMBIENT, SoundCategory.MASTER, 1, 2);
                 }
             }
         }
     }
 
-    public LifePhase getCurrentPhase() {
-        return currentPhase;
+    public Phase getCurrentPhase() {
+        return phase;
     }
 
     // Life Phases
     public void checkPhaseUp(int age) {
-        for (LifePhase phase : phases) {
+        for (Phase phase : Phase.values()) {
             int start = phase.getStartAge();
             int end = phase.getEndAge();
 
             if (age >= start && age < end) { // in Age range
-                if (currentPhase != phase) {  // not already in this phase?
-                    PlayerPhaseUpEvent e = new PlayerPhaseUpEvent(player, this, currentPhase, phase);
+                if (this.phase != phase) {  // not already in this phase?
+                    PlayerPhaseUpEvent e = new PlayerPhaseUpEvent(player, this, this.phase, phase);
                     Bukkit.getServer().getPluginManager().callEvent(e);
                     if (!e.isCancelled()) {
                         changePhase(phase);
@@ -83,11 +73,8 @@ public class PhaseManager {
         player.setHealth(0);
     }
 
-    public void changePhase(LifePhase phase) {
-        if (currentPhase != null) {
-            currentPhase.end();
-            currentPhase = null;
-        }
+    public void changePhase(Phase phase) {
+        endPhase();
 
         // Cancel carrying
         // todo extract to Piggyback?
@@ -100,8 +87,8 @@ public class PhaseManager {
             }
         }
 
-        currentPhase = phase;
-        currentPhase.start();
+        this.phase = phase;
+        start();
 
         phaseUpEffect();
     }
@@ -111,5 +98,39 @@ public class PhaseManager {
         player.getWorld().spawnParticle(Particle.COMPOSTER, location, 100, 0.5, 1, 0.5);
         player.getWorld().playSound(location, Sound.BLOCK_BELL_USE, 4, 1);
         player.getWorld().playSound(location, Sound.BLOCK_BELL_RESONATE, 4, 1);
+    }
+
+    public void start() {
+        Notification.neutralMsg(playerRole.getPlayer(), "You are a §a" + phase.name);
+
+        Player player = playerRole.getPlayer();
+        NickAPI.setSkin(player, phase.skin.value, phase.skin.signature);
+        NickAPI.refreshPlayer(player);
+        playerRole.refreshHealthBar();
+
+        if (phase.surrogate) {
+            SurrogateManager.getInstance().create(playerRole.getPlayer(), playerRole.getName() + " " + playerRole.family.getColoredName());
+        }
+    }
+
+    public void endPhase() {
+        if (phase.surrogate) {
+            SurrogateManager.getInstance().destroyPlayer(playerRole.getPlayer());
+        }
+
+        playerRole.getPlayer().removePotionEffect(PotionEffectType.SLOW);
+        playerRole.getPlayer().removePotionEffect(PotionEffectType.SLOW_DIGGING);
+        playerRole.getPlayer().removePotionEffect(PotionEffectType.JUMP);
+    }
+
+    public void phaseUpdate() {
+        phase.applyPotionEffects(playerRole.getPlayer(), phase.effects);
+
+        if (Math.random() < phase.hungerRate / 100d) {
+            int foodLevel = playerRole.getPlayer().getFoodLevel();
+            if (foodLevel > 0) {
+                playerRole.getPlayer().setFoodLevel(foodLevel - 1);
+            }
+        }
     }
 }

@@ -18,7 +18,7 @@ public class PlayerChat implements Listener {
     public void onChat(AsyncPlayerChatEvent event) {
         event.setCancelled(true);
         Player player = event.getPlayer();
-        PlayerRole playerRole = RoleManager.get(player);
+        PlayerRole playerRole = RoleManager.getInstance().get(player);
 
         if (playerRole == null) {
             return;

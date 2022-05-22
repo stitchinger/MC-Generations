@@ -6,21 +6,18 @@ import io.georgeous.mcgenerations.listeners.*;
 import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
-import io.georgeous.mcgenerations.commands.DieCommand;
-import io.georgeous.mcgenerations.commands.SecInYear;
-import io.georgeous.mcgenerations.commands.YouAre;
-import io.georgeous.mcgenerations.listeners.PlayerPhaseUp;
-import io.georgeous.mcgenerations.systems.surrogate.SurroManager;
+import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Objects;
 import java.util.logging.Level;
 
 public final class MCG extends JavaPlugin {
@@ -43,26 +40,18 @@ public final class MCG extends JavaPlugin {
         council = new Council(overworld);
         this.saveDefaultConfig();
 
-        //log(String.valueOf(getConfig().getInt("")));
-
         this.data = new DataManager();
 
         registerEvents();
         registerCommands();
 
-        SurroManager.enable();
-        PlayerManager.enable();
+        PlayerManager.getInstance();
         FamilyManager.enable();
-        RoleManager.enable();
-
+        RoleManager.getInstance();
 
         makeBundleCraftable();
 
         overworld.setSpawnLocation(council.councilLocation);
-
-//        for (Team team : Bukkit.getScoreboardManager().getMainScoreboard().getTeams()) {
-//            //team.unregister();
-//        }
 
         getServer().dispatchCommand(Bukkit.getConsoleSender(), "veryspicy true");
 
@@ -79,9 +68,9 @@ public final class MCG extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        SurroManager.disable();
-        PlayerManager.disable();
-        RoleManager.disable();
+        SurrogateManager.getInstance().destroy();
+        PlayerManager.getInstance().destroy();
+        RoleManager.getInstance().destroy();
         FamilyManager.disable();
     }
 
@@ -93,8 +82,8 @@ public final class MCG extends JavaPlugin {
     }
 
     private void update() {
-        RoleManager.update();
-        SurroManager.update();
+        RoleManager.getInstance().update();
+        SurrogateManager.getInstance().update();
 
         overworld.setTime(overworld.getTime() + daySpeed);
         // one day 24000
@@ -109,22 +98,34 @@ public final class MCG extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new PlayerCarry(), this);
         getServer().getPluginManager().registerEvents(new PlayerPhaseUp(), this);
+        getServer().getPluginManager().registerEvents(new FamilyListener(), this);
+
+        getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+        getServer().getPluginManager().registerEvents(new SurrogateListener(), this);
     }
 
     public void registerCommands() {
-        Objects.requireNonNull(getServer().getPluginCommand("gm")).setExecutor(new GamemodeCommand());
-        Objects.requireNonNull(getServer().getPluginCommand("nick")).setExecutor(new NickCommand());
-        Objects.requireNonNull(getServer().getPluginCommand("you")).setExecutor(new YouAre());
-        Objects.requireNonNull(getServer().getPluginCommand("secinyear")).setExecutor(new SecInYear());
-        Objects.requireNonNull(getServer().getPluginCommand("die")).setExecutor(new DieCommand());
-        Objects.requireNonNull(getServer().getPluginCommand("dayspeed")).setExecutor(new DaySpeedCommand());
-        Objects.requireNonNull(getServer().getPluginCommand("me")).setExecutor(new MeCommand());
-        Objects.requireNonNull(getServer().getPluginCommand("debug")).setExecutor(new DebugCommand());
+        registerCommand("gm", new GamemodeCommand());
+        registerCommand("nick", new NickCommand());
+        registerCommand("you", new YouAre());
+        registerCommand("secinyear", new SecInYear());
+        registerCommand("die", new DieCommand());
+        registerCommand("dayspeed", new DaySpeedCommand());
+        registerCommand("me", new MeCommand());
+        registerCommand("debug", new DebugCommand());
+        registerCommand("role", new RoleCommand());
+        registerCommand("family", new FamilyCommand());
 
-        //Deactivate Vanilla commands
-        Objects.requireNonNull(getServer().getPluginCommand("msg")).setExecutor(new CommandDeactivator());
-        Objects.requireNonNull(getServer().getPluginCommand("w")).setExecutor(new CommandDeactivator());
-        Objects.requireNonNull(getServer().getPluginCommand("say")).setExecutor(new CommandDeactivator());
+        registerCommand("msg", new CommandDeactivator());
+        registerCommand("w", new CommandDeactivator());
+        registerCommand("say", new CommandDeactivator());
+    }
+
+    private void registerCommand(String command, CommandExecutor executor) {
+        PluginCommand pluginCommand = getServer().getPluginCommand(command);
+        if (pluginCommand == null)
+            return;
+        pluginCommand.setExecutor(executor);
     }
 
     public void makeBundleCraftable() {
@@ -140,7 +141,6 @@ public final class MCG extends JavaPlugin {
         Bukkit.addRecipe(recipe);
     }
 }
-
 
 /*
 Todo: Council countdown beeping

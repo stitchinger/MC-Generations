@@ -25,7 +25,7 @@ public class YouAre implements CommandExecutor {
         }
 
         if (args.length == 2) {
-            PlayerRole playerRole = RoleManager.get(player);
+            PlayerRole playerRole = RoleManager.getInstance().get(player);
             nameChild(player, playerRole, args[1]);
         }
         return true;
@@ -42,7 +42,7 @@ public class YouAre implements CommandExecutor {
 
         Piggyback.stopCarry(nameGiver);
         if (target instanceof Player) {
-            PlayerRole targetsPlayerRole = RoleManager.get((Player) target);
+            PlayerRole targetsPlayerRole = RoleManager.getInstance().get((Player) target);
 
             if (!targetsPlayerRole.isRenamed()) {
                 targetsPlayerRole.setName(first);

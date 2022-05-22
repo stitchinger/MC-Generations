@@ -13,15 +13,14 @@ import java.util.UUID;
 
 public class Family {
 
+    private final String uuid;
+    private final List<PlayerRole> members;
+    public boolean isDead = false;
     private String name;
     private String color;
     private long established;
-
-    private final String uuid;
-    private final List<PlayerRole> members;
     private PlayerRole leader;
     private boolean namedByLeader;
-    public boolean isDead = false;
 
     public Family(String name) {
         this(name, UUID.randomUUID().toString());
@@ -36,6 +35,21 @@ public class Family {
         namedByLeader = false;
     }
 
+    public static boolean inSameFamily(PlayerRole one, PlayerRole two) {
+        return !one.compare(two) && one.getFamily().compare(two.getFamily());
+    }
+
+    public static boolean inSameFamily(Player one, Player two) {
+        PlayerRole roleOne = RoleManager.getInstance().get(one);
+        PlayerRole roleTwo = RoleManager.getInstance().get(two);
+
+        if (roleOne == null || roleTwo == null) {
+            return false;
+        }
+
+        return inSameFamily(roleOne, roleTwo);
+    }
+
     public String getUuid() {
         return uuid;
     }
@@ -45,12 +59,12 @@ public class Family {
         return name;
     }
 
-    public String getColoredName() {
-        return color + getName() + ChatColor.RESET;
-    }
-
     private void setName(String name) {
         this.name = name;
+    }
+
+    public String getColoredName() {
+        return color + getName() + ChatColor.RESET;
     }
 
     public void rename(String name) {
@@ -82,7 +96,7 @@ public class Family {
     }
 
     // Members
-    public List<PlayerRole> getMembers(){
+    public List<PlayerRole> getMembers() {
         return this.members;
     }
 
@@ -111,21 +125,6 @@ public class Family {
 
     public void setEstablished(long established) {
         this.established = established;
-    }
-
-    public static boolean inSameFamily(PlayerRole one, PlayerRole two) {
-        return !one.compare(two) && one.getFamily().compare(two.getFamily());
-    }
-
-    public static boolean inSameFamily(Player one, Player two) {
-        PlayerRole roleOne = RoleManager.get(one);
-        PlayerRole roleTwo = RoleManager.get(two);
-
-        if (roleOne == null || roleTwo == null) {
-            return false;
-        }
-
-        return inSameFamily(roleOne, roleTwo);
     }
 
     public boolean compare(Family family) {

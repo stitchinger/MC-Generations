@@ -4,72 +4,68 @@ import io.georgeous.mcgenerations.MCG;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.*;
-
-import static org.bukkit.Bukkit.getServer;
+import java.util.HashMap;
+import java.util.UUID;
+import java.util.logging.Level;
 
 public class PlayerManager {
-    private static final HashMap<String, PlayerWrapper> playersMap = new HashMap<>();
-    public static PlayerData data;
+    private static final HashMap<UUID, PlayerWrapper> playersMap = new HashMap<>();
 
-    public static void enable() {
-        data = new PlayerData();
-        for (Player player : getServer().getOnlinePlayers()) {
-            initPlayer(player);
-        }
-        getServer().getPluginManager().registerEvents(new PlayerListener(), MCG.getInstance());
+    public static PlayerData data = PlayerData.getInstance();
+    private static PlayerManager instance;
+
+    private PlayerManager() {
+        Bukkit.getServer().getOnlinePlayers().forEach(this::initPlayer);
     }
 
-    public static void disable() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
+    public static PlayerManager getInstance() {
+        if (instance == null)
+            instance = new PlayerManager();
+        return instance;
+    }
+
+    public void destroy() {
+        Bukkit.getServer().getOnlinePlayers().forEach(player -> {
             if (get(player) != null) {
-                PlayerWrapper wrap = get(player);
-                data.savePlayer(wrap);
+                data.savePlayer(get(player));
             } else {
-                System.out.println("PLAYER WITHOUT WRAPPER");
+                MCG.getInstance().getLogger().log(Level.SEVERE, "Player without wrapper: " + player);
             }
-        }
+        });
     }
 
-    public static void initPlayer(Player player) {
+    public void initPlayer(Player player) {
         attachWrapperToPlayer(player);
         if (data.playerDataExists(player)) { // restore player
             data.restorePlayerWrapperFromConfig(get(player));
         }
     }
 
-    public static void attachWrapperToPlayer(Player player) {
-        String uuid = player.getUniqueId().toString();
-        if (playersMap.get(uuid) != null) {
-            playersMap.put(uuid, null);
-        }
+    public void attachWrapperToPlayer(Player player) {
+        UUID uuid = player.getUniqueId();
 
-        PlayerWrapper cp = new PlayerWrapper(player);
-        playersMap.put(uuid, cp);
+        PlayerWrapper wrapper = new PlayerWrapper(player);
+        playersMap.put(uuid, wrapper);
     }
 
-    public static PlayerWrapper get(Player player) {
-        return playersMap.get(player.getUniqueId().toString());
+    public PlayerWrapper get(Player player) {
+        return get(player.getUniqueId());
     }
 
-    public static PlayerWrapper get(String uuid) {
+    public PlayerWrapper get(UUID uuid) {
         return playersMap.get(uuid);
     }
 
-    public static void add(Player player) {
+    public void add(Player player) {
         attachWrapperToPlayer(player);
     }
 
-    public static void remove(Player player) {
+    public void remove(Player player) {
         PlayerWrapper playerWrapper = get(player);
         if (playerWrapper == null)
             return;
 
         data.savePlayer(playerWrapper);
-        playersMap.remove(player.getUniqueId().toString());
-    }
-
-    public static void remove(String uuid) {
-        playersMap.remove(uuid);
+        playersMap.remove(player.getUniqueId());
     }
 }

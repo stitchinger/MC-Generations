@@ -16,7 +16,7 @@ public class ItemManager {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Baby-Handler");
-            List<String> lore = new ArrayList<String>();
+            List<String> lore = new ArrayList<>();
             lore.add("");
             lore.add(ChatColor.GOLD + "" + ChatColor.ITALIC + "-Right-click baby to feed");
             lore.add(ChatColor.GOLD + "" + ChatColor.ITALIC + "-Sneak near baby to carry");

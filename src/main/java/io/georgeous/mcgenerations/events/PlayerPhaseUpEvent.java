@@ -1,6 +1,6 @@
-package io.georgeous.mcgenerations.systems.role.lifephase.events;
+package io.georgeous.mcgenerations.events;
 
-import io.georgeous.mcgenerations.systems.role.lifephase.LifePhase;
+import io.georgeous.mcgenerations.systems.role.lifephase.Phase;
 import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -12,13 +12,13 @@ public class PlayerPhaseUpEvent extends Event implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
 
-    Player player;
-    PhaseManager phaseManager;
-    LifePhase oldPhase;
-    LifePhase newPhase;
-    boolean canceled;
+    private final Player player;
+    private final PhaseManager phaseManager;
+    private final Phase oldPhase;
+    private final Phase newPhase;
+    private boolean canceled;
 
-    public PlayerPhaseUpEvent(Player player, PhaseManager phaseManager, LifePhase oldPhase, LifePhase newPhase) {
+    public PlayerPhaseUpEvent(Player player, PhaseManager phaseManager, Phase oldPhase, Phase newPhase) {
         this.player = player;
         this.canceled = false;
         this.phaseManager = phaseManager;
@@ -34,11 +34,11 @@ public class PlayerPhaseUpEvent extends Event implements Cancellable {
         return phaseManager;
     }
 
-    public LifePhase getOldPhase() {
+    public Phase getOldPhase() {
         return oldPhase;
     }
 
-    public LifePhase getNewPhase() {
+    public Phase getNewPhase() {
         return newPhase;
     }
 

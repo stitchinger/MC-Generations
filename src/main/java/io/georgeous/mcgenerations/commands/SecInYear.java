@@ -20,7 +20,7 @@ public class SecInYear implements CommandExecutor {
             Notification.onlyForOp(player);
             return true;
         }
-        PlayerRole playerRole = RoleManager.get(player);
+        PlayerRole playerRole = RoleManager.getInstance().get(player);
 
         if (args.length != 1) {
             Notification.errorMsg(player, "Usage: /secinyear 60");

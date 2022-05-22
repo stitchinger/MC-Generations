@@ -31,7 +31,7 @@ public class Interact implements Listener {
     }
 
     public void feedBaby(Player feeder, Player baby) {
-        PlayerRole babyRole = RoleManager.get(baby);
+        PlayerRole babyRole = RoleManager.getInstance().get(baby);
         if (babyRole == null || (baby.getFoodLevel() >= 20 && feeder.getFoodLevel() > 0) || !babyRole.getPhaseManager().getCurrentPhase().isFeedable())
             return;
 
@@ -49,7 +49,7 @@ public class Interact implements Listener {
 
         if (Family.inSameFamily(damager, receiver)) {
             event.setCancelled(true);
-            friendlyFamilyTalk(RoleManager.get(damager), RoleManager.get(receiver));
+            friendlyFamilyTalk(RoleManager.getInstance().get(damager), RoleManager.getInstance().get(receiver));
         }
     }
 
@@ -61,7 +61,7 @@ public class Interact implements Listener {
 
         if (Family.inSameFamily(damager, receiver)) {
             event.setCancelled(true);
-            friendlyFamilyTalk(RoleManager.get(damager), RoleManager.get(receiver));
+            friendlyFamilyTalk(RoleManager.getInstance().get(damager), RoleManager.getInstance().get(receiver));
         }
     }
 
@@ -87,10 +87,10 @@ public class Interact implements Listener {
     @EventHandler
     public void disableBabyBlockPlacement(BlockPlaceEvent event) {
         Player player = event.getPlayer();
-        PlayerRole role = RoleManager.get(player);
+        PlayerRole role = RoleManager.getInstance().get(player);
         if (role == null)
             return;
-        PhaseManager phaseManager = RoleManager.get(player).getPhaseManager();
+        PhaseManager phaseManager = RoleManager.getInstance().get(player).getPhaseManager();
         if (phaseManager == null)
             return;
         if (phaseManager.getCurrentPhase().getName().equalsIgnoreCase("baby")) {

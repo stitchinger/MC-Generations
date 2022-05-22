@@ -43,12 +43,12 @@ public class PlayerWrapper {
         this.playTime = playTime;
     }
 
-    public void setLastOfflineTime(long lastOfflineTime) {
-        this.lastOfflineTime = lastOfflineTime;
-    }
-
     public long getLastOfflineTime() {
         return lastOfflineTime;
+    }
+
+    public void setLastOfflineTime(long lastOfflineTime) {
+        this.lastOfflineTime = lastOfflineTime;
     }
 
     public Player getPlayer() {
@@ -79,11 +79,11 @@ public class PlayerWrapper {
         this.diedOfOldAge = diedOfOldAge;
     }
 
-    public void setLastBedLocation(Location loc) {
-        this.lastBedLocation = loc;
-    }
-
     public Location getLastBedLocation() {
         return lastBedLocation;
+    }
+
+    public void setLastBedLocation(Location loc) {
+        this.lastBedLocation = loc;
     }
 }

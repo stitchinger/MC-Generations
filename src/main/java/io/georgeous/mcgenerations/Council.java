@@ -31,19 +31,17 @@ public class Council {
 
     public void init() {
 
-        for (Entity entity : Bukkit.selectEntities(Bukkit.getConsoleSender(), "@e[tag=council]")) {
+        Bukkit.selectEntities(Bukkit.getConsoleSender(), "@e[tag=council]").forEach(entity -> {
             if (entity instanceof Minecart) {
-                //entity.setInvulnerable(false);
                 entity.setInvulnerable(false);
                 ((Minecart) entity).setDamage(9999);
                 entity.remove();
-
             }
+
             if (entity instanceof LivingEntity) {
                 ((LivingEntity) entity).setHealth(0);
             }
-        }
-
+        });
 
         spawnEnderman();
         spawnPiglin();

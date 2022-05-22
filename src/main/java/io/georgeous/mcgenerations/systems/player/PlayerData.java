@@ -7,12 +7,17 @@ import org.bukkit.entity.Player;
 
 public class PlayerData {
 
-    private final MCG plugin;
-    private final FileConfiguration config;
+    private static PlayerData instance;
+    private final MCG plugin = MCG.getInstance();
+    private final FileConfiguration config = plugin.getConfig();
 
-    public PlayerData() {
-        plugin = MCG.getInstance();
-        config = plugin.getConfig();
+    private PlayerData() {
+    }
+
+    public static PlayerData getInstance() {
+        if (instance == null)
+            instance = new PlayerData();
+        return instance;
     }
 
     private String getPath(String uuid) {
