@@ -47,6 +47,13 @@ public class SpawnManager {
                 player.setInvulnerable(false);
                 PlayerManager.get(player).setDiedOfOldAge(false);
                 PlayerManager.get(player).setLastBedLocation(null);
+
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        Notification.neutralMsg(player, "Use [ §d/howto§r ] command to learn how to play.");
+                    }
+                }.runTaskLater(MCG.getInstance(), 300);
             }
         }, timeInLobby * 20L); // 20 Tick (1 Second) delay before run() is called
     }
@@ -82,7 +89,7 @@ public class SpawnManager {
         }.runTaskLater(MCG.getInstance(), 20);
 
         Notification.neutralMsg(player, "You were reincarnated as an Eve");
-        Notification.neutralMsg(player, "Use [/family rename name] to rename your family");
+        Notification.neutralMsg(player, "Use [ §d/family rename Smith§r ] to rename your family");
     }
 
     public static void spawnAsBaby(Player newBorn, PlayerRole mother) {

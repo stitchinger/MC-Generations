@@ -17,5 +17,6 @@ commands:
   msg:
   w:
   say:
+  howto:
 depend: [Piggyback, NickAPI, Petmanager]
 

@@ -11,23 +11,15 @@ import io.georgeous.mcgenerations.systems.role.commands.SecInYear;
 import io.georgeous.mcgenerations.systems.role.commands.YouAre;
 import io.georgeous.mcgenerations.systems.role.lifephase.listeners.PlayerPhaseUp;
 import io.georgeous.mcgenerations.systems.surrogate.SurroManager;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_18_R2.CraftServer;
-import org.bukkit.craftbukkit.v1_18_R2.entity.CraftPlayer;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scoreboard.Team;
 
-import java.util.Collection;
 import java.util.Objects;
 import java.util.logging.Level;
 
@@ -74,6 +66,9 @@ public final class MCG extends JavaPlugin {
 //        }
 
         getServer().dispatchCommand(Bukkit.getConsoleSender(), "veryspicy true");
+        getServer().dispatchCommand(Bukkit.getConsoleSender(), "team add nocollision");
+        getServer().dispatchCommand(Bukkit.getConsoleSender(), "team modify nocollision collisionRule never");
+        getServer().dispatchCommand(Bukkit.getConsoleSender(), "difficulty hard");
 
 
         // Start Update-Function
@@ -129,7 +124,11 @@ public final class MCG extends JavaPlugin {
         Objects.requireNonNull(getServer().getPluginCommand("dayspeed")).setExecutor(new DaySpeedCommand());
         Objects.requireNonNull(getServer().getPluginCommand("me")).setExecutor(new MeCommand());
         Objects.requireNonNull(getServer().getPluginCommand("debug")).setExecutor(new DebugCommand());
+        Objects.requireNonNull(getServer().getPluginCommand("howto")).setExecutor(new HowtoCommand());
+
+        // Tab Completion
         Objects.requireNonNull(getCommand("debug")).setTabCompleter(new DebugCommandCompleter());
+        Objects.requireNonNull(getCommand("howto")).setTabCompleter(new HowtoCommand());
 
         //Deactivate Vanilla commands
         Objects.requireNonNull(getServer().getPluginCommand("msg")).setExecutor(new CommandDeactivator());

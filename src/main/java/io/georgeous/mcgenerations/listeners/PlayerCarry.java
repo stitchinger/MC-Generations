@@ -5,6 +5,7 @@ import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.piggyback.events.PlayerStartCarryEvent;
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.entity.Chicken;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -35,7 +36,10 @@ public class PlayerCarry implements Listener {
             }
 
             startCarryEffects(target.getLocation());
+        }
 
+        if((target instanceof Chicken) == false){
+            event.setCancelled(true);
         }
     }
 
