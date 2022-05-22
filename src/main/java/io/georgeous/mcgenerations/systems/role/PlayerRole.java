@@ -140,4 +140,8 @@ public class PlayerRole {
     public Player getPlayer() {
         return player;
     }
+
+    public int getGeneration(){
+        return this.generation;
+    }
 }

@@ -49,14 +49,17 @@ public class Interact implements Listener {
         if (role == null)
             return;
 
-        if (baby.getFoodLevel() >= 20)
-            return;
-
         if (!role.pm.getCurrentPhase().isFeedable())
             return;
 
+        if (baby.getFoodLevel() >= 18){
+            babyFullEffect(baby.getLocation());
+            return;
+        }
+
+
         feeder.setFoodLevel(feeder.getFoodLevel() - 2);
-        int newFoodLevel = Math.min(baby.getFoodLevel() + 5, 20);
+        int newFoodLevel = Math.min(baby.getFoodLevel() + 5, 20); // Cap saturation to 20
         baby.setFoodLevel(newFoodLevel);
 
         babyFeedEffect(baby.getLocation());
@@ -67,6 +70,13 @@ public class Interact implements Listener {
         if (world != null) {
             world.spawnParticle(Particle.COMPOSTER, location, 40, 0.5, 0.5, 0.5);
             world.playSound(location, Sound.ENTITY_GENERIC_DRINK, 1, 1);
+        }
+    }
+
+    public void babyFullEffect(Location location) {
+        World world = location.getWorld();
+        if (world != null) {
+            world.playSound(location, Sound.ENTITY_VILLAGER_NO, 1, 2);
         }
     }
 

@@ -16,8 +16,6 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
     private static final String headingStyle = "§l§u§9";
 
 
-
-
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
 
@@ -30,14 +28,15 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
         if (args.length == 0) {
             // Summary
             player.sendMessage("");
-            player.sendMessage(headingStyle + "-- HOW TO --§r");
+            printHeading(player, "HOW TO");
             player.sendMessage("§f ► Hearts");
             player.sendMessage("§f ► Aging");
             player.sendMessage("§f ► Spawning");
             player.sendMessage("§f ► Baby");
             player.sendMessage("§f ► Mother");
             player.sendMessage("§f ► Family");
-            player.sendMessage("§6e.g. Use command '/howto baby' for details");
+            player.sendMessage("§f ► Chat");
+            player.sendMessage("§6e.g. Use command [ §d/howto hearts§6 ] to find out, what's up with your hearts.");
             player.sendMessage("");
             return true;
         }
@@ -48,10 +47,10 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
 
             case "hearts":
                 player.sendMessage("");
-
                 printHeading(player, "HEARTS");
                 player.sendMessage(" Every player starts their life with only §c1/2 heart§r.");
                 player.sendMessage(" §cMore hearts§r can be added by eating food you havent had before.");
+                player.sendMessage(" Establishing a §cvariety of foodsources§r ensures the survival of your family.");
                 player.sendMessage("");
                 break;
             case "spawning":
@@ -75,7 +74,6 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
 
             case "mother":
                 player.sendMessage("");
-
                 printHeading(player, "MOTHER");
                 player.sendMessage(" Players can be chosen as mothers, if they are §c16-40§r years old.");
                 player.sendMessage(" There is a §ccooldown§r after having a baby.");
@@ -85,25 +83,31 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
 
             case "aging":
                 player.sendMessage("");
-
                 printHeading(player, "AGING");
                 player.sendMessage(" Player age one §cyear§r per §cminute§r and live through multiple §cphases§r.");
+                player.sendMessage(" Your §cskin§r changes to reflect your age.");
                 player.sendMessage(" Eventually you §owill§r die of §cold age§r.");
                 player.sendMessage("");
                 break;
 
             case "family":
                 player.sendMessage("");
-
                 printHeading(player, "FAMILY");
                 player.sendMessage(" Every player is automatically member of a family.");
                 player.sendMessage(" Family members cant attack each other.");
                 player.sendMessage("");
                 break;
 
+            case "chat":
+                player.sendMessage("");
+                printHeading(player, "CHAT");
+                player.sendMessage(" There is §cno global§r server chat.");
+                player.sendMessage(" You can only communicate with players within a §crange of 50§r blocks.");
+                player.sendMessage("");
+                break;
+
             case "commands":
                 player.sendMessage("");
-               // player.sendMessage("§l§n§9-- COMMANDS --");
                 printHeading(player, "COMMANDS");
                 player.sendMessage("► [ §d/me§r ]");
                 player.sendMessage("   Info about your life");
@@ -139,6 +143,7 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
                 l.add("mother");
                 l.add("family");
                 l.add("hearts");
+                l.add("chat");
                 l.add("commands");
 
                 return l;

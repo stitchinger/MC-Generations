@@ -22,11 +22,12 @@ public class MeCommand implements CommandExecutor {
             Notification.errorMsg(player, "No role found");
             return true;
         }
-
+        player.sendMessage("");
         Notification.neutralMsg(player, role.getName() + " " + role.getFamily().getColoredName());
         Notification.neutralMsg(player, "Age: " + role.am.getAge());
         Notification.neutralMsg(player, "Phase: " + role.pm.getCurrentPhase().getName());
-
+        Notification.neutralMsg(player, "Generation: " + role.getGeneration());
+        player.sendMessage("");
         return false;
     }
 }

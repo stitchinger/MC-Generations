@@ -38,44 +38,29 @@ public class FamilyCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 0) {
-            player.sendMessage("Family: " + family.getColoredName());
-            player.sendMessage("Members: " + family.memberCount());
-            family.getMembers().forEach(member -> {
-                player.sendMessage(" - " + member.getName());
-            });
-            if (family.getLeader() != null) {
-                player.sendMessage("Leader: " + family.getLeader().getName());
-            }
+
+            printFamilyInfo(player, family);
             return true;
         }
 
         switch (args[0]) {
 
             case "info":
-                player.sendMessage("Family: " + family.getColoredName());
-                player.sendMessage("Members: " + family.memberCount());
-                family.getMembers().forEach(member -> {
-                    player.sendMessage(" - " + member.getName());
-                });
-                if (family.getLeader() != null) {
-                    player.sendMessage("Leader: " + family.getLeader().getName());
-                }
+                printFamilyInfo(player, family);
 
                 break;
             case "rename":
                 attemptFamilyRename(role, family, args[1]);
                 break;
             case "list":
-                //player.sendMessage(familiesToString());
-                //StringBuilder msg = new StringBuilder();
+                player.sendMessage("");
                 for (Family f : FamilyManager.getAll()) {
                     player.sendMessage(f.getColoredName());
                     f.getMembers().forEach(member -> {
-                        player.sendMessage(" - " + member.getName());
+                        player.sendMessage("  ►  " + member.getName());
                     });
-                    //msg.append(f.getColoredName()).append(", ");
-
                 }
+                player.sendMessage("");
 
                 break;
             default:
@@ -83,6 +68,20 @@ public class FamilyCommand implements CommandExecutor, TabCompleter {
         }
 
         return false;
+    }
+
+    private void printFamilyInfo(Player player, Family family){
+        player.sendMessage("");
+        Notification.neutralMsg(player, "Family: " + family.getColoredName());
+        Notification.neutralMsg(player, "Members: " + family.memberCount());
+
+        family.getMembers().forEach(member -> {
+            player.sendMessage("  ►  " + member.getName());
+        });
+        if (family.getLeader() != null) {
+            Notification.neutralMsg(player, "Leader: " + family.getLeader().getName());
+        }
+        player.sendMessage("");
     }
 
     public void attemptFamilyRename(PlayerRole role, Family family, String name) {
