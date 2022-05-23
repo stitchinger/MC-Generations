@@ -13,6 +13,8 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -28,6 +30,9 @@ public final class MCG extends JavaPlugin {
     public static World overworld;
     public static Council council;
     public static long daySpeed = 2; // Default is 1
+    public static int serverYear = 0;
+    private static long lastServerTime; // in millis
+
     public DataManager data;
 
     public static MCG getInstance() {
@@ -67,6 +72,22 @@ public final class MCG extends JavaPlugin {
 
             }
         }.runTaskTimer(this, 0L, 1L);
+
+        // Update Server Year
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+            @Override
+            public void run() {
+                serverYear++;
+            }
+        }, 0L, 20L * 60);
+
+
+        FileConfiguration config = getConfig();
+        ConfigurationSection configSection = config.getConfigurationSection("data.server");
+        int year = configSection.getInt("year");
+        serverYear = year;
+
+        MCG.getInstance().saveConfig();
     }
 
     @Override
@@ -75,6 +96,10 @@ public final class MCG extends JavaPlugin {
         PlayerManager.getInstance().destroy();
         RoleManager.getInstance().destroy();
         FamilyManager.disable();
+
+        FileConfiguration config = getConfig();
+        config.set("data.server.year", serverYear);
+        saveConfig();
     }
 
     public void printLoadupText() {

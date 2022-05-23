@@ -92,7 +92,7 @@ public class RoleListener implements Listener {
         Sign sig = (Sign) block1.getState();
         sig.setLine(0, "R.I.P.");
         sig.setLine(1, playerRole.getName() + " " + playerRole.getFamily().getName());
-        sig.setLine(2, 1989 + " - " + 2046);
+        sig.setLine(2, (MCG.serverYear - playerRole.getAgeManager().getAge()) + " - " + MCG.serverYear);
         sig.update();
 
     }
