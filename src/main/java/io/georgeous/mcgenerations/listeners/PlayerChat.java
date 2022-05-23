@@ -24,14 +24,13 @@ public class PlayerChat implements Listener {
     public void onChat(AsyncPlayerChatEvent event) {
         event.setCancelled(true);
         Player player = event.getPlayer();
-        PlayerRole playerRole = RoleManager.get(player);
-        String realName = NickAPI.getOriginalName(player);
+        PlayerRole playerRole = RoleManager.getInstance().get(player);
 
         if (playerRole == null) {
             return;
         }
 
-        PhaseManager pm = playerRole.pm;
+        PhaseManager pm = playerRole.getPhaseManager();
 
         TextComponent prefix = new TextComponent(playerRole.getName() + " " + playerRole.family.getColoredName() + "§f: ");
         TextComponent msg = new TextComponent(prepareMsg(event.getMessage(), pm.getCurrentPhase().getMaxCharsInChat()));
@@ -58,8 +57,6 @@ public class PlayerChat implements Listener {
             if(Math.random() <= correctSpellingChance){
                 newMsg = newMsg + replacement;
             }
-
-
         }
         return newMsg;
     }

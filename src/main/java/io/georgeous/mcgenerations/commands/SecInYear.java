@@ -1,4 +1,4 @@
-package io.georgeous.mcgenerations.systems.role.commands;
+package io.georgeous.mcgenerations.commands;
 
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
@@ -12,16 +12,15 @@ import org.jetbrains.annotations.NotNull;
 public class SecInYear implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             return true;
         }
 
-        Player player = (Player) sender;
         if (!player.isOp()) {
             Notification.onlyForOp(player);
             return true;
         }
-        PlayerRole playerRole = RoleManager.get(player);
+        PlayerRole playerRole = RoleManager.getInstance().get(player);
 
         if (args.length != 1) {
             Notification.errorMsg(player, "Usage: /secinyear 60");
@@ -29,7 +28,7 @@ public class SecInYear implements CommandExecutor {
         }
         try {
             int secs = Integer.parseInt(args[0]);
-            playerRole.am.setSecInYear(secs);
+            playerRole.getAgeManager().setSecInYear(secs);
             Notification.successMsg(player, "You changed your sec in year to " + secs);
 
         } catch (NumberFormatException e) {

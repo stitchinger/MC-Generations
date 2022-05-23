@@ -8,12 +8,12 @@ import org.bukkit.World;
 import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import static org.bukkit.Bukkit.getServer;
+import java.util.logging.Level;
 
 public class Council {
 
-    private final World world;
     public final Location councilLocation;
+    private final World world;
     private final Location endermanLocation;
     private final Location piglinLocation;
     private final Location villagerLocation;
@@ -33,20 +33,18 @@ public class Council {
 
     public void init() {
 
-        for (Entity entity : Bukkit.selectEntities(Bukkit.getConsoleSender(), "@e[tag=council]")) {
+        Bukkit.selectEntities(Bukkit.getConsoleSender(), "@e[tag=council]").forEach(entity -> {
+            MCG.getInstance().getLogger().log(Level.INFO, "Entity killed: " + entity.getType());
             if (entity instanceof Minecart) {
-                //entity.setInvulnerable(false);
-                ((Minecart) entity).setInvulnerable(false);
+                entity.setInvulnerable(false);
                 ((Minecart) entity).setDamage(9999);
                 entity.remove();
-
             }
+
             if (entity instanceof LivingEntity) {
                 ((LivingEntity) entity).setHealth(0);
             }
-
-
-        }
+        });
 
         spawnEnderman();
         spawnPiglin();
@@ -65,7 +63,6 @@ public class Council {
         cart.setInvulnerable(true);
         cart.addScoreboardTag("council");
 
-
         Enderman enderman = (Enderman) world.spawnEntity(endermanLocation, EntityType.ENDERMAN);
         enderman.setSilent(true);
         enderman.setInvulnerable(true);
@@ -79,7 +76,6 @@ public class Council {
         cow.setInvulnerable(true);
         cow.setInvisible(false);
         cow.setSilent(true);
-
         cow.addScoreboardTag("council");
 
         PiglinBrute piglin = (PiglinBrute) world.spawnEntity(piglinLocation, EntityType.PIGLIN_BRUTE);
@@ -88,7 +84,6 @@ public class Council {
         piglin.setAdult();
         piglin.setSilent(true);
         piglin.addScoreboardTag("council");
-
 
         cow.addPassenger(piglin);
     }

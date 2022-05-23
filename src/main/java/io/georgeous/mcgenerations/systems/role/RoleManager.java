@@ -2,10 +2,11 @@ package io.georgeous.mcgenerations.systems.role;
 
 import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.SpawnManager;
+import io.georgeous.mcgenerations.listeners.RoleListener;
 import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
-import io.georgeous.mcgenerations.systems.role.commands.RoleCommand;
+import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
 import io.georgeous.mcgenerations.utils.NameGenerator;
 import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.configuration.ConfigurationSection;
@@ -13,50 +14,48 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
-import java.util.Map;
+import java.util.UUID;
+import java.util.logging.Level;
 
 import static org.bukkit.Bukkit.getServer;
 
 public class RoleManager {
-    private static final HashMap<String, PlayerRole> roles = new HashMap<>();
-    private static final long VALID_OFFLINE_TIME_SEC = 999999999999999999L;
+    private static final HashMap<UUID, PlayerRole> roles = new HashMap<>();
+    private static final long VALID_OFFLINE_TIME_SEC = Long.MAX_VALUE / 1000;
 
-    public static void enable() {
-        registerCommands();
-        getServer().getPluginManager().registerEvents(new RoleListener(), MCG.getInstance());
+    private static RoleManager instance;
+
+    private RoleManager() {
         for (Player player : getServer().getOnlinePlayers()) {
             initPlayer(player);
         }
     }
 
-    public static void disable() {
+    public static RoleManager getInstance() {
+        if (instance == null) {
+            instance = new RoleManager();
+        }
+        return instance;
+    }
+
+    public void destroy() {
         save();
     }
 
-    public static void update() {
-        for (Map.Entry<String, PlayerRole> entry : roles.entrySet()) {
-            PlayerRole playerRole = entry.getValue();
-            playerRole.update();
-        }
+    public void update() {
+        roles.values().forEach(PlayerRole::update);
     }
 
-    private static void registerCommands() {
-        RoleCommand roleCommand = new RoleCommand();
-        getServer().getPluginCommand("role").setExecutor(roleCommand);
-        MCG.getInstance().getCommand("role").setTabCompleter(roleCommand);
+    public PlayerRole get(Player player) {
+        return get(player.getUniqueId());
     }
 
-    public static PlayerRole get(Player player) {
-        String uuid = player.getUniqueId().toString();
-        return get(uuid);
-    }
-
-    public static PlayerRole get(String uuid) {
+    public PlayerRole get(UUID uuid) {
         return roles.get(uuid);
     }
 
-    public static void initPlayer(Player player) {
-        boolean isValid = PlayerManager.get(player).getLastOfflineTime() < (VALID_OFFLINE_TIME_SEC * 1000);
+    public void initPlayer(Player player) {
+        boolean isValid = PlayerManager.getInstance().get(player).getLastOfflineTime() < (VALID_OFFLINE_TIME_SEC * 1000);
 
         if (playerDataExists(player) && isValid) { // restore player
             restoreRole(player);
@@ -65,44 +64,32 @@ public class RoleManager {
         }
     }
 
-    public static PlayerRole createAndAddRole(Player player, String name, int age, Family family) {
-        String uuid = player.getUniqueId().toString();
-
-        // Overwrites players previous role
-        if (roles.get(uuid) != null) {
-            roles.put(uuid, null);
-        }
-
+    public PlayerRole createAndAddRole(Player player, String name, int age, Family family) {
         PlayerRole playerRole = new PlayerRole(player, name, age, family);
-        roles.put(uuid, playerRole);
+        roles.put(player.getUniqueId(), playerRole);
         return playerRole;
     }
 
-    public static void remove(Player player) {
-        String uuid = player.getUniqueId().toString();
-        remove(uuid);
+    public void remove(Player player) {
+        remove(player.getUniqueId());
     }
 
-    public static void remove(String uuid) {
+    public void remove(UUID uuid) {
         roles.remove(uuid);
     }
 
-    public static void save() {
+    public void save() {
         if (roles.isEmpty())
             return;
-        for (Map.Entry<String, PlayerRole> entry : roles.entrySet()) {
-            if (entry.getValue() != null) {
-                saveRole(entry.getValue());
-            }
-        }
+        roles.values().forEach(this::saveRole);
     }
 
-    public static void saveRole(PlayerRole playerRole) {
+    public void saveRole(PlayerRole playerRole) {
         FileConfiguration config = MCG.getInstance().getConfig();
         String uuid = playerRole.getPlayer().getUniqueId().toString();
 
         config.set("data.player." + uuid + ".role.name", playerRole.getName());
-        config.set("data.player." + uuid + ".role.age", playerRole.am.getAge());
+        config.set("data.player." + uuid + ".role.age", playerRole.getAgeManager().getAge());
         config.set("data.player." + uuid + ".role.familyname", playerRole.family.getName());
         config.set("data.player." + uuid + ".role.family", playerRole.family.getUuid());
         config.set("data.player." + uuid + ".role.generation", playerRole.generation);
@@ -111,7 +98,7 @@ public class RoleManager {
         MCG.getInstance().saveConfig();
     }
 
-    public static void restoreRole(Player player) {
+    public void restoreRole(Player player) {
         String uuid = player.getUniqueId().toString();
         FileConfiguration config = MCG.getInstance().getConfig();
         ConfigurationSection configSection = config.getConfigurationSection("data.player." + uuid + ".role");
@@ -141,11 +128,21 @@ public class RoleManager {
         MCG.getInstance().saveConfig();
     }
 
-    public static boolean playerDataExists(Player player) {
-        return MCG.getInstance().getConfig().contains("data.player." + player.getUniqueId().toString() + ".role");
+    public boolean playerDataExists(Player player) {
+        return MCG.getInstance().getConfig().contains("data.player." + player.getUniqueId() + ".role");
     }
 
-    public static int getRoleCount() {
+    public int getRoleCount() {
         return roles.size();
+    }
+
+    public boolean isABaby(Player player) {
+        PlayerRole role = get(player);
+        if (role == null)
+            return false;
+        PhaseManager phaseManager = get(player).getPhaseManager();
+        if (phaseManager == null)
+            return false;
+        return phaseManager.getCurrentPhase().getName().equalsIgnoreCase("baby");
     }
 }

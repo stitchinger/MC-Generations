@@ -10,13 +10,13 @@ import org.bukkit.inventory.PlayerInventory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MotherController {
+public class PlayerMother {
     private final PlayerRole playerRole;
-    private long lastChildTime;
     private final long babyCooldown = 180; // in seconds
     private final List<PlayerRole> children;
+    private long lastChildTime;
 
-    public MotherController(PlayerRole playerRole) {
+    public PlayerMother(PlayerRole playerRole) {
         this.playerRole = playerRole;
         lastChildTime = 0;
         children = new ArrayList<>();
@@ -45,11 +45,11 @@ public class MotherController {
     }
 
     public boolean canHaveBaby() {
-        boolean playerInDebug = PlayerManager.get(playerRole.getPlayer()).isDebugMode();
-        return playerRole.am.getAge() > 16 &&
-                playerRole.am.getAge() < 9999999 &&
-                secSinceLastBaby() > babyCooldown &&
-                !playerInDebug;
+        boolean playerInDebug = PlayerManager.getInstance().get(playerRole.getPlayer()).isDebugMode();
+        return playerRole.getAgeManager().getAge() > 16
+                && playerRole.getAgeManager().getAge() < 9999999
+                && secSinceLastBaby() > babyCooldown
+                && !playerInDebug;
     }
 
     private long secSinceLastBaby() {

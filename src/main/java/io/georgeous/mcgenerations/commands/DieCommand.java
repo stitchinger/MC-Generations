@@ -1,4 +1,4 @@
-package io.georgeous.mcgenerations.systems.role.commands;
+package io.georgeous.mcgenerations.commands;
 
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.Notification;
@@ -12,11 +12,10 @@ public class DieCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (!(sender instanceof Player))
+        if (!(sender instanceof Player player))
             return true;
-        Player player = (Player) sender;
 
-        if (RoleManager.get(player) == null) {
+        if (RoleManager.getInstance().get(player) == null) {
             Notification.errorMsg(player, "No role found");
         }
 

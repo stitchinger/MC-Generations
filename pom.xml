@@ -36,7 +36,7 @@
                     <finalName>MC-Generations</finalName>
                 </configuration>
             </plugin>
-            <plugin>
+            <!--<plugin>
                 <groupId>net.md-5</groupId>
                 <artifactId>specialsource-maven-plugin</artifactId>
                 <version>1.2.2</version>
@@ -68,7 +68,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
         </plugins>
         <resources>
             <resource>
@@ -96,9 +96,9 @@
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
+            <artifactId>spigot-api</artifactId>
             <version>1.18.2-R0.1-SNAPSHOT</version>
-            <classifier>remapped-mojang</classifier>
+            <!--<classifier>remapped-mojang</classifier>-->
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -115,17 +115,17 @@
         </dependency>
         <dependency>
             <groupId>io.georgeous</groupId>
-            <artifactId>Piggyback</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>/Users/georg/Buildtools/plugins/Piggyback.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>io.georgeous</groupId>
             <artifactId>Petmanager</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>/Users/georg/Buildtools/plugins/Petmanager.jar</systemPath>
+            <systemPath>/home/weston/Desktop/Output/Petmanager.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>io.georgeous</groupId>
+            <artifactId>Pubbyback</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>/home/weston/Desktop/Output/Piggyback.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

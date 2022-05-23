@@ -9,28 +9,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.bukkit.Bukkit.getServer;
-
 public class FamilyManager {
     private static final HashMap<String, Family> families = new HashMap<>();
 
     public static void enable() {
-        registerCommands();
-        registerEvents();
-
         restoreAllFamilies();
-
-
-    }
-
-    private static void registerCommands() {
-        FamilyCommand familyCommand = new FamilyCommand();
-        getServer().getPluginCommand("family").setExecutor(familyCommand);
-        MCG.getInstance().getCommand("family").setTabCompleter(familyCommand);
-    }
-
-    private static void registerEvents() {
-        getServer().getPluginManager().registerEvents(new FamilyListener(), MCG.getInstance());
     }
 
     public static void disable() {
@@ -83,14 +66,18 @@ public class FamilyManager {
         if (MCG.getInstance().getConfig().getConfigurationSection("data.family") == null) {
             return;
         }
-        MCG.getInstance().getConfig().getConfigurationSection("data.family").getKeys(false).forEach(key -> {
-            restoreFamily(key);
-        });
+        ConfigurationSection section = MCG.getInstance().getConfig().getConfigurationSection("data.family");
+        if (section == null)
+            return;
+        section.getKeys(false).forEach(FamilyManager::restoreFamily);
     }
 
     public static void restoreFamily(String uuid) {
         FileConfiguration c = MCG.getInstance().getConfig();
         ConfigurationSection configSection = c.getConfigurationSection("data.family." + uuid);
+
+        if (configSection == null)
+            return;
 
         String name = configSection.getString("name");
         Family family = addFamily(name, uuid);
@@ -101,7 +88,7 @@ public class FamilyManager {
         long established = configSection.getLong("established");
         family.setEstablished(established);
 
-        // Delete FAmily Data
+        // Delete Family Data
         //c.set("data.family." + uuid, null);
         MCG.getInstance().saveConfig();
     }

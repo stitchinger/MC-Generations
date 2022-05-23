@@ -1,7 +1,7 @@
-package io.georgeous.mcgenerations.systems.family;
+package io.georgeous.mcgenerations.commands;
 
-import io.georgeous.mcgenerations.systems.player.PlayerManager;
-import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
+import io.georgeous.mcgenerations.systems.family.Family;
+import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.Notification;
@@ -13,27 +13,33 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class FamilyCommand implements CommandExecutor, TabCompleter {
+
+    public FamilyCommand() {
+        CommandUtils.addTabComplete("family", this);
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
 
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
+            Notification.onlyForPlayers(sender);
             return true;
         }
 
-        Player player = (Player) sender;
-        PlayerRole role = RoleManager.get(player);
+        PlayerRole role = RoleManager.getInstance().get(player);
 
         if (role == null) {
+            Notification.errorMsg(player, "You do not have a role.");
             return true;
         }
-
-
 
         Family family = role.getFamily();
         if (family == null) {
+            Notification.errorMsg(player, "You do not have a family.");
             return true;
         }
 
@@ -49,25 +55,25 @@ public class FamilyCommand implements CommandExecutor, TabCompleter {
                 printFamilyInfo(player, family);
 
                 break;
+
             case "rename":
                 attemptFamilyRename(role, family, args[1]);
                 break;
+
             case "list":
                 player.sendMessage("");
                 for (Family f : FamilyManager.getAll()) {
                     player.sendMessage(f.getColoredName());
-                    f.getMembers().forEach(member -> {
-                        player.sendMessage("  ►  " + member.getName());
-                    });
+                    f.getMembers().forEach(member -> player.sendMessage(" - " + member.getName()));
                 }
                 player.sendMessage("");
 
                 break;
-            default:
-                Notification.errorMsg(player, "Command not found");
-        }
 
-        return false;
+            default:
+                Notification.errorMsg(player, "Argument not found");
+        }
+        return true;
     }
 
     private void printFamilyInfo(Player player, Family family){
@@ -85,7 +91,7 @@ public class FamilyCommand implements CommandExecutor, TabCompleter {
     }
 
     public void attemptFamilyRename(PlayerRole role, Family family, String name) {
-        if (!role.pm.getCurrentPhase().getName().equalsIgnoreCase("child")) {
+        if (!role.getPhaseManager().getCurrentPhase().getName().equalsIgnoreCase("child")) {
             Notification.errorMsg(role.getPlayer(), "You are too old to rename your Family");
             return;
         }
@@ -115,16 +121,10 @@ public class FamilyCommand implements CommandExecutor, TabCompleter {
     }
 
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, Command cmd, @NotNull String label, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         List<String> l = new ArrayList<>();
-        if (cmd.getName().equalsIgnoreCase("family")) {
-            if (sender instanceof Player) {
-                l.add("list");
-                l.add("rename");
-                l.add("info");
-
-                return l;
-            }
+        if (sender instanceof Player) {
+            l.addAll(Arrays.asList("list", "rename", " info"));
         }
         return l;
     }

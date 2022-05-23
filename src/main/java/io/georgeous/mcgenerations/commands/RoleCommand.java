@@ -1,4 +1,4 @@
-package io.georgeous.mcgenerations.systems.role.commands;
+package io.georgeous.mcgenerations.commands;
 
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
@@ -15,47 +15,48 @@ import java.util.List;
 
 public class RoleCommand implements CommandExecutor, TabCompleter {
 
+    public RoleCommand() {
+        CommandUtils.addTabComplete("role", this);
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (!(sender instanceof Player))
+        if (!(sender instanceof Player player))
             return true;
 
-        Player player = (Player) sender;
         if (!player.isOp()) {
             Notification.onlyForOp(player);
             return true;
         }
 
-        PlayerRole playerRole = RoleManager.get(player);
+        PlayerRole playerRole = RoleManager.getInstance().get(player);
         if (playerRole == null) {
             Notification.errorMsg(player, "No role found");
             return true;
         }
 
         switch (args[0]) {
-            case "age":
+            case "age" -> {
                 if (args.length < 2 || args[1].length() == 0) {
                     Notification.errorMsg(player, "e.g.: /role age 13");
                     return true;
                 }
                 try {
                     int age = Integer.parseInt(args[1]);
-                    playerRole.am.setAge(age);
+                    playerRole.getAgeManager().setAge(age);
                     Notification.successMsg(player, "You changed your age to " + age);
                 } catch (NumberFormatException e) {
                     Notification.errorMsg(player, "Invalid age");
                 }
-
-                break;
-            case "info":
+            }
+            case "info" -> {
                 Notification.neutralMsg(player, "Name: " + playerRole.getName());
-                Notification.neutralMsg(player, "Age: " + playerRole.am.getAge());
-                break;
-            case "count":
-                Notification.neutralMsg(player, "Roles in RoleManager: " + RoleManager.getRoleCount());
-                break;
-            default:
-
+                Notification.neutralMsg(player, "Age: " + playerRole.getAgeManager().getAge());
+            }
+            case "count" ->
+                    Notification.neutralMsg(player, "Roles in RoleManager: " + RoleManager.getInstance().getRoleCount());
+            default -> {
+            }
         }
         return false;
     }
