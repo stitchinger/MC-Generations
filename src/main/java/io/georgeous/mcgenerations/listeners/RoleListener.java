@@ -13,6 +13,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Rotatable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,6 +22,9 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RoleListener implements Listener {
 
@@ -85,14 +89,20 @@ public class RoleListener implements Listener {
         block1.setType(Material.OAK_SIGN);
 
         // Set rotation to players rotation
-        // doesnt work!
-        ((Rotatable) block1.getBlockData()).setRotation(BlockFace.EAST_NORTH_EAST);
+        Rotatable bd = ((Rotatable) block1.getBlockData());
+        bd.setRotation(player.getFacing());
+        block1.setBlockData(bd);
 
+        ArrayList<String> usedNames = new ArrayList<>();
+        String[] graveSymbols = {"☄", "♰", "☮", "☯", "Ω", "❤", "✿", "☪", "♬", "✟" };
+        int i = (int) (Math.random() * (graveSymbols.length - 1));
+        String graveSymbol = graveSymbols[i];
         // Write on sign
         Sign sig = (Sign) block1.getState();
-        sig.setLine(0, "R.I.P.");
-        sig.setLine(1, playerRole.getName() + " " + playerRole.getFamily().getName());
+        sig.setLine(0, playerRole.getName() + " " + playerRole.getFamily().getName());
+        sig.setLine(1, "Age: " + playerRole.getAgeManager().getAge());
         sig.setLine(2, (MCG.serverYear - playerRole.getAgeManager().getAge()) + " - " + MCG.serverYear);
+        sig.setLine(3, "R.I.P.  " + graveSymbol);
         sig.update();
 
     }
