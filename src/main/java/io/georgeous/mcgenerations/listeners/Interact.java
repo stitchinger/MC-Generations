@@ -6,7 +6,10 @@ import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
 import io.georgeous.mcgenerations.utils.ItemManager;
+import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -59,8 +62,6 @@ public class Interact implements Listener {
     public void disableFriendlyFire(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player damager) || !(event.getEntity() instanceof Player receiver))
             return;
-        }
-
 
         if (Family.inSameFamily(damager, receiver)) {
             event.setCancelled(true);

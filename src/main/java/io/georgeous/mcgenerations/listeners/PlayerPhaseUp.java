@@ -12,7 +12,7 @@ public class PlayerPhaseUp implements Listener {
     @EventHandler
     public void onPlayerPhaseUp(PlayerPhaseUpEvent event) {
         String phaseName = event.getNewPhase().getName();
-        int phaseId = event.getNewPhase().getPhaseId();
+        int phaseId = event.getNewPhase().getId();
         Player player = event.getPlayer();
         if(phaseName.equalsIgnoreCase("baby")){
             player.getInventory().clear();
