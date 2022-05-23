@@ -11,9 +11,9 @@ import java.util.List;
 public enum Phase {
 
     BABY(0, 3, 1, 999, false, true,
-            "", "Baby", 0,128, 6, 2, true, Skin.BABY, true, "Toddler"),
+            "", "Baby", 0,128, 3, 2, true, Skin.BABY, true, "Toddler"),
     TODDLER(3, 6, 1, 999, false, true,
-            "", "Toddler", 1, 200, 2, 1, true, Skin.TODDLER, true, "Child"),
+            "", "Toddler", 1, 0, 2, 1, true, Skin.TODDLER, true, "Child"),
     CHILD(6, 15, 0, 999, false, false,
             "2007359867", "Child", 2,0, 1, 0, false, Skin.CHILD, true, "Teen"),
     TEEN(15, 21, 0, 999, true, false,
@@ -21,7 +21,7 @@ public enum Phase {
     ADULT(21, 40, 0, 999, true, false,
             "584227931", "Adult", 4, 0, 0, 0, false, Skin.ADULT, false, "Elder"),
     ELDER(40, 60, 0, 999, true, false,
-            "1144027445", "Elder", 5, 0, 0, 0, false, Skin.ELDER, false, null);
+            "1144027445", "Elder", 5, 0, 1, 0, false, Skin.ELDER, false, null);
 
     public final String name;
     public final int id;

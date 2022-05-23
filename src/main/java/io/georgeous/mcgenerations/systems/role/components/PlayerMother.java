@@ -49,6 +49,7 @@ public class PlayerMother {
         return playerRole.getAgeManager().getAge() > 16
                 && playerRole.getAgeManager().getAge() < 9999999
                 && secSinceLastBaby() > babyCooldown
+                && playerRole.getPlayer().getHealth() > 0
                 && !playerInDebug;
     }
 

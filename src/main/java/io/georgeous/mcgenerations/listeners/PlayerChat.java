@@ -18,7 +18,7 @@ import java.util.Random;
 
 public class PlayerChat implements Listener {
 
-    private final double CHAT_RANGE = 50;
+    private final double CHAT_RANGE = 9999999;
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
@@ -39,7 +39,7 @@ public class PlayerChat implements Listener {
     }
 
     public String prepareMsg(String msg, int maxLength) {
-        double correctSpellingChance = .85;
+        double correctSpellingChance = 1;
         msg = msg.trim();
         msg = msg.substring(0, Math.min(msg.length(), maxLength));
         String newMsg = "";
@@ -68,7 +68,6 @@ public class PlayerChat implements Listener {
 
 
                 if(other.isOp()){
-                    //prefix.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tp @s " + sender.getName()));
                     prefix.setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, " " + sender.getName()));
                     prefix.setHoverEvent(
                             new HoverEvent(HoverEvent.Action.SHOW_TEXT,

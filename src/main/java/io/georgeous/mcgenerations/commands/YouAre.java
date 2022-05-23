@@ -2,6 +2,7 @@ package io.georgeous.mcgenerations.commands;
 
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
+import io.georgeous.mcgenerations.utils.NameGenerator;
 import io.georgeous.mcgenerations.utils.Notification;
 import io.georgeous.piggyback.Piggyback;
 import org.bukkit.command.Command;
@@ -39,6 +40,10 @@ public class YouAre implements CommandExecutor {
 
         Entity target = Piggyback.carryCoupleMap.get(nameGiver).getTarget();
         String first = rawName.substring(0, 1).toUpperCase() + rawName.substring(1);
+
+        if(NameGenerator.nameInUse(first)){
+            Notification.errorMsg(nameGiver, "This name is already in use by a player. Please pick another.");
+        }
 
         Piggyback.stopCarry(nameGiver);
         if (target instanceof Player) {
