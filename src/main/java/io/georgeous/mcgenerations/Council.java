@@ -22,7 +22,7 @@ public class Council {
 
     public Council(World world) {
         this.world = world;
--         councilLocation = new Location(world, 666, 201, 666);
+        councilLocation = new Location(world, 666, 201, 666);
         endermanLocation = councilLocation.clone().add(0.5, 2, 11.5);
         piglinLocation = councilLocation.clone().add(0.5, 2, -10.5);
         pillagerLocation = councilLocation.clone().add(11.5, 2, 0.5);
@@ -47,7 +47,6 @@ public class Council {
 
 
         }
-
 
         spawnEnderman();
         spawnPiglin();

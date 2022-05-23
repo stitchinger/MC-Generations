@@ -14,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import xyz.haoshoku.nick.api.NickAPI;
+import java.util.Random;
 
 public class PlayerChat implements Listener {
 
@@ -33,33 +34,51 @@ public class PlayerChat implements Listener {
         PhaseManager pm = playerRole.pm;
 
         TextComponent prefix = new TextComponent(playerRole.getName() + " " + playerRole.family.getColoredName() + "§f: ");
-
-        TextComponent msg = new TextComponent(event.getMessage());
-
-
-        if(player.isOp()){
-            prefix.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tp @s " + realName));
-            prefix.setHoverEvent(
-                    new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                            new ComponentBuilder(realName).color(ChatColor.GRAY).italic(true).create())
-            );
-        }
+        TextComponent msg = new TextComponent(prepareMsg(event.getMessage(), pm.getCurrentPhase().getMaxCharsInChat()));
 
         rangedBroadcastNew(player, prefix, msg, CHAT_RANGE);
     }
 
-    public String prepareMsg(String msg, String prefix, int maxLength) {
+    public String prepareMsg(String msg, int maxLength) {
+        double correctSpellingChance = .85;
         msg = msg.trim();
         msg = msg.substring(0, Math.min(msg.length(), maxLength));
-        msg = prefix + msg;
+        String newMsg = "";
+        for(char c : msg.toCharArray()) {
+            char replacement;
 
-        return msg;
+            if(Math.random() <= correctSpellingChance){
+                replacement = c;
+            } else{
+                Random random = new Random();
+                char randomizedCharacter = (char) (random.nextInt(26) + 'a');
+                replacement = randomizedCharacter;
+            }
+
+            if(Math.random() <= correctSpellingChance){
+                newMsg = newMsg + replacement;
+            }
+
+
+        }
+        return newMsg;
     }
 
     public void rangedBroadcastNew(Player sender, TextComponent prefix, TextComponent msg, double range) {
         for (Player other : Bukkit.getOnlinePlayers()) {
             double distanceBetweenPlayers = other.getLocation().distance(sender.getLocation());
             if (distanceBetweenPlayers <= range || other.isOp()) {
+
+
+                if(other.isOp()){
+                    //prefix.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tp @s " + sender.getName()));
+                    prefix.setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, " " + sender.getName()));
+                    prefix.setHoverEvent(
+                            new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                                    new ComponentBuilder(sender.getName()).color(ChatColor.GRAY).italic(true).create())
+                    );
+                }
+
                 other.spigot().sendMessage(prefix, msg);
             }
         }
