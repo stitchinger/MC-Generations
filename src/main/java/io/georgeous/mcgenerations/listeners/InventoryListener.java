@@ -24,7 +24,8 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void disableBabyItemPickup(EntityPickupItemEvent event) {
-        if (event.getEntity() instanceof Player player) {
+        if (event.getEntity() instanceof Player) {
+            Player player = (Player) event.getEntity();
             if (RoleManager.getInstance().isABaby(player)) {
                 event.setCancelled(true);
             }

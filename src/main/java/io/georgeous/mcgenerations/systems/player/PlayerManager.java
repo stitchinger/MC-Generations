@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -48,6 +49,9 @@ public class PlayerManager {
         playersMap.put(uuid, wrapper);
     }
 
+    public Set<UUID> getWrapperAttachedPlayers() {
+        return playersMap.keySet();
+    }
     public PlayerWrapper getWrapper(Player player) {
         return getWrapper(player.getUniqueId());
     }

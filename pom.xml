@@ -118,14 +118,14 @@
             <artifactId>Petmanager</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>/Users/georg/Buildtools/plugins/Petmanager.jar</systemPath>
+            <systemPath>${project.basedir}/lib/Petmanager.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>io.georgeous</groupId>
             <artifactId>Piggyback</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>/Users/georg/Buildtools/plugins/Piggyback.jar</systemPath>
+            <systemPath>${project.basedir}/lib/Piggyback.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

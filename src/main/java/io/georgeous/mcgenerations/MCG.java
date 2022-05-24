@@ -2,7 +2,9 @@ package io.georgeous.mcgenerations;
 
 import io.georgeous.mcgenerations.commands.*;
 import io.georgeous.mcgenerations.files.DataManager;
+import io.georgeous.mcgenerations.files.FileManager;
 import io.georgeous.mcgenerations.listeners.*;
+import io.georgeous.mcgenerations.scoreboard.ScoreboardHandler;
 import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
@@ -21,6 +23,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 
+import java.io.File;
 import java.util.logging.Level;
 
 import static org.bukkit.Bukkit.getServer;
@@ -35,6 +38,9 @@ public final class MCG extends JavaPlugin {
 
     public DataManager data;
 
+    private FileManager fileManager;
+    private ScoreboardHandler scoreboardHandler;
+
     public static MCG getInstance() {
         return plugin;
     }
@@ -43,8 +49,14 @@ public final class MCG extends JavaPlugin {
     @Override
     public void onEnable() {
         printLoadupText();
+
+        if(!(new File(this.getDataFolder().getPath() + "/scoreboard.yml").exists())) {
+            this.saveResource("scoreboard.yml", false);
+        }
+        fileManager = new FileManager(this.getDataFolder().getPath());
         plugin = this;
-        overworld = Bukkit.getWorld("familycraft-world");
+        //overworld = Bukkit.getWorld("familycraft-world");
+        overworld = Bukkit.getWorld("world");
         council = new Council(overworld);
         this.saveDefaultConfig();
 
@@ -88,6 +100,8 @@ public final class MCG extends JavaPlugin {
         serverYear = year;
 
         MCG.getInstance().saveConfig();
+
+        scoreboardHandler = new ScoreboardHandler();
     }
 
     @Override
@@ -169,6 +183,14 @@ public final class MCG extends JavaPlugin {
         recipe.setIngredient('A', Material.AIR);
 
         Bukkit.addRecipe(recipe);
+    }
+
+    public FileManager getFileManager() {
+        return fileManager;
+    }
+
+    public ScoreboardHandler getScoreboardHandler() {
+        return scoreboardHandler;
     }
 }
 
