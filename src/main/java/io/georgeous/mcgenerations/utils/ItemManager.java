@@ -19,8 +19,7 @@ public class ItemManager {
             List<String> lore = new ArrayList<>();
             lore.add("");
             lore.add(ChatColor.GOLD + "" + ChatColor.ITALIC + "-Right-click baby to feed");
-            lore.add(ChatColor.GOLD + "" + ChatColor.ITALIC + "-Sneak near baby to carry");
-            lore.add(ChatColor.GOLD + "" + ChatColor.ITALIC + "-Shows the babys hunger");
+            lore.add(ChatColor.GOLD + "" + ChatColor.ITALIC + "-Tap 'Sneak'-button near baby to carry");
             meta.setLore(lore);
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);

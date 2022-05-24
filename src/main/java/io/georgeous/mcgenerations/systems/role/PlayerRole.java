@@ -42,7 +42,6 @@ public class PlayerRole {
 
     public void update() {
         if (!isDead) {
-            playerMother.update();
             playerAge.update();
             phaseManager.update();
         }

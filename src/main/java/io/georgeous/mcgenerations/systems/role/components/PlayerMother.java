@@ -24,13 +24,6 @@ public class PlayerMother {
         children = new ArrayList<>();
     }
 
-    public void update() {
-        // Shows childs foodlevel on baby-handler
-        if (getYoungestChild() != null) { // has child?
-            updateBabyHandlerDamage();
-        }
-    }
-
     // Children
     public List<PlayerRole> getChildren() {
         return children;
@@ -43,7 +36,7 @@ public class PlayerMother {
         child.generation = playerRole.generation + 1;
         lastChildTime = System.currentTimeMillis();
         Notification.neutralMsg(playerRole.getPlayer(), "You just had a baby. Congrats");
-        Notification.neutralMsg(playerRole.getPlayer(), "You can rename your baby with [/you are Lisa] while holding it");
+        Notification.neutralMsg(playerRole.getPlayer(), "You can rename your baby with [/you are Lisa] while carrying it");
     }
 
     public boolean canHaveBaby() {
@@ -82,21 +75,5 @@ public class PlayerMother {
             }
         }
         return null;
-    }
-
-    // BabyHandler
-    private float calcDamageForBabyHandler() {
-        float foodLevel = (float) getYoungestChild().getPlayer().getFoodLevel();
-        return Util.map(foodLevel,
-                0,
-                20f,
-                25,
-                0);
-    }
-
-    private void updateBabyHandlerDamage() {
-        PlayerInventory inventory = playerRole.getPlayer().getInventory();
-        ItemStack babyHandler = Util.findInInventory("Baby-Handler", inventory);
-        Util.setItemsDamage(babyHandler, calcDamageForBabyHandler());
     }
 }
