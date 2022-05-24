@@ -8,6 +8,7 @@ import java.util.UUID;
 public class FriendlyTalk {
 
     private static final HashMap<UUID, Long> coolDown = new HashMap<>();
+    private static final long coolDowntime = 5000; // in millis
     private static final String[][] sentences = {
             {"You gave $$$ a big hug", "$$$ gave you a big hug"},
             {"You told $$$ that you appreciate them", "$$$ told you, that they appreciate you"},
@@ -15,7 +16,7 @@ public class FriendlyTalk {
             {"You gave $$$ a big hug", "$$$ gave you a big hug"}
     };
 
-    public static String[] getMessages(String receiver, String sender) {
+    public static String[] getMessages(String sender, String receiver) {
         int index = (int) (Math.random() * sentences.length);
         return new String[]{insertPlaceholder(sentences[index][0], receiver), insertPlaceholder(sentences[index][1], sender)};
     }
@@ -24,7 +25,7 @@ public class FriendlyTalk {
         Long previousTime = coolDown.get(player.getUniqueId());
         if (previousTime == null)
             return false;
-        boolean isCoolDown = System.currentTimeMillis() < previousTime + 5000;
+        boolean isCoolDown = System.currentTimeMillis() < previousTime + coolDowntime;
         if (!isCoolDown) {
             coolDown.remove(player.getUniqueId());
             return false;

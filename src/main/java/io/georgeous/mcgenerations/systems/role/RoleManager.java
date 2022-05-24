@@ -2,7 +2,6 @@ package io.georgeous.mcgenerations.systems.role;
 
 import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.SpawnManager;
-import io.georgeous.mcgenerations.listeners.RoleListener;
 import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
@@ -15,7 +14,6 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.UUID;
-import java.util.logging.Level;
 
 import static org.bukkit.Bukkit.getServer;
 
@@ -55,7 +53,7 @@ public class RoleManager {
     }
 
     public void initPlayer(Player player) {
-        boolean isValid = PlayerManager.getInstance().get(player).getLastOfflineTime() < (VALID_OFFLINE_TIME_SEC * 1000);
+        boolean isValid = PlayerManager.getInstance().getWrapper(player).getLastOfflineTime() < (VALID_OFFLINE_TIME_SEC * 1000);
 
         if (playerDataExists(player) && isValid) { // restore player
             restoreRole(player);

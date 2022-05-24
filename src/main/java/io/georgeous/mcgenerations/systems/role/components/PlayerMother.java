@@ -12,7 +12,9 @@ import java.util.List;
 
 public class PlayerMother {
     private final PlayerRole playerRole;
-    private final long babyCooldown = 180; // in seconds
+    private final long BABY_COOLDOWN = 180; // in seconds
+    private final int MIN_BIRTH_AGE = 16;
+    private final int MAX_BIRTH_AGE = 45;
     private final List<PlayerRole> children;
     private long lastChildTime;
 
@@ -45,10 +47,10 @@ public class PlayerMother {
     }
 
     public boolean canHaveBaby() {
-        boolean playerInDebug = PlayerManager.getInstance().get(playerRole.getPlayer()).isDebugMode();
-        return playerRole.getAgeManager().getAge() > 16
-                && playerRole.getAgeManager().getAge() < 9999999
-                && secSinceLastBaby() > babyCooldown
+        boolean playerInDebug = PlayerManager.getInstance().getWrapper(playerRole.getPlayer()).isDebugMode();
+        return playerRole.getAgeManager().getAge() > MIN_BIRTH_AGE
+                && playerRole.getAgeManager().getAge() < MAX_BIRTH_AGE
+                && secSinceLastBaby() > BABY_COOLDOWN
                 && playerRole.getPlayer().getHealth() > 0
                 && !playerInDebug;
     }

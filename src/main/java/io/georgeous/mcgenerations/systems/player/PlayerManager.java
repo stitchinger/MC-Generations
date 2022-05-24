@@ -26,8 +26,8 @@ public class PlayerManager {
 
     public void destroy() {
         Bukkit.getServer().getOnlinePlayers().forEach(player -> {
-            if (get(player) != null) {
-                data.savePlayer(get(player));
+            if (getWrapper(player) != null) {
+                data.savePlayer(getWrapper(player));
             } else {
                 MCG.getInstance().getLogger().log(Level.SEVERE, "Player without wrapper: " + player);
             }
@@ -37,7 +37,7 @@ public class PlayerManager {
     public void initPlayer(Player player) {
         attachWrapperToPlayer(player);
         if (data.playerDataExists(player)) { // restore player
-            data.restorePlayerWrapperFromConfig(get(player));
+            data.restorePlayerWrapperFromConfig(getWrapper(player));
         }
     }
 
@@ -48,11 +48,11 @@ public class PlayerManager {
         playersMap.put(uuid, wrapper);
     }
 
-    public PlayerWrapper get(Player player) {
-        return get(player.getUniqueId());
+    public PlayerWrapper getWrapper(Player player) {
+        return getWrapper(player.getUniqueId());
     }
 
-    public PlayerWrapper get(UUID uuid) {
+    public PlayerWrapper getWrapper(UUID uuid) {
         return playersMap.get(uuid);
     }
 
@@ -61,7 +61,7 @@ public class PlayerManager {
     }
 
     public void remove(Player player) {
-        PlayerWrapper playerWrapper = get(player);
+        PlayerWrapper playerWrapper = getWrapper(player);
         if (playerWrapper == null)
             return;
 

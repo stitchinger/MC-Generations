@@ -32,7 +32,7 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 0) {
-            PlayerWrapper wrapper = PlayerManager.getInstance().get(player);
+            PlayerWrapper wrapper = PlayerManager.getInstance().getWrapper(player);
             if (wrapper == null) {
                 return true;
             }

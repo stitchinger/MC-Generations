@@ -22,64 +22,83 @@ import java.util.List;
 
 public class SpawnManager {
 
-    private static final int timeInLobby = 5; // in seconds
+    private static final int timeInLobby = 10; // in seconds
+    private static final int timeToHowtoNotification = 15;
     private static final int spawnCenterX = 20;
     private static final int spawnCenterY = -800;
     private static final int spawnRadius = 120;
 
 
-    public static void spawnPlayer(Player player) {
+    public static void spawnPlayer(Player playerToSpawn) {
+        Notification.neutralMsg(playerToSpawn, "You will be reborn in " + timeInLobby + " seconds");
+        NickAPI.refreshPlayer(playerToSpawn);
 
-        Notification.neutralMsg(player, "You will be reborn in " + timeInLobby + " seconds");
-        NickAPI.refreshPlayer(player);
-        GameMode playerGM = player.getGameMode();
-        player.setGameMode(GameMode.ADVENTURE);
-        player.setInvulnerable(true);
-        PlayerRole finalMom = findViableMother(player);
-        boolean playerInDebug = PlayerManager.getInstance().get(player).isDebugMode();
+        GameMode playerGM = playerToSpawn.getGameMode();
+        preparePlayerForLobby(playerToSpawn);
+
+        PlayerRole finalMom = findViableMother(playerToSpawn);
+        boolean playerToSpawnInDebugMode = PlayerManager.getInstance().getWrapper(playerToSpawn).isDebugMode();
+
+        if (finalMom != null && !playerToSpawnInDebugMode) {
+            Notification.neutralMsg(finalMom.getPlayer(), "You will get a baby in " + timeInLobby + " seconds");
+        }
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(MCG.getInstance(), () -> {
-            if (finalMom != null && !playerInDebug) {
-                spawnAsBaby(player, finalMom);
+            if (finalMom != null && !playerToSpawnInDebugMode) {
+                spawnAsBaby(playerToSpawn, finalMom);
             } else {
-                spawnAsEve(player);
+                spawnAsEve(playerToSpawn);
             }
-            //player.setGameMode(GameMode.SURVIVAL);
-            player.setGameMode(playerGM);
-            player.setInvulnerable(false);
-            PlayerManager.getInstance().get(player).setDiedOfOldAge(false);
-            PlayerManager.getInstance().get(player).setLastBedLocation(null);
+
+            resetPlayer(playerToSpawn, playerGM);
 
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    Notification.neutralMsg(player, "Use [ §d/howto§r ] command to learn how to play.");
+                    Notification.neutralMsg(playerToSpawn, "Use [ §d/howto§r ] command to learn how to play.");
                 }
-            }.runTaskLater(MCG.getInstance(), 300);
+            }.runTaskLater(MCG.getInstance(), 20L * timeToHowtoNotification);
+
         }, timeInLobby * 20L); // 20 Tick (1 Second) delay before run() is called
     }
 
+    private static void resetPlayer(Player player, GameMode gmBefore){
+        player.setGameMode(gmBefore);
+        player.setInvulnerable(false);
+        PlayerManager.getInstance().getWrapper(player).setDiedOfOldAge(false);
+        PlayerManager.getInstance().getWrapper(player).setLastBedLocation(null);
+    }
+
+    private static void preparePlayerForLobby(Player player){
+        player.setGameMode(GameMode.ADVENTURE);
+        player.setInvulnerable(true);
+    }
+
     public static void spawnAsEve(Player player) {
-        // If diedOfOldAge
-        // Spawn at last bed
-        Location lastBed = PlayerManager.getInstance().get(player).getLastBedLocation();
+        // If diedOfOldAge spawn at last bed
+        Location lastBed = PlayerManager.getInstance().getWrapper(player).getLastBedLocation();
         boolean bedIsValid = false;
         if (lastBed != null) {
             bedIsValid = lastBed.distance(MCG.council.councilLocation) > 50;
+            // Using the bedspawing for the council stuff
+            // This makes sure, that the players bed isnt the council
+            // This could happen, if the player never interacted with a bed
         }
 
-        if (PlayerManager.getInstance().get(player).getDiedOfOldAge() && PlayerManager.getInstance().get(player).getLastBedLocation() != null && bedIsValid) {
-            player.teleport(PlayerManager.getInstance().get(player).getLastBedLocation());
+        if (PlayerManager.getInstance().getWrapper(player).getDiedOfOldAge() &&
+                PlayerManager.getInstance().getWrapper(player).getLastBedLocation() != null &&
+                bedIsValid)
+        {
+            player.teleport(PlayerManager.getInstance().getWrapper(player).getLastBedLocation());
         } else {
             Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "spreadplayers " + spawnCenterX + " " + spawnCenterY + " 0 " + spawnRadius + " false " + player.getName());
         }
-
 
         String name = NameGenerator.randomFirst();
         Family family = FamilyManager.addFamily(NameGenerator.randomLast());
         RoleManager.getInstance().createAndAddRole(player, name, 10, family);
 
-        player.setSaturation(0);
+        //player.setSaturation(0); too hard?
 
         new BukkitRunnable() {
             @Override

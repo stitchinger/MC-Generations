@@ -7,13 +7,10 @@ import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.ItemManager;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Rotatable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,9 +19,6 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class RoleListener implements Listener {
 
@@ -75,36 +69,44 @@ public class RoleListener implements Listener {
         boolean diedOfOldAge = playerRole.getAgeManager().getAge() >= 60;
         if (diedOfOldAge) {
             event.setDeathMessage(roleName + " died of old Age. RIP");
-            PlayerManager.getInstance().get(player).setDiedOfOldAge(true);
-            PlayerManager.getInstance().get(player).setLastBedLocation(player.getBedSpawnLocation());
+            PlayerManager.getInstance().getWrapper(player).setDiedOfOldAge(true);
+            PlayerManager.getInstance().getWrapper(player).setLastBedLocation(player.getBedSpawnLocation());
         }
         player.setBedSpawnLocation(MCG.council.councilLocation, true);
 
-        playerRole.die();
 
+        createGrave(playerRole);
+        playerRole.die();
+    }
+
+    private void createGrave(PlayerRole role){
         // Place Grave Sign
-        World world = player.getWorld();
-        player.getLocation();
-        Block block1 = world.getBlockAt(player.getLocation());
-        block1.setType(Material.OAK_SIGN);
+        World world = role.getPlayer().getWorld();
+        Block block1 = world.getBlockAt(role.getPlayer().getLocation());
+
+        // Random Sign Type
+        Material[] signTypes = {Material.OAK_SIGN, Material.BIRCH_SIGN, Material.SPRUCE_SIGN, Material.ACACIA_SIGN, Material.JUNGLE_SIGN};
+        int i = (int) (Math.random() * (signTypes.length - 1));
+        Material signType = signTypes[i];
+        block1.setType(signType);
 
         // Set rotation to players rotation
         Rotatable bd = ((Rotatable) block1.getBlockData());
-        bd.setRotation(player.getFacing());
+        bd.setRotation(role.getPlayer().getFacing());
         block1.setBlockData(bd);
 
-        ArrayList<String> usedNames = new ArrayList<>();
+        // Random Grave Symbol
         String[] graveSymbols = {"☄", "♰", "☮", "☯", "Ω", "❤", "✿", "☪", "♬", "✟" };
-        int i = (int) (Math.random() * (graveSymbols.length - 1));
+        i = (int) (Math.random() * (graveSymbols.length - 1));
         String graveSymbol = graveSymbols[i];
+
         // Write on sign
         Sign sig = (Sign) block1.getState();
-        sig.setLine(0, playerRole.getName() + " " + playerRole.getFamily().getName());
-        sig.setLine(1, "Age: " + playerRole.getAgeManager().getAge());
-        sig.setLine(2, (MCG.serverYear - playerRole.getAgeManager().getAge()) + " - " + MCG.serverYear);
+        sig.setLine(0, role.getName() + " " + role.getFamily().getName());
+        sig.setLine(1, "Age: " + role.getAgeManager().getAge());
+        sig.setLine(2, (MCG.serverYear - role.getAgeManager().getAge()) + " - " + MCG.serverYear);
         sig.setLine(3, "R.I.P.  " + graveSymbol);
         sig.update();
-
     }
 
     @EventHandler

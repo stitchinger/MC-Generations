@@ -24,7 +24,7 @@ public class PlayerAge {
         long timeSinceLastUpdate = time - lastTime;
         ageInSeconds += timeSinceLastUpdate;
 
-        boolean playerInDebug = PlayerManager.getInstance().get(playerRole.getPlayer()).isDebugMode();
+        boolean playerInDebug = PlayerManager.getInstance().getWrapper(playerRole.getPlayer()).isDebugMode();
         if (ageInSeconds >= secInYear && !playerInDebug) {
             this.ageUp();
             ageInSeconds = 0;

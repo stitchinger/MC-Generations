@@ -6,6 +6,7 @@ import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
 import io.georgeous.mcgenerations.utils.ItemManager;
+import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -87,8 +88,9 @@ public class Interact implements Listener {
 
         if (!FriendlyTalk.isCoolDown(pd)) {
             String[] messages = FriendlyTalk.getMessages(damager.getName(), receiver.getName());
-            pr.sendMessage(messages[0]);
-            pd.sendMessage(messages[1]);
+
+            Notification.neutralMsg(pd, messages[0]);
+            Notification.neutralMsg(pr, messages[1]);
 
             try {
                 pd.getWorld().spawnParticle(Particle.HEART, pd.getLocation(), 5, 0.5, 0.5, 0.5);
