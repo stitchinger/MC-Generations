@@ -4,14 +4,10 @@ import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,7 +15,6 @@ import java.util.List;
 
 public class ScoreboardHandler {
 
-    private final ScoreboardManager manager;
     private final String title;
     private final List<String> lines;
     private final SimpleDateFormat dateFormat;
@@ -27,7 +22,7 @@ public class ScoreboardHandler {
 
 
     public ScoreboardHandler() {
-        manager = Bukkit.getScoreboardManager();
+
         dateFormat = new SimpleDateFormat(MCG.getInstance().getFileManager().getScoreboardFile().getString("dateformat"));
         title = ChatColor.translateAlternateColorCodes('&', MCG.getInstance().getFileManager().getScoreboardFile().getString("title"));
         lines =  MCG.getInstance().getFileManager().getScoreboardFile().getStringList("lines");
@@ -39,26 +34,39 @@ public class ScoreboardHandler {
 
     }
 
+    public void registerPlayer(Player toRegister) {
+
+
+        Scoreboard scoreboard = toRegister.getScoreboard();
+        Objective objective = scoreboard.getObjective("dummy_sidebar");
+        if(objective == null) objective = scoreboard.registerNewObjective("dummy_sidebar", "bbb", title);
+
+        for(int i = 0; i < lines.size(); i++) {
+            Team team = scoreboard.registerNewTeam(String.valueOf(i));
+            team.addEntry(ChatColor.values()[i].toString());
+        }
+        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+    }
+
     public void refreshPlayer(Player toRefresh) {
 
-        Scoreboard scoreboard = manager.getNewScoreboard();
-        Objective objective = scoreboard.registerNewObjective("dummy", "", title);
-        objective.setDisplayName(title);
-        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        if(toRefresh.getScoreboard().getObjective("dummy_sidebar") == null)registerPlayer(toRefresh);
 
+        Objective objective = toRefresh.getScoreboard().getObjective("dummy_sidebar");
         final int maxScore = lines.size();
         String spaceCounter = "";
         for(int i = 0; i < lines.size(); i++) {
 
+            Team team = toRefresh.getScoreboard().getTeam(String.valueOf(i));
             if(lines.get(i).equalsIgnoreCase("[space]")) {
-                objective.getScore(spaceCounter).setScore(maxScore-i);
+                team.setPrefix(spaceCounter);
                 spaceCounter += " ";
-                continue;
+            } else {
+                team.setPrefix(replacePlaceholders(lines.get(i), toRefresh));
             }
-
-            objective.getScore(replacePlaceholders(lines.get(i), toRefresh)).setScore(maxScore-i);
+            objective.getScore(ChatColor.values()[i].toString()).setScore(maxScore-i);
         }
-        toRefresh.setScoreboard(scoreboard);
+        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
     }
 
 
