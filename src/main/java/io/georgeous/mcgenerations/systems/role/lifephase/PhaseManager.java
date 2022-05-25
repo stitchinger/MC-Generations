@@ -76,12 +76,16 @@ public class PhaseManager {
     public void changePhase(Phase phase) {
         endPhase();
 
+        // Stop carrying if one player phases up
         if (Piggyback.carryCoupleMap.containsKey(player)) {
             if (Piggyback.carryCoupleMap.carried.get(player) != null) {
                 Player carrier = Piggyback.carryCoupleMap.carried.get(player).getCarrier();
                 Piggyback.stopCarry(carrier);
+                Notification.errorMsg(carrier, "Dog Sven vanished!");
+                Notification.errorMsg(player, "Dog Sven vanished!");
             } else if (Piggyback.carryCoupleMap.carriers.get(player) != null) {
                 Piggyback.stopCarry(player);
+                Notification.errorMsg(player, "Dog Sven vanished!");
             }
         }
 

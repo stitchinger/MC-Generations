@@ -17,7 +17,6 @@ public class PlayerPhaseUp implements Listener {
         if(phaseName.equalsIgnoreCase("baby")){
             player.getInventory().clear();
         }
-
         if(phaseId >= 3 && phaseId < 5){
             Util.giveItemIfNotInInventory(ItemManager.createBabyHandler(),player.getInventory());
         }
