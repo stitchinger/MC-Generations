@@ -17,6 +17,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -114,6 +115,10 @@ public final class MCG extends JavaPlugin {
         FileConfiguration config = getConfig();
         config.set("data.server.year", serverYear);
         saveConfig();
+
+        for(Player player : Bukkit.getOnlinePlayers()) {
+            player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+        }
     }
 
     public void printLoadupText() {
