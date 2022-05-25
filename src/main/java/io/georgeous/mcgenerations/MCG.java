@@ -23,7 +23,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.logging.Level;
 
-import static org.bukkit.Bukkit.getServer;
+
 
 public final class MCG extends JavaPlugin {
     public static MCG plugin;
@@ -44,7 +44,7 @@ public final class MCG extends JavaPlugin {
     public void onEnable() {
         printLoadupText();
         plugin = this;
-        overworld = Bukkit.getWorld("familycraft-world");
+        overworld = Bukkit.getWorld("FamilyCraftWorld");
         council = new Council(overworld);
         this.saveDefaultConfig();
 
@@ -119,18 +119,17 @@ public final class MCG extends JavaPlugin {
     }
 
     public void registerEvents() {
-        getServer().getPluginManager().registerEvents(new PlayerConnection(), this);
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerQuitListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerRespawnListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerChat(), this);
         getServer().getPluginManager().registerEvents(new Interact(), this);
         getServer().getPluginManager().registerEvents(new InventoryListener(), this);
 
         getServer().getPluginManager().registerEvents(new PlayerCarry(), this);
         getServer().getPluginManager().registerEvents(new PlayerPhaseUp(), this);
-        getServer().getPluginManager().registerEvents(new FamilyListener(), this);
 
-        getServer().getPluginManager().registerEvents(new PlayerListener(), this);
-        getServer().getPluginManager().registerEvents(new SurrogateListener(), this);
-        getServer().getPluginManager().registerEvents(new RoleListener(), MCG.getInstance());
     }
 
     public void registerCommands() {

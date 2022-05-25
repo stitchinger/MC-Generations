@@ -1,5 +1,7 @@
 package io.georgeous.mcgenerations.listeners;
 
+import io.georgeous.mcgenerations.systems.player.PlayerManager;
+import io.georgeous.mcgenerations.systems.role.RoleManager;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -9,12 +11,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-
-public class PlayerConnection implements Listener {
+public class PlayerJoinListener implements Listener {
+    private final RoleManager roleManager = RoleManager.getInstance();
+    PlayerManager playerManager = PlayerManager.getInstance();
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+
+        playerManager.initPlayer(event.getPlayer());
+        roleManager.initPlayer(event.getPlayer());
 
         player.sendMessage("Welcome to One Hour One Life");
 
@@ -26,4 +32,6 @@ public class PlayerConnection implements Listener {
 
         event.setJoinMessage("");
     }
+
+
 }

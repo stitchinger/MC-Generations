@@ -1,10 +1,10 @@
 package io.georgeous.mcgenerations.listeners;
 
 import io.georgeous.mcgenerations.MCG;
-import io.georgeous.mcgenerations.SpawnManager;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
+import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
 import io.georgeous.mcgenerations.utils.ItemManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -16,29 +16,30 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
 
-public class RoleListener implements Listener {
-
+public class PlayerDeathListener implements Listener {
     private final RoleManager roleManager = RoleManager.getInstance();
+    PlayerManager playerManager = PlayerManager.getInstance();
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        roleManager.initPlayer(event.getPlayer());
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        Player player = event.getEntity();
+
+        dealWithRoleDeath(event);
+        removeMember(player);
+        SurrogateManager.getInstance().destroyPlayer(event.getEntity());
     }
 
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
+    private void removeMember(Player player) {
+        PlayerRole role = RoleManager.getInstance().get(player);
+        if (role == null) {
+            return;
+        }
 
-        roleManager.saveRole(roleManager.get(player));
-        roleManager.remove(player);
+        role.getFamily().removeMember(role);
     }
 
-    @EventHandler
-    public void onRoleDead(PlayerDeathEvent event) {
+    private void dealWithRoleDeath(PlayerDeathEvent event){
         Player player = event.getEntity();
         PlayerRole playerRole = roleManager.get(player);
         if (playerRole == null) {
@@ -109,14 +110,9 @@ public class RoleListener implements Listener {
         sig.update();
     }
 
-    @EventHandler
-    public void onPlayerRespawn(PlayerRespawnEvent event) {
-        Player player = event.getPlayer();
-        if (player.getHealth() == 0)
-            SpawnManager.spawnPlayer(player);
-    }
-
     public void removeBabyHandlerFromDrops(PlayerDeathEvent event) {
         event.getDrops().stream().filter(ItemManager::isBabyHandler).toList().forEach(item -> item.setAmount(0));
     }
+
+
 }
