@@ -147,6 +147,10 @@ public class PlayerRole {
         }
     }
 
+    public void setRenamed(boolean toggle){
+        isRenamed = toggle;
+    }
+
     public boolean compare(PlayerRole role) {
         return this == role;
     }

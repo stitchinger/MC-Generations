@@ -26,37 +26,49 @@ public class YouAre implements CommandExecutor {
         }
 
         if (args.length == 2) {
-            PlayerRole playerRole = RoleManager.getInstance().get(player);
-            nameChild(player, playerRole, args[1]);
+            nameChild(player, args[1]);
         }
         return true;
     }
 
-    public void nameChild(Player nameGiver, PlayerRole playerRole, String rawName) {
-        if (Piggyback.carryCoupleMap.get(nameGiver) == null) {
-            Notification.errorMsg(nameGiver, "You need to hold your baby for naming it.");
+    public void nameChild(Player motherPlayer, String rawName) {
+        PlayerRole motherPlayerRole = RoleManager.getInstance().get(motherPlayer);
+        if (Piggyback.carryCoupleMap.get(motherPlayer) == null) {
+            Notification.errorMsg(motherPlayer, "You need to hold your baby for naming it.");
             return;
         }
 
-        Entity target = Piggyback.carryCoupleMap.get(nameGiver).getTarget();
+        Entity target = Piggyback.carryCoupleMap.get(motherPlayer).getTarget();
         String first = rawName.substring(0, 1).toUpperCase() + rawName.substring(1);
 
-        if(NameGenerator.nameInUse(first)){
-            Notification.errorMsg(nameGiver, "This name is already in use by a player. Please pick another.");
-        }
+        if (target instanceof Player childPlayer) {
+            PlayerRole childPlayerRole = RoleManager.getInstance().get(childPlayer);
 
-        Piggyback.stopCarry(nameGiver);
-        if (target instanceof Player) {
-            PlayerRole targetsPlayerRole = RoleManager.getInstance().get((Player) target);
-
-            if (!targetsPlayerRole.isRenamed()) {
-                targetsPlayerRole.setName(first);
-            } else {
-                Notification.errorMsg(nameGiver, "You can name your child only once");
+            if (!motherPlayerRole.getMotherController().isOwnChild(childPlayerRole)) {
+                Notification.errorMsg(motherPlayer, "You can only rename your own children!");
+                return;
             }
+
+            if (childPlayerRole.isRenamed()) {
+                Notification.errorMsg(motherPlayer, "You can name your child only once.");
+                return;
+            }
+
+            if(NameGenerator.nameInUse(first)) {
+                Notification.errorMsg(motherPlayer, "This name is already in use by a player. Please pick another.");
+                return;
+            }
+
+            Piggyback.stopCarry(motherPlayer);
+            childPlayerRole.setName(first);
+            NameGenerator.registerName(first);
+            childPlayerRole.setRenamed(true);
+            Notification.successMsg(motherPlayer, "You changed your childs name to " + first);
         } else {
-            target.setCustomName(first + " " + playerRole.family.getColoredName());
+            target.setCustomName(first + " " + motherPlayerRole.family.getColoredName());
+            Notification.successMsg(motherPlayer, "You changed the mobs name to " + first);
         }
-        Notification.successMsg(nameGiver, "You changed your childs name to " + first);
+
+
     }
 }

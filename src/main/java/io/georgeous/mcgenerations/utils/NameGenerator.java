@@ -2,6 +2,7 @@ package io.georgeous.mcgenerations.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class NameGenerator {
 
@@ -11,27 +12,24 @@ public class NameGenerator {
     public static ArrayList<String> usedNames = new ArrayList<>();
 
 
-    private static String randomName(String[] list) {
+    public static String randomFirst() {
         String newName = "";
         do{
-            int i = (int) (Math.random() * (list.length - 1));
-            newName = list[i];
+            int i = (int) (Math.random() * (firstNames.length - 1));
+            newName = firstNames[i];
         }while(nameInUse(newName));
         registerName(newName);
         return newName;
     }
 
-    public static String randomFirst() {
-        return randomName(firstNames);
-    }
-
     public static String randomLast() {
-        return randomName(lastNames);
+        int i = (int) (Math.random() * (lastNames.length - 1));
+        return lastNames[i];
     }
 
     public static boolean nameInUse(String newName){
         for (String s : usedNames) {
-            if (s.contains(newName)) {
+            if (s.contains(newName.toLowerCase())) {
                 return true;
             }
         }
@@ -39,10 +37,10 @@ public class NameGenerator {
     }
 
     public static void registerName(String name){
-        usedNames.add(name);
+        usedNames.add(name.toLowerCase());
     }
 
     public static void deregisterName(String name){
-        usedNames.remove(name);
+        usedNames.remove(name.toLowerCase());
     }
 }
