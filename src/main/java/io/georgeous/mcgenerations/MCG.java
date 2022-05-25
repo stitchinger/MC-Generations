@@ -7,6 +7,7 @@ import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
+import io.georgeous.mcgenerations.utils.NameManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -53,6 +54,7 @@ public final class MCG extends JavaPlugin {
         PlayerManager.getInstance();
         FamilyManager.enable();
         RoleManager.getInstance();
+        NameManager.loadConfig();
 
         registerEvents();
         registerCommands();
@@ -91,6 +93,7 @@ public final class MCG extends JavaPlugin {
         PlayerManager.getInstance().destroy();
         RoleManager.getInstance().destroy();
         FamilyManager.disable();
+        NameManager.saveConfig();
 
         FileConfiguration config = getConfig();
         config.set("data.server.year", serverYear);

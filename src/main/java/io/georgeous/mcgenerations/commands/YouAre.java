@@ -2,7 +2,7 @@ package io.georgeous.mcgenerations.commands;
 
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
-import io.georgeous.mcgenerations.utils.NameGenerator;
+import io.georgeous.mcgenerations.utils.NameManager;
 import io.georgeous.mcgenerations.utils.Notification;
 import io.georgeous.piggyback.Piggyback;
 import org.bukkit.command.Command;
@@ -54,14 +54,14 @@ public class YouAre implements CommandExecutor {
                 return;
             }
 
-            if(NameGenerator.nameInUse(first)) {
+            if(NameManager.nameInUse(first)) {
                 Notification.errorMsg(motherPlayer, "This name is already in use by a player. Please pick another.");
                 return;
             }
 
             Piggyback.stopCarry(motherPlayer);
             childPlayerRole.setName(first);
-            NameGenerator.registerName(first);
+            NameManager.registerName(first);
             childPlayerRole.setRenamed(true);
             Notification.successMsg(motherPlayer, "You changed your childs name to " + first);
         } else {

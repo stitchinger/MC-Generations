@@ -15,7 +15,7 @@ import xyz.haoshoku.nick.api.NickScoreboard;
 public class NickCommand implements CommandExecutor {
 
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-
+/*
         if (!(sender instanceof Player player))
             return true;
 
@@ -42,9 +42,13 @@ public class NickCommand implements CommandExecutor {
             nickPlayer(player, name);
             NickAPI.setSkin(player, name);
         }
-        return true;
-    }
 
+ */
+        return true;
+
+
+    }
+/*
     public void nickPlayer(Player player, String name) {
         NickAPI.nick(player, name);
         NickAPI.refreshPlayer(player);
@@ -57,4 +61,6 @@ public class NickCommand implements CommandExecutor {
 
         player.sendMessage(ChatColor.DARK_GREEN + "Successfully set the nickname to " + ChatColor.YELLOW + name);
     }
+
+ */
 }
