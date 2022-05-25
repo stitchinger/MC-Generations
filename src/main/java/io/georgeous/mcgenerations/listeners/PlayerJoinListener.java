@@ -19,18 +19,20 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        playerManager.initPlayer(event.getPlayer());
-        roleManager.initPlayer(event.getPlayer());
+        playerManager.initPlayer(player);
+        roleManager.initPlayer(player);
 
+        welcomeMessage(player);
+        event.setJoinMessage("");
+    }
+
+    private void welcomeMessage(Player player){
         player.sendMessage("Welcome to One Hour One Life");
-
-        BaseComponent[] component = new ComponentBuilder("Join the")
+        BaseComponent[] component = new ComponentBuilder("Join the ")
                 .append("Discord!").color(ChatColor.BLUE).underlined(true)
                 .event(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/U262bxT4jh"))
                 .create();
         player.spigot().sendMessage(component);
-
-        event.setJoinMessage("");
     }
 
 

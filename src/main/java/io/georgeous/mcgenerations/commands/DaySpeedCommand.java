@@ -14,7 +14,6 @@ public class DaySpeedCommand implements CommandExecutor {
         if (!(sender instanceof Player player)) {
             return true;
         }
-
         if (!player.isOp()) {
             Notification.onlyForOp(player);
             return true;
@@ -24,7 +23,6 @@ public class DaySpeedCommand implements CommandExecutor {
             Notification.errorMsg(player, "Usage: /dayspeed 100");
         }
 
-        //playerRole.am.setSecInYear(Integer.parseInt(args[0]));
         MCG.daySpeed = Long.parseLong(args[0]);
 
         return false;

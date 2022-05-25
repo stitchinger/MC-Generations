@@ -16,21 +16,20 @@ public class PlayerQuitListener implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        removeMember(player);
-
-
+        // Family
+        removeFromFamily(player);
+        // Role
         roleManager.saveRole(roleManager.get(player));
         roleManager.remove(player);
-
+        // Wrapper
         playerManager.remove(event.getPlayer());
     }
 
-    private void removeMember(Player player) {
+    private void removeFromFamily(Player player) {
         PlayerRole role = RoleManager.getInstance().get(player);
         if (role == null) {
             return;
         }
-
         role.getFamily().removeMember(role);
     }
 

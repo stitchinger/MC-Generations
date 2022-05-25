@@ -35,7 +35,6 @@ public class PlayerDeathListener implements Listener {
         if (role == null) {
             return;
         }
-
         role.getFamily().removeMember(role);
     }
 
