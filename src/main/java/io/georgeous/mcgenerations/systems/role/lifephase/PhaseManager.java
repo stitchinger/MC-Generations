@@ -76,8 +76,6 @@ public class PhaseManager {
     public void changePhase(Phase phase) {
         endPhase();
 
-        // Cancel carrying
-        // todo extract to Piggyback?
         if (Piggyback.carryCoupleMap.containsKey(player)) {
             if (Piggyback.carryCoupleMap.carried.get(player) != null) {
                 Player carrier = Piggyback.carryCoupleMap.carried.get(player).getCarrier();

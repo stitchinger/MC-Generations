@@ -13,7 +13,7 @@ public class CreatureSpawnListener implements Listener {
     @EventHandler
     public void disableMobsInCouncil(CreatureSpawnEvent event) {
         final float DISABLE_RADIUS = 400;
-        Location centerPoint = MCG.council.councilLocation;
+        Location centerPoint = MCG.council.COUNCIL_LOCATION;
         Entity entity = event.getEntity();
 
         double distance = centerPoint.distance(event.getLocation());

@@ -61,7 +61,7 @@ public final class MCG extends JavaPlugin {
 
         makeBundleCraftable();
 
-        overworld.setSpawnLocation(council.councilLocation);
+        overworld.setSpawnLocation(council.COUNCIL_LOCATION);
 
         getServer().dispatchCommand(Bukkit.getConsoleSender(), "veryspicy true");
 
@@ -171,9 +171,6 @@ public final class MCG extends JavaPlugin {
 
 /*
 Todo: Council countdown beeping
-TODO: Command for more Family info (Members, etc)
-Todo: Carried clips in ground/walls
 Todo: Setup config file for ...
 Todo: Show baby cooldown in info command
-Todo: Graves Plugin
  */

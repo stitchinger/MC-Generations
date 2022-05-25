@@ -72,7 +72,7 @@ public class PlayerDeathListener implements Listener {
             PlayerManager.getInstance().getWrapper(player).setDiedOfOldAge(true);
             PlayerManager.getInstance().getWrapper(player).setLastBedLocation(player.getBedSpawnLocation());
         }
-        player.setBedSpawnLocation(MCG.council.councilLocation, true);
+        player.setBedSpawnLocation(MCG.council.COUNCIL_LOCATION, true);
 
 
         createGrave(playerRole);

@@ -79,7 +79,7 @@ public class SpawnManager {
         Location lastBed = PlayerManager.getInstance().getWrapper(player).getLastBedLocation();
         boolean bedIsValid = false;
         if (lastBed != null) {
-            bedIsValid = lastBed.distance(MCG.council.councilLocation) > 50;
+            bedIsValid = lastBed.distance(MCG.council.COUNCIL_LOCATION) > 50;
             // Using the bedspawing for the council stuff
             // This makes sure, that the players bed isnt the council
             // This could happen, if the player never interacted with a bed

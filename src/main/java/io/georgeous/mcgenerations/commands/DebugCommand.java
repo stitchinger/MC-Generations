@@ -42,7 +42,7 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
         }
 
         if ("council".equals(args[0])) {
-            player.teleport(MCG.council.councilLocation);
+            player.teleport(MCG.council.COUNCIL_LOCATION);
         }
         return false;
     }
