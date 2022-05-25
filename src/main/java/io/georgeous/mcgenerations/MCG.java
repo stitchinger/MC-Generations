@@ -74,12 +74,7 @@ public final class MCG extends JavaPlugin {
         }.runTaskTimer(this, 0L, 1L);
 
         // Update Server Year
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-            @Override
-            public void run() {
-                serverYear++;
-            }
-        }, 0L, 20L * 60);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> serverYear++, 0L, 20L * 60);
 
 
         FileConfiguration config = getConfig();
@@ -126,7 +121,7 @@ public final class MCG extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerChat(), this);
         getServer().getPluginManager().registerEvents(new Interact(), this);
         getServer().getPluginManager().registerEvents(new InventoryListener(), this);
-
+        getServer().getPluginManager().registerEvents(new CreatureSpawnListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerCarry(), this);
         getServer().getPluginManager().registerEvents(new PlayerPhaseUp(), this);
 
