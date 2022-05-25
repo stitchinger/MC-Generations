@@ -126,7 +126,7 @@ public class SpawnManager {
         babyBornEffects(newBorn, mother.getPlayer());
 
         PotionEffect glow = new PotionEffect(PotionEffectType.GLOWING, 100, 1, true, true, true);
-        SurrogateManager.map.get(newBorn).addPotionEffect(glow);
+        SurrogateManager.playerSurrogateMap.get(newBorn).addPotionEffect(glow);
     }
 
     public static PlayerRole findViableMother(Player child) {

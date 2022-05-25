@@ -36,53 +36,69 @@ public class ScoreboardHandler {
 
     }
 
-    public void registerPlayer(Player toRegister) {
+    public void refreshPlayer(Player playerToRefresh) {
 
-        Scoreboard scoreboard = toRegister.getScoreboard();
-        Objective objective = scoreboard.getObjective("dummy_sidebar");
-        if(objective == null) objective = scoreboard.registerNewObjective("dummy_sidebar", "bbb", replacePlaceholders(title, toRegister));
-
-        for(int i = 0; i < lines.size(); i++) {
-            Team team = scoreboard.registerNewTeam(String.valueOf(i));
-            team.addEntry(ChatColor.values()[i].toString());
-        }
-        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        Team team = scoreboard.getTeam("nocollision");
-        if(team == null)team = scoreboard.registerNewTeam("nocollision");
-        team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
-        Villager villager = SurrogateManager.getInstance().getVillager(toRegister);
-        if(villager != null) {
-            team.addEntry(villager.getUniqueId().toString());
+        boolean hasNoScoreboard = playerToRefresh.getScoreboard().getObjective("dummy_sidebar") == null;
+        if(hasNoScoreboard){
+            registerPlayer(playerToRefresh);
         }
 
-    }
-
-    public void refreshPlayer(Player toRefresh) {
-
-        if(toRefresh.getScoreboard().getObjective("dummy_sidebar") == null)registerPlayer(toRefresh);
-        Objective objective = toRefresh.getScoreboard().getObjective("dummy_sidebar");
+        Objective objective = playerToRefresh.getScoreboard().getObjective("dummy_sidebar");
         final int maxScore = lines.size();
         String spaceCounter = "";
         for(int i = 0; i < lines.size(); i++) {
-
-            Team team = toRefresh.getScoreboard().getTeam(String.valueOf(i));
+            Team team = playerToRefresh.getScoreboard().getTeam(String.valueOf(i));
             if(lines.get(i).equalsIgnoreCase("[space]")) {
                 team.setPrefix(spaceCounter);
                 spaceCounter += " ";
             } else {
-                team.setPrefix(replacePlaceholders(lines.get(i), toRefresh));
+                team.setPrefix(replacePlaceholders(lines.get(i), playerToRefresh));
             }
             objective.getScore(ChatColor.values()[i].toString()).setScore(maxScore-i);
         }
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
     }
 
+    public void registerPlayer(Player playerToRegister) {
+
+        Scoreboard scoreboard = playerToRegister.getScoreboard();
+        Objective objective = scoreboard.getObjective("dummy_sidebar");
+
+        if(objective == null) {
+            objective = scoreboard.registerNewObjective("dummy_sidebar", "bbb", replacePlaceholders(title, playerToRegister));
+        }
+
+        for(int i = 0; i < lines.size(); i++) {
+            Team team = scoreboard.registerNewTeam(String.valueOf(i));
+            team.addEntry(ChatColor.values()[i].toString());
+        }
+
+        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+
+
+        // Nocollision team for Surrogate
+        Team team = scoreboard.getTeam("nocollision");
+        if(team == null){
+            team = scoreboard.registerNewTeam("nocollision");
+        }
+        team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
+
+        // surrogate joins no collision team
+        // this needs to be where the surrogate is created
+        Villager villager = SurrogateManager.getInstance().getVillager(playerToRegister);
+        if(villager != null) {
+            team.addEntry(villager.getUniqueId().toString());
+        }
+
+    }
+
+
+
 
     private String replacePlaceholders(String toReplace, Player player) {
-
         PlayerWrapper playerWrapper = PlayerManager.getInstance().getWrapper(player);
-        Location lastLocation = playerWrapper.getLastBedLocation();
 
+        /*
         long playTime = playerWrapper.getPlayTime();
 
         String hours = ((playTime/3600 < 10) ? "0" : "")+ playTime/3600;
@@ -91,15 +107,19 @@ public class ScoreboardHandler {
         playTime-= playTime/60;
         String seconds = ((playTime < 10) ? "0" : "")+ playTime;
 
+         */
+
         return toReplace
-                .replace("[diedofage]", String.valueOf(playerWrapper.getDiedOfOldAge()))
-                .replace("[karma]", String.valueOf(playerWrapper.getKarma()))
-                .replace("[lastbedlocation]", (lastLocation == null)? "Not found":"X: " + lastLocation.getBlockX() + " Y: " + lastLocation.getBlockY() + " Z: " + lastLocation.getBlockZ())
-                .replace("[lives]", String.valueOf(playerWrapper.getLives()))
-                .replace("[name]", player.getName())
-                .replace("[playtime]", hours + ":" + minutes + ":" + seconds)
-                .replace("[timeofjoin]", dateFormat.format(new Date(playerWrapper.getTimeOfJoin())))
-                .replace("[age]", (RoleManager.getInstance().get(player) == null)? "Not found" : String.valueOf(RoleManager.getInstance().get(player).getAgeManager().getAge()));
+                //.replace("[playtime]", hours + ":" + minutes + ":" + seconds)
+                //.replace("[timeofjoin]", dateFormat.format(new Date(playerWrapper.getTimeOfJoin())))
+                .replace("[name]", (RoleManager.getInstance().get(player) == null)? "Not found" : String.valueOf(RoleManager.getInstance().get(player).getName()))
+                .replace("[familyname]", (RoleManager.getInstance().get(player) == null)? "Not found" : String.valueOf(RoleManager.getInstance().get(player).getFamily().getName()))
+                .replace("[age]", (RoleManager.getInstance().get(player) == null)? "Not found" : String.valueOf(RoleManager.getInstance().get(player).getAgeManager().getAge()))
+                .replace("[generation]", (RoleManager.getInstance().get(player) == null)? "Not found" : String.valueOf(RoleManager.getInstance().get(player).getGeneration()))
+
+                .replace("[year]", String.valueOf(MCG.serverYear))
+                .replace("[lifes]", (PlayerManager.getInstance().getWrapper(player) == null)? "Not found" : String.valueOf(PlayerManager.getInstance().getWrapper(player).getLifes()));
+
     }
 
 }

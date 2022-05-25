@@ -30,7 +30,7 @@ public class PlayerData {
         ConfigurationSection cs = config.createSection(getPath(uuid));
         cs.set("name", playerWrapper.getPlayer().getName());
         cs.set("karma", playerWrapper.getKarma());
-        cs.set("lives", playerWrapper.getLives());
+        cs.set("lives", playerWrapper.getLifes());
         cs.set("playtime", playerWrapper.getPlayTime());
         cs.set("timesinceoffline", System.currentTimeMillis());
         cs.set("debug", playerWrapper.isDebugMode());

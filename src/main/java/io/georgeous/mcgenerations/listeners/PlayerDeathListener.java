@@ -1,10 +1,10 @@
 package io.georgeous.mcgenerations.listeners;
 
 import io.georgeous.mcgenerations.MCG;
-import io.georgeous.mcgenerations.SpawnManager;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
+import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
 import io.georgeous.mcgenerations.utils.ItemManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -16,36 +16,52 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
 
-public class RoleListener implements Listener {
 
+public class PlayerDeathListener implements Listener {
     private final RoleManager roleManager = RoleManager.getInstance();
+    PlayerManager playerManager = PlayerManager.getInstance();
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        roleManager.initPlayer(event.getPlayer());
-    }
-
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
-
-        roleManager.saveRole(roleManager.get(player));
-        roleManager.remove(player);
-    }
-
-    @EventHandler
-    public void onRoleDead(PlayerDeathEvent event) {
+    public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
+
+        // Surrogate
+        SurrogateManager.getInstance().destroySurrogateOfPlayer(event.getEntity());
+
+        // Family
+        removeMember(player);
+
+        // Role
         PlayerRole playerRole = roleManager.get(player);
+
         if (playerRole == null) {
             return;
         }
 
         removeBabyHandlerFromDrops(event);
+
+        event.setDeathMessage(getDeathMessage(event));
+
+        String roleName = playerRole.getName() + " " + playerRole.getFamily().getColoredName() + ChatColor.RESET;
+
+        boolean diedOfOldAge = playerRole.getAgeManager().getAge() >= 60;
+        if (diedOfOldAge) {
+            event.setDeathMessage(roleName + " died of old Age. RIP");
+            PlayerManager.getInstance().getWrapper(player).setDiedOfOldAge(true);
+            PlayerManager.getInstance().getWrapper(player).setLastBedLocation(player.getBedSpawnLocation());
+        }
+        player.setBedSpawnLocation(MCG.council.councilLocation, true);
+
+
+        createGrave(playerRole);
+
+        playerRole.die();
+    }
+
+    private String getDeathMessage(PlayerDeathEvent event){
+        Player player = event.getEntity();
+        PlayerRole playerRole = roleManager.get(player);
 
         String roleName = playerRole.getName() + " " + playerRole.getFamily().getColoredName() + ChatColor.RESET;
         String ageString = "(" + playerRole.getAgeManager().getAge() + ")";
@@ -63,20 +79,12 @@ public class RoleListener implements Listener {
                 msg = msg.replace(killer.getName(), killersCharName);
             }
         }
-
-        event.setDeathMessage(msg);
-
-        boolean diedOfOldAge = playerRole.getAgeManager().getAge() >= 60;
-        if (diedOfOldAge) {
-            event.setDeathMessage(roleName + " died of old Age. RIP");
-            PlayerManager.getInstance().getWrapper(player).setDiedOfOldAge(true);
-            PlayerManager.getInstance().getWrapper(player).setLastBedLocation(player.getBedSpawnLocation());
-        }
-        player.setBedSpawnLocation(MCG.council.councilLocation, true);
+        return msg;
+    }
 
 
-        createGrave(playerRole);
-        playerRole.die();
+    private void removeBabyHandlerFromDrops(PlayerDeathEvent event) {
+        event.getDrops().stream().filter(ItemManager::isBabyHandler).toList().forEach(item -> item.setAmount(0));
     }
 
     private void createGrave(PlayerRole role){
@@ -109,14 +117,14 @@ public class RoleListener implements Listener {
         sig.update();
     }
 
-    @EventHandler
-    public void onPlayerRespawn(PlayerRespawnEvent event) {
-        Player player = event.getPlayer();
-        if (player.getHealth() == 0)
-            SpawnManager.spawnPlayer(player);
+    private void removeMember(Player player) {
+        PlayerRole role = RoleManager.getInstance().get(player);
+        if (role == null) {
+            return;
+        }
+
+        role.getFamily().removeMember(role);
     }
 
-    public void removeBabyHandlerFromDrops(PlayerDeathEvent event) {
-        event.getDrops().stream().filter(ItemManager::isBabyHandler).toList().forEach(item -> item.setAmount(0));
-    }
+
 }

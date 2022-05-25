@@ -117,7 +117,7 @@ public class PhaseManager {
         if (phase == null)
             return;
         if (phase.surrogate) {
-            SurrogateManager.getInstance().destroyPlayer(playerRole.getPlayer());
+            SurrogateManager.getInstance().destroySurrogateOfPlayer(playerRole.getPlayer());
         }
 
         playerRole.getPlayer().removePotionEffect(PotionEffectType.SLOW);

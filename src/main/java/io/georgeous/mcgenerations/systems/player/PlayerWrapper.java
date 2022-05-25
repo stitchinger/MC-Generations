@@ -19,7 +19,7 @@ public class PlayerWrapper {
         this.timeOfJoin = System.currentTimeMillis();
     }
 
-    public int getLives() {
+    public int getLifes() {
         return this.lives;
     }
 

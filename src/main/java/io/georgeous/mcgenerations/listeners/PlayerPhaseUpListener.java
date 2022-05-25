@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-public class PlayerPhaseUp implements Listener {
+public class PlayerPhaseUpListener implements Listener {
 
     @EventHandler
     public void onPlayerPhaseUp(PlayerPhaseUpEvent event) {

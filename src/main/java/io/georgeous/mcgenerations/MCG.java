@@ -4,15 +4,13 @@ import io.georgeous.mcgenerations.commands.*;
 import io.georgeous.mcgenerations.files.DataManager;
 import io.georgeous.mcgenerations.files.FileManager;
 import io.georgeous.mcgenerations.listeners.*;
+import io.georgeous.mcgenerations.listeners.backup.*;
 import io.georgeous.mcgenerations.scoreboard.ScoreboardHandler;
 import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.ConfigurationSection;
@@ -23,11 +21,8 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-
 import java.io.File;
 import java.util.logging.Level;
-
-import static org.bukkit.Bukkit.getServer;
 
 public final class MCG extends JavaPlugin {
     public static MCG plugin;
@@ -56,8 +51,7 @@ public final class MCG extends JavaPlugin {
         }
         fileManager = new FileManager(this.getDataFolder().getPath());
         plugin = this;
-        //overworld = Bukkit.getWorld("familycraft-world");
-        overworld = Bukkit.getWorld("world");
+        overworld = Bukkit.getWorld("FamilyCraftWorld");
         council = new Council(overworld);
         this.saveDefaultConfig();
 
@@ -70,12 +64,7 @@ public final class MCG extends JavaPlugin {
         registerEvents();
         registerCommands();
 
-        makeBundleCraftable();
-
-        overworld.setSpawnLocation(council.councilLocation);
-
-        getServer().dispatchCommand(Bukkit.getConsoleSender(), "veryspicy true");
-
+        setupServer();
 
         // Start Update-Function
         new BukkitRunnable() {
@@ -95,12 +84,10 @@ public final class MCG extends JavaPlugin {
         }, 0L, 20L * 60);
 
 
-        FileConfiguration config = getConfig();
-        ConfigurationSection configSection = config.getConfigurationSection("data.server");
-        int year = configSection.getInt("year");
-        serverYear = year;
 
-        MCG.getInstance().saveConfig();
+        loadServerData();
+
+        //MCG.getInstance().saveConfig();
 
         scoreboardHandler = new ScoreboardHandler();
     }
@@ -112,9 +99,7 @@ public final class MCG extends JavaPlugin {
         RoleManager.getInstance().destroy();
         FamilyManager.disable();
 
-        FileConfiguration config = getConfig();
-        config.set("data.server.year", serverYear);
-        saveConfig();
+        saveServerData();
 
         for(Player player : Bukkit.getOnlinePlayers()) {
             player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
@@ -131,25 +116,44 @@ public final class MCG extends JavaPlugin {
     private void update() {
         RoleManager.getInstance().update();
         SurrogateManager.getInstance().update();
-
-        overworld.setTime(overworld.getTime() + daySpeed);
+        //overworld.setTime(overworld.getTime() + daySpeed);
+        //overworld.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
         // one day 24000
         // 20 ticks = 1 sec
     }
 
     public void registerEvents() {
-        getServer().getPluginManager().registerEvents(new PlayerConnection(), this);
+        //getServer().getPluginManager().registerEvents(new PlayerConnection(), this);
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerQuitListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
+
+
+
         getServer().getPluginManager().registerEvents(new PlayerChat(), this);
         getServer().getPluginManager().registerEvents(new Interact(), this);
         getServer().getPluginManager().registerEvents(new InventoryListener(), this);
 
         getServer().getPluginManager().registerEvents(new PlayerCarry(), this);
-        getServer().getPluginManager().registerEvents(new PlayerPhaseUp(), this);
-        getServer().getPluginManager().registerEvents(new FamilyListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerPhaseUpListener(), this);
+        //getServer().getPluginManager().registerEvents(new FamilyListener(), this);
 
-        getServer().getPluginManager().registerEvents(new PlayerListener(), this);
-        getServer().getPluginManager().registerEvents(new SurrogateListener(), this);
-        getServer().getPluginManager().registerEvents(new RoleListener(), MCG.getInstance());
+        //getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+        //getServer().getPluginManager().registerEvents(new SurrogateListener(), this);
+        //getServer().getPluginManager().registerEvents(new RoleListener(), MCG.getInstance());
+    }
+
+    private void loadServerData(){
+        FileConfiguration config = getConfig();
+        ConfigurationSection configSection = config.getConfigurationSection("data.server");
+        int year = configSection.getInt("year");
+        serverYear = year;
+    }
+
+    private void saveServerData(){
+        FileConfiguration config = getConfig();
+        config.set("data.server.year", serverYear);
+        saveConfig();
     }
 
     public void registerCommands() {
@@ -177,6 +181,13 @@ public final class MCG extends JavaPlugin {
         pluginCommand.setExecutor(executor);
     }
 
+    private void setupServer(){
+        overworld.setSpawnLocation(council.councilLocation);
+        getServer().dispatchCommand(Bukkit.getConsoleSender(), "veryspicy true");
+        // disable dayloop
+        // create teams etc
+    }
+
     public void makeBundleCraftable() {
         ItemStack item = new ItemStack(Material.BUNDLE);
         NamespacedKey key = new NamespacedKey(this, "Bundle");
@@ -201,9 +212,6 @@ public final class MCG extends JavaPlugin {
 
 /*
 Todo: Council countdown beeping
-TODO: Command for more Family info (Members, etc)
-Todo: Carried clips in ground/walls
 Todo: Setup config file for ...
 Todo: Show baby cooldown in info command
-Todo: Graves Plugin
  */

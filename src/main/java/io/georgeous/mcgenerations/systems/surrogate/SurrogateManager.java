@@ -14,11 +14,9 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.bukkit.Bukkit.getServer;
-
 public class SurrogateManager implements Listener {
 
-    public static HashMap<Player, Villager> map = new HashMap<>();
+    public static HashMap<Player, Villager> playerSurrogateMap = new HashMap<>();
 
     public static SurrogateManager instance;
 
@@ -30,22 +28,22 @@ public class SurrogateManager implements Listener {
 
     public void destroy() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            destroyPlayer(player);
+            destroySurrogateOfPlayer(player);
         }
     }
 
     @Nullable
     public Villager getVillager(Player player) {
-        return map.get(player);
+        return playerSurrogateMap.get(player);
     }
 
     public void update() {
-        for (Map.Entry<Player, Villager> entry : map.entrySet()) {
+        for (Map.Entry<Player, Villager> entry : playerSurrogateMap.entrySet()) {
             Player p = entry.getKey();
             Villager v = entry.getValue();
 
             if (!p.isOnline()) {
-                destroyPlayer(p);
+                destroySurrogateOfPlayer(p);
             } else {
                 PotionEffect invis = new PotionEffect(PotionEffectType.INVISIBILITY, 10, 1, false, false, true);
                 p.addPotionEffect(invis);
@@ -57,24 +55,25 @@ public class SurrogateManager implements Listener {
     }
 
     public void create(Player player, String name) {
-        if (map.get(player) != null) {
-            destroyPlayer(player);
+        if (playerSurrogateMap.get(player) != null) {
+            destroySurrogateOfPlayer(player);
         }
 
         Villager v = (Villager) player.getWorld().spawnEntity(player.getLocation(), EntityType.VILLAGER);
         prepareSurro(v);
         v.setCustomName(name);
+        // Todo Add villager entity to nocollision team within players scoreboard
 
-        map.put(player, v);
+        playerSurrogateMap.put(player, v);
     }
 
-    public void destroyPlayer(Player player) {
-        if (map.get(player) != null) {
-            Villager v = map.get(player);
+    public void destroySurrogateOfPlayer(Player player) {
+        if (playerSurrogateMap.get(player) != null) {
+            Villager v = playerSurrogateMap.get(player);
             Location loc = new Location(v.getWorld(), v.getLocation().getX(), 200, v.getLocation().getZ());
             v.teleport(loc);
             v.setHealth(0);
-            map.remove(player);
+            playerSurrogateMap.remove(player);
         }
     }
 
