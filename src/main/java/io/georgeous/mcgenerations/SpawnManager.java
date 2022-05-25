@@ -44,7 +44,7 @@ public class SpawnManager {
         }
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(MCG.getInstance(), () -> {
-            if (finalMom != null && !playerToSpawnInDebugMode) {
+            if (finalMom != null && !playerToSpawnInDebugMode && !finalMom.isDead) {
                 spawnAsBaby(playerToSpawn, finalMom);
             } else {
                 spawnAsEve(playerToSpawn);
