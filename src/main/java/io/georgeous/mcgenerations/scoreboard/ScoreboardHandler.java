@@ -36,7 +36,6 @@ public class ScoreboardHandler {
 
     public void registerPlayer(Player toRegister) {
 
-
         Scoreboard scoreboard = toRegister.getScoreboard();
         Objective objective = scoreboard.getObjective("dummy_sidebar");
         if(objective == null) objective = scoreboard.registerNewObjective("dummy_sidebar", "bbb", title);
@@ -91,7 +90,7 @@ public class ScoreboardHandler {
                 .replace("[name]", player.getName())
                 .replace("[playtime]", hours + ":" + minutes + ":" + seconds)
                 .replace("[timeofjoin]", dateFormat.format(new Date(playerWrapper.getTimeOfJoin())))
-                .replace("[age]", String.valueOf(RoleManager.getInstance().get(player).getAgeManager().getAge()));
+                .replace("[age]", (RoleManager.getInstance().get(player) == null)? "Not found" : String.valueOf(RoleManager.getInstance().get(player).getAgeManager().getAge()));
     }
 
 }

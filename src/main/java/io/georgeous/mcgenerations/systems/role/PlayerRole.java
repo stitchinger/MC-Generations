@@ -90,7 +90,7 @@ public class PlayerRole {
     }
 
     public void updateScoreboard() {
-        NickScoreboard.write(name, player.getUniqueId().toString().substring(0, 15), "", " " + getFamily().getColoredName(), false, ChatColor.WHITE);
+        NickScoreboard.write(name, player.getUniqueId().toString().substring(0, 15), "", " " + getFamily().getColoredName(), true, ChatColor.WHITE);
         NickScoreboard.updateScoreboard(name);
     }
 

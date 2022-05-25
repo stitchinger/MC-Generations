@@ -51,7 +51,7 @@ public class NickCommand implements CommandExecutor {
 
         PlayerRole playerRole = RoleManager.getInstance().get(player);
         if (playerRole != null) {
-            NickScoreboard.write(name, "admin", "", " " + playerRole.getFamily().getColoredName(), false, ChatColor.WHITE);
+            NickScoreboard.write(name, "admin", "", " " + playerRole.getFamily().getColoredName(), true, ChatColor.WHITE);
             NickScoreboard.updateScoreboard(name);
         }
 
