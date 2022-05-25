@@ -80,7 +80,7 @@ public class SurrogateManager implements Listener {
 
     private void prepareSurro(Villager v) {
         v.setAI(false);
-        v.setCollidable(true);
+        v.setCollidable(false);
         v.setAge(-1);
         v.setAgeLock(true);
         v.setCustomNameVisible(true);

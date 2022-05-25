@@ -25,9 +25,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 
 import java.io.File;
-import java.util.Objects;
 import java.util.logging.Level;
 
+import static org.bukkit.Bukkit.getServer;
 
 public final class MCG extends JavaPlugin {
     public static MCG plugin;
@@ -35,7 +35,7 @@ public final class MCG extends JavaPlugin {
     public static Council council;
     public static long daySpeed = 2; // Default is 1
     public static int serverYear = 0;
-    //private static long lastServerTime; // in millis
+    private static long lastServerTime; // in millis
 
     public DataManager data;
 
@@ -57,7 +57,7 @@ public final class MCG extends JavaPlugin {
         fileManager = new FileManager(this.getDataFolder().getPath());
         plugin = this;
         //overworld = Bukkit.getWorld("familycraft-world");
-        overworld = Bukkit.getWorld("FamilyCraftWorld");
+        overworld = Bukkit.getWorld("world");
         council = new Council(overworld);
         this.saveDefaultConfig();
 
@@ -76,6 +76,7 @@ public final class MCG extends JavaPlugin {
 
         getServer().dispatchCommand(Bukkit.getConsoleSender(), "veryspicy true");
 
+
         // Start Update-Function
         new BukkitRunnable() {
             @Override
@@ -86,15 +87,17 @@ public final class MCG extends JavaPlugin {
         }.runTaskTimer(this, 0L, 1L);
 
         // Update Server Year
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> serverYear++, 0L, 20L * 60);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+            @Override
+            public void run() {
+                serverYear++;
+            }
+        }, 0L, 20L * 60);
 
 
         FileConfiguration config = getConfig();
         ConfigurationSection configSection = config.getConfigurationSection("data.server");
-        int year = 0;
-        if (configSection != null) {
-            year = configSection.getInt("year");
-        }
+        int year = configSection.getInt("year");
         serverYear = year;
 
         MCG.getInstance().saveConfig();
@@ -114,7 +117,7 @@ public final class MCG extends JavaPlugin {
         saveConfig();
 
         for(Player player : Bukkit.getOnlinePlayers()) {
-            player.setScoreboard(Objects.requireNonNull(Bukkit.getScoreboardManager()).getNewScoreboard());
+            player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
         }
     }
 
