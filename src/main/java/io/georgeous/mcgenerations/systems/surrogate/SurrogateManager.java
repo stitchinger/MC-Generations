@@ -10,6 +10,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +32,11 @@ public class SurrogateManager implements Listener {
         for (Player player : Bukkit.getOnlinePlayers()) {
             destroyPlayer(player);
         }
+    }
+
+    @Nullable
+    public Villager getVillager(Player player) {
+        return map.get(player);
     }
 
     public void update() {
@@ -81,8 +87,5 @@ public class SurrogateManager implements Listener {
         v.addScoreboardTag("surrogate");
         v.setInvulnerable(true);
         v.setSilent(true);
-
-
-        getServer().dispatchCommand(Bukkit.getConsoleSender(), "team join nocollision @e[tag=surrogate,limit=3,sort=nearest,team=!nocollision]");
     }
 }

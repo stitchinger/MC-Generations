@@ -4,9 +4,11 @@ import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
+import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
 import org.bukkit.scoreboard.*;
 
 import java.text.SimpleDateFormat;
@@ -45,12 +47,19 @@ public class ScoreboardHandler {
             team.addEntry(ChatColor.values()[i].toString());
         }
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        Team team = scoreboard.getTeam("nocollision");
+        if(team == null)team = scoreboard.registerNewTeam("nocollision");
+        team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
+        Villager villager = SurrogateManager.getInstance().getVillager(toRegister);
+        if(villager != null) {
+            team.addEntry(villager.getUniqueId().toString());
+        }
+
     }
 
     public void refreshPlayer(Player toRefresh) {
 
         if(toRefresh.getScoreboard().getObjective("dummy_sidebar") == null)registerPlayer(toRefresh);
-
         Objective objective = toRefresh.getScoreboard().getObjective("dummy_sidebar");
         final int maxScore = lines.size();
         String spaceCounter = "";
