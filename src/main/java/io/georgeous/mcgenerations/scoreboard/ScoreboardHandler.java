@@ -38,7 +38,7 @@ public class ScoreboardHandler {
 
         Scoreboard scoreboard = toRegister.getScoreboard();
         Objective objective = scoreboard.getObjective("dummy_sidebar");
-        if(objective == null) objective = scoreboard.registerNewObjective("dummy_sidebar", "bbb", title);
+        if(objective == null) objective = scoreboard.registerNewObjective("dummy_sidebar", "bbb", replacePlaceholders(title, toRegister));
 
         for(int i = 0; i < lines.size(); i++) {
             Team team = scoreboard.registerNewTeam(String.valueOf(i));
