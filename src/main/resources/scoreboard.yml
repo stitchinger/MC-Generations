@@ -1,18 +1,11 @@
-title: '&6MC-Generations'
+title: '&6ohol.spigot.eu'
 dateformat: "dd/MM/yy"
 lines:
-  - "&7Died of Age:&6 [diedofage]"
-  - "[space]"
-  - "&7Karma:&6 [karma]"
-  - "[space]"
-  - "&7Lastloc:&6 [lastbedlocation]"
-  - "[space]"
-  - "&7Lives:&6 [lives]"
-  - "[space]"
-  - "&7Your name:&6 [name]"
-  - "[space]"
-  - "&7Playtime:&6 [playtime]"
-  - "[space]"
-  - "&7Time of join:&6 [timeofjoin]"
-  - "[space]"
+  - "[name][familyname]"
   - "&7Age:&6 [age]"
+  - "[space]"
+  - "&7Lifes:&6 [lifes]"
+  - "&7Gen:&6 [generation]"
+  - "&7Year:&6 [year]"
+
+

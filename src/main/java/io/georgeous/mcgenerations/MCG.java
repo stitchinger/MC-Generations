@@ -57,7 +57,7 @@ public final class MCG extends JavaPlugin {
         fileManager = new FileManager(this.getDataFolder().getPath());
         plugin = this;
         //overworld = Bukkit.getWorld("familycraft-world");
-        overworld = Bukkit.getWorld("world");
+        overworld = Bukkit.getWorld("FamilyCraftWorld");
         council = new Council(overworld);
         this.saveDefaultConfig();
 
@@ -96,8 +96,7 @@ public final class MCG extends JavaPlugin {
 
 
         FileConfiguration config = getConfig();
-        ConfigurationSection configSection = config.getConfigurationSection("data.server");
-        int year = configSection.getInt("year");
+        int year = config.getInt("data.server.year");
         serverYear = year;
 
         MCG.getInstance().saveConfig();
