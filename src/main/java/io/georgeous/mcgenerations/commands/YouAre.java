@@ -49,8 +49,7 @@ public class YouAre implements CommandExecutor {
                 //Notification.errorMsg(motherPlayer, "You can only rename your own children!");
                 //return;
             }
-
-
+            
             if (childPlayerRole.isRenamed()) {
                 Notification.errorMsg(motherPlayer, "You can name your child only once.");
                 return;

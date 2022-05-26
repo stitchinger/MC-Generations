@@ -96,7 +96,7 @@ public class SpawnManager {
 
         String name = NameManager.randomFirst();
         Family family = FamilyManager.addFamily(NameManager.randomLast());
-        RoleManager.getInstance().createAndAddRole(player, name, 10, family);
+        RoleManager.getInstance().createAndAddRole(player, name, 10, 1, family);
 
         //player.setSaturation(0); too hard?
 
@@ -116,7 +116,7 @@ public class SpawnManager {
 
         Family family = mother.getFamily();
 
-        PlayerRole newBornRole = RoleManager.getInstance().createAndAddRole(newBorn, name, 0, family);
+        PlayerRole newBornRole = RoleManager.getInstance().createAndAddRole(newBorn, name, 0, 1, family);
         family.addMember(newBornRole);
 
         mother.getMotherController().bornBaby(newBornRole);

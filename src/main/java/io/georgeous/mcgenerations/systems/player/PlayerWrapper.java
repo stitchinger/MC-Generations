@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 public class PlayerWrapper {
     private final Player player;
     private double karma = 12345;
-    private int lives = 0;
+    private int lifes = 0;
     private long playTime = 0;
     private long lastOfflineTime = 0;
     private long timeOfJoin;
@@ -19,12 +19,16 @@ public class PlayerWrapper {
         this.timeOfJoin = System.currentTimeMillis();
     }
 
-    public int getLives() {
-        return this.lives;
+    public int getLifes() {
+        return this.lifes;
     }
 
-    public void setLives(int lives) {
-        this.lives = lives;
+    public void setLifes(int lifes) {
+        this.lifes = lifes;
+    }
+
+    public void addLife(){
+        this.lifes++;
     }
 
     public double getKarma() {

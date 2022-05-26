@@ -30,7 +30,7 @@ public class PlayerData {
         ConfigurationSection cs = config.createSection(getPath(uuid));
         cs.set("name", playerWrapper.getPlayer().getName());
         cs.set("karma", playerWrapper.getKarma());
-        cs.set("lives", playerWrapper.getLives());
+        cs.set("lifes", playerWrapper.getLifes());
         cs.set("playtime", playerWrapper.getPlayTime());
         cs.set("timesinceoffline", System.currentTimeMillis());
         cs.set("debug", playerWrapper.isDebugMode());
@@ -39,8 +39,8 @@ public class PlayerData {
     }
 
     public void restoreFrom(PlayerWrapper playerWrapper, ConfigurationSection cs) {
-        int lives = cs.getInt("lives");
-        playerWrapper.setLives(lives);
+        int lives = cs.getInt("lifes");
+        playerWrapper.setLifes(lives);
 
         double karma = cs.getDouble("karma");
         playerWrapper.setKarma(karma);

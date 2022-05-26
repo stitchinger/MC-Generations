@@ -22,14 +22,15 @@ public class PlayerRole {
     private final PhaseManager phaseManager;
     private final PlayerMother playerMother;
     public Family family;
-    public int generation = 1;
+    public int generation;
     public boolean isDead = false;
     private String name;
     private boolean isRenamed = false;
 
-    public PlayerRole(Player player, String name, int age, Family family) {
+    public PlayerRole(Player player, String name, int age, int generation, Family family) {
         this.player = player;
         this.family = family;
+        this.generation = generation;
 
         setName(name);
 

@@ -101,14 +101,17 @@ public class ScoreboardHandler {
         String seconds = ((playTime < 10) ? "0" : "")+ playTime;
 
         return toReplace
-                .replace("[diedofage]", String.valueOf(playerWrapper.getDiedOfOldAge()))
-                .replace("[karma]", String.valueOf(playerWrapper.getKarma()))
-                .replace("[lastbedlocation]", (lastLocation == null)? "Not found":"X: " + lastLocation.getBlockX() + " Y: " + lastLocation.getBlockY() + " Z: " + lastLocation.getBlockZ())
-                .replace("[lives]", String.valueOf(playerWrapper.getLives()))
-                .replace("[name]", player.getName())
-                .replace("[playtime]", hours + ":" + minutes + ":" + seconds)
-                .replace("[timeofjoin]", dateFormat.format(new Date(playerWrapper.getTimeOfJoin())))
-                .replace("[age]", (RoleManager.getInstance().get(player) == null)? "Not found" : String.valueOf(RoleManager.getInstance().get(player).getAgeManager().getAge()));
+                .replace("[rolename]", (RoleManager.getInstance().get(player) == null)? "Not found" : String.valueOf(RoleManager.getInstance().get(player).getName()))
+                .replace("[familyname]", (RoleManager.getInstance().get(player) == null)? "Not found" : String.valueOf(RoleManager.getInstance().get(player).getFamily().getColoredName()))
+                .replace("[age]", (RoleManager.getInstance().get(player) == null)? "Not found" : String.valueOf(RoleManager.getInstance().get(player).getAgeManager().getAge()))
+                .replace("[generation]", (RoleManager.getInstance().get(player) == null)? "Not found" : String.valueOf(RoleManager.getInstance().get(player).getGeneration()))
+                .replace("[lifes]", String.valueOf(playerWrapper.getLifes()))
+                .replace("[year]", String.valueOf(MCG.serverYear));
+                //.replace("[diedofage]", String.valueOf(playerWrapper.getDiedOfOldAge()))
+                //.replace("[karma]", String.valueOf(playerWrapper.getKarma()))
+                //.replace("[lastbedlocation]", (lastLocation == null)? "Not found":"X: " + lastLocation.getBlockX() + " Y: " + lastLocation.getBlockY() + " Z: " + lastLocation.getBlockZ())
+                //.replace("[playtime]", hours + ":" + minutes + ":" + seconds)
+                //.replace("[timeofjoin]", dateFormat.format(new Date(playerWrapper.getTimeOfJoin())))
     }
 
 }

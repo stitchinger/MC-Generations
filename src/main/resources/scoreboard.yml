@@ -1,11 +1,13 @@
 title: '&6ohol.spigot.eu'
 dateformat: "dd/MM/yy"
 lines:
-  - "[name][familyname]"
-  - "&7Age:&6 [age]"
   - "[space]"
-  - "&7Lifes:&6 [lifes]"
+  - "[rolename] [familyname]"
+  - "[space]"
+  - "&7Age:&6 [age]"
   - "&7Gen:&6 [generation]"
+  - "[space]"
   - "&7Year:&6 [year]"
+  - "&7Lifes lived:&6 [lifes]"
 
 

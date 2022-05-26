@@ -62,8 +62,8 @@ public class RoleManager {
         }
     }
 
-    public PlayerRole createAndAddRole(Player player, String name, int age, Family family) {
-        PlayerRole playerRole = new PlayerRole(player, name, age, family);
+    public PlayerRole createAndAddRole(Player player, String name, int age, int gen, Family family) {
+        PlayerRole playerRole = new PlayerRole(player, name, age, gen, family);
         roles.put(player.getUniqueId(), playerRole);
         return playerRole;
     }
@@ -109,6 +109,7 @@ public class RoleManager {
         // PlayerRole
         int age = configSection.getInt("age");
         String name = configSection.getString("name");
+        int gen = configSection.getInt("generation");
 
         // Family
         String familyUUID = configSection.getString("family");
@@ -119,7 +120,7 @@ public class RoleManager {
         }
 
         // CreateRole
-        createAndAddRole(player, name, age, family);
+        createAndAddRole(player, name, age, gen, family);
 
         // delete Config entry after loaded
         //config.set("data.player." + uuid + ".role", null);

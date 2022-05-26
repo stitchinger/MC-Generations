@@ -76,6 +76,7 @@ public class PlayerDeathListener implements Listener {
 
 
         createGrave(playerRole);
+        PlayerManager.getInstance().getWrapper(player).addLife();
         playerRole.die();
     }
 
