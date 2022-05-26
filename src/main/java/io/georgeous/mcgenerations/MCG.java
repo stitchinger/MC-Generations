@@ -9,6 +9,7 @@ import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
+import io.georgeous.mcgenerations.utils.NameManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -66,13 +67,14 @@ public final class MCG extends JavaPlugin {
         PlayerManager.getInstance();
         FamilyManager.enable();
         RoleManager.getInstance();
+        NameManager.loadConfig();
 
         registerEvents();
         registerCommands();
 
         makeBundleCraftable();
 
-        overworld.setSpawnLocation(council.councilLocation);
+        overworld.setSpawnLocation(council.COUNCIL_LOCATION);
 
         getServer().dispatchCommand(Bukkit.getConsoleSender(), "veryspicy true");
 
@@ -110,6 +112,7 @@ public final class MCG extends JavaPlugin {
         PlayerManager.getInstance().destroy();
         RoleManager.getInstance().destroy();
         FamilyManager.disable();
+        NameManager.saveConfig();
 
         FileConfiguration config = getConfig();
         config.set("data.server.year", serverYear);
@@ -137,18 +140,16 @@ public final class MCG extends JavaPlugin {
     }
 
     public void registerEvents() {
-        getServer().getPluginManager().registerEvents(new PlayerConnection(), this);
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerQuitListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerRespawnListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerChat(), this);
         getServer().getPluginManager().registerEvents(new Interact(), this);
         getServer().getPluginManager().registerEvents(new InventoryListener(), this);
 
         getServer().getPluginManager().registerEvents(new PlayerCarry(), this);
         getServer().getPluginManager().registerEvents(new PlayerPhaseUp(), this);
-        getServer().getPluginManager().registerEvents(new FamilyListener(), this);
-
-        getServer().getPluginManager().registerEvents(new PlayerListener(), this);
-        getServer().getPluginManager().registerEvents(new SurrogateListener(), this);
-        getServer().getPluginManager().registerEvents(new RoleListener(), MCG.getInstance());
     }
 
     public void registerCommands() {

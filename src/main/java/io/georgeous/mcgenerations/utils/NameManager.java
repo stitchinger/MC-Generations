@@ -1,15 +1,13 @@
 package io.georgeous.mcgenerations.utils;
 
 import io.georgeous.mcgenerations.MCG;
-import io.georgeous.mcgenerations.systems.family.Family;
-import io.georgeous.mcgenerations.systems.family.FamilyManager;
-import io.georgeous.mcgenerations.systems.role.PlayerRole;
-import org.bukkit.configuration.ConfigurationSection;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 public class NameManager {
 
@@ -54,12 +52,14 @@ public class NameManager {
     public static void saveConfig() {
         FileConfiguration config = MCG.getInstance().getConfig();
         config.set("data.server.usednames", usedNames);
+        config.set("data.server.test", "usedNames");
         MCG.getInstance().saveConfig();
     }
 
     public static void loadConfig() {
         FileConfiguration config = MCG.getInstance().getConfig();
         usedNames = (ArrayList<String>) config.getStringList("data.server.usednames");
+        MCG.getInstance().getLogger().log(Level.INFO, usedNames.toString());
         //MCG.getInstance().saveConfig();
     }
 }
