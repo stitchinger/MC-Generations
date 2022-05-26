@@ -45,7 +45,7 @@ public final class MCG extends JavaPlugin {
     public void onEnable() {
         printLoadupText();
         plugin = this;
-        overworld = Bukkit.getWorld("FamilyCraftWorld");
+        overworld = Bukkit.getWorld("world");
         council = new Council(overworld);
         this.saveDefaultConfig();
 
@@ -78,12 +78,10 @@ public final class MCG extends JavaPlugin {
         // Update Server Year
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> serverYear++, 0L, 20L * 60);
 
-
         FileConfiguration config = getConfig();
         ConfigurationSection configSection = config.getConfigurationSection("data.server");
         int year = configSection.getInt("year");
         serverYear = year;
-
         MCG.getInstance().saveConfig();
     }
 
@@ -170,6 +168,8 @@ public final class MCG extends JavaPlugin {
 }
 
 /*
+Todo: Baby gets in boat when carrier enters boat while carrying
+Todo: While sitting in boat, move baby in boat with babyhandler
 Todo: Council countdown beeping
 Todo: Setup config file for ...
 Todo: Show baby cooldown in info command

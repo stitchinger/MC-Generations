@@ -22,7 +22,8 @@ public class Council {
 
     public Council(World world) {
         this.world = world;
-        COUNCIL_LOCATION = new Location(world, 666, 201, 666);
+        COUNCIL_LOCATION = new Location(world, -6783, 264, -6011);
+
         ENDERMAN_LOCATION = COUNCIL_LOCATION.clone().add(0.5, 2, 11.5);
         PIGLIN_LOCATION = COUNCIL_LOCATION.clone().add(0.5, 2, -10.5);
         PILLAGER_LOCATION = COUNCIL_LOCATION.clone().add(11.5, 2, 0.5);

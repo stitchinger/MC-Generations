@@ -11,7 +11,7 @@ import java.util.Random;
 
 public class Util {
 
-    private static final String[] colorCodes = {"§1", "§2", "§3", "§4", "§5", "§6", "§7", "§8", "§9", "§a", "§b", "§c", "§d", "§e", "§f"};
+    private static final String[] colorCodes = {"§1", "§2", "§3", "§4", "§5", "§6", "§7", "§8", "§9", "§a", "§b", "§c", "§d", "§e"};
 
     // Map Function
     public static float map(float value, float rangeStart, float rangeStop, float upperBound, float lowerBound) {
