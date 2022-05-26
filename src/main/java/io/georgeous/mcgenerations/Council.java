@@ -12,7 +12,6 @@ import java.util.logging.Level;
 
 public class Council {
 
-    public final Location COUNCIL_LOCATION;
     private final World world;
     private final Location ENDERMAN_LOCATION;
     private final Location PIGLIN_LOCATION;
@@ -22,7 +21,7 @@ public class Council {
 
     public Council(World world) {
         this.world = world;
-        COUNCIL_LOCATION = new Location(world, -6783, 264, -6011);
+        Location COUNCIL_LOCATION = ServerConfig.getInstance().getCouncilLocation();
 
         ENDERMAN_LOCATION = COUNCIL_LOCATION.clone().add(0.5, 2, 11.5);
         PIGLIN_LOCATION = COUNCIL_LOCATION.clone().add(0.5, 2, -10.5);
@@ -134,7 +133,7 @@ public class Council {
                     Sound.ENTITY_PIGLIN_AMBIENT
             };
             int rand = Util.getRandomInt(sounds.length);
-            world.playSound(COUNCIL_LOCATION, sounds[rand], 1, 0.1f);
+            world.playSound(ServerConfig.getInstance().getCouncilLocation(), sounds[rand], 1, 0.1f);
         }
     }
 }

@@ -24,9 +24,6 @@ public class SpawnManager {
 
     private static final int timeInLobby = 10; // in seconds
     private static final int timeToHowtoNotification = 15;
-    private static final int spawnCenterX = 20;
-    private static final int spawnCenterY = -800;
-    private static final int spawnRadius = 120;
 
 
     public static void spawnPlayer(Player playerToSpawn) {
@@ -40,7 +37,7 @@ public class SpawnManager {
         boolean playerToSpawnInDebugMode = PlayerManager.getInstance().getWrapper(playerToSpawn).isDebugMode();
 
         if (finalMom != null && !playerToSpawnInDebugMode) {
-            Notification.neutralMsg(finalMom.getPlayer(), "You will get a baby in " + timeInLobby + " seconds");
+            Notification.neutralMsg(finalMom.getPlayer(), "You will get a baby in " + ServerConfig.getInstance().getSecInLobby() + " seconds");
         }
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(MCG.getInstance(), () -> {
@@ -59,7 +56,7 @@ public class SpawnManager {
                 }
             }.runTaskLater(MCG.getInstance(), 20L * timeToHowtoNotification);
 
-        }, timeInLobby * 20L); // 20 Tick (1 Second) delay before run() is called
+        }, ServerConfig.getInstance().getSecInLobby() * 20L); // 20 Tick (1 Second) delay before run() is called
     }
 
     private static void resetPlayer(Player player, GameMode gmBefore){
@@ -79,7 +76,7 @@ public class SpawnManager {
         Location lastBed = PlayerManager.getInstance().getWrapper(player).getLastBedLocation();
         boolean bedIsValid = false;
         if (lastBed != null) {
-            bedIsValid = lastBed.distance(MCG.council.COUNCIL_LOCATION) > 50;
+            bedIsValid = lastBed.distance(ServerConfig.getInstance().getCouncilLocation()) > 500;
             // Using the bedspawing for the council stuff
             // This makes sure, that the players bed isnt the council
             // This could happen, if the player never interacted with a bed
@@ -91,7 +88,9 @@ public class SpawnManager {
         {
             player.teleport(PlayerManager.getInstance().getWrapper(player).getLastBedLocation());
         } else {
-            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "spreadplayers " + spawnCenterX + " " + spawnCenterY + " 0 " + spawnRadius + " false " + player.getName());
+            Location loc = ServerConfig.getInstance().getSpawnLocation();
+            double radius = ServerConfig.getInstance().getSpawnRadius();
+            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "spreadplayers " + loc.getX() + " " + loc.getZ() + " 0 " + radius + " false " + player.getName());
         }
 
         String name = NameManager.randomFirst();

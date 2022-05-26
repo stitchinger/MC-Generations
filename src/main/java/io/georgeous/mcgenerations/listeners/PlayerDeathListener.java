@@ -1,6 +1,7 @@
 package io.georgeous.mcgenerations.listeners;
 
 import io.georgeous.mcgenerations.MCG;
+import io.georgeous.mcgenerations.ServerConfig;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
@@ -72,7 +73,7 @@ public class PlayerDeathListener implements Listener {
             PlayerManager.getInstance().getWrapper(player).setDiedOfOldAge(true);
             PlayerManager.getInstance().getWrapper(player).setLastBedLocation(player.getBedSpawnLocation());
         }
-        player.setBedSpawnLocation(MCG.council.COUNCIL_LOCATION, true);
+        player.setBedSpawnLocation(ServerConfig.getInstance().getCouncilLocation(), true);
 
 
         createGrave(playerRole);

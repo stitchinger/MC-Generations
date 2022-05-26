@@ -58,7 +58,7 @@ public final class MCG extends JavaPlugin {
         fileManager = new FileManager(this.getDataFolder().getPath());
         plugin = this;
         //overworld = Bukkit.getWorld("familycraft-world");
-        overworld = Bukkit.getWorld("FamilyCraftWorld");
+        overworld = Bukkit.getWorld(ServerConfig.getInstance().getWorldName());
         council = new Council(overworld);
         this.saveDefaultConfig();
 
@@ -74,7 +74,7 @@ public final class MCG extends JavaPlugin {
 
         makeBundleCraftable();
 
-        overworld.setSpawnLocation(council.COUNCIL_LOCATION);
+        overworld.setSpawnLocation(ServerConfig.getInstance().getCouncilLocation());
 
         getServer().dispatchCommand(Bukkit.getConsoleSender(), "veryspicy true");
 
@@ -117,6 +117,7 @@ public final class MCG extends JavaPlugin {
         FileConfiguration config = getConfig();
         config.set("data.server.year", serverYear);
         saveConfig();
+
 
         for(Player player : Bukkit.getOnlinePlayers()) {
             player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());

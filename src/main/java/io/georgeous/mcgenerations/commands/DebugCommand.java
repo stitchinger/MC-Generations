@@ -1,13 +1,17 @@
 package io.georgeous.mcgenerations.commands;
 
 import io.georgeous.mcgenerations.MCG;
+import io.georgeous.mcgenerations.ServerConfig;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 import io.georgeous.mcgenerations.utils.Notification;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,7 +46,7 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
         }
 
         if ("council".equals(args[0])) {
-            player.teleport(MCG.council.COUNCIL_LOCATION);
+            player.teleport(ServerConfig.getInstance().getCouncilLocation());
         }
         return false;
     }
