@@ -18,8 +18,6 @@ import java.util.List;
 
 public class HowtoCommand implements CommandExecutor, TabCompleter {
 
-    private static final String headingStyle = "§l§u§9";
-
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
@@ -41,7 +39,12 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
             player.sendMessage("§f ► Mother");
             player.sendMessage("§f ► Family");
             player.sendMessage("§f ► Chat");
-            player.sendMessage("§6e.g. Use command [ §d/howto hearts§6 ] to find out, what's up with your hearts.");
+            player.sendMessage("§6e.g. Use command §d[/howto hearts]§6 to find out, what's up with your hearts.");
+            TextComponent howtoExampleCommand = new TextComponent("[/howto hearts]");
+            howtoExampleCommand.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/howto hearts"));
+            howtoExampleCommand.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Copy to Chat").color(ChatColor.GRAY).italic(true).bold(true).create()));
+            player.spigot().sendMessage(howtoExampleCommand);
+
             player.sendMessage("");
             return true;
         }
@@ -69,11 +72,10 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
                 break;
             case "baby":
                 player.sendMessage("");
-
                 printHeading(player, "BABY");
                 player.sendMessage(" Babies can §cnot§r survive on their own.");
                 player.sendMessage(" Use §cright-click§r with the §aBaby-Handler§r item to feed your child.");
-                player.sendMessage(" While holding §aBaby-Handler§r in §cmainhand§r and standing close to baby, tap §csneak-button§r to carry baby.");
+                player.sendMessage(" While holding §aBaby-Handler§r in §cmainhand§r and standing close to baby, tap §csneak-button§r to summon Sven and carry your baby.");
                 player.sendMessage("");
                 break;
 

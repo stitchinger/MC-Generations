@@ -15,16 +15,16 @@ public class GamemodeCommand implements CommandExecutor {
         if (!(sender instanceof Player player)) {
             return true;
         }
-
         if (!player.isOp()) {
             Notification.onlyForOp(player);
             return true;
         }
-
         if (player.getGameMode().equals(GameMode.CREATIVE)) {
             player.setGameMode(GameMode.SURVIVAL);
+            Notification.successMsg(player, "Gamemode changed to Survival");
         } else {
             player.setGameMode(GameMode.CREATIVE);
+            Notification.successMsg(player, "Gamemode changed to Creative");
         }
 
         return true;

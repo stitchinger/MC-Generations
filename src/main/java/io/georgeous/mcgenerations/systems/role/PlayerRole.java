@@ -6,7 +6,7 @@ import io.georgeous.mcgenerations.systems.role.components.PlayerAge;
 import io.georgeous.mcgenerations.systems.role.components.PlayerMother;
 import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
 import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
-import io.georgeous.mcgenerations.utils.NameGenerator;
+import io.georgeous.mcgenerations.utils.NameManager;
 import io.georgeous.petmanager.PetManager;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -82,7 +82,7 @@ public class PlayerRole {
     }
 
     public void unnickPlayer(Player player) {
-        NameGenerator.deregisterName(this.name);
+        NameManager.deregisterName(this.name);
         NickAPI.resetNick(player);
         NickAPI.resetSkin(player);
 
@@ -145,6 +145,10 @@ public class PlayerRole {
             world.spawnParticle(Particle.COMPOSTER, location, 40, 0.5, 0.5, 0.5);
             world.playSound(location, Sound.ENTITY_GENERIC_DRINK, 1, 1);
         }
+    }
+
+    public void setRenamed(boolean toggle){
+        isRenamed = toggle;
     }
 
     public boolean compare(PlayerRole role) {

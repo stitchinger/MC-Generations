@@ -6,7 +6,7 @@ import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
-import io.georgeous.mcgenerations.utils.NameGenerator;
+import io.georgeous.mcgenerations.utils.NameManager;
 import io.georgeous.mcgenerations.utils.Notification;
 import io.georgeous.mcgenerations.utils.Util;
 import org.bukkit.*;
@@ -44,7 +44,7 @@ public class SpawnManager {
         }
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(MCG.getInstance(), () -> {
-            if (finalMom != null && !playerToSpawnInDebugMode) {
+            if (finalMom != null && !playerToSpawnInDebugMode && !finalMom.isDead) {
                 spawnAsBaby(playerToSpawn, finalMom);
             } else {
                 spawnAsEve(playerToSpawn);
@@ -79,7 +79,7 @@ public class SpawnManager {
         Location lastBed = PlayerManager.getInstance().getWrapper(player).getLastBedLocation();
         boolean bedIsValid = false;
         if (lastBed != null) {
-            bedIsValid = lastBed.distance(MCG.council.councilLocation) > 50;
+            bedIsValid = lastBed.distance(MCG.council.COUNCIL_LOCATION) > 50;
             // Using the bedspawing for the council stuff
             // This makes sure, that the players bed isnt the council
             // This could happen, if the player never interacted with a bed
@@ -94,8 +94,8 @@ public class SpawnManager {
             Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "spreadplayers " + spawnCenterX + " " + spawnCenterY + " 0 " + spawnRadius + " false " + player.getName());
         }
 
-        String name = NameGenerator.randomFirst();
-        Family family = FamilyManager.addFamily(NameGenerator.randomLast());
+        String name = NameManager.randomFirst();
+        Family family = FamilyManager.addFamily(NameManager.randomLast());
         RoleManager.getInstance().createAndAddRole(player, name, 10, family);
 
         //player.setSaturation(0); too hard?
@@ -112,7 +112,7 @@ public class SpawnManager {
     }
 
     public static void spawnAsBaby(Player newBorn, PlayerRole mother) {
-        String name = NameGenerator.randomFirst();
+        String name = NameManager.randomFirst();
 
         Family family = mother.getFamily();
 

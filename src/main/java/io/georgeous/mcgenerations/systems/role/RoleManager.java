@@ -6,7 +6,7 @@ import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
-import io.georgeous.mcgenerations.utils.NameGenerator;
+import io.georgeous.mcgenerations.utils.NameManager;
 import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -115,7 +115,7 @@ public class RoleManager {
         Family family = FamilyManager.getFamily(familyUUID);
         if (family == null) {
             Notification.errorMsg(player, "Error in role-restore. Family not found");
-            family = FamilyManager.addFamily(NameGenerator.randomLast());
+            family = FamilyManager.addFamily(NameManager.randomLast());
         }
 
         // CreateRole
