@@ -45,9 +45,11 @@ public class YouAre implements CommandExecutor {
             PlayerRole childPlayerRole = RoleManager.getInstance().get(childPlayer);
 
             if (!motherPlayerRole.getMotherController().isOwnChild(childPlayerRole)) {
-                Notification.errorMsg(motherPlayer, "You can only rename your own children!");
-                return;
+                // Disable renaming of stranger children?
+                //Notification.errorMsg(motherPlayer, "You can only rename your own children!");
+                //return;
             }
+
 
             if (childPlayerRole.isRenamed()) {
                 Notification.errorMsg(motherPlayer, "You can name your child only once.");
@@ -58,10 +60,11 @@ public class YouAre implements CommandExecutor {
                 Notification.errorMsg(motherPlayer, "This name is already in use by a player. Please pick another.");
                 return;
             }
-
+            String oldName = childPlayerRole.getName();
             Piggyback.stopCarry(motherPlayer);
             childPlayerRole.setName(first);
             NameManager.registerName(first);
+            NameManager.deregisterName(oldName);
             childPlayerRole.setRenamed(true);
             Notification.successMsg(motherPlayer, "You changed your childs name to " + first);
         } else {
