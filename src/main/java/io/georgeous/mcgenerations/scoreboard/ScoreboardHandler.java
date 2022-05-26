@@ -47,25 +47,35 @@ public class ScoreboardHandler {
             team.addEntry(ChatColor.values()[i].toString());
         }
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        Team team = scoreboard.getTeam("nocollision");
-        if(team == null)team = scoreboard.registerNewTeam("nocollision");
-        team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
-        Villager villager = SurrogateManager.getInstance().getVillager(toRegister);
-        if(villager != null) {
-            team.addEntry(villager.getUniqueId().toString());
-        }
-
     }
 
     public void refreshPlayer(Player toRefresh) {
 
+        /*
+        SURROGATE MANAGEMENT
+         */
+        Team team = toRefresh.getScoreboard().getTeam("nocollision");
+        if(team == null){
+            team = toRefresh.getScoreboard().registerNewTeam("nocollision");
+            team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
+        }
+        Villager villager = SurrogateManager.getInstance().getVillager(toRefresh);
+        if(villager != null) {
+            if(!team.getEntries().contains(villager.getUniqueId().toString())) {
+                team.addEntry(villager.getUniqueId().toString());
+            }
+        }
+
+        /*
+        SCOREBOARD REFRESH
+         */
         if(toRefresh.getScoreboard().getObjective("dummy_sidebar") == null)registerPlayer(toRefresh);
         Objective objective = toRefresh.getScoreboard().getObjective("dummy_sidebar");
         final int maxScore = lines.size();
         String spaceCounter = "";
         for(int i = 0; i < lines.size(); i++) {
 
-            Team team = toRefresh.getScoreboard().getTeam(String.valueOf(i));
+            team = toRefresh.getScoreboard().getTeam(String.valueOf(i));
             if(lines.get(i).equalsIgnoreCase("[space]")) {
                 team.setPrefix(spaceCounter);
                 spaceCounter += " ";
