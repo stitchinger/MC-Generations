@@ -87,7 +87,14 @@ public class PlayerDeathListener implements Listener {
     private void createGrave(PlayerRole role){
         // Place Grave Sign
         World world = role.getPlayer().getWorld();
-        Block block1 = world.getBlockAt(role.getPlayer().getLocation());
+
+        // Find Ground
+        Block under = world.getBlockAt(role.getPlayer().getLocation());
+        do{
+           under = under.getRelative(BlockFace.DOWN);
+        }while(under.getType() == Material.AIR);
+
+        Block block1 = under.getRelative(BlockFace.UP);
 
         // Random Sign Type
         Material[] signTypes = {Material.OAK_SIGN, Material.BIRCH_SIGN, Material.SPRUCE_SIGN, Material.ACACIA_SIGN, Material.JUNGLE_SIGN};
