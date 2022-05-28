@@ -128,6 +128,9 @@ public class PhaseManager {
     }
 
     public void phaseUpdate() {
+        if(this.phase == null)
+            return;
+
         phase.applyPotionEffects(playerRole.getPlayer(), phase.effects);
 
         if (Math.random() < phase.hungerRate / 100d) {
