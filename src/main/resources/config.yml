@@ -1,9 +1,8 @@
 config:
-  worldname: "FamilyCraftWorld"
   timeinlobby: 10
-  spawnCenterX: 20
-  spawnCenterY: -800
-  spawnRadius: 120
+  spawncenterx: 540
+  spawncenterz: 1800
+  spawnradius: 200
   council:
     locationx: -6783
     locationy: 264

@@ -1,5 +1,6 @@
 package io.georgeous.mcgenerations;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -22,7 +23,7 @@ public class ServerConfig {
     }
 
     public String getWorldName(){
-        return config.getString("config.worldname");
+        return Bukkit.getWorlds().get(0).getName();
     }
 
     public Location getCouncilLocation(){
@@ -35,7 +36,7 @@ public class ServerConfig {
     public Location getSpawnLocation(){
         double x = config.getDouble("config.spawncenterx");
         double z = config.getDouble("config.spawncenterz");
-        return new Location(MCG.overworld, x, 0, z );
+        return new Location(MCG.overworld, x, 0, z);
     }
 
     public double getSpawnRadius(){

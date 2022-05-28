@@ -50,17 +50,26 @@ public final class MCG extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        plugin = this;
         printLoadupText();
+        this.saveDefaultConfig();
+        //getConfig().options().copyDefaults(true);
 
         if(!(new File(this.getDataFolder().getPath() + "/scoreboard.yml").exists())) {
             this.saveResource("scoreboard.yml", false);
         }
+        if(!(new File(this.getDataFolder().getPath() + "/playerdata.yml").exists())) {
+            this.saveResource("playerdata.yml", false);
+        }
+
         fileManager = new FileManager(this.getDataFolder().getPath());
-        plugin = this;
-        //overworld = Bukkit.getWorld("familycraft-world");
+
         overworld = Bukkit.getWorld(ServerConfig.getInstance().getWorldName());
+
+        getLogger().info("-------------------World name" + Bukkit.getWorlds().get(0).getName());
         council = new Council(overworld);
-        this.saveDefaultConfig();
+        getConfig().options().copyDefaults(false);
+
 
         this.data = new DataManager();
 
@@ -97,11 +106,10 @@ public final class MCG extends JavaPlugin {
         }, 0L, 20L * 60);
 
 
-        FileConfiguration config = getConfig();
-        int year = config.getInt("data.server.year");
+        int year = getConfig().getInt("data.server.year");
         serverYear = year;
 
-        MCG.getInstance().saveConfig();
+        saveConfig();
 
         scoreboardHandler = new ScoreboardHandler();
     }
@@ -135,7 +143,7 @@ public final class MCG extends JavaPlugin {
         RoleManager.getInstance().update();
         SurrogateManager.getInstance().update();
 
-        overworld.setTime(overworld.getTime() + daySpeed);
+        //overworld.setTime(overworld.getTime() + daySpeed);
         // one day 24000
         // 20 ticks = 1 sec
     }
@@ -199,6 +207,8 @@ public final class MCG extends JavaPlugin {
         return scoreboardHandler;
     }
 }
+
+
 
 /*
 Todo: Council countdown beeping

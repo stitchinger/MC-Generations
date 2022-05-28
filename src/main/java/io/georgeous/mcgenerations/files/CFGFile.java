@@ -34,6 +34,7 @@ public class CFGFile {
     public void refresh() {
         cfg = YamlConfiguration.loadConfiguration(file);
     }
+
     public void setValue(String location, Object o) {
         cfg.set(location, o);
         try {
