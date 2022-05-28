@@ -12,7 +12,7 @@ import java.util.List;
 
 public class PlayerMother {
     private final PlayerRole playerRole;
-    private final long BABY_COOLDOWN = 1; // in seconds
+    private final long BABY_COOLDOWN = 180; // in seconds
     private final int MIN_BIRTH_AGE = 16;
     private final int MAX_BIRTH_AGE = 45;
     private final List<PlayerRole> children;

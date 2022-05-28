@@ -1,0 +1,10 @@
+config:
+  timeinlobby: 10
+  spawncenterx: 540
+  spawncenterz: 1800
+  spawnradius: 200
+  council:
+    locationx: -6783
+    locationy: 264
+    locationz: -6011
+

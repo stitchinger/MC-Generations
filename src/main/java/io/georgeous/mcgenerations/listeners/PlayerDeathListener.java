@@ -1,15 +1,18 @@
 package io.georgeous.mcgenerations.listeners;
 
 import io.georgeous.mcgenerations.MCG;
+import io.georgeous.mcgenerations.ServerConfig;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
+import io.georgeous.mcgenerations.utils.BlockFacing;
 import io.georgeous.mcgenerations.utils.ItemManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.Rotatable;
 import org.bukkit.entity.Player;
@@ -72,10 +75,11 @@ public class PlayerDeathListener implements Listener {
             PlayerManager.getInstance().getWrapper(player).setDiedOfOldAge(true);
             PlayerManager.getInstance().getWrapper(player).setLastBedLocation(player.getBedSpawnLocation());
         }
-        player.setBedSpawnLocation(MCG.council.COUNCIL_LOCATION, true);
+        player.setBedSpawnLocation(ServerConfig.getInstance().getCouncilLocation(), true);
 
+        if(!PlayerManager.getInstance().getWrapper(player).isDebugMode())
+            createGrave(playerRole);
 
-        createGrave(playerRole);
         PlayerManager.getInstance().getWrapper(player).addLife();
         playerRole.die();
     }
@@ -93,7 +97,8 @@ public class PlayerDeathListener implements Listener {
 
         // Set rotation to players rotation
         Rotatable bd = ((Rotatable) block1.getBlockData());
-        bd.setRotation(role.getPlayer().getFacing());
+        BlockFace face = BlockFacing.locationToFace(role.getPlayer().getLocation());
+        bd.setRotation(face);
         block1.setBlockData(bd);
 
         // Random Grave Symbol

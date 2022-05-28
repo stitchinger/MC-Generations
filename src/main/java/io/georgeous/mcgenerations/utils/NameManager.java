@@ -11,8 +11,32 @@ import java.util.logging.Level;
 
 public class NameManager {
 
-    public static final String[] firstNames = {"Martha", "Lisa", "Julia", "Sarah", "Anna", "Maria", "Emma", "Sophia", "Charlotte", "Mia", "Chloe", "Victoria", "Scarlett", "Amy", "Madison", "Ellie", "Natalie", "Adele", "Joy", "Olivia", "Naomi", "Grace", "Ruby", "Quinn", "Lydia", "Vivian", "Hailey", "Autumn", "Svenja", "Aurora", "Hazel", "Penelope"};
-    public static final String[] lastNames = {"Marten", "Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Taylor", "Moore", "White", "Walker", "Hill", "Nelson", "Baker", "Adams", "Mitchell", "Clinton", "Bush", "Merkel", "Musk", "Einstein", "Simpson", "Jefferson", "Rogan", "Ronan", "Ericson", "Bjornson", "Mueller", "Freundl", "Goldberg", "Lovejoy"};
+    public static final String[] firstNames =
+            {
+                    "Martha", "Lisa", "Julia", "Sarah", "Anna", "Maria", "Emma", "Sophia", "Charlie", "Mia", "Chloe",
+                    "Vic", "Scarlett", "Amy", "Madison", "Ellie", "Natalie", "Adele", "Joy", "Olivia", "Naomi",
+                    "Grace", "Ruby", "Quinn", "Lydia", "Vivian", "Hailey", "Autumn", "Aurora", "Hazel",
+                    "Penelope", "Catelyn", "Freya", "Faith", "Cersei", "Sansa", "Arya", "Shae", "Talisa", "Brienne",
+                    "Ellaria","Signy", "Hildr", "Nanna", "Eisa", "Saga", "Sol", "Hel", "Frigg", "Lofn", "Joro", "Jojo",
+                    "Lounn", "Fulla", "Laga", "Elli"
+            };
+    public static final String[] lastNames =
+            {
+                    "Marten", "Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Taylor",
+                    "Moore", "White", "Walker", "Hill", "Nelson", "Baker", "Adams", "Mitchell", "Clinton", "Bush",
+                    "Merkel", "Musk", "Einstein", "Simpson", "Jefferson", "Rogan", "Ronan", "Ericson", "Bjornson",
+                    "Mueller", "Freundl", "Goldberg", "Lovejoy", "Francis", "Caddel", "Amana", "Barlowe", "Fox", "Hart",
+                    "Hendrix", "Madden", "Sai", "Boone", "Elrod", "Hale", "Langston", "McElfresh", "Trevino", "Amos",
+                    "Beam", "Dash", "Duke", "Jian", "Pierce", "Remington", "Sharp", "West", "Sand", "Snow", "Rivers",
+                    "Stone", "Pyke", "Waters", "Flowers", "Crawford", "Driscoll", "Simmons", "Vandenberg", "Webb",
+                    "Finch", "Abednego", "Cyprus", "Dagon", "Damaris", "Einar", "Festus", "Gallio", "Griffin", "Kami",
+                    "Lightfoot", "Luna", "Priestley", "Sierra", "Stark", "Umber", "Bolton", "Karstark", "Hornwood",
+                    "Talihart", "Mormont", "Dustin", "Manderly", "Flint", "Glover", "Reed", "Baelish", "Lynderly",
+                    "Mallister", "Royce", "Greyjoy", "Blackwood", "Tully", "Bracken", "Whent", "Mooton", "Westerling",
+                    "Marbrand", "Lefford", "Lannister", "Clegane", "Swyft", "Crakehall", "Oakheart", "Tyrell", "Selmy",
+                    "Baratheon", "Tarth", "Swann", "Seaworth", "Dondarrion", "Caron", "Florent", "Tarly", "Hightower",
+                    "Martell", "Redwyne"
+            };
 
     public static ArrayList<String> usedNames = new ArrayList<>();
 
