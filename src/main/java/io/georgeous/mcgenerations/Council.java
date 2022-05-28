@@ -7,6 +7,7 @@ import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import java.util.logging.Level;
 
@@ -23,10 +24,10 @@ public class Council {
         this.world = world;
         Location COUNCIL_LOCATION = ServerConfig.getInstance().getCouncilLocation();
 
-        ENDERMAN_LOCATION = COUNCIL_LOCATION.clone().add(0.5, 2, 11.5);
-        PIGLIN_LOCATION = COUNCIL_LOCATION.clone().add(0.5, 2, -10.5);
-        PILLAGER_LOCATION = COUNCIL_LOCATION.clone().add(11.5, 2, 0.5);
-        VILLAGER_LOCATION = COUNCIL_LOCATION.clone().add(-10.5, 2, 0.5);
+        ENDERMAN_LOCATION = COUNCIL_LOCATION.clone().add(9, 5, 9);
+        PIGLIN_LOCATION = COUNCIL_LOCATION.clone().add(9, 5, -9);
+        PILLAGER_LOCATION = COUNCIL_LOCATION.clone().add(-9, 5, 9);
+        VILLAGER_LOCATION = COUNCIL_LOCATION.clone().add(-9, 5, -9);
 
         init();
     }
@@ -59,58 +60,45 @@ public class Council {
     }
 
     public void spawnEnderman() {
-        Minecart cart = (Minecart) world.spawnEntity(ENDERMAN_LOCATION, EntityType.MINECART);
-        cart.setInvulnerable(true);
-        cart.addScoreboardTag("council");
-
         Enderman enderman = (Enderman) world.spawnEntity(ENDERMAN_LOCATION, EntityType.ENDERMAN);
         enderman.setSilent(true);
         enderman.setInvulnerable(true);
         enderman.addScoreboardTag("council");
+        enderman.setAI(false);
+        enderman.setRemoveWhenFarAway(false);
 
-        cart.addPassenger(enderman);
+        Location lookAt = ServerConfig.getInstance().getCouncilLocation();
+        enderman.teleport(enderman.getLocation().setDirection(lookAt.subtract(enderman.getLocation()).toVector()));
     }
 
     public void spawnPiglin() {
-        Cow cow = (Cow) world.spawnEntity(PIGLIN_LOCATION, EntityType.COW);
-        cow.setInvulnerable(true);
-        cow.setInvisible(false);
-        cow.setSilent(true);
-        cow.addScoreboardTag("council");
-
         PiglinBrute piglin = (PiglinBrute) world.spawnEntity(PIGLIN_LOCATION, EntityType.PIGLIN_BRUTE);
         piglin.setInvulnerable(true);
         piglin.setImmuneToZombification(true);
         piglin.setAdult();
         piglin.setSilent(true);
         piglin.addScoreboardTag("council");
+        piglin.setRemoveWhenFarAway(false);
+        piglin.setAI(false);
 
-        cow.addPassenger(piglin);
+        Location lookAt = ServerConfig.getInstance().getCouncilLocation();
+        piglin.teleport(piglin.getLocation().setDirection(lookAt.subtract(piglin.getLocation()).toVector()));
     }
 
     public void spawnPillager() {
-        Cow cow = (Cow) world.spawnEntity(PILLAGER_LOCATION, EntityType.COW);
-        cow.setInvulnerable(true);
-        cow.setInvisible(false);
-        cow.setSilent(true);
-        cow.addScoreboardTag("council");
-
         Illusioner illusioner = (Illusioner) world.spawnEntity(PILLAGER_LOCATION, EntityType.ILLUSIONER);
         illusioner.setInvulnerable(true);
         illusioner.setSilent(true);
         illusioner.addScoreboardTag("council");
         illusioner.setAI(false);
-        cow.addPassenger(illusioner);
+        illusioner.setPersistent(true);
+        illusioner.setRemoveWhenFarAway(false);
+
+        Location lookAt = ServerConfig.getInstance().getCouncilLocation();
+        illusioner.teleport(illusioner.getLocation().setDirection(lookAt.subtract(illusioner.getLocation()).toVector()));
     }
 
     public void spawnVillager() {
-        Wolf wolf = (Wolf) world.spawnEntity(VILLAGER_LOCATION, EntityType.WOLF);
-        wolf.setInvisible(false);
-        wolf.setInvulnerable(true);
-        wolf.setSilent(true);
-        wolf.setAI(false);
-        wolf.addScoreboardTag("council");
-
         Villager villager = (Villager) world.spawnEntity(VILLAGER_LOCATION, EntityType.VILLAGER);
         villager.setInvulnerable(true);
         villager.setSilent(true);
@@ -118,9 +106,11 @@ public class Council {
         villager.setProfession(Villager.Profession.CLERIC);
         villager.setVillagerLevel(5);
         villager.setAdult();
+        villager.setAI(false);
         villager.addScoreboardTag("council");
 
-        wolf.addPassenger(villager);
+        Location lookAt = ServerConfig.getInstance().getCouncilLocation();
+        villager.teleport(villager.getLocation().setDirection(lookAt.subtract(villager.getLocation()).toVector()));
     }
 
     public void councilNoises() {

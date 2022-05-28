@@ -4,7 +4,7 @@ config:
   spawncenterz: 1800
   spawnradius: 200
   council:
-    locationx: -6783
+    locationx: -6782
     locationy: 264
     locationz: -6011
 

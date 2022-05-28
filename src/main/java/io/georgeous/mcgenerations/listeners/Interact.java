@@ -1,5 +1,6 @@
 package io.georgeous.mcgenerations.listeners;
 
+import io.georgeous.mcgenerations.ServerConfig;
 import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.family.FriendlyTalk;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
@@ -7,19 +8,19 @@ import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
 import io.georgeous.mcgenerations.utils.ItemManager;
 import io.georgeous.mcgenerations.utils.Notification;
-import org.bukkit.Location;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 public class Interact implements Listener {
 
@@ -81,6 +82,8 @@ public class Interact implements Listener {
             friendlyFamilyTalk(RoleManager.getInstance().get(damager), RoleManager.getInstance().get(receiver));
         }
     }
+
+
 
     public void friendlyFamilyTalk(PlayerRole damager, PlayerRole receiver) {
         Player pd = damager.getPlayer();
