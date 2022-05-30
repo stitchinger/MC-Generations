@@ -40,7 +40,13 @@ public class SpawnManager {
             Notification.neutralMsg(finalMom.getPlayer(), "You will get a baby in " + ServerConfig.getInstance().getSecInLobby() + " seconds");
         }
 
+
         Bukkit.getScheduler().scheduleSyncDelayedTask(MCG.getInstance(), () -> {
+            if(!playerToSpawn.isOnline()){
+                MCG.getInstance().getLogger().info("Player left right before spawning");
+                return;
+            }
+
             if (finalMom != null && !playerToSpawnInDebugMode && !finalMom.isDead) {
                 spawnAsBaby(playerToSpawn, finalMom);
             } else {
