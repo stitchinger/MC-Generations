@@ -126,6 +126,7 @@ public class SpawnManager {
 
         mother.getMotherController().bornBaby(newBornRole);
 
+        newBornRole.getFamily().setMaxGenerations(newBornRole.getGeneration());
         Notification.neutralMsg(newBorn, "You were reincarnated as a Baby");
         // Effects
         babyBornEffects(newBorn, mother.getPlayer());

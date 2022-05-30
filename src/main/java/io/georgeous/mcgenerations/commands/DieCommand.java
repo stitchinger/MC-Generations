@@ -1,5 +1,6 @@
 package io.georgeous.mcgenerations.commands;
 
+import io.georgeous.mcgenerations.ServerConfig;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.Notification;
@@ -17,7 +18,8 @@ public class DieCommand implements CommandExecutor {
         if (!(sender instanceof Player player))
             return true;
 
-        if(player.getGameMode() == GameMode.ADVENTURE){
+        double distanceToCouncil = ServerConfig.getInstance().getCouncilLocation().distance(player.getLocation());
+        if(distanceToCouncil <= 50){
             Notification.errorMsg(player, "You cant use this command in the council!");
             return true;
         }

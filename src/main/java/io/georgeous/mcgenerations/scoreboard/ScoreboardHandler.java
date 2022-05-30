@@ -1,8 +1,11 @@
 package io.georgeous.mcgenerations.scoreboard;
 
 import io.georgeous.mcgenerations.MCG;
+import io.georgeous.mcgenerations.systems.family.Family;
+import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
+import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
 import org.bukkit.ChatColor;
@@ -89,25 +92,42 @@ public class ScoreboardHandler {
 
     private String replacePlaceholders(String toReplace, Player player) {
 
+
+
         PlayerWrapper playerWrapper = PlayerManager.getInstance().getWrapper(player);
-        Location lastLocation = playerWrapper.getLastBedLocation();
+        if(playerWrapper != null){
+            toReplace = toReplace
+                    .replace("[lifes]", String.valueOf(playerWrapper.getLifes()));
+        }
 
-        long playTime = playerWrapper.getPlayTime();
+        PlayerRole playerRole = RoleManager.getInstance().get(player);
+        Family family = null;
+        if(playerRole != null){
+            family = playerRole.getFamily();
+            toReplace = toReplace
+                    .replace("[rolename]",String.valueOf( playerRole.getName()))
+                    .replace("[age]", String.valueOf( playerRole.getAgeManager().getAge()))
+                    .replace("[generation]", String.valueOf( playerRole.getGeneration()));
+        }
 
-        String hours = ((playTime/3600 < 10) ? "0" : "")+ playTime/3600;
-        playTime -= playTime/3600;
-        String minutes = ((playTime/60 < 10) ? "0" : "")+ playTime/60;
-        playTime-= playTime/60;
-        String seconds = ((playTime < 10) ? "0" : "")+ playTime;
+        if(family != null){
+            toReplace = toReplace
+                    .replace("[familyname]", family.getColoredName())
+                    .replace("[familyestablished]", String.valueOf(family.getEstablished()))
+                    .replace("[familymembercount]", String.valueOf(family.memberCount()))
+                    .replace("[familyleadername]", String.valueOf(family.getLeader().getName()))
+                    .replace("[familygenerations]", String.valueOf(family.getMaxGenerations()));
 
-        return toReplace
-                .replace("[rolename]", (RoleManager.getInstance().get(player) == null)? "Not found" : String.valueOf(RoleManager.getInstance().get(player).getName()))
-                .replace("[familyname]", (RoleManager.getInstance().get(player) == null)? "Not found" : String.valueOf(RoleManager.getInstance().get(player).getFamily().getColoredName()))
-                .replace("[age]", (RoleManager.getInstance().get(player) == null)? "Not found" : String.valueOf(RoleManager.getInstance().get(player).getAgeManager().getAge()))
-                .replace("[generation]", (RoleManager.getInstance().get(player) == null)? "Not found" : String.valueOf(RoleManager.getInstance().get(player).getGeneration()))
-                .replace("[lifes]", String.valueOf(playerWrapper.getLifes()))
-                .replace("[year]", String.valueOf(MCG.serverYear));
-                //.replace("[diedofage]", String.valueOf(playerWrapper.getDiedOfOldAge()))
+        }
+
+        toReplace = toReplace.replace("[year]", String.valueOf(MCG.serverYear));
+
+
+
+        return toReplace;
+
+
+        //.replace("[diedofage]", String.valueOf(playerWrapper.getDiedOfOldAge()))
                 //.replace("[karma]", String.valueOf(playerWrapper.getKarma()))
                 //.replace("[lastbedlocation]", (lastLocation == null)? "Not found":"X: " + lastLocation.getBlockX() + " Y: " + lastLocation.getBlockY() + " Z: " + lastLocation.getBlockZ())
                 //.replace("[playtime]", hours + ":" + minutes + ":" + seconds)

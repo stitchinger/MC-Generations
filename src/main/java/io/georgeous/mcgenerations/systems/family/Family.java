@@ -1,5 +1,6 @@
 package io.georgeous.mcgenerations.systems.family;
 
+import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.Notification;
@@ -21,6 +22,7 @@ public class Family {
     private long established;
     private PlayerRole leader;
     private boolean namedByLeader;
+    private int maxGenerations;
 
     public Family(String name) {
         this(name, UUID.randomUUID().toString());
@@ -30,9 +32,10 @@ public class Family {
         this.name = name;
         this.color = Util.getRandomColor();
         this.uuid = uuid;
-        this.established = System.currentTimeMillis();
+        this.established = MCG.serverYear;
         this.members = new ArrayList<>();
         namedByLeader = false;
+        this.maxGenerations = 1;
     }
 
     public static boolean inSameFamily(PlayerRole one, PlayerRole two) {
@@ -129,5 +132,13 @@ public class Family {
 
     public boolean compare(Family family) {
         return this == family;
+    }
+
+    public void setMaxGenerations(int gen){
+        maxGenerations = Math.max(gen, maxGenerations);
+    }
+
+    public int getMaxGenerations(){
+        return maxGenerations;
     }
 }
