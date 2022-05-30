@@ -21,7 +21,7 @@ import java.util.Random;
 
 public class PlayerChat implements Listener {
 
-    private final double CHAT_RANGE = 9999999;
+    private final double CHAT_RANGE = 60;
     private final int ALONE_MSG_TIMER = 2; // secs
 
     @EventHandler
@@ -33,13 +33,75 @@ public class PlayerChat implements Listener {
         if (playerRole == null) {
             return;
         }
-
         PhaseManager pm = playerRole.getPhaseManager();
+        String firstName = playerRole.getName();
+        String lastName = playerRole.getFamily().getColoredName() + "§f: ";
+        lastName = playerRole.getFamily().getColor() +  playerRole.getFamily().getName().substring(0, 1) + ".";
 
-        TextComponent prefix = new TextComponent(playerRole.getName() + " " + playerRole.family.getColoredName() + "§f: ");
+        TextComponent prefix = new TextComponent(firstName + " " + lastName + "§f: ");
         TextComponent msg = new TextComponent(prepareMsg(event.getMessage(), pm.getCurrentPhase().getMaxCharsInChat()));
 
         rangedBroadcast(player, prefix, msg, CHAT_RANGE);
+    }
+
+
+    public void rangedBroadcast(Player sender, TextComponent prefix, TextComponent msg, double range) {
+        boolean messageReceived = false;
+        for (Player receivingPlayer : Bukkit.getOnlinePlayers()) {
+            double distanceBetweenPlayers = receivingPlayer.getLocation().distance(sender.getLocation());
+            messageReceived = handleReceivingMessage(receivingPlayer, sender, distanceBetweenPlayers, prefix, msg, range) || messageReceived;
+        }
+        if(!messageReceived){
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    Notification.neutralMsg(sender, "Nobody heared you. You must be too far away!");
+                }
+            }.runTaskLater(MCG.getInstance(), 20L * ALONE_MSG_TIMER);
+        }
+    }
+
+    public boolean handleReceivingMessage(Player receivingPlayer, Player sendingPlayer,  double distanceBetweenPlayers, TextComponent prefix, TextComponent msg, double range){
+        boolean messageReceived = false;
+        TextComponent customPrefix = prefix.duplicate();
+
+
+        if(distanceBetweenPlayers < range * (1d/3d)){
+            customPrefix.setColor(ChatColor.WHITE);
+        } else if(distanceBetweenPlayers < range * (2d/3d)){
+            customPrefix.setColor(ChatColor.GRAY);
+        } else if(distanceBetweenPlayers < range){
+            customPrefix.setColor(ChatColor.DARK_GRAY);
+        } else{
+            customPrefix.setColor(ChatColor.DARK_GRAY);
+            customPrefix.setStrikethrough(true);
+        }
+
+
+
+        if (distanceBetweenPlayers <= range) {
+            if(sendingPlayer != receivingPlayer){
+                messageReceived = true;
+            }
+            if(receivingPlayer.isOp()){
+                opEditPrefix(customPrefix, sendingPlayer);
+            }
+            receivingPlayer.spigot().sendMessage( customPrefix, msg);
+
+        } else if(receivingPlayer.isOp()){
+            opEditPrefix(customPrefix, sendingPlayer);
+            receivingPlayer.spigot().sendMessage(customPrefix, msg);
+        }
+
+        return  messageReceived;
+    }
+
+    private void opEditPrefix(TextComponent prefix, Player sendingPlayer){
+        prefix.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tp @s " + sendingPlayer.getName()));
+        prefix.setHoverEvent(
+                new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                        new ComponentBuilder(sendingPlayer.getName()).color(ChatColor.GRAY).italic(true).create())
+        );
     }
 
     public String prepareMsg(String msg, int maxLength) {
@@ -63,43 +125,5 @@ public class PlayerChat implements Listener {
             }
         }
         return newMsg;
-    }
-
-
-    public void rangedBroadcast(Player sender, TextComponent prefix, TextComponent msg, double range) {
-        boolean messageReceived = false;
-        for (Player receivingPlayer : Bukkit.getOnlinePlayers()) {
-            double distanceBetweenPlayers = receivingPlayer.getLocation().distance(sender.getLocation());
-            TextComponent customPrefix = prefix.duplicate();
-            if (distanceBetweenPlayers <= range) {
-                if(sender != receivingPlayer){
-                    messageReceived = true;
-                }
-                if(receivingPlayer.isOp()){
-                    prefix.setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, "" + sender.getName()));
-                    prefix.setHoverEvent(
-                            new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                                    new ComponentBuilder(sender.getName()).color(ChatColor.GRAY).italic(true).create())
-                    );
-                }
-                receivingPlayer.spigot().sendMessage(prefix, msg);
-            } else if(receivingPlayer.isOp()){
-                prefix.setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, "" + sender.getName()));
-                prefix.setHoverEvent(
-                        new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                                new ComponentBuilder(sender.getName()).color(ChatColor.GRAY).italic(true).create())
-                );
-                receivingPlayer.spigot().sendMessage(prefix, msg);
-            }
-
-        }
-        if(!messageReceived){
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    Notification.neutralMsg(sender, "Nobody heared you. You must be too far away!");
-                }
-            }.runTaskLater(MCG.getInstance(), 20L * ALONE_MSG_TIMER);
-        }
     }
 }
