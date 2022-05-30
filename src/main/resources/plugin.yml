@@ -18,5 +18,6 @@ commands:
   w:
   say:
   howto:
+  discord:
 depend: [Piggyback, NickAPI, Petmanager]
 

@@ -174,6 +174,7 @@ public final class MCG extends JavaPlugin {
         registerCommand("role", new RoleCommand());
         registerCommand("family", new FamilyCommand());
         registerCommand("howto", new HowtoCommand());
+        registerCommand("discord", new DiscordCommand());
 
         registerCommand("msg", new CommandDeactivator());
         registerCommand("w", new CommandDeactivator());
@@ -212,6 +213,11 @@ public final class MCG extends JavaPlugin {
 
 
 /*
+Todo: Chat name fades out with distance
+Todo: deactiveate /die in council
+Todo: deactivate /die in first minute of life
+Todo: Max length for names
+Todo: Min Length for names
 Todo: Council countdown beeping
 TODO: Command for more Family info (Members, etc)
 Todo: Carried clips in ground/walls
