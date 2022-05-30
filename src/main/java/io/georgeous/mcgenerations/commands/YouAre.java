@@ -22,13 +22,34 @@ public class YouAre implements CommandExecutor {
         }
 
         if (args.length != 2) {
-            Notification.errorMsg(player, "Usage: /You are Lisa");
+            Notification.errorMsg(player, "Usage: /You are <Name>");
+            return true;
         }
 
-        if (args.length == 2) {
-            nameChild(player, args[1]);
+        String newName = args[1];
+
+        if(newName.length() > 14){
+            Notification.errorMsg(player, "Name cant be longer than 14 characters!");
+            return true;
         }
+
+        if(newName.length() < 3){
+            Notification.errorMsg(player, "Name cant be shorter than 3 characters!");
+            return true;
+        }
+
+        if(!isValidName(newName)){
+            Notification.errorMsg(player, "Special characters are not allowed!");
+            return true;
+        }
+
+        nameChild(player, newName);
         return true;
+    }
+
+    public static boolean isValidName(String str) {
+        String expression = "^[a-zA-Z\\s]+";
+        return str.matches(expression);
     }
 
     public void nameChild(Player motherPlayer, String rawName) {

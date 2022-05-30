@@ -102,14 +102,30 @@ public class FamilyCommand implements CommandExecutor, TabCompleter {
         }
 
         String last = name.substring(0, 1).toUpperCase() + name.substring(1);
-        if (last.length() <= 2) {
-            Notification.errorMsg(role.getPlayer(), "Families name is too short");
+
+        if (last.length() < 3) {
+            Notification.errorMsg(role.getPlayer(), "Family name cant be shorter than 3 characters!");
+            return;
+        }
+
+        if(last.length() > 14){
+            Notification.errorMsg(role.getPlayer(), "Family name cant be longer than 14 characters!");
+            return;
+        }
+
+        if(!isValidName(last)){
+            Notification.errorMsg(role.getPlayer(), "Special characters are not allowed!");
             return;
         }
 
         family.rename(last);
         Notification.successMsg(role.getPlayer(), "You changed your families name to " + family.getColoredName());
         role.updateScoreboard();
+    }
+
+    public static boolean isValidName(String str) {
+        String expression = "^[a-zA-Z\\s]+";
+        return str.matches(expression);
     }
 
     private String familiesToString() {
