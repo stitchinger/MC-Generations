@@ -127,6 +127,8 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
                 player.sendMessage("   If there are no other options...");
                 player.sendMessage("► [ §d/discord§r ]");
                 player.sendMessage("   Link to the discord");
+                player.sendMessage("► [ §d/commands§r ]");
+                player.sendMessage("   List of all commands on the server");
                 player.sendMessage("");
                 break;
 

@@ -21,7 +21,7 @@ import java.util.Random;
 
 public class PlayerChat implements Listener {
 
-    private final double CHAT_RANGE = 60;
+    private final double CHAT_RANGE = 100;
     private final int ALONE_MSG_TIMER = 2; // secs
 
     @EventHandler
