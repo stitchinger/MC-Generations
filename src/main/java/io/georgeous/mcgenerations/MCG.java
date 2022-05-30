@@ -213,15 +213,9 @@ public final class MCG extends JavaPlugin {
 
 
 /*
-Todo: Chat name fades out with distance
-Todo: deactiveate /die in council
-Todo: deactivate /die in first minute of life
-Todo: Max length for names
-Todo: Min Length for names
+
+
 Todo: Council countdown beeping
-TODO: Command for more Family info (Members, etc)
-Todo: Carried clips in ground/walls
 Todo: Setup config file for ...
 Todo: Show baby cooldown in info command
-Todo: Graves Plugin
  */

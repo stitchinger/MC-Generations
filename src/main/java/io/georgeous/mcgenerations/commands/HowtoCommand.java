@@ -43,7 +43,7 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
             TextComponent howtoExampleCommand = new TextComponent("[/howto hearts]");
             howtoExampleCommand.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/howto hearts"));
             howtoExampleCommand.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Copy to Chat").color(ChatColor.GRAY).italic(true).bold(true).create()));
-            player.spigot().sendMessage(howtoExampleCommand);
+            //player.spigot().sendMessage(howtoExampleCommand);
 
             player.sendMessage("");
             return true;
@@ -109,7 +109,8 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
                 player.sendMessage("");
                 printHeading(player, "CHAT");
                 player.sendMessage(" There is §cno global§r server chat.");
-                player.sendMessage(" You can only communicate with players within a §crange of 50§r blocks.");
+                player.sendMessage(" You can only talk to players within a §crange of 100§r blocks.");
+                player.sendMessage(" The color of a players firstname in chat is an §cindicator of the distance§r to that player.");
                 player.sendMessage("");
                 break;
 

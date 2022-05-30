@@ -55,7 +55,7 @@ public class PlayerChat implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    Notification.neutralMsg(sender, "Nobody heared you. You must be too far away!");
+                    Notification.neutralMsg(sender, "Nobody heared you. Use §d[/howto chat]§f to learn more.");
                 }
             }.runTaskLater(MCG.getInstance(), 20L * ALONE_MSG_TIMER);
         }
