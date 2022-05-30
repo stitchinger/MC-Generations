@@ -38,12 +38,10 @@ public class SpawnManager {
 
         if (finalMom != null && !playerToSpawnInDebugMode) {
             Notification.neutralMsg(finalMom.getPlayer(), "You will get a baby in " + ServerConfig.getInstance().getSecInLobby() + " seconds");
-            finalMom.getMotherController().reserveAsMother();
         }
 
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(MCG.getInstance(), () -> {
-            finalMom.getMotherController().deleteReservation();
             if(!playerToSpawn.isOnline()){
                 MCG.getInstance().getLogger().info("Player left right before spawning");
                 return;
