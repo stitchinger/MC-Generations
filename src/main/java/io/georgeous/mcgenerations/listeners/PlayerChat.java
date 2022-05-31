@@ -48,8 +48,11 @@ public class PlayerChat implements Listener {
     public void rangedBroadcast(Player sender, TextComponent prefix, TextComponent msg, double range) {
         boolean messageReceived = false;
         for (Player receivingPlayer : Bukkit.getOnlinePlayers()) {
-            double distanceBetweenPlayers = receivingPlayer.getLocation().distance(sender.getLocation());
-            messageReceived = handleReceivingMessage(receivingPlayer, sender, distanceBetweenPlayers, prefix, msg, range) || messageReceived;
+            if(receivingPlayer.getLocation().getWorld() == sender.getLocation().getWorld()){
+                double distanceBetweenPlayers = receivingPlayer.getLocation().distance(sender.getLocation());
+                messageReceived = handleReceivingMessage(receivingPlayer, sender, distanceBetweenPlayers, prefix, msg, range) || messageReceived;
+            }
+
         }
         if(!messageReceived){
             new BukkitRunnable() {

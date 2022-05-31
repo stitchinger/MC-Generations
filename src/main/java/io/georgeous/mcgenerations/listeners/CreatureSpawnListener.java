@@ -17,6 +17,11 @@ public class CreatureSpawnListener implements Listener {
         Location centerPoint = ServerConfig.getInstance().getCouncilLocation();
         Entity entity = event.getEntity();
 
+        // Not Overworld?
+        if(event.getLocation().getWorld() != MCG.overworld){
+            return;
+        }
+
         double distance = centerPoint.distance(event.getLocation());
 
         if(event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.NATURAL){
