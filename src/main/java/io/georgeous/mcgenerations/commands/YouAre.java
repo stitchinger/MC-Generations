@@ -2,6 +2,7 @@ package io.georgeous.mcgenerations.commands;
 
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
+import io.georgeous.mcgenerations.utils.BadWordFilter;
 import io.georgeous.mcgenerations.utils.NameManager;
 import io.georgeous.mcgenerations.utils.Notification;
 import io.georgeous.piggyback.Piggyback;
@@ -43,6 +44,11 @@ public class YouAre implements CommandExecutor {
             return true;
         }
 
+        if(BadWordFilter.getCensoredText(newName) != newName){
+            Notification.errorMsg(player, "Profanity is not allowed in names!");
+            return true;
+        }
+
         nameChild(player, newName);
         return true;
     }
@@ -55,7 +61,7 @@ public class YouAre implements CommandExecutor {
     public void nameChild(Player motherPlayer, String rawName) {
         PlayerRole motherPlayerRole = RoleManager.getInstance().get(motherPlayer);
         if (Piggyback.carryCoupleMap.get(motherPlayer) == null) {
-            Notification.errorMsg(motherPlayer, "You need to hold your baby for naming it.");
+            Notification.errorMsg(motherPlayer, "You need to carry your baby for naming it.");
             return;
         }
 

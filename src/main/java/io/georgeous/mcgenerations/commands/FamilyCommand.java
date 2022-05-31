@@ -4,6 +4,7 @@ import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
+import io.georgeous.mcgenerations.utils.BadWordFilter;
 import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -120,6 +121,11 @@ public class FamilyCommand implements CommandExecutor, TabCompleter {
 
         if(!isValidName(last)){
             Notification.errorMsg(role.getPlayer(), "Special characters are not allowed!");
+            return;
+        }
+
+        if(BadWordFilter.getCensoredText(last) != last){
+            Notification.errorMsg(role.getPlayer(), "Profanity is not allowed in names!");
             return;
         }
 
