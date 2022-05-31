@@ -77,7 +77,10 @@ public class PlayerDeathListener implements Listener {
         }
         player.setBedSpawnLocation(ServerConfig.getInstance().getCouncilLocation(), true);
 
-        if(!PlayerManager.getInstance().getWrapper(player).isDebugMode())
+        if(
+                !PlayerManager.getInstance().getWrapper(player).isDebugMode() &&
+                        playerRole.getAgeManager().getAge() >= 6
+        )
             createGrave(playerRole);
 
         PlayerManager.getInstance().getWrapper(player).addLife();
