@@ -4,6 +4,7 @@ import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
+import io.georgeous.mcgenerations.utils.BadWordFilter;
 import io.georgeous.mcgenerations.utils.Notification;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -23,6 +24,7 @@ public class PlayerChat implements Listener {
 
     private final double CHAT_RANGE = 100;
     private final int ALONE_MSG_TIMER = 2; // secs
+    private final boolean FILTER_PROFANITY = true;
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
@@ -127,6 +129,12 @@ public class PlayerChat implements Listener {
                 newMsg = newMsg + replacement;
             }
         }
+
+        if(FILTER_PROFANITY){
+            newMsg = BadWordFilter.getCensoredText(newMsg);
+        }
+
+
         return newMsg;
     }
 }

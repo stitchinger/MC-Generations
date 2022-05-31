@@ -51,7 +51,7 @@ public class SpawnManager {
                 return;
             }
 
-            if (finalMom != null && !playerToSpawnInDebugMode && !finalMom.isDead) {
+            if (finalMom != null && !playerToSpawnInDebugMode && !finalMom.isDead && finalMom.getPlayer().isOnline()) {
                 spawnAsBaby(playerToSpawn, finalMom);
             } else {
                 spawnAsEve(playerToSpawn);
