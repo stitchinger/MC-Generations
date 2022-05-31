@@ -55,7 +55,13 @@ public class RoleManager {
     public void initPlayer(Player player) {
         boolean isValid = PlayerManager.getInstance().getWrapper(player).getLastOfflineTime() < (VALID_OFFLINE_TIME_SEC * 1000);
 
-        if (playerDataExists(player) && isValid) { // restore player
+        boolean roleDead = false;
+        if(playerDataExists(player)){
+            roleDead = MCG.getInstance().getConfig().getBoolean("data.player." + player.getUniqueId() + ".role.dead");
+        }
+
+
+        if (playerDataExists(player) && isValid && !roleDead) { // restore player
             restoreRole(player);
         } else {
             SpawnManager.spawnPlayer(player);
@@ -92,6 +98,7 @@ public class RoleManager {
         config.set("data.player." + uuid + ".role.family", playerRole.family.getUuid());
         config.set("data.player." + uuid + ".role.generation", playerRole.generation);
         config.set("data.player." + uuid + ".role.time", System.currentTimeMillis());
+        config.set("data.player." + uuid + ".role.dead", playerRole.isDead);
 
         MCG.getInstance().saveConfig();
     }

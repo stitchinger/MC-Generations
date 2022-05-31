@@ -44,10 +44,11 @@ public class FamilyCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 0) {
-
             printFamilyInfo(player, family);
             return true;
         }
+
+
 
         switch (args[0]) {
 
@@ -57,6 +58,10 @@ public class FamilyCommand implements CommandExecutor, TabCompleter {
                 break;
 
             case "rename":
+                if (args.length == 1) {
+                    Notification.errorMsg(player, "Usage: [/family rename <Name>]");
+                    return true;
+                }
                 attemptFamilyRename(role, family, args[1]);
                 break;
 

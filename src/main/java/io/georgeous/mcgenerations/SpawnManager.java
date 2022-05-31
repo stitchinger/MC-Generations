@@ -38,6 +38,7 @@ public class SpawnManager {
 
         if (finalMom != null && !playerToSpawnInDebugMode) {
             Notification.neutralMsg(finalMom.getPlayer(), "You will get a baby in " + ServerConfig.getInstance().getSecInLobby() + " seconds");
+            resetPlayer(playerToSpawn, playerGM);
         }
 
 

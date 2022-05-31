@@ -5,6 +5,7 @@ import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -13,7 +14,7 @@ public class PlayerQuitListener implements Listener {
     private final RoleManager roleManager = RoleManager.getInstance();
     PlayerManager playerManager = PlayerManager.getInstance();
 
-    @EventHandler
+    @EventHandler(priority= EventPriority.LOW)
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         // Family

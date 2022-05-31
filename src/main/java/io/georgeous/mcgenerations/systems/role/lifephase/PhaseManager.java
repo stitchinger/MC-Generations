@@ -98,8 +98,10 @@ public class PhaseManager {
     public void phaseUpEffect() {
         Location location = player.getLocation();
         player.getWorld().spawnParticle(Particle.COMPOSTER, location, 100, 0.5, 1, 0.5);
-        player.getWorld().playSound(location, Sound.BLOCK_BELL_USE, 4, 1);
-        player.getWorld().playSound(location, Sound.BLOCK_BELL_RESONATE, 4, 1);
+        //player.getWorld().playSound(location, Sound.BLOCK_BELL_USE, 4, 1);
+        //player.getWorld().playSound(location, Sound.BLOCK_BELL_RESONATE, 4, 1);
+        player.playSound(location, Sound.BLOCK_BELL_USE, 4, 1);
+        player.playSound(location, Sound.BLOCK_BELL_RESONATE, 4, 1);
     }
 
     public void start() {
