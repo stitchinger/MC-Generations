@@ -37,6 +37,7 @@ public class SpawnManager {
         boolean playerToSpawnInDebugMode = PlayerManager.getInstance().getWrapper(playerToSpawn).isDebugMode();
 
         if (finalMom != null && !playerToSpawnInDebugMode) {
+            finalMom.getMotherController().setReservedForBaby(true);
             Notification.neutralMsg(finalMom.getPlayer(), "You will get a baby in " + ServerConfig.getInstance().getSecInLobby() + " seconds");
             resetPlayer(playerToSpawn, playerGM);
         }
@@ -45,6 +46,8 @@ public class SpawnManager {
         Bukkit.getScheduler().scheduleSyncDelayedTask(MCG.getInstance(), () -> {
             if(!playerToSpawn.isOnline()){
                 MCG.getInstance().getLogger().info("Player left right before spawning");
+                Notification.neutralMsg(finalMom.getPlayer(), "The baby didn't make it. Sorry");
+                finalMom.getMotherController().setReservedForBaby(false);
                 return;
             }
 

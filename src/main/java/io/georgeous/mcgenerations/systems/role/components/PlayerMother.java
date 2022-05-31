@@ -17,6 +17,7 @@ public class PlayerMother {
     private final int MAX_BIRTH_AGE = 45;
     private final List<PlayerRole> children;
     private long lastChildTime;
+    private boolean isReservedForBaby = false;
 
     public PlayerMother(PlayerRole playerRole) {
         this.playerRole = playerRole;
@@ -37,6 +38,7 @@ public class PlayerMother {
         lastChildTime = System.currentTimeMillis();
         Notification.neutralMsg(playerRole.getPlayer(), "You just had a baby. Congrats");
         Notification.neutralMsg(playerRole.getPlayer(), "You can rename your baby with [/you are Lisa] while carrying it");
+        setReservedForBaby(false);
     }
 
     public boolean canHaveBaby() {
@@ -45,6 +47,7 @@ public class PlayerMother {
                 && playerRole.getAgeManager().getAge() < MAX_BIRTH_AGE
                 && secSinceLastBaby() > BABY_COOLDOWN
                 && playerRole.getPlayer().getHealth() > 0
+                && !isReservedForBaby()
                 && !playerInDebug;
     }
 
@@ -79,5 +82,13 @@ public class PlayerMother {
 
     public boolean isOwnChild(PlayerRole childPlayerRole){
         return children.contains(childPlayerRole);
+    }
+
+    public boolean isReservedForBaby() {
+        return isReservedForBaby;
+    }
+
+    public void setReservedForBaby(boolean reservedForBaby) {
+        isReservedForBaby = reservedForBaby;
     }
 }
