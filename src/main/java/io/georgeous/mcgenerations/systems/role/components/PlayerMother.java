@@ -44,13 +44,15 @@ public class PlayerMother {
 
     public boolean canHaveBaby() {
         boolean playerInDebug = PlayerManager.getInstance().getWrapper(playerRole.getPlayer()).isDebugMode();
-        boolean notTooHungry = playerRole.getPlayer().getFoodLevel() > 10;
+        boolean notTooHungry = playerRole.getPlayer().getFoodLevel() >= 10;
+        boolean isHealthy = playerRole.getPlayer().getHealth() >= 4;
         return playerRole.getAgeManager().getAge() > MIN_BIRTH_AGE
                 && playerRole.getAgeManager().getAge() < MAX_BIRTH_AGE
                 && secSinceLastBaby() > BABY_COOLDOWN
                 && playerRole.getPlayer().getHealth() > 0
                 && !isReservedForBaby()
                 && notTooHungry
+                && isHealthy
                 && !playerInDebug;
     }
 

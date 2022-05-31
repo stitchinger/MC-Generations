@@ -7,6 +7,7 @@ import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 import io.georgeous.mcgenerations.utils.BlockFacing;
 import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.Location;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -52,11 +53,11 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if ("facing".equals(args[0])) {
-            //player.teleport(ServerConfig.getInstance().getCouncilLocation());
-
-            BlockFace face = BlockFacing.locationToFace(player.getLocation());
-            player.sendMessage(face.toString());
+        if ("health".equals(args[0])) {
+            player.sendMessage("max: " + String.valueOf(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()));
+            player.sendMessage("base: " + String.valueOf(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue()));
+            player.sendMessage("default: " + String.valueOf(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue()));
+            player.sendMessage(String.valueOf(player.getHealth()));
             return true;
         }
         return false;
