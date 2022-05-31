@@ -18,11 +18,15 @@ public class DieCommand implements CommandExecutor {
         if (!(sender instanceof Player player))
             return true;
 
-        double distanceToCouncil = ServerConfig.getInstance().getCouncilLocation().distance(player.getLocation());
-        if(distanceToCouncil <= 50){
-            Notification.errorMsg(player, "You cant use this command in the council!");
-            return true;
+        if(player.getLocation().getWorld() == ServerConfig.getInstance().getCouncilLocation().getWorld()){
+            double distanceToCouncil = ServerConfig.getInstance().getCouncilLocation().distance(player.getLocation());
+
+            if(distanceToCouncil <= 50){
+                Notification.errorMsg(player, "You cant use this command in the council!");
+                return true;
+            }
         }
+
 
         if (RoleManager.getInstance().get(player) != null) {
             PlayerRole role = RoleManager.getInstance().get(player);

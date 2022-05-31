@@ -98,16 +98,10 @@ public final class MCG extends JavaPlugin {
         }.runTaskTimer(this, 0L, 1L);
 
         // Update Server Year
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-            @Override
-            public void run() {
-                serverYear++;
-            }
-        }, 0L, 20L * 60);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> serverYear++
+            , 0L, 20L * 60);
 
-
-        int year = getConfig().getInt("data.server.year");
-        serverYear = year;
+        serverYear = getConfig().getInt("data.server.year");
 
         saveConfig();
 
@@ -128,7 +122,12 @@ public final class MCG extends JavaPlugin {
 
 
         for(Player player : Bukkit.getOnlinePlayers()) {
-            player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+            try {
+                player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+            }catch (NullPointerException e){
+               e.printStackTrace();
+            }
+
         }
     }
 
@@ -210,10 +209,11 @@ public final class MCG extends JavaPlugin {
     }
 }
 
-
-
 /*
 
+
+Todo: Avoid twins and tripplets
+Todo: Give baby to well fed mother
 Todo: NOcollision problem came back with surrogate
 Todo: Council countdown beeping
 Todo: Setup config file for ...

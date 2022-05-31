@@ -40,6 +40,4 @@ public class PlayerJoinListener implements Listener {
         player.spigot().sendMessage(component);
         player.sendMessage("");
     }
-
-
 }
