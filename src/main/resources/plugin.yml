@@ -19,5 +19,6 @@ commands:
   say:
   howto:
   discord:
+  broadcast:
 depend: [Piggyback, NickAPI, Petmanager]
 
