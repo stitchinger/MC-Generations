@@ -9,8 +9,8 @@ lines:
   - "&7Lifes lived:&6 [lifes]"
   - "[space]"
   - "&7Family:&6 [familyname]"
-  - "- &7Est.:&6 [familyestablished]"
-  - "- &7Generations:&6 [familygenerations]"
+  - "&7- Est.:&6 [familyestablished]"
+  - "&7- Generations:&6 [familygenerations]"
   - "[space]"
   - "&7Year:&6 [year]"
 
