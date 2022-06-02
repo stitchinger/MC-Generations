@@ -16,7 +16,7 @@ public class MeCommand implements CommandExecutor {
         if (!(sender instanceof Player player))
             return true;
 
-        PlayerRole role = RoleManager.getInstance().get(player);
+        PlayerRole role = RoleManager.get().get(player);
 
         if (role == null) {
             Notification.errorMsg(player, "No role found");

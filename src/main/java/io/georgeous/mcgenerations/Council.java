@@ -1,5 +1,6 @@
 package io.georgeous.mcgenerations;
 
+import io.georgeous.mcgenerations.files.McgConfig;
 import io.georgeous.mcgenerations.utils.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -7,9 +8,7 @@ import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
-import java.util.logging.Level;
 
 public class Council {
 
@@ -22,7 +21,7 @@ public class Council {
 
     public Council(World world) {
         this.world = world;
-        Location COUNCIL_LOCATION = ServerConfig.getInstance().getCouncilLocation();
+        Location COUNCIL_LOCATION = McgConfig.getCouncilLocation();
 
         ENDERMAN_LOCATION = COUNCIL_LOCATION.clone().add(9, 5, 9);
         PIGLIN_LOCATION = COUNCIL_LOCATION.clone().add(9, 5, -9);
@@ -36,12 +35,6 @@ public class Council {
 
         // Remove old council entities before spawning new ones
         Bukkit.selectEntities(Bukkit.getConsoleSender(), "@e[tag=council]").forEach(entity -> {
-            //MCG.getInstance().getLogger().log(Level.INFO, "Entity killed: " + entity.getType());
-            if (entity instanceof Minecart) {
-                entity.setInvulnerable(false);
-                ((Minecart) entity).setDamage(9999);
-                entity.remove();
-            }
             if (entity instanceof LivingEntity) {
                 ((LivingEntity) entity).setHealth(0);
             }
@@ -67,7 +60,7 @@ public class Council {
         enderman.setAI(false);
         enderman.setRemoveWhenFarAway(false);
 
-        Location lookAt = ServerConfig.getInstance().getCouncilLocation();
+        Location lookAt = McgConfig.getCouncilLocation();
         enderman.teleport(enderman.getLocation().setDirection(lookAt.subtract(enderman.getLocation()).toVector()));
     }
 
@@ -81,7 +74,7 @@ public class Council {
         piglin.setRemoveWhenFarAway(false);
         piglin.setAI(false);
 
-        Location lookAt = ServerConfig.getInstance().getCouncilLocation();
+        Location lookAt = McgConfig.getCouncilLocation();
         piglin.teleport(piglin.getLocation().setDirection(lookAt.subtract(piglin.getLocation()).toVector()));
     }
 
@@ -94,7 +87,7 @@ public class Council {
         illusioner.setPersistent(true);
         illusioner.setRemoveWhenFarAway(false);
 
-        Location lookAt = ServerConfig.getInstance().getCouncilLocation();
+        Location lookAt = McgConfig.getCouncilLocation();
         illusioner.teleport(illusioner.getLocation().setDirection(lookAt.subtract(illusioner.getLocation()).toVector()));
     }
 
@@ -109,12 +102,12 @@ public class Council {
         villager.setAI(false);
         villager.addScoreboardTag("council");
 
-        Location lookAt = ServerConfig.getInstance().getCouncilLocation();
+        Location lookAt = McgConfig.getCouncilLocation();
         villager.teleport(villager.getLocation().setDirection(lookAt.subtract(villager.getLocation()).toVector()));
     }
 
     public void councilNoises() {
-        if (Math.random() > 1 - COUNCIL_SOUND_FREQUENCY) {
+        if (Math.random() > 1 - McgConfig.getCouncilNoiseFrequency()) {
             World world = MCG.overworld;
             Sound[] sounds = {
                     Sound.ENTITY_ENDERMAN_AMBIENT,
@@ -123,7 +116,7 @@ public class Council {
                     Sound.ENTITY_PIGLIN_AMBIENT
             };
             int rand = Util.getRandomInt(sounds.length);
-            world.playSound(ServerConfig.getInstance().getCouncilLocation(), sounds[rand], 1, 0.1f);
+            world.playSound(McgConfig.getCouncilLocation(), sounds[rand], 1, 0.1f);
         }
     }
 }

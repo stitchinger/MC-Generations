@@ -3,10 +3,6 @@ package io.georgeous.mcgenerations.systems.role.components;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.utils.Notification;
-import io.georgeous.mcgenerations.utils.Util;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +39,7 @@ public class PlayerMother {
     }
 
     public boolean canHaveBaby() {
-        boolean playerInDebug = PlayerManager.getInstance().getWrapper(playerRole.getPlayer()).isDebugMode();
+        boolean playerInDebug = PlayerManager.get().getWrapper(playerRole.getPlayer()).isDebugMode();
         boolean notTooHungry = playerRole.getPlayer().getFoodLevel() >= 10;
         boolean isHealthy = playerRole.getPlayer().getHealth() >= 4;
         return playerRole.getAgeManager().getAge() > MIN_BIRTH_AGE

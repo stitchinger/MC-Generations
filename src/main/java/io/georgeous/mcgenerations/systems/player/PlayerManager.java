@@ -15,17 +15,19 @@ public class PlayerManager {
     public static PlayerData data = PlayerData.getInstance();
     private static PlayerManager instance;
 
-    private PlayerManager() {
-        Bukkit.getServer().getOnlinePlayers().forEach(this::initPlayer);
-    }
+    private PlayerManager(){};
 
-    public static PlayerManager getInstance() {
+    public static PlayerManager get() {
         if (instance == null)
             instance = new PlayerManager();
         return instance;
     }
 
-    public void destroy() {
+    public void enable(){
+        Bukkit.getServer().getOnlinePlayers().forEach(this::initPlayer);
+    }
+
+    public void disable() {
         Bukkit.getServer().getOnlinePlayers().forEach(player -> {
             if (getWrapper(player) != null) {
                 data.savePlayer(getWrapper(player));
@@ -39,6 +41,7 @@ public class PlayerManager {
         attachWrapperToPlayer(player);
         if (data.playerDataExists(player)) { // restore player
             data.restorePlayerWrapperFromConfig(getWrapper(player));
+            Bukkit.getLogger().info( "Restored Wrapper: " + player);
         }
     }
 
@@ -47,6 +50,7 @@ public class PlayerManager {
 
         PlayerWrapper wrapper = new PlayerWrapper(player);
         playersMap.put(uuid, wrapper);
+        Bukkit.getLogger().info("Created wrapper for: " + player.getName());
     }
 
     public Set<UUID> getWrapperAttachedPlayers() {

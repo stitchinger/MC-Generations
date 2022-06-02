@@ -17,7 +17,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import xyz.haoshoku.nick.api.NickAPI;
+
 import java.util.Random;
 
 public class PlayerChat implements Listener {
@@ -30,7 +30,7 @@ public class PlayerChat implements Listener {
     public void onChat(AsyncPlayerChatEvent event) {
         event.setCancelled(true);
         Player player = event.getPlayer();
-        PlayerRole playerRole = RoleManager.getInstance().get(player);
+        PlayerRole playerRole = RoleManager.get().get(player);
 
         if (playerRole == null) {
             return;

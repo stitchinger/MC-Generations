@@ -16,7 +16,7 @@ public class ScoreboardRefreshTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        for(UUID player : PlayerManager.getInstance().getWrapperAttachedPlayers()) {
+        for(UUID player : PlayerManager.get().getWrapperAttachedPlayers()) {
             handler.refreshPlayer(Bukkit.getPlayer(player));
         }
     }

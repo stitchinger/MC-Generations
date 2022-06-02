@@ -26,7 +26,7 @@ public class InventoryListener implements Listener {
     public void disableBabyItemPickup(EntityPickupItemEvent event) {
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
-            if (RoleManager.getInstance().isABaby(player)) {
+            if (RoleManager.get().isABaby(player)) {
                 event.setCancelled(true);
             }
         }
@@ -35,7 +35,7 @@ public class InventoryListener implements Listener {
     @EventHandler
     public void disableBabyInventoryOpening(InventoryOpenEvent event) {
         Player player = (Player) event.getPlayer();
-        if (RoleManager.getInstance().isABaby(player)) {
+        if (RoleManager.get().isABaby(player)) {
             Notification.errorMsg(player, "Babies cant interact with inventories");
             event.setCancelled(true);
         }

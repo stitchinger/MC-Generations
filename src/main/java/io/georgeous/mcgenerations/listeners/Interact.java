@@ -1,6 +1,5 @@
 package io.georgeous.mcgenerations.listeners;
 
-import io.georgeous.mcgenerations.ServerConfig;
 import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.family.FriendlyTalk;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
@@ -11,16 +10,13 @@ import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
 
 public class Interact implements Listener {
 
@@ -36,7 +32,7 @@ public class Interact implements Listener {
     }
 
     public void feedBaby(Player feeder, Player baby) {
-        PlayerRole babyRole = RoleManager.getInstance().get(baby);
+        PlayerRole babyRole = RoleManager.get().get(baby);
         if (babyRole == null || (baby.getFoodLevel() >= 20 && feeder.getFoodLevel() > 0) || !babyRole.getPhaseManager().getCurrentPhase().isFeedable())
             return;
 
@@ -67,7 +63,7 @@ public class Interact implements Listener {
 
         if (Family.inSameFamily(damager, receiver)) {
             event.setCancelled(true);
-            friendlyFamilyTalk(RoleManager.getInstance().get(damager), RoleManager.getInstance().get(receiver));
+            friendlyFamilyTalk(RoleManager.get().get(damager), RoleManager.get().get(receiver));
         }
     }
 
@@ -79,7 +75,7 @@ public class Interact implements Listener {
 
         if (Family.inSameFamily(damager, receiver)) {
             event.setCancelled(true);
-            friendlyFamilyTalk(RoleManager.getInstance().get(damager), RoleManager.getInstance().get(receiver));
+            friendlyFamilyTalk(RoleManager.get().get(damager), RoleManager.get().get(receiver));
         }
     }
 
@@ -108,10 +104,10 @@ public class Interact implements Listener {
     @EventHandler
     public void disableBabyBlockPlacement(BlockPlaceEvent event) {
         Player player = event.getPlayer();
-        PlayerRole role = RoleManager.getInstance().get(player);
+        PlayerRole role = RoleManager.get().get(player);
         if (role == null)
             return;
-        PhaseManager phaseManager = RoleManager.getInstance().get(player).getPhaseManager();
+        PhaseManager phaseManager = RoleManager.get().get(player).getPhaseManager();
         if (phaseManager == null)
             return;
         if (phaseManager.getCurrentPhase().getName().equalsIgnoreCase("baby")) {

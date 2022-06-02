@@ -43,8 +43,8 @@ public class Family {
     }
 
     public static boolean inSameFamily(Player one, Player two) {
-        PlayerRole roleOne = RoleManager.getInstance().get(one);
-        PlayerRole roleTwo = RoleManager.getInstance().get(two);
+        PlayerRole roleOne = RoleManager.get().get(one);
+        PlayerRole roleTwo = RoleManager.get().get(two);
 
         if (roleOne == null || roleTwo == null) {
             return false;

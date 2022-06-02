@@ -6,6 +6,7 @@ import io.georgeous.mcgenerations.commands.admin.*;
 import io.georgeous.mcgenerations.commands.player.*;
 import io.georgeous.mcgenerations.files.DataManager;
 import io.georgeous.mcgenerations.files.FileManager;
+import io.georgeous.mcgenerations.files.McgConfig;
 import io.georgeous.mcgenerations.listeners.*;
 import io.georgeous.mcgenerations.scoreboard.ScoreboardHandler;
 import io.georgeous.mcgenerations.systems.family.FamilyManager;
@@ -52,9 +53,10 @@ public final class MCG extends JavaPlugin {
     public void onEnable() {
         plugin = this;
         printLoadupText();
-        this.saveDefaultConfig();
+        //this.saveDefaultConfig();
         //getConfig().options().copyDefaults(true);
 
+        /*
         if(!(new File(this.getDataFolder().getPath() + "/scoreboard.yml").exists())) {
             this.saveResource("scoreboard.yml", false);
         }
@@ -62,30 +64,31 @@ public final class MCG extends JavaPlugin {
             this.saveResource("playerdata.yml", false);
         }
 
-        fileManager = new FileManager(this.getDataFolder().getPath());
+         */
 
-        overworld = Bukkit.getWorld(ServerConfig.getInstance().getWorldName());
+        //fileManager = new FileManager(this.getDataFolder().getPath());
+        McgConfig.setup(this.getDataFolder().getPath());
 
-        getLogger().info("-------------------World name" + Bukkit.getWorlds().get(0).getName());
+        overworld = Bukkit.getWorlds().get(0);
         council = new Council(overworld);
         getConfig().options().copyDefaults(false);
 
 
         this.data = new DataManager();
 
-        PlayerManager.getInstance();
+        PlayerManager.get().enable();
         FamilyManager.enable();
-        RoleManager.getInstance();
+        RoleManager.get().enable();
         NameManager.loadConfig();
 
         registerEvents();
         registerCommands();
 
-        makeBundleCraftable();
+        //makeBundleCraftable();
 
-        overworld.setSpawnLocation(ServerConfig.getInstance().getCouncilLocation());
+        overworld.setSpawnLocation(McgConfig.getCouncilLocation());
 
-        getServer().dispatchCommand(Bukkit.getConsoleSender(), "veryspicy true");
+        //getServer().dispatchCommand(Bukkit.getConsoleSender(), "veryspicy true");
 
 
         // Start Update-Function
@@ -111,8 +114,8 @@ public final class MCG extends JavaPlugin {
     @Override
     public void onDisable() {
         SurrogateManager.getInstance().destroyAllSurrogates();
-        PlayerManager.getInstance().destroy();
-        RoleManager.getInstance().destroy();
+        PlayerManager.get().disable();
+        RoleManager.get().disable();
         FamilyManager.disable();
         NameManager.saveConfig();
 
@@ -139,12 +142,8 @@ public final class MCG extends JavaPlugin {
     }
 
     private void update() {
-        RoleManager.getInstance().update();
+        RoleManager.get().update();
         SurrogateManager.getInstance().update();
-
-        //overworld.setTime(overworld.getTime() + daySpeed);
-        // one day 24000
-        // 20 ticks = 1 sec
     }
 
     public void registerEvents() {
@@ -188,6 +187,15 @@ public final class MCG extends JavaPlugin {
         pluginCommand.setExecutor(executor);
     }
 
+    public FileManager getFileManager() {
+        return fileManager;
+    }
+
+    public ScoreboardHandler getScoreboardHandler() {
+        return scoreboardHandler;
+    }
+
+    /*
     public void makeBundleCraftable() {
         ItemStack item = new ItemStack(Material.BUNDLE);
         NamespacedKey key = new NamespacedKey(this, "Bundle");
@@ -200,14 +208,7 @@ public final class MCG extends JavaPlugin {
 
         Bukkit.addRecipe(recipe);
     }
-
-    public FileManager getFileManager() {
-        return fileManager;
-    }
-
-    public ScoreboardHandler getScoreboardHandler() {
-        return scoreboardHandler;
-    }
+     */
 }
 
 /*

@@ -6,8 +6,6 @@ import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
-import io.georgeous.mcgenerations.systems.surrogate.SurrogateEntity;
-import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
@@ -91,13 +89,13 @@ public class ScoreboardHandler {
 
 
     private String replacePlaceholders(String toReplace, Player player) {
-        PlayerWrapper playerWrapper = PlayerManager.getInstance().getWrapper(player);
+        PlayerWrapper playerWrapper = PlayerManager.get().getWrapper(player);
         if(playerWrapper != null){
             toReplace = toReplace
                     .replace("[lifes]", String.valueOf(playerWrapper.getLifes()));
         }
 
-        PlayerRole playerRole = RoleManager.getInstance().get(player);
+        PlayerRole playerRole = RoleManager.get().get(player);
         Family family = null;
         if(playerRole != null){
             family = playerRole.getFamily();

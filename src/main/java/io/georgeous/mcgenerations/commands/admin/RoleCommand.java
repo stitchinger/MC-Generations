@@ -30,7 +30,7 @@ public class RoleCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        PlayerRole playerRole = RoleManager.getInstance().get(player);
+        PlayerRole playerRole = RoleManager.get().get(player);
         if (playerRole == null) {
             Notification.errorMsg(player, "No role found");
             return true;
@@ -55,7 +55,7 @@ public class RoleCommand implements CommandExecutor, TabCompleter {
                 Notification.neutralMsg(player, "Age: " + playerRole.getAgeManager().getAge());
             }
             case "count" ->
-                    Notification.neutralMsg(player, "Roles in RoleManager: " + RoleManager.getInstance().getRoleCount());
+                    Notification.neutralMsg(player, "Roles in RoleManager: " + RoleManager.get().getRoleCount());
             default -> {
             }
         }

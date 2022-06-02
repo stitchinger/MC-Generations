@@ -1,5 +1,6 @@
 package io.georgeous.mcgenerations;
 
+import io.georgeous.mcgenerations.files.McgConfig;
 import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
@@ -22,23 +23,22 @@ import java.util.List;
 
 public class SpawnManager {
 
-    private static final int timeInLobby = 10; // in seconds
     private static final int timeToHowtoNotification = 15;
 
 
     public static void spawnPlayer(Player playerToSpawn) {
-        Notification.neutralMsg(playerToSpawn, "You will be reborn in " + timeInLobby + " seconds");
+        Notification.neutralMsg(playerToSpawn, "You will be reborn in " + McgConfig.getSecInLobby() + " seconds");
         NickAPI.refreshPlayer(playerToSpawn);
 
         GameMode playerGM = playerToSpawn.getGameMode();
         preparePlayerForLobby(playerToSpawn);
 
         PlayerRole finalMom = findViableMother(playerToSpawn);
-        boolean playerToSpawnInDebugMode = PlayerManager.getInstance().getWrapper(playerToSpawn).isDebugMode();
+        boolean playerToSpawnInDebugMode = PlayerManager.get().getWrapper(playerToSpawn).isDebugMode();
 
         if (finalMom != null && !playerToSpawnInDebugMode) {
             finalMom.getMotherController().setReservedForBaby(true);
-            Notification.neutralMsg(finalMom.getPlayer(), "You will get a baby in " + ServerConfig.getInstance().getSecInLobby() + " seconds");
+            Notification.neutralMsg(finalMom.getPlayer(), "You will get a baby in " + McgConfig.getSecInLobby() + " seconds");
             resetPlayer(playerToSpawn, playerGM);
         }
 
@@ -66,14 +66,14 @@ public class SpawnManager {
                 }
             }.runTaskLater(MCG.getInstance(), 20L * timeToHowtoNotification);
 
-        }, ServerConfig.getInstance().getSecInLobby() * 20L); // 20 Tick (1 Second) delay before run() is called
+        }, McgConfig.getSecInLobby() * 20L); // 20 Tick (1 Second) delay before run() is called
     }
 
     private static void resetPlayer(Player player, GameMode gmBefore){
         player.setGameMode(gmBefore);
         player.setInvulnerable(false);
-        PlayerManager.getInstance().getWrapper(player).setDiedOfOldAge(false);
-        PlayerManager.getInstance().getWrapper(player).setLastBedLocation(null);
+        PlayerManager.get().getWrapper(player).setDiedOfOldAge(false);
+        PlayerManager.get().getWrapper(player).setLastBedLocation(null);
     }
 
     private static void preparePlayerForLobby(Player player){
@@ -83,29 +83,29 @@ public class SpawnManager {
 
     public static void spawnAsEve(Player player) {
         // If diedOfOldAge spawn at last bed
-        Location lastBed = PlayerManager.getInstance().getWrapper(player).getLastBedLocation();
+        Location lastBed = PlayerManager.get().getWrapper(player).getLastBedLocation();
         boolean bedIsValid = false;
         if (lastBed != null) {
-            bedIsValid = lastBed.distance(ServerConfig.getInstance().getCouncilLocation()) > 500;
+            bedIsValid = lastBed.distance(McgConfig.getCouncilLocation()) > 500;
             // Using the bedspawing for the council stuff
             // This makes sure, that the players bed isnt the council
             // This could happen, if the player never interacted with a bed
         }
 
-        if (PlayerManager.getInstance().getWrapper(player).getDiedOfOldAge() &&
-                PlayerManager.getInstance().getWrapper(player).getLastBedLocation() != null &&
+        if (PlayerManager.get().getWrapper(player).getDiedOfOldAge() &&
+                PlayerManager.get().getWrapper(player).getLastBedLocation() != null &&
                 bedIsValid)
         {
-            player.teleport(PlayerManager.getInstance().getWrapper(player).getLastBedLocation());
+            player.teleport(PlayerManager.get().getWrapper(player).getLastBedLocation());
         } else {
-            Location loc = ServerConfig.getInstance().getSpawnLocation();
-            double radius = ServerConfig.getInstance().getSpawnRadius();
+            Location loc = McgConfig.getSpawnLocation();
+            double radius = McgConfig.getSpawnRadius();
             Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "spreadplayers " + loc.getX() + " " + loc.getZ() + " 0 " + radius + " false " + player.getName());
         }
 
         String name = NameManager.randomFirst();
         Family family = FamilyManager.addFamily(NameManager.randomLast());
-        RoleManager.getInstance().createAndAddRole(player, name, 10, 1, family);
+        RoleManager.get().createAndAddRole(player, name, 10, 1, family);
 
         //player.setSaturation(0); too hard?
 
@@ -125,7 +125,7 @@ public class SpawnManager {
 
         Family family = mother.getFamily();
 
-        PlayerRole newBornRole = RoleManager.getInstance().createAndAddRole(newBorn, name, 0, 1, family);
+        PlayerRole newBornRole = RoleManager.get().createAndAddRole(newBorn, name, 0, 1, family);
         family.addMember(newBornRole);
 
         mother.getMotherController().bornBaby(newBornRole);
@@ -144,9 +144,9 @@ public class SpawnManager {
 
         // find viable Mothers on Server
         for (Player player : Bukkit.getOnlinePlayers()) {
-            PlayerRole playerRole = RoleManager.getInstance().get(player);
+            PlayerRole playerRole = RoleManager.get().get(player);
             boolean playerHasRole
-                    = RoleManager.getInstance().get(player) != null;
+                    = RoleManager.get().get(player) != null;
             boolean notSelf
                     = child != player;
             if (playerHasRole && notSelf) {

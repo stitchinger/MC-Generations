@@ -32,7 +32,7 @@ public class FamilyCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        PlayerRole role = RoleManager.getInstance().get(player);
+        PlayerRole role = RoleManager.get().get(player);
 
         if (role == null) {
             Notification.errorMsg(player, "You do not have a role.");

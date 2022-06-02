@@ -1,23 +1,21 @@
 package io.georgeous.mcgenerations.commands.admin;
 
-import io.georgeous.mcgenerations.MCG;
-import io.georgeous.mcgenerations.ServerConfig;
+
+import io.georgeous.mcgenerations.SpawnManager;
 import io.georgeous.mcgenerations.commands.CommandUtils;
+import io.georgeous.mcgenerations.files.McgConfig;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
-import io.georgeous.mcgenerations.utils.BlockFacing;
+import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.Notification;
-import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import xyz.haoshoku.nick.api.NickAPI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +38,7 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 0) {
-            PlayerWrapper wrapper = PlayerManager.getInstance().getWrapper(player);
+            PlayerWrapper wrapper = PlayerManager.get().getWrapper(player);
             if (wrapper == null) {
                 return true;
             }
@@ -50,7 +48,7 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
         }
 
         if ("council".equals(args[0])) {
-            player.teleport(ServerConfig.getInstance().getCouncilLocation());
+            player.teleport(McgConfig.getCouncilLocation());
             return true;
         }
 
@@ -59,6 +57,26 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
             player.sendMessage("base: " + String.valueOf(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue()));
             player.sendMessage("default: " + String.valueOf(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue()));
             player.sendMessage(String.valueOf(player.getHealth()));
+            return true;
+        }
+
+        if ("spawn".equals(args[0])) {
+            //RoleManager.get().initPlayer(player);
+            SpawnManager.spawnPlayer(player);
+            return true;
+        }
+
+        if ("roleremove".equals(args[0])) {
+            RoleManager.get().removeRoleData(RoleManager.get().get(player));
+            //RoleManager.get().saveRoleData(RoleManager.get().get(player));
+
+            RoleManager.get().removeRoleOfPlayer(player);
+
+            NickAPI.resetNick(player);
+            NickAPI.resetSkin(player);
+            NickAPI.resetUniqueId(player);
+            NickAPI.resetGameProfileName(player);
+            NickAPI.refreshPlayer(player);
             return true;
         }
         return false;

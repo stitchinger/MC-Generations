@@ -28,7 +28,7 @@ public class PlayerChatBackup implements Listener {
     public void onChat(AsyncPlayerChatEvent event) {
         event.setCancelled(true);
         Player player = event.getPlayer();
-        PlayerRole playerRole = RoleManager.getInstance().get(player);
+        PlayerRole playerRole = RoleManager.get().get(player);
 
         if (playerRole == null) {
             return;

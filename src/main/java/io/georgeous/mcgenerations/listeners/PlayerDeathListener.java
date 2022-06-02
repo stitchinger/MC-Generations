@@ -1,11 +1,10 @@
 package io.georgeous.mcgenerations.listeners;
 
 import io.georgeous.mcgenerations.MCG;
-import io.georgeous.mcgenerations.ServerConfig;
+import io.georgeous.mcgenerations.files.McgConfig;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
-import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
 import io.georgeous.mcgenerations.utils.BlockFacing;
 import io.georgeous.mcgenerations.utils.ItemManager;
 import org.bukkit.ChatColor;
@@ -18,38 +17,73 @@ import org.bukkit.block.data.Rotatable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.scheduler.BukkitRunnable;
+import xyz.haoshoku.nick.api.NickAPI;
 
 public class PlayerDeathListener implements Listener {
-    private final RoleManager roleManager = RoleManager.getInstance();
-    PlayerManager playerManager = PlayerManager.getInstance();
+    private final RoleManager roleManager = RoleManager.get();
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
+        removeBabyHandlerFromDrops(event);
+        PlayerRole role = RoleManager.get().get(player);
+        if(role == null){
+            event.setDeathMessage("");
+            return;
+        }
 
-        dealWithRoleDeath(event);
-        removeMember(player);
-        SurrogateManager.getInstance().destroySurrogateOfPlayer(event.getEntity());
+        event.setDeathMessage(getRoleDeathMessage(event));
+        RoleManager.get().removeRoleData(role);
+        RoleManager.get().removeRoleOfPlayer(player);
+
+        //dealWithRoleDeath(event);
+        //removeMember(player);
+        //SurrogateManager.getInstance().destroySurrogateOfPlayer(player);
+    }
+
+    @EventHandler
+    public void onBeforePlayerDeath(EntityDamageEvent event) {
+        if(!(event.getEntity() instanceof Player player)){
+            return;
+        }
+        if(player.getHealth() - event.getDamage() < 1){
+            //player.teleport(ServerConfig.getInstance().getCouncilLocation());
+            event.setCancelled(true);
+            NickAPI.resetNick(player);
+            NickAPI.resetSkin(player);
+            NickAPI.resetUniqueId(player);
+            NickAPI.resetGameProfileName(player);
+            NickAPI.refreshPlayer(player);
+            player.setHealth(0);
+            new BukkitRunnable(){
+                @Override
+                public void run() {
+
+                }
+            }.runTaskLater(MCG.getInstance(), 20L * 2);
+        }
     }
 
     private void removeMember(Player player) {
-        PlayerRole role = RoleManager.getInstance().get(player);
+        PlayerRole role = RoleManager.get().get(player);
         if (role == null) {
             return;
         }
         role.getFamily().removeMember(role);
+
     }
 
-    private void dealWithRoleDeath(PlayerDeathEvent event){
+    private String getRoleDeathMessage(PlayerDeathEvent event){
         Player player = event.getEntity();
         PlayerRole playerRole = roleManager.get(player);
         if (playerRole == null) {
-            return;
+            return null;
         }
 
-        removeBabyHandlerFromDrops(event);
-
+        // Replace Names in Message
         String roleName = playerRole.getName() + " " + playerRole.getFamily().getColoredName() + ChatColor.RESET;
         String ageString = "(" + playerRole.getAgeManager().getAge() + ")";
         String msg = event.getDeathMessage();
@@ -66,24 +100,39 @@ public class PlayerDeathListener implements Listener {
                 msg = msg.replace(killer.getName(), killersCharName);
             }
         }
+        return msg;
+    }
 
-        event.setDeathMessage(msg);
+    private void dealWithRoleDeath(PlayerDeathEvent event){
+        Player player = event.getEntity();
+        PlayerRole playerRole = roleManager.get(player);
+        if (playerRole == null) {
+            return;
+        }
 
+        String roleName = playerRole.getName() + " " + playerRole.getFamily().getColoredName() + ChatColor.RESET;
+
+        String msg = getRoleDeathMessage(event);
+        if(msg != null)
+            event.setDeathMessage(msg);
+
+
+        // Died of old Age?
         boolean diedOfOldAge = playerRole.getAgeManager().getAge() >= 60;
         if (diedOfOldAge) {
             event.setDeathMessage(roleName + " died of old Age. RIP");
-            PlayerManager.getInstance().getWrapper(player).setDiedOfOldAge(true);
-            PlayerManager.getInstance().getWrapper(player).setLastBedLocation(player.getBedSpawnLocation());
+            PlayerManager.get().getWrapper(player).setDiedOfOldAge(true);
+            PlayerManager.get().getWrapper(player).setLastBedLocation(player.getBedSpawnLocation());
         }
-        player.setBedSpawnLocation(ServerConfig.getInstance().getCouncilLocation(), true);
 
-        if(
-                !PlayerManager.getInstance().getWrapper(player).isDebugMode() &&
-                        playerRole.getAgeManager().getAge() >= 6
-        )
+
+        player.setBedSpawnLocation(McgConfig.getCouncilLocation(), true);
+
+        if(!PlayerManager.get().getWrapper(player).isDebugMode() && playerRole.getAgeManager().getAge() >= 6) {
             createGrave(playerRole);
+        }
 
-        PlayerManager.getInstance().getWrapper(player).addLife();
+        PlayerManager.get().getWrapper(player).addLife();
         playerRole.die();
     }
 

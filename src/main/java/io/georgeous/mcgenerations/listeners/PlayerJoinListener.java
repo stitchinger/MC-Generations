@@ -14,8 +14,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class PlayerJoinListener implements Listener {
-    private final RoleManager roleManager = RoleManager.getInstance();
-    PlayerManager playerManager = PlayerManager.getInstance();
+    private final RoleManager roleManager = RoleManager.get();
+    PlayerManager playerManager = PlayerManager.get();
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
@@ -24,7 +24,7 @@ public class PlayerJoinListener implements Listener {
         welcomeMessage(player);
 
         playerManager.initPlayer(player);
-        roleManager.initPlayer(player);
+        //roleManager.initPlayer(player);
 
         event.setJoinMessage("");
     }

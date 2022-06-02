@@ -1,7 +1,7 @@
 package io.georgeous.mcgenerations.listeners;
 
 import io.georgeous.mcgenerations.MCG;
-import io.georgeous.mcgenerations.ServerConfig;
+import io.georgeous.mcgenerations.files.McgConfig;
 import org.bukkit.Location;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -14,7 +14,7 @@ public class CreatureSpawnListener implements Listener {
     @EventHandler
     public void disableMobsInCouncil(CreatureSpawnEvent event) {
         final float DISABLE_RADIUS = 400;
-        Location centerPoint = ServerConfig.getInstance().getCouncilLocation();
+        Location centerPoint = McgConfig.getCouncilLocation();
         Entity entity = event.getEntity();
 
         // Not Overworld?

@@ -1,9 +1,9 @@
 package io.georgeous.mcgenerations.commands.admin;
 
-import io.georgeous.mcgenerations.systems.role.PlayerRole;
-import io.georgeous.mcgenerations.systems.role.RoleManager;
+
 import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.ChatColor;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,7 +15,7 @@ import xyz.haoshoku.nick.api.NickScoreboard;
 public class NickCommand implements CommandExecutor {
 
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-/*
+
         if (!(sender instanceof Player player))
             return true;
 
@@ -30,37 +30,34 @@ public class NickCommand implements CommandExecutor {
             return true;
         }
 
-        if (args[0].equalsIgnoreCase("reset")) {
+        if ("reset".equals(args[0])) {
             NickAPI.resetNick(player);
             NickAPI.resetSkin(player);
             NickAPI.resetUniqueId(player);
             NickAPI.resetGameProfileName(player);
             NickAPI.refreshPlayer(player);
             player.sendMessage(ChatColor.DARK_RED + "Successfully reset nick");
+            return true;
         } else {
             String name = args[0].substring(0, 1).toUpperCase() + args[0].substring(1);
             nickPlayer(player, name);
-            NickAPI.setSkin(player, name);
+            return true;
         }
-
- */
-        return true;
-
-
     }
-/*
+
     public void nickPlayer(Player player, String name) {
         NickAPI.nick(player, name);
+
+        NickAPI.setSkin(player, "Jahrhundert");
+        //NickAPI.setGameProfileName(player, name);
+
         NickAPI.refreshPlayer(player);
 
-        PlayerRole playerRole = RoleManager.getInstance().get(player);
-        if (playerRole != null) {
-            NickScoreboard.write(name, "admin", "", " " + playerRole.getFamily().getColoredName(), true, ChatColor.WHITE);
-            NickScoreboard.updateScoreboard(name);
-        }
+        NickScoreboard.write(name, "admin", "Prefix ", " CustomNick", true, ChatColor.WHITE);
+        NickScoreboard.updateScoreboard(name);
 
         player.sendMessage(ChatColor.DARK_GREEN + "Successfully set the nickname to " + ChatColor.YELLOW + name);
     }
 
- */
+
 }

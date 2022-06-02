@@ -23,20 +23,22 @@ public class RoleManager {
 
     private static RoleManager instance;
 
-    private RoleManager() {
-        for (Player player : getServer().getOnlinePlayers()) {
-            initPlayer(player);
-        }
-    }
+    private RoleManager(){}
 
-    public static RoleManager getInstance() {
+    public static RoleManager get() {
         if (instance == null) {
             instance = new RoleManager();
         }
         return instance;
     }
 
-    public void destroy() {
+    public void enable(){
+        for (Player player : getServer().getOnlinePlayers()) {
+            initPlayer(player);
+        }
+    }
+
+    public void disable() {
         save();
     }
 
@@ -53,18 +55,17 @@ public class RoleManager {
     }
 
     public void initPlayer(Player player) {
-        boolean isValid = PlayerManager.getInstance().getWrapper(player).getLastOfflineTime() < (VALID_OFFLINE_TIME_SEC * 1000);
+        boolean isValid = PlayerManager.get().getWrapper(player).getLastOfflineTime() < (VALID_OFFLINE_TIME_SEC * 1000);
 
         boolean roleDead = false;
-        if(playerDataExists(player)){
+        if(roleDataExists(player)){
             roleDead = MCG.getInstance().getConfig().getBoolean("data.player." + player.getUniqueId() + ".role.dead");
         }
 
-
-        if (playerDataExists(player) && isValid && !roleDead) { // restore player
-            restoreRole(player);
+        if (roleDataExists(player) && isValid && !roleDead) { // restore player
+            restoreRoleFromData(player);
         } else {
-            SpawnManager.spawnPlayer(player);
+            //SpawnManager.spawnPlayer(player);
         }
     }
 
@@ -74,21 +75,21 @@ public class RoleManager {
         return playerRole;
     }
 
-    public void remove(Player player) {
-        remove(player.getUniqueId());
+    public void removeRoleOfPlayer(Player player) {
+        removeRoleOfPlayer(player.getUniqueId());
     }
 
-    public void remove(UUID uuid) {
+    public void removeRoleOfPlayer(UUID uuid) {
         roles.remove(uuid);
     }
 
     public void save() {
         if (roles.isEmpty())
             return;
-        roles.values().forEach(this::saveRole);
+        roles.values().forEach(this::saveRoleData);
     }
 
-    public void saveRole(PlayerRole playerRole) {
+    public void saveRoleData(PlayerRole playerRole) {
         FileConfiguration config = MCG.getInstance().getConfig();
         String uuid = playerRole.getPlayer().getUniqueId().toString();
 
@@ -103,7 +104,16 @@ public class RoleManager {
         MCG.getInstance().saveConfig();
     }
 
-    public void restoreRole(Player player) {
+    public void removeRoleData(PlayerRole playerRole) {
+        FileConfiguration config = MCG.getInstance().getConfig();
+        String uuid = playerRole.getPlayer().getUniqueId().toString();
+
+        config.set("data.player." + uuid + ".role", null);
+
+        MCG.getInstance().saveConfig();
+    }
+
+    public void restoreRoleFromData(Player player) {
         String uuid = player.getUniqueId().toString();
         FileConfiguration config = MCG.getInstance().getConfig();
         ConfigurationSection configSection = config.getConfigurationSection("data.player." + uuid + ".role");
@@ -134,7 +144,7 @@ public class RoleManager {
         MCG.getInstance().saveConfig();
     }
 
-    public boolean playerDataExists(Player player) {
+    public boolean roleDataExists(Player player) {
         return MCG.getInstance().getConfig().contains("data.player." + player.getUniqueId() + ".role");
     }
 

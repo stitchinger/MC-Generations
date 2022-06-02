@@ -60,7 +60,7 @@ public class YouAreCommand implements CommandExecutor {
     }
 
     public void nameChild(Player motherPlayer, String rawName) {
-        PlayerRole motherPlayerRole = RoleManager.getInstance().get(motherPlayer);
+        PlayerRole motherPlayerRole = RoleManager.get().get(motherPlayer);
         if (Piggyback.carryCoupleMap.get(motherPlayer) == null) {
             Notification.errorMsg(motherPlayer, "You need to carry your baby for naming it.");
             return;
@@ -70,7 +70,7 @@ public class YouAreCommand implements CommandExecutor {
         String first = rawName.substring(0, 1).toUpperCase() + rawName.substring(1);
 
         if (target instanceof Player childPlayer) {
-            PlayerRole childPlayerRole = RoleManager.getInstance().get(childPlayer);
+            PlayerRole childPlayerRole = RoleManager.get().get(childPlayer);
 
             if (!motherPlayerRole.getMotherController().isOwnChild(childPlayerRole)) {
                 // Disable renaming of stranger children?
