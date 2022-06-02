@@ -6,7 +6,7 @@ import org.bukkit.command.TabCompleter;
 
 public class CommandUtils {
 
-    protected static void addTabComplete(String command, TabCompleter completer) {
+    public static void addTabComplete(String command, TabCompleter completer) {
         PluginCommand pluginCommand = MCG.getInstance().getCommand(command);
         if (pluginCommand != null)
             pluginCommand.setTabCompleter(completer);

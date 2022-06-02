@@ -2,20 +2,17 @@ package io.georgeous.mcgenerations.scoreboard;
 
 import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.systems.family.Family;
-import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
+import io.georgeous.mcgenerations.systems.surrogate.SurrogateEntity;
 import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Villager;
 import org.bukkit.scoreboard.*;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 public class ScoreboardHandler {
@@ -40,7 +37,6 @@ public class ScoreboardHandler {
     }
 
     public void registerPlayer(Player toRegister) {
-
         Scoreboard scoreboard = toRegister.getScoreboard();
         Objective objective = scoreboard.getObjective("dummy_sidebar");
         if(objective == null) objective = scoreboard.registerNewObjective("dummy_sidebar", "bbb", replacePlaceholders(title, toRegister));
@@ -50,8 +46,6 @@ public class ScoreboardHandler {
             team.addEntry(ChatColor.values()[i].toString());
         }
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-
-
     }
 
     public void refreshPlayer(Player toRefresh) {
@@ -59,18 +53,22 @@ public class ScoreboardHandler {
         /*
         SURROGATE MANAGEMENT
          */
+        /*
         Team team = toRefresh.getScoreboard().getTeam("nocollision");
         if(team == null){
             team = toRefresh.getScoreboard().registerNewTeam("nocollision");
             team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
         }
-        Villager villager = SurrogateManager.getInstance().getVillager(toRefresh);
-        if(villager != null) {
-            if(!team.getEntries().contains(villager.getUniqueId().toString())) {
-                team.addEntry(villager.getUniqueId().toString());
+        SurrogateEntity surrogateEntity = SurrogateManager.getInstance().getVillager(toRefresh);
+        if(surrogateEntity != null) {
+            if(!team.getEntries().contains(surrogateEntity.getUniqueId().toString())) {
+                team.addEntry(surrogateEntity.getUniqueId().toString());
             }
         }
 
+         */
+
+        /*
         if(toRefresh.getScoreboard().getObjective("dummy_sidebar") == null)registerPlayer(toRefresh);
         Objective objective = toRefresh.getScoreboard().getObjective("dummy_sidebar");
         final int maxScore = lines.size();
@@ -87,13 +85,12 @@ public class ScoreboardHandler {
             objective.getScore(ChatColor.values()[i].toString()).setScore(maxScore-i);
         }
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        */
+
     }
 
 
     private String replacePlaceholders(String toReplace, Player player) {
-
-
-
         PlayerWrapper playerWrapper = PlayerManager.getInstance().getWrapper(player);
         if(playerWrapper != null){
             toReplace = toReplace

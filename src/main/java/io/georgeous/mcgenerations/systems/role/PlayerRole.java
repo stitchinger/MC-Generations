@@ -56,8 +56,8 @@ public class PlayerRole {
         this.name = name;
         nickPlayer(player, name);
         if (SurrogateManager.map.get(getPlayer()) != null) {
-            SurrogateManager.getInstance().destroyPlayer(getPlayer());
-            SurrogateManager.getInstance().create(getPlayer(), name + " " + family.getColoredName());
+            SurrogateManager.getInstance().destroySurrogateOfPlayer(getPlayer());
+            SurrogateManager.getInstance().createSurrogateForPlayer(getPlayer(), name + " " + family.getColoredName());
         }
     }
 

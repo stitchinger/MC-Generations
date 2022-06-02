@@ -30,7 +30,7 @@ public class PlayerDeathListener implements Listener {
 
         dealWithRoleDeath(event);
         removeMember(player);
-        SurrogateManager.getInstance().destroyPlayer(event.getEntity());
+        SurrogateManager.getInstance().destroySurrogateOfPlayer(event.getEntity());
     }
 
     private void removeMember(Player player) {

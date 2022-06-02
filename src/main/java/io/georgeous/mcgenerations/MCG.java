@@ -1,6 +1,7 @@
 package io.georgeous.mcgenerations;
 
-import io.georgeous.mcgenerations.commands.*;
+
+import io.georgeous.mcgenerations.commands.CommandDeactivator;
 import io.georgeous.mcgenerations.commands.admin.*;
 import io.georgeous.mcgenerations.commands.player.*;
 import io.georgeous.mcgenerations.files.DataManager;
@@ -109,7 +110,7 @@ public final class MCG extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        SurrogateManager.getInstance().destroy();
+        SurrogateManager.getInstance().destroyAllSurrogates();
         PlayerManager.getInstance().destroy();
         RoleManager.getInstance().destroy();
         FamilyManager.disable();
