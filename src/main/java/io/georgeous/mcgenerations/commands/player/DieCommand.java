@@ -1,4 +1,4 @@
-package io.georgeous.mcgenerations.commands;
+package io.georgeous.mcgenerations.commands.player;
 
 import io.georgeous.mcgenerations.ServerConfig;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;

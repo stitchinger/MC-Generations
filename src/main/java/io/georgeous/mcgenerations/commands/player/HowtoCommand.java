@@ -1,4 +1,4 @@
-package io.georgeous.mcgenerations.commands;
+package io.georgeous.mcgenerations.commands.player;
 import io.georgeous.mcgenerations.utils.Notification;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;

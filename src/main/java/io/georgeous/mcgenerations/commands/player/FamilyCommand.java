@@ -1,5 +1,6 @@
-package io.georgeous.mcgenerations.commands;
+package io.georgeous.mcgenerations.commands.player;
 
+import io.georgeous.mcgenerations.commands.CommandUtils;
 import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;

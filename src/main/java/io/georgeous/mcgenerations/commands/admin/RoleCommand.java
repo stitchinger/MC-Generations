@@ -1,5 +1,6 @@
-package io.georgeous.mcgenerations.commands;
+package io.georgeous.mcgenerations.commands.admin;
 
+import io.georgeous.mcgenerations.commands.CommandUtils;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.Notification;

@@ -1,6 +1,8 @@
 package io.georgeous.mcgenerations;
 
 import io.georgeous.mcgenerations.commands.*;
+import io.georgeous.mcgenerations.commands.admin.*;
+import io.georgeous.mcgenerations.commands.player.*;
 import io.georgeous.mcgenerations.files.DataManager;
 import io.georgeous.mcgenerations.files.FileManager;
 import io.georgeous.mcgenerations.listeners.*;
@@ -16,7 +18,6 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -27,8 +28,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.util.logging.Level;
-
-import static org.bukkit.Bukkit.getServer;
 
 public final class MCG extends JavaPlugin {
     public static MCG plugin;
@@ -105,7 +104,7 @@ public final class MCG extends JavaPlugin {
 
         saveConfig();
 
-        scoreboardHandler = new ScoreboardHandler();
+        //scoreboardHandler = new ScoreboardHandler();
     }
 
     @Override
@@ -164,7 +163,7 @@ public final class MCG extends JavaPlugin {
     public void registerCommands() {
         registerCommand("gm", new GamemodeCommand());
         registerCommand("nick", new NickCommand());
-        registerCommand("you", new YouAre());
+        registerCommand("you", new YouAreCommand());
         registerCommand("secinyear", new SecInYear());
         registerCommand("die", new DieCommand());
         registerCommand("dayspeed", new DaySpeedCommand());
