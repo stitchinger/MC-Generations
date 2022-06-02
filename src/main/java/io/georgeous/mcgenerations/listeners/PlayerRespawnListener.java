@@ -1,5 +1,6 @@
 package io.georgeous.mcgenerations.listeners;
 
+import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.files.McgConfig;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,7 +13,7 @@ public class PlayerRespawnListener implements Listener {
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
-        event.setRespawnLocation(McgConfig.getCouncilLocation());
+        event.setRespawnLocation(MCG.council.getRandomCouncilSpawn());
         //player.teleport(ServerConfig.getInstance().getCouncilLocation());
         if (player.getHealth() == 0){
             //SpawnManager.spawnPlayer(player);

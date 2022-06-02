@@ -9,6 +9,8 @@ import org.bukkit.World;
 import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Random;
+
 
 public class Council {
 
@@ -44,6 +46,7 @@ public class Council {
         spawnPiglin();
         spawnPillager();
         spawnVillager();
+        spawnGui();
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -52,7 +55,7 @@ public class Council {
         }.runTaskTimer(MCG.getInstance(), 0L, 20L);
     }
 
-    public void spawnEnderman() {
+    private void spawnEnderman() {
         Enderman enderman = (Enderman) world.spawnEntity(ENDERMAN_LOCATION, EntityType.ENDERMAN);
         enderman.setSilent(true);
         enderman.setInvulnerable(true);
@@ -64,7 +67,7 @@ public class Council {
         enderman.teleport(enderman.getLocation().setDirection(lookAt.subtract(enderman.getLocation()).toVector()));
     }
 
-    public void spawnPiglin() {
+    private void spawnPiglin() {
         PiglinBrute piglin = (PiglinBrute) world.spawnEntity(PIGLIN_LOCATION, EntityType.PIGLIN_BRUTE);
         piglin.setInvulnerable(true);
         piglin.setImmuneToZombification(true);
@@ -78,7 +81,7 @@ public class Council {
         piglin.teleport(piglin.getLocation().setDirection(lookAt.subtract(piglin.getLocation()).toVector()));
     }
 
-    public void spawnPillager() {
+    private void spawnPillager() {
         Illusioner illusioner = (Illusioner) world.spawnEntity(PILLAGER_LOCATION, EntityType.ILLUSIONER);
         illusioner.setInvulnerable(true);
         illusioner.setSilent(true);
@@ -91,7 +94,7 @@ public class Council {
         illusioner.teleport(illusioner.getLocation().setDirection(lookAt.subtract(illusioner.getLocation()).toVector()));
     }
 
-    public void spawnVillager() {
+    private void spawnVillager() {
         Villager villager = (Villager) world.spawnEntity(VILLAGER_LOCATION, EntityType.VILLAGER);
         villager.setInvulnerable(true);
         villager.setSilent(true);
@@ -118,5 +121,59 @@ public class Council {
             int rand = Util.getRandomInt(sounds.length);
             world.playSound(McgConfig.getCouncilLocation(), sounds[rand], 1, 0.1f);
         }
+    }
+
+    private void spawnGui(){
+        Location center = McgConfig.getCouncilLocation();
+        float radius = 13.5f;
+        float yOffset = -(1f);
+
+        Location[] spawns = {
+                center.clone().add(0, yOffset, radius),
+                center.clone().add(0, yOffset, radius * (-1)),
+                center.clone().add(radius, yOffset, 0),
+                center.clone().add(radius * (-1), yOffset, 0)
+        };
+
+        for (Location spawn : spawns) {
+            ArmorStand top = (ArmorStand) MCG.overworld.spawnEntity(spawn.clone().add(0,0.3,0), EntityType.ARMOR_STAND);
+            top.setVisible(false);
+            top.setMarker(true);
+            top.setGravity(false);
+            top.setCustomNameVisible(true);
+            top.addScoreboardTag("council");
+            top.setCustomName("Step into the light");
+
+            ArmorStand bottom = (ArmorStand) MCG.overworld.spawnEntity(spawn, EntityType.ARMOR_STAND);
+            bottom.setVisible(false);
+            bottom.setMarker(true);
+            bottom.setGravity(false);
+            bottom.setCustomNameVisible(true);
+            bottom.addScoreboardTag("council");
+            bottom.setCustomName("to get reborn");
+        }
+
+
+    }
+
+    public Location getRandomCouncilSpawn() {
+        Location center = McgConfig.getCouncilLocation();
+        float radius = 17;
+        float yOffset = -1;
+
+        Location[] spawns = {
+                center.clone().add(0, yOffset, radius),
+                center.clone().add(0, yOffset, radius * (-1)),
+                center.clone().add(radius, yOffset, 0),
+                center.clone().add(radius * (-1), yOffset, 0)
+        };
+
+        Random r = new Random();
+        int randomNumber = r.nextInt(spawns.length);
+        Location rnd = spawns[randomNumber];
+
+        Location lookAt = center.clone().add(0,3,0);
+        rnd.setDirection(lookAt.subtract(rnd).toVector());
+        return rnd;
     }
 }
