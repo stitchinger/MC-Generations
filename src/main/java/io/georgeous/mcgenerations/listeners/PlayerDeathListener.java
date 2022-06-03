@@ -7,6 +7,7 @@ import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.BlockFacing;
 import io.georgeous.mcgenerations.utils.ItemManager;
+import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -36,8 +37,12 @@ public class PlayerDeathListener implements Listener {
         }
 
         event.setDeathMessage(getRoleDeathMessage(event));
+        dealWithRoleDeath(event);
         RoleManager.get().removeRoleData(role);
         RoleManager.get().removeRoleOfPlayer(player);
+
+        Notification.errorMsg(player, "Leaving the server while you are dead can cause issues on the rejoin!");
+        Notification.errorMsg(player, "Please respawn first before leaving!");
 
         //dealWithRoleDeath(event);
         //removeMember(player);
@@ -100,6 +105,15 @@ public class PlayerDeathListener implements Listener {
                 msg = msg.replace(killer.getName(), killersCharName);
             }
         }
+
+        // Died of old Age?
+        boolean diedOfOldAge = playerRole.getAgeManager().getAge() >= 60;
+        if (diedOfOldAge) {
+            PlayerManager.get().getWrapper(player).setDiedOfOldAge(true);
+            PlayerManager.get().getWrapper(player).setLastBedLocation(player.getBedSpawnLocation());
+            msg = roleName + " died of old Age. RIP";
+        }
+
         return msg;
     }
 
@@ -110,23 +124,7 @@ public class PlayerDeathListener implements Listener {
             return;
         }
 
-        String roleName = playerRole.getName() + " " + playerRole.getFamily().getColoredName() + ChatColor.RESET;
-
-        String msg = getRoleDeathMessage(event);
-        if(msg != null)
-            event.setDeathMessage(msg);
-
-
-        // Died of old Age?
-        boolean diedOfOldAge = playerRole.getAgeManager().getAge() >= 60;
-        if (diedOfOldAge) {
-            event.setDeathMessage(roleName + " died of old Age. RIP");
-            PlayerManager.get().getWrapper(player).setDiedOfOldAge(true);
-            PlayerManager.get().getWrapper(player).setLastBedLocation(player.getBedSpawnLocation());
-        }
-
-
-        player.setBedSpawnLocation(McgConfig.getCouncilLocation(), true);
+        //player.setBedSpawnLocation(McgConfig.getCouncilLocation(), true);
 
         if(!PlayerManager.get().getWrapper(player).isDebugMode() && playerRole.getAgeManager().getAge() >= 6) {
             createGrave(playerRole);

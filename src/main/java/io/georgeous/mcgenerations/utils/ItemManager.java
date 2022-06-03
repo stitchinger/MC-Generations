@@ -1,13 +1,16 @@
 package io.georgeous.mcgenerations.utils;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class ItemManager {
 
@@ -46,9 +49,58 @@ public class ItemManager {
         return false;
     }
 
-    public static ItemStack getEveStarterPack() {
+    public static ItemStack getEveStarterSeeds() {
         ItemStack item = new ItemStack(Material.CARROT_ON_A_STICK);
-        return item;
+
+        // Random Seeds
+        ItemStack[] seeds = {
+                new ItemStack(Material.CARROT, 16),
+                new ItemStack(Material.POTATO, 16),
+                new ItemStack(Material.BEETROOT_SEEDS, 32),
+                new ItemStack(Material.WHEAT_SEEDS, 32)
+        };
+
+        Random r = new Random();
+        int randomNumber = r.nextInt(seeds.length);
+
+        return seeds[randomNumber];
+    }
+
+    public static ItemStack getEveStarterFood() {
+
+        ItemStack[] foods = {
+                new ItemStack(Material.COOKED_BEEF, 2),
+                new ItemStack(Material.COOKED_CHICKEN, 2),
+                new ItemStack(Material.COOKED_PORKCHOP, 2),
+                new ItemStack(Material.COOKED_MUTTON, 2),
+                new ItemStack(Material.COOKED_SALMON, 2),
+                new ItemStack(Material.COOKED_COD, 2),
+                new ItemStack(Material.COOKED_RABBIT, 2)
+        };
+
+        Random r = new Random();
+        int randomNumber = r.nextInt(foods.length);
+
+        return foods[randomNumber];
+    }
+
+    public static ItemStack getEveStarterArmor() {
+        ItemStack[] armors = {
+                new ItemStack(Material.LEATHER_HELMET),
+                new ItemStack(Material.LEATHER_CHESTPLATE),
+                new ItemStack(Material.LEATHER_LEGGINGS),
+                new ItemStack(Material.LEATHER_BOOTS),
+        };
+        Random r = new Random();
+        int randomNumber = r.nextInt(armors.length);
+
+        ItemStack armor = armors[randomNumber];
+        LeatherArmorMeta meta = (LeatherArmorMeta) armor.getItemMeta();
+        meta.setColor(Util.getRandomColorObject());
+        armor.setItemMeta(meta);
+
+
+        return armor;
     }
 
 }

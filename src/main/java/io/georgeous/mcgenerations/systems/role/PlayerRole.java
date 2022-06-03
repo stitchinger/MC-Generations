@@ -123,6 +123,7 @@ public class PlayerRole {
             if (player.getHealth() != 0) {
                 player.setHealth(0);
             }
+            SurrogateManager.getInstance().destroySurrogateOfPlayer(player);
         }
     }
 

@@ -1,6 +1,7 @@
 package io.georgeous.mcgenerations;
 
 import io.georgeous.mcgenerations.files.McgConfig;
+import io.georgeous.mcgenerations.scoreboard.ScoreboardHandler;
 import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
@@ -8,11 +9,13 @@ import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
+import io.georgeous.mcgenerations.utils.ItemManager;
 import io.georgeous.mcgenerations.utils.NameManager;
 import io.georgeous.mcgenerations.utils.Notification;
 import io.georgeous.mcgenerations.utils.Util;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -26,9 +29,21 @@ import java.util.List;
 public class SpawnManager {
 
     private static final int timeToHowtoNotification = 15;
+    private static SpawnManager instance;
+
+    private SpawnManager(){
+
+    }
+
+    public static SpawnManager get(){
+        if(instance == null){
+            instance = new SpawnManager();
+        }
+        return  instance;
+    }
 
 
-    public static void spawnPlayer(Player spawnedPlayer) {
+    public void spawnPlayer(Player spawnedPlayer) {
         PlayerWrapper spawnedPlayerWrapper = PlayerManager.get().getWrapper(spawnedPlayer);
         if(spawnedPlayerWrapper.getIsSpawning()){
             return;
@@ -54,36 +69,53 @@ public class SpawnManager {
             Notification.neutralMsg(chosenMotherRole.getPlayer(), "You will get a baby in " + McgConfig.getSecInLobby() + " seconds");
         }
 
+        SpawnTask spawnTask = new SpawnTask(spawnedPlayer, chosenMotherRole);
+        spawnTask.runTaskLater(MCG.getInstance(), 20L * McgConfig.getSecInLobby());
 
-        new BukkitRunnable(){
-            @Override
-            public void run() {
-                boolean motherStillValid =
-                        chosenMotherRole != null
-                                && !chosenMotherRole.isDead
-                                && chosenMotherRole.getPlayer().isOnline();
+    }
 
-                if (motherStillValid && !playerToSpawnInDebugMode) {
-                    if(!spawnedPlayer.isOnline()){
-                        Notification.neutralMsg(chosenMotherRole.getPlayer(), "The baby didn't make it. Sorry");
-                        chosenMotherRole.getMotherController().setReservedForBaby(false);
-                        return;
-                    }
-                    spawnAsBaby(spawnedPlayer, chosenMotherRole);
-                } else {
-                    spawnAsEve(spawnedPlayer);
+    private class SpawnTask extends BukkitRunnable{
+
+        Player spawnedPlayer;
+        PlayerWrapper spawnedPlayerWrapper;
+        boolean playerToSpawnInDebugMode;
+        PlayerRole chosenMotherRole;
+
+        public SpawnTask(Player player, PlayerRole chosenMotherRole){
+            this.spawnedPlayer = player;
+            this.spawnedPlayerWrapper = PlayerManager.get().getWrapper(player);
+            this.playerToSpawnInDebugMode = spawnedPlayerWrapper.isDebugMode();
+            this.chosenMotherRole = chosenMotherRole;
+
+        }
+
+        @Override
+        public void run() {
+            boolean motherStillValid =
+                    chosenMotherRole != null
+                            && !chosenMotherRole.isDead
+                            && chosenMotherRole.getPlayer().isOnline();
+
+            if (motherStillValid && !playerToSpawnInDebugMode) {
+                if(!spawnedPlayer.isOnline()){
+                    Notification.neutralMsg(chosenMotherRole.getPlayer(), "The baby didn't make it. Sorry");
+                    chosenMotherRole.getMotherController().setReservedForBaby(false);
+                    return;
                 }
-
-                resetPlayer(spawnedPlayerWrapper);
-
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        Notification.neutralMsg(spawnedPlayer, "Use [ §d/howto§r ] command to learn how to play.");
-                    }
-                }.runTaskLater(MCG.getInstance(), 20L * timeToHowtoNotification);
+                spawnAsBaby(spawnedPlayer, chosenMotherRole);
+            } else {
+                spawnAsEve(spawnedPlayer);
             }
-        }.runTaskLater(MCG.getInstance(), 20L * McgConfig.getSecInLobby());
+
+            resetPlayer(spawnedPlayerWrapper);
+
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    Notification.neutralMsg(spawnedPlayer, "Use [ §d/howto§r ] command to learn how to play.");
+                }
+            }.runTaskLater(MCG.getInstance(), 20L * timeToHowtoNotification);
+        }
     }
 
     private static void resetPlayer(PlayerWrapper wrapper){
@@ -94,8 +126,6 @@ public class SpawnManager {
         wrapper.getPlayer().setGameMode(wrapper.getLastGameMode());
         wrapper.getPlayer().setInvulnerable(false);
     }
-
-
 
     public static void spawnAsEve(Player player) {
         // If diedOfOldAge spawn at last bed
@@ -109,8 +139,7 @@ public class SpawnManager {
             // This could happen, if the player never interacted with a bed
         }
 
-        if (playerWrapper.getDiedOfOldAge() && playerWrapper.getLastBedLocation() != null && bedIsValid)
-        {
+        if (playerWrapper.getDiedOfOldAge() && playerWrapper.getLastBedLocation() != null && bedIsValid) {
             player.teleport(PlayerManager.get().getWrapper(player).getLastBedLocation());
         } else {
             Location loc = McgConfig.getSpawnLocation();
@@ -122,9 +151,26 @@ public class SpawnManager {
         Family family = FamilyManager.addFamily(NameManager.randomLast());
         RoleManager.get().createAndAddRole(player, name, 10, 1, family);
 
-        ItemStack items = new ItemStack(Material.CARROT);
-        items.setAmount(10);
-        player.getInventory().addItem(items);
+        player.getInventory().addItem(ItemManager.getEveStarterSeeds());
+        player.getInventory().addItem(ItemManager.getEveStarterFood());
+
+        ItemStack armor = ItemManager.getEveStarterArmor();
+        player.sendMessage(armor.getType().name());
+        player.sendMessage(armor.getType().toString());
+
+        if(armor.getType().equals(Material.LEATHER_HELMET)){
+            player.getInventory().setHelmet(armor);
+        }
+        if(armor.getType().equals(Material.LEATHER_CHESTPLATE)){
+            player.getInventory().setChestplate(armor);
+        }
+        if(armor.getType().equals(Material.LEATHER_LEGGINGS)){
+            player.getInventory().setLeggings(armor);
+        }
+        if(armor.getType().equals(Material.LEATHER_BOOTS)){
+            player.getInventory().setBoots(armor);
+        }
+
 
         //player.setSaturation(0); too hard?
 
@@ -149,13 +195,28 @@ public class SpawnManager {
 
         mother.getMotherController().bornBaby(newBornRole);
 
+
         newBornRole.getFamily().setMaxGenerations(newBornRole.getGeneration());
+
+        // Refresh the scoreboard of all family members
+        // so that the generations are up to date
+        newBornRole.getFamily().getMembers().forEach(member -> {
+            ScoreboardHandler.get().refreshScoreboardOfPlayer(member.getPlayer());
+        });
+
+
         Notification.neutralMsg(newBorn, "You were reincarnated as a Baby");
         // Effects
         babyBornEffects(newBorn, mother.getPlayer());
 
-        PotionEffect glow = new PotionEffect(PotionEffectType.GLOWING, 100, 1, true, true, true);
-        SurrogateManager.getInstance().getSurrogateOfPlayer(newBorn).getEntity().addPotionEffect(glow);
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                PotionEffect glow = new PotionEffect(PotionEffectType.GLOWING, 100, 1, true, true, true);
+                SurrogateManager.getInstance().getSurrogateOfPlayer(newBorn).getEntity().addPotionEffect(glow);
+            }
+        }.runTaskLater(MCG.getInstance(), 20L);
+
     }
 
     public static PlayerRole findViableMother(Player child) {

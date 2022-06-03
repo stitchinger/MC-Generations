@@ -1,6 +1,7 @@
 package io.georgeous.mcgenerations.systems.family;
 
 import io.georgeous.mcgenerations.MCG;
+import io.georgeous.mcgenerations.scoreboard.ScoreboardHandler;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.Notification;

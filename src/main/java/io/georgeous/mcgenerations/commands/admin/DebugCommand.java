@@ -8,12 +8,16 @@ import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.Notification;
+import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
 import org.jetbrains.annotations.NotNull;
 import xyz.haoshoku.nick.api.NickAPI;
 
@@ -62,7 +66,8 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
 
         if ("spawn".equals(args[0])) {
             //RoleManager.get().initPlayer(player);
-            SpawnManager.spawnPlayer(player);
+            //SpawnManager.spawnPlayer(player);
+            SpawnManager.get().spawnPlayer(player);
             return true;
         }
 
@@ -77,6 +82,16 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
             NickAPI.resetUniqueId(player);
             NickAPI.resetGameProfileName(player);
             NickAPI.refreshPlayer(player);
+            return true;
+        }
+
+        if ("resetscore".equals(args[0])) {
+            Scoreboard main = Bukkit.getServer().getScoreboardManager().getMainScoreboard();
+            player.setScoreboard(main);
+            return true;
+        }
+        if ("reloadconfig".equals(args[0])) {
+            McgConfig.reload();
             return true;
         }
         return false;

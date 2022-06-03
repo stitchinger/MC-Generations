@@ -2,6 +2,8 @@ package io.georgeous.mcgenerations.systems.role;
 
 import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.SpawnManager;
+import io.georgeous.mcgenerations.files.McgConfig;
+import io.georgeous.mcgenerations.scoreboard.ScoreboardHandler;
 import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
@@ -19,7 +21,7 @@ import static org.bukkit.Bukkit.getServer;
 
 public class RoleManager {
     private static final HashMap<UUID, PlayerRole> roles = new HashMap<>();
-    private static final long VALID_OFFLINE_TIME_SEC = Long.MAX_VALUE / 1000;
+
 
     private static RoleManager instance;
 
@@ -55,24 +57,32 @@ public class RoleManager {
     }
 
     public void initPlayer(Player player) {
-        boolean isValid = PlayerManager.get().getWrapper(player).getLastOfflineTime() < (VALID_OFFLINE_TIME_SEC * 1000);
+        boolean validOfflineTime = PlayerManager.get().getWrapper(player).getLastOfflineTime() < (McgConfig.getValidOfflineTime() * 1000);
 
         boolean roleDead = false;
         if(roleDataExists(player)){
             roleDead = MCG.getInstance().getConfig().getBoolean("data.player." + player.getUniqueId() + ".role.dead");
         }
 
-        if (roleDataExists(player) && isValid && !roleDead) { // restore player
+        if(!validOfflineTime){
+            Notification.errorMsg(player, "Characters only can be restored within " + McgConfig.getValidOfflineTime() + " seconds of offline time.");
+        }
+
+        if (roleDataExists(player) && validOfflineTime && !roleDead) { // restore player
             restoreRoleFromData(player);
         } else {
-            //SpawnManager.spawnPlayer(player);
             player.teleport(MCG.council.getRandomCouncilSpawn());
+            // Reset Player
+            player.getActivePotionEffects().forEach(potionEffect -> {
+                player.removePotionEffect(potionEffect.getType());
+            });
         }
     }
 
     public PlayerRole createAndAddRole(Player player, String name, int age, int gen, Family family) {
         PlayerRole playerRole = new PlayerRole(player, name, age, gen, family);
         roles.put(player.getUniqueId(), playerRole);
+        ScoreboardHandler.get().refreshScoreboardOfPlayer(player);
         return playerRole;
     }
 

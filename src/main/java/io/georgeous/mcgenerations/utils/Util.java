@@ -1,6 +1,7 @@
 package io.georgeous.mcgenerations.utils;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -71,6 +72,30 @@ public class Util {
     public static String getRandomColor() {
         int i = (int) (Math.random() * colorCodes.length);
         return colorCodes[i];
+    }
+
+    public static Color getRandomColorObject() {
+        Color[] colors = {
+                Color.AQUA,
+                Color.GRAY,
+                Color.LIME,
+                Color.BLACK,
+                Color.BLUE,
+                Color.GREEN,
+                Color.MAROON,
+                Color.NAVY,
+                Color.OLIVE,
+                Color.ORANGE,
+                Color.PURPLE,
+                Color.RED,
+                Color.SILVER,
+                Color.TEAL,
+                Color.WHITE,
+                Color.YELLOW
+        };
+        Random r = new Random();
+        int randomNumber = r.nextInt(colors.length);
+        return colors[randomNumber];
     }
 
     public static void giveItemIfNotInInventory(ItemStack item, PlayerInventory inventory) {

@@ -1,5 +1,6 @@
 package io.georgeous.mcgenerations.systems.role.components;
 
+import io.georgeous.mcgenerations.scoreboard.ScoreboardHandler;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import org.bukkit.Sound;
@@ -42,8 +43,7 @@ public class PlayerAge {
 
     public void setAge(int age) {
         ageInYears = age;
-        //playerRole.getPlayer().setLevel(ageInYears);
-
+        ScoreboardHandler.get().refreshScoreboardOfPlayer(playerRole.getPlayer());
         playerRole.getPlayer().playSound(playerRole.getPlayer().getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 0.5f, 1);
     }
 

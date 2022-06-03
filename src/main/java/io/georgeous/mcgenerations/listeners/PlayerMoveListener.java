@@ -13,7 +13,8 @@ public class PlayerMoveListener implements Listener {
     public void onPlayerMove(PlayerMoveEvent event){
         Player player = event.getPlayer();
         if(event.getTo().distance(McgConfig.getCouncilLocation()) < 2){
-            SpawnManager.spawnPlayer(player);
+            //SpawnManager.spawnPlayer(player);
+            SpawnManager.get().spawnPlayer(player);
         }
     }
 }

@@ -4,6 +4,7 @@ import io.georgeous.mcgenerations.Council;
 import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.files.McgConfig;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
+import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -37,6 +38,7 @@ public class PlayerJoinListener implements Listener {
     }
 
     private void welcomeMessage(Player player){
+        player.sendMessage("");
         player.sendMessage("§6Welcome to §l§cONE §fHOUR §cONE §fLIFE");
         BaseComponent[] component = new ComponentBuilder("Please click here to join our ")
                 .color(ChatColor.GOLD)
@@ -47,5 +49,9 @@ public class PlayerJoinListener implements Listener {
                 .create();
         player.spigot().sendMessage(component);
         player.sendMessage("");
+
+        PlayerWrapper playerWrapper = PlayerManager.get().getWrapper(player);
+        long offlineTime = (playerWrapper.getLastOfflineTime() / 1000L);
+        //player.sendMessage((offlineTime) + "sec offline time");
     }
 }

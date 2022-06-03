@@ -61,12 +61,12 @@ public class YouAreCommand implements CommandExecutor {
 
     public void nameChild(Player motherPlayer, String rawName) {
         PlayerRole motherPlayerRole = RoleManager.get().get(motherPlayer);
-        if (Piggyback.carryCoupleMap.get(motherPlayer) == null) {
+        if (Piggyback.carryCoupleMap.getCCFromCarrierPlayer(motherPlayer) == null) {
             Notification.errorMsg(motherPlayer, "You need to carry your baby for naming it.");
             return;
         }
 
-        Entity target = Piggyback.carryCoupleMap.get(motherPlayer).getTarget();
+        Entity target = Piggyback.carryCoupleMap.getCCFromCarrierPlayer(motherPlayer).getTarget();
         String first = rawName.substring(0, 1).toUpperCase() + rawName.substring(1);
 
         if (target instanceof Player childPlayer) {

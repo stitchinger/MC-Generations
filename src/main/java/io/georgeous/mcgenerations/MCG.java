@@ -66,7 +66,7 @@ public final class MCG extends JavaPlugin {
 
          */
 
-        //fileManager = new FileManager(this.getDataFolder().getPath());
+        fileManager = new FileManager(this.getDataFolder().getPath());
         McgConfig.setup(this.getDataFolder().getPath());
 
         overworld = Bukkit.getWorlds().get(0);
@@ -194,24 +194,6 @@ public final class MCG extends JavaPlugin {
         return fileManager;
     }
 
-    public ScoreboardHandler getScoreboardHandler() {
-        return scoreboardHandler;
-    }
-
-    /*
-    public void makeBundleCraftable() {
-        ItemStack item = new ItemStack(Material.BUNDLE);
-        NamespacedKey key = new NamespacedKey(this, "Bundle");
-
-        ShapedRecipe recipe = new ShapedRecipe(key, item);
-        recipe.shape("SLS", "LAL", "LLL");
-        recipe.setIngredient('S', Material.STRING);
-        recipe.setIngredient('L', Material.LEATHER);
-        recipe.setIngredient('A', Material.AIR);
-
-        Bukkit.addRecipe(recipe);
-    }
-     */
 }
 
 /*

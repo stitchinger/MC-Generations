@@ -4,6 +4,7 @@ import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
+import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -31,6 +32,7 @@ public class PlayerQuitListener implements Listener {
             playerManager.saveAndRemoveWrapper(player);
         }
 
+        SurrogateManager.getInstance().destroySurrogateOfPlayer(player);
     }
 
     private void removeFromFamily(PlayerRole role) {

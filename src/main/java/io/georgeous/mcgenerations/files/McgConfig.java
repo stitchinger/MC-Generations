@@ -59,6 +59,7 @@ public class McgConfig {
         cfg.addDefault("baby_cooldown", 180);
         cfg.addDefault("min_birth_age", 15);
         cfg.addDefault("max_birth_age", 45);
+        cfg.addDefault("valid_offline_time_sec", 5);
     }
 
     public static Location getCouncilLocation(){
@@ -96,5 +97,9 @@ public class McgConfig {
 
     public static int getMinBirthAge(){
         return cfg.getInt("min_birth_age");
+    }
+
+    public static long getValidOfflineTime(){
+        return cfg.getLong("valid_offline_time_sec");
     }
 }
