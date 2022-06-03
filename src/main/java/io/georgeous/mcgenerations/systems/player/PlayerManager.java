@@ -68,7 +68,7 @@ public class PlayerManager {
         attachWrapperToPlayer(player);
     }
 
-    public void remove(Player player) {
+    public void saveAndRemoveWrapper(Player player) {
         PlayerWrapper playerWrapper = getWrapper(player);
         if (playerWrapper == null)
             return;

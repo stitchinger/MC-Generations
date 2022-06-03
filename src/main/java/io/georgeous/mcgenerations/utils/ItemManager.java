@@ -45,4 +45,10 @@ public class ItemManager {
         }
         return false;
     }
+
+    public static ItemStack getEveStarterPack() {
+        ItemStack item = new ItemStack(Material.CARROT_ON_A_STICK);
+        return item;
+    }
+
 }

@@ -56,6 +56,9 @@ public class McgConfig {
         cfg.addDefault("council_z", -6011);
         cfg.addDefault("council_y", 264);
         cfg.addDefault("council_noise_frequency", 0.25);
+        cfg.addDefault("baby_cooldown", 180);
+        cfg.addDefault("min_birth_age", 15);
+        cfg.addDefault("max_birth_age", 45);
     }
 
     public static Location getCouncilLocation(){
@@ -81,5 +84,17 @@ public class McgConfig {
 
     public static double getCouncilNoiseFrequency(){
         return cfg.getDouble("council_noise_frequency");
+    }
+
+    public static int getBabyCooldown(){
+        return cfg.getInt("baby_cooldown");
+    }
+
+    public static int getMaxBirthAge(){
+        return cfg.getInt("max_birth_age");
+    }
+
+    public static int getMinBirthAge(){
+        return cfg.getInt("min_birth_age");
     }
 }

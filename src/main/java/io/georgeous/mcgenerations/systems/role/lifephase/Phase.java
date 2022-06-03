@@ -10,18 +10,18 @@ import java.util.List;
 
 public enum Phase {
 
-    BABY(0, 3, 1, 999, false, true,
+    BABY(0, 3, 1, .7f, false, true,
             "", "Baby", 0,128, 3, 2, true, Skin.BABY, true, "Toddler"),
-    TODDLER(3, 6, 1, 999, false, true,
+    TODDLER(3, 6, 1, .9f, false, true,
             "", "Toddler", 1, 0, 2, 1, true, Skin.TODDLER, true, "Child"),
-    CHILD(6, 15, 0, 999, false, false,
+    CHILD(6, 15, 0, .97f, false, false,
             "2007359867", "Child", 2,0, 1, 0, false, Skin.CHILD, true, "Teen"),
-    TEEN(15, 21, 0, 999, true, false,
+    TEEN(15, 21, 0, 1, true, false,
             "297371", "Teen", 3,0, 0, 0, false, Skin.TEEN, false, "Adult"),
-    ADULT(21, 40, 0, 999, true, false,
+    ADULT(21, 40, 0, 1, true, false,
             "584227931", "Adult", 4, 0, 0, 0, false, Skin.ADULT, false, "Elder"),
-    ELDER(40, 60, 0, 999, true, false,
-            "1144027445", "Elder", 5, 0, 1, 0, false, Skin.ELDER, false, null);
+    ELDER(40, 60, 0, 1, true, false,
+            "1144027445", "Elder", 5, 0, 0, 0, false, Skin.ELDER, false, null);
 
     public final String name;
     public final int id;
@@ -29,7 +29,7 @@ public enum Phase {
     public final int endAge;
     public final String skinID;
     public final Skin skin;
-    public final int maxCharsInChat;
+    public final float spellAccuracy;
     public final int hungerRate;
     public final boolean canCarry;
     public final boolean canBeCarried;
@@ -38,12 +38,12 @@ public enum Phase {
     public final List<PotionEffect> effects = new ArrayList<>();
     public final String nextPhase;
 
-    Phase(int startAge, int endAge, int hungerRate, int maxCharsInChat, boolean canCarry, boolean canBeCarried, String skinID,
+    Phase(int startAge, int endAge, int hungerRate, float spellAccuracy, boolean canCarry, boolean canBeCarried, String skinID,
           String name, int id, int jump, int slowness, int digging, boolean surrogate, Skin skin, boolean feedable, String nextPhase) {
         this.startAge = startAge;
         this.endAge = endAge;
         this.hungerRate = hungerRate;
-        this.maxCharsInChat = maxCharsInChat;
+        this.spellAccuracy = spellAccuracy;
         this.canCarry = canCarry;
         this.canBeCarried = canBeCarried;
         this.skinID = skinID;
@@ -89,8 +89,9 @@ public enum Phase {
         return canCarry;
     }
 
-    public int getMaxCharsInChat() {
-        return maxCharsInChat;
+
+    public float getSpellAccuracy() {
+        return spellAccuracy;
     }
 
     public String getSkinID() {

@@ -4,6 +4,7 @@ import io.georgeous.mcgenerations.files.McgConfig;
 import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
+import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
@@ -13,6 +14,7 @@ import io.georgeous.mcgenerations.utils.Util;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -26,64 +28,79 @@ public class SpawnManager {
     private static final int timeToHowtoNotification = 15;
 
 
-    public static void spawnPlayer(Player playerToSpawn) {
-        Notification.neutralMsg(playerToSpawn, "You will be reborn in " + McgConfig.getSecInLobby() + " seconds");
-        NickAPI.refreshPlayer(playerToSpawn);
+    public static void spawnPlayer(Player spawnedPlayer) {
+        PlayerWrapper spawnedPlayerWrapper = PlayerManager.get().getWrapper(spawnedPlayer);
+        if(spawnedPlayerWrapper.getIsSpawning()){
+            return;
+        }
+        Notification.neutralMsg(spawnedPlayer, "You will be reborn in " + McgConfig.getSecInLobby() + " seconds");
 
-        GameMode playerGM = playerToSpawn.getGameMode();
-        preparePlayerForLobby(playerToSpawn);
+        spawnedPlayerWrapper.setIsSpawning(true);
 
-        PlayerRole finalMom = findViableMother(playerToSpawn);
-        boolean playerToSpawnInDebugMode = PlayerManager.get().getWrapper(playerToSpawn).isDebugMode();
+        // Effects
+        spawnedPlayer.getWorld().playSound(spawnedPlayer.getLocation(), Sound.BLOCK_BEACON_POWER_SELECT, SoundCategory.MASTER,1.5f,1f);
+        spawnedPlayer.getWorld().spawnParticle(Particle.END_ROD, spawnedPlayer.getLocation().add(0,1,0), 60, 0.01, 0.05, 0.01);
 
-        if (finalMom != null && !playerToSpawnInDebugMode) {
-            finalMom.getMotherController().setReservedForBaby(true);
-            Notification.neutralMsg(finalMom.getPlayer(), "You will get a baby in " + McgConfig.getSecInLobby() + " seconds");
-            resetPlayer(playerToSpawn, playerGM);
+
+        NickAPI.refreshPlayer(spawnedPlayer);
+
+
+        PlayerRole chosenMotherRole = findViableMother(spawnedPlayer);
+        boolean playerToSpawnInDebugMode = PlayerManager.get().getWrapper(spawnedPlayer).isDebugMode();
+
+        // Mother gets notified of birth
+        if (chosenMotherRole != null && !playerToSpawnInDebugMode) {
+            chosenMotherRole.getMotherController().setReservedForBaby(true);
+            Notification.neutralMsg(chosenMotherRole.getPlayer(), "You will get a baby in " + McgConfig.getSecInLobby() + " seconds");
         }
 
 
-        Bukkit.getScheduler().scheduleSyncDelayedTask(MCG.getInstance(), () -> {
-            if(!playerToSpawn.isOnline()){
-                MCG.getInstance().getLogger().info("Player left right before spawning");
-                Notification.neutralMsg(finalMom.getPlayer(), "The baby didn't make it. Sorry");
-                finalMom.getMotherController().setReservedForBaby(false);
-                return;
-            }
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                boolean motherStillValid =
+                        chosenMotherRole != null
+                                && !chosenMotherRole.isDead
+                                && chosenMotherRole.getPlayer().isOnline();
 
-            if (finalMom != null && !playerToSpawnInDebugMode && !finalMom.isDead && finalMom.getPlayer().isOnline()) {
-                spawnAsBaby(playerToSpawn, finalMom);
-            } else {
-                spawnAsEve(playerToSpawn);
-            }
-
-            resetPlayer(playerToSpawn, playerGM);
-
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    Notification.neutralMsg(playerToSpawn, "Use [ §d/howto§r ] command to learn how to play.");
+                if (motherStillValid && !playerToSpawnInDebugMode) {
+                    if(!spawnedPlayer.isOnline()){
+                        Notification.neutralMsg(chosenMotherRole.getPlayer(), "The baby didn't make it. Sorry");
+                        chosenMotherRole.getMotherController().setReservedForBaby(false);
+                        return;
+                    }
+                    spawnAsBaby(spawnedPlayer, chosenMotherRole);
+                } else {
+                    spawnAsEve(spawnedPlayer);
                 }
-            }.runTaskLater(MCG.getInstance(), 20L * timeToHowtoNotification);
 
-        }, McgConfig.getSecInLobby() * 20L); // 20 Tick (1 Second) delay before run() is called
+                resetPlayer(spawnedPlayerWrapper);
+
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        Notification.neutralMsg(spawnedPlayer, "Use [ §d/howto§r ] command to learn how to play.");
+                    }
+                }.runTaskLater(MCG.getInstance(), 20L * timeToHowtoNotification);
+            }
+        }.runTaskLater(MCG.getInstance(), 20L * McgConfig.getSecInLobby());
     }
 
-    private static void resetPlayer(Player player, GameMode gmBefore){
-        player.setGameMode(gmBefore);
-        player.setInvulnerable(false);
-        PlayerManager.get().getWrapper(player).setDiedOfOldAge(false);
-        PlayerManager.get().getWrapper(player).setLastBedLocation(null);
+    private static void resetPlayer(PlayerWrapper wrapper){
+        // Reset Player
+        wrapper.setIsSpawning(false);
+        wrapper.setDiedOfOldAge(false);
+        wrapper.setLastBedLocation(null);
+        wrapper.getPlayer().setGameMode(wrapper.getLastGameMode());
+        wrapper.getPlayer().setInvulnerable(false);
     }
 
-    private static void preparePlayerForLobby(Player player){
-        player.setGameMode(GameMode.ADVENTURE);
-        player.setInvulnerable(true);
-    }
+
 
     public static void spawnAsEve(Player player) {
         // If diedOfOldAge spawn at last bed
-        Location lastBed = PlayerManager.get().getWrapper(player).getLastBedLocation();
+        PlayerWrapper playerWrapper = PlayerManager.get().getWrapper(player);
+        Location lastBed = playerWrapper.getLastBedLocation();
         boolean bedIsValid = false;
         if (lastBed != null) {
             bedIsValid = lastBed.distance(McgConfig.getCouncilLocation()) > 500;
@@ -92,9 +109,7 @@ public class SpawnManager {
             // This could happen, if the player never interacted with a bed
         }
 
-        if (PlayerManager.get().getWrapper(player).getDiedOfOldAge() &&
-                PlayerManager.get().getWrapper(player).getLastBedLocation() != null &&
-                bedIsValid)
+        if (playerWrapper.getDiedOfOldAge() && playerWrapper.getLastBedLocation() != null && bedIsValid)
         {
             player.teleport(PlayerManager.get().getWrapper(player).getLastBedLocation());
         } else {
@@ -106,6 +121,10 @@ public class SpawnManager {
         String name = NameManager.randomFirst();
         Family family = FamilyManager.addFamily(NameManager.randomLast());
         RoleManager.get().createAndAddRole(player, name, 10, 1, family);
+
+        ItemStack items = new ItemStack(Material.CARROT);
+        items.setAmount(10);
+        player.getInventory().addItem(items);
 
         //player.setSaturation(0); too hard?
 
@@ -141,7 +160,7 @@ public class SpawnManager {
 
     public static PlayerRole findViableMother(Player child) {
         List<PlayerRole> viableMothers = new ArrayList<>();
-
+        Bukkit.getLogger().info("Looking for mother");
         // find viable Mothers on Server
         for (Player player : Bukkit.getOnlinePlayers()) {
             PlayerRole playerRole = RoleManager.get().get(player);

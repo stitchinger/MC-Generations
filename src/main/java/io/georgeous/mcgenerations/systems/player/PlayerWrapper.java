@@ -1,5 +1,6 @@
 package io.georgeous.mcgenerations.systems.player;
 
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -13,6 +14,8 @@ public class PlayerWrapper {
     private boolean debugMode = false;
     private boolean diedOfOldAge = false;
     private Location lastBedLocation = null;
+    private boolean isSpawing = false;
+    private GameMode lastGameMode = GameMode.SURVIVAL;
 
     public PlayerWrapper(Player player) {
         this.player = player;
@@ -89,5 +92,21 @@ public class PlayerWrapper {
 
     public void setLastBedLocation(Location loc) {
         this.lastBedLocation = loc;
+    }
+
+    public boolean getIsSpawning(){
+        return isSpawing;
+    }
+
+    public void setIsSpawning(boolean value){
+        isSpawing = value;
+    }
+
+    public GameMode getLastGameMode(){
+        return lastGameMode;
+    }
+
+    public void setLastGameMode(GameMode gm){
+        lastGameMode = gm;
     }
 }

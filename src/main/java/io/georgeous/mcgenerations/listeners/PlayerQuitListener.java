@@ -28,7 +28,7 @@ public class PlayerQuitListener implements Listener {
 
         PlayerWrapper wrapper = playerManager.getWrapper(player);
         if(wrapper != null){
-            playerManager.remove(player);
+            playerManager.saveAndRemoveWrapper(player);
         }
 
     }

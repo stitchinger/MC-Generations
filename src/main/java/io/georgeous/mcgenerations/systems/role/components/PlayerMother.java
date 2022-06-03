@@ -1,17 +1,16 @@
 package io.georgeous.mcgenerations.systems.role.components;
 
+import io.georgeous.mcgenerations.files.McgConfig;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.utils.Notification;
+import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerMother {
     private final PlayerRole playerRole;
-    private final long BABY_COOLDOWN = 180; // in seconds
-    private final int MIN_BIRTH_AGE = 16;
-    private final int MAX_BIRTH_AGE = 45;
     private final List<PlayerRole> children;
     private long lastChildTime;
     private boolean isReservedForBaby = false;
@@ -42,9 +41,9 @@ public class PlayerMother {
         boolean playerInDebug = PlayerManager.get().getWrapper(playerRole.getPlayer()).isDebugMode();
         boolean notTooHungry = playerRole.getPlayer().getFoodLevel() >= 10;
         boolean isHealthy = playerRole.getPlayer().getHealth() >= 4;
-        return playerRole.getAgeManager().getAge() > MIN_BIRTH_AGE
-                && playerRole.getAgeManager().getAge() < MAX_BIRTH_AGE
-                && secSinceLastBaby() > BABY_COOLDOWN
+        return playerRole.getAgeManager().getAge() > McgConfig.getMinBirthAge()
+                && playerRole.getAgeManager().getAge() < McgConfig.getMaxBirthAge()
+                && secSinceLastBaby() > McgConfig.getBabyCooldown()
                 && playerRole.getPlayer().getHealth() > 0
                 && !isReservedForBaby()
                 && notTooHungry

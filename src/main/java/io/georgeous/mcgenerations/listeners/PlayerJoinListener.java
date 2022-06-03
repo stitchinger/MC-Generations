@@ -1,5 +1,8 @@
 package io.georgeous.mcgenerations.listeners;
 
+import io.georgeous.mcgenerations.Council;
+import io.georgeous.mcgenerations.MCG;
+import io.georgeous.mcgenerations.files.McgConfig;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import net.md_5.bungee.api.ChatColor;
@@ -12,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerJoinListener implements Listener {
     private final RoleManager roleManager = RoleManager.get();
@@ -20,13 +24,16 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        player.setGameMode(GameMode.SURVIVAL);  // Just in case
-        welcomeMessage(player);
 
         playerManager.initPlayer(player);
-        //roleManager.initPlayer(player);
+        roleManager.initPlayer(player);
 
-        event.setJoinMessage("");
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                welcomeMessage(player);
+            }
+        }.runTaskLater(MCG.getInstance(),20L * 2);
     }
 
     private void welcomeMessage(Player player){

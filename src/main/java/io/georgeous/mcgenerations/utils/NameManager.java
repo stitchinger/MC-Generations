@@ -42,6 +42,9 @@ public class NameManager {
 
 
     public static String randomFirst() {
+        if(usedNames.size() > firstNames.length / 2){
+            usedNames = new ArrayList<>();
+        }
         String newName = "";
         do{
             int i = (int) (Math.random() * (firstNames.length - 1));

@@ -41,7 +41,7 @@ public class PlayerChat implements Listener {
         lastName = playerRole.getFamily().getColor() +  playerRole.getFamily().getName().substring(0, 1) + ".";
 
         TextComponent prefix = new TextComponent(firstName + " " + lastName + "§f: ");
-        TextComponent msg = new TextComponent(prepareMsg(event.getMessage(), pm.getCurrentPhase().getMaxCharsInChat()));
+        TextComponent msg = new TextComponent(prepareMsg(event.getMessage(), pm.getCurrentPhase().getSpellAccuracy()));
 
         rangedBroadcast(player, prefix, msg, CHAT_RANGE);
     }
@@ -109,15 +109,14 @@ public class PlayerChat implements Listener {
         );
     }
 
-    public String prepareMsg(String msg, int maxLength) {
-        double correctSpellingChance = 1;
+    public String prepareMsg(String msg, float spellAccuracy) {
         msg = msg.trim();
-        msg = msg.substring(0, Math.min(msg.length(), maxLength));
+        msg = msg.substring(0, Math.min(msg.length(), 999));
         String newMsg = "";
         for(char c : msg.toCharArray()) {
             char replacement;
 
-            if(Math.random() <= correctSpellingChance){
+            if(Math.random() <= spellAccuracy){
                 replacement = c;
             } else{
                 Random random = new Random();
@@ -125,7 +124,7 @@ public class PlayerChat implements Listener {
                 replacement = randomizedCharacter;
             }
 
-            if(Math.random() <= correctSpellingChance){
+            if(Math.random() <= spellAccuracy){
                 newMsg = newMsg + replacement;
             }
         }

@@ -66,6 +66,7 @@ public class RoleManager {
             restoreRoleFromData(player);
         } else {
             //SpawnManager.spawnPlayer(player);
+            player.teleport(MCG.council.getRandomCouncilSpawn());
         }
     }
 
