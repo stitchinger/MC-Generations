@@ -73,6 +73,7 @@ public class RoleManager {
         } else {
             player.teleport(MCG.council.getRandomCouncilSpawn());
             // Reset Player
+            player.getInventory().clear();
             player.getActivePotionEffects().forEach(potionEffect -> {
                 player.removePotionEffect(potionEffect.getType());
             });

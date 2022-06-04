@@ -125,6 +125,7 @@ public class SpawnManager {
         wrapper.setLastBedLocation(null);
         wrapper.getPlayer().setGameMode(wrapper.getLastGameMode());
         wrapper.getPlayer().setInvulnerable(false);
+        wrapper.getPlayer().getInventory().clear();
     }
 
     public static void spawnAsEve(Player player) {
