@@ -50,8 +50,5 @@ public class PlayerJoinListener implements Listener {
         player.spigot().sendMessage(component);
         player.sendMessage("");
 
-        PlayerWrapper playerWrapper = PlayerManager.get().getWrapper(player);
-        long offlineTime = (playerWrapper.getLastOfflineTime() / 1000L);
-        //player.sendMessage((offlineTime) + "sec offline time");
     }
 }

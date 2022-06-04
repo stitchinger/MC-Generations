@@ -71,6 +71,7 @@ public class PlayerChat implements Listener {
         TextComponent customPrefix = prefix.duplicate();
 
 
+        // Adjust chat color to distance
         if(distanceBetweenPlayers < range * (1d/3d)){
             customPrefix.setColor(ChatColor.WHITE);
         } else if(distanceBetweenPlayers < range * (2d/3d)){
@@ -81,8 +82,6 @@ public class PlayerChat implements Listener {
             customPrefix.setColor(ChatColor.DARK_GRAY);
             customPrefix.setStrikethrough(true);
         }
-
-
 
         if (distanceBetweenPlayers <= range) {
             if(sendingPlayer != receivingPlayer){
@@ -137,3 +136,14 @@ public class PlayerChat implements Listener {
         return newMsg;
     }
 }
+
+
+// if role
+    // change name
+    // Send to near Roles
+    // Send to OP
+    // Send to Player without role
+
+// if no role
+    // send to players without role
+    // send to op
