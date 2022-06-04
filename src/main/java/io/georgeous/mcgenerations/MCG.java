@@ -157,6 +157,7 @@ public final class MCG extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new Interact(), this);
         getServer().getPluginManager().registerEvents(new InventoryListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerMoveListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerCraftListener(), this);
 
         getServer().getPluginManager().registerEvents(new PlayerCarry(), this);
         getServer().getPluginManager().registerEvents(new PlayerPhaseUp(), this);
