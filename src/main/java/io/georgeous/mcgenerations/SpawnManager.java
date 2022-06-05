@@ -156,9 +156,6 @@ public class SpawnManager {
         player.getInventory().addItem(ItemManager.getEveStarterFood());
 
         ItemStack armor = ItemManager.getEveStarterArmor();
-        player.sendMessage(armor.getType().name());
-        player.sendMessage(armor.getType().toString());
-
         if(armor.getType().equals(Material.LEATHER_HELMET)){
             player.getInventory().setHelmet(armor);
         }

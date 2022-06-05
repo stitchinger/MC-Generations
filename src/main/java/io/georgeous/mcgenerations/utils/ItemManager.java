@@ -99,7 +99,6 @@ public class ItemManager {
         meta.setColor(Util.getRandomColorObject());
         armor.setItemMeta(meta);
 
-
         return armor;
     }
 

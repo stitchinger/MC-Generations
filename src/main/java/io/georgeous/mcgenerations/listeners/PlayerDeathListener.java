@@ -41,9 +41,6 @@ public class PlayerDeathListener implements Listener {
         RoleManager.get().removeRoleData(role);
         RoleManager.get().removeRoleOfPlayer(player);
 
-        //Notification.errorMsg(player, "Leaving the server while you are dead can cause issues on the rejoin!");
-        //Notification.errorMsg(player, "Please respawn first before leaving!");
-
         //dealWithRoleDeath(event);
         //removeMember(player);
         //SurrogateManager.getInstance().destroySurrogateOfPlayer(player);
