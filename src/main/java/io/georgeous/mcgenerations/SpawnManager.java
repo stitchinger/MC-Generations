@@ -91,6 +91,7 @@ public class SpawnManager {
 
         @Override
         public void run() {
+            resetPlayer(spawnedPlayerWrapper);
             boolean motherStillValid =
                     chosenMotherRole != null
                             && !chosenMotherRole.isDead
@@ -107,7 +108,6 @@ public class SpawnManager {
                 spawnAsEve(spawnedPlayer);
             }
 
-            resetPlayer(spawnedPlayerWrapper);
 
             new BukkitRunnable() {
                 @Override

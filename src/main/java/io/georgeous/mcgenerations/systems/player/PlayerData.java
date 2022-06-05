@@ -39,19 +39,19 @@ public class PlayerData {
     }
 
     public void restoreFrom(PlayerWrapper playerWrapper, ConfigurationSection cs) {
-        int lives = cs.getInt("lifes");
+        int lives = cs.getInt("lifes", 0);
         playerWrapper.setLifes(lives);
 
-        double karma = cs.getDouble("karma");
+        double karma = cs.getDouble("karma", 0);
         playerWrapper.setKarma(karma);
 
-        long playTime = cs.getLong("playtime");
+        long playTime = cs.getLong("playtime", 0);
         playerWrapper.setPlayTime(playTime);
 
-        long timeSinceOffline = cs.getLong("timesinceoffline");
+        long timeSinceOffline = cs.getLong("timesinceoffline", 999999L);
         playerWrapper.setLastOfflineTime(System.currentTimeMillis() - timeSinceOffline);
 
-        boolean debugMode = cs.getBoolean("debug");
+        boolean debugMode = cs.getBoolean("debug", false);
         playerWrapper.setDebugMode(debugMode);
     }
 

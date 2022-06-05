@@ -200,9 +200,7 @@ public final class MCG extends JavaPlugin {
 /*
 
 
-Todo: Avoid twins and tripplets
-Todo: Give baby to well fed mother
-Todo: NOcollision problem came back with surrogate
+
 Todo: Council countdown beeping
 Todo: Setup config file for ...
 Todo: Show baby cooldown in info command
