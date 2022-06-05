@@ -50,7 +50,7 @@ public class PlayerManager {
 
         PlayerWrapper wrapper = new PlayerWrapper(player);
         playersMap.put(uuid, wrapper);
-        Bukkit.getLogger().info("Created wrapper for: " + player.getName());
+        Bukkit.getLogger().info("Created wrapper : " + player.getName());
     }
 
     public Set<UUID> getWrapperAttachedPlayers() {

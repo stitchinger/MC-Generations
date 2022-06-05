@@ -4,6 +4,11 @@ import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.files.McgConfig;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -42,8 +47,23 @@ public class PlayerRespawnListener implements Listener {
         }.runTaskLater(MCG.getInstance(), 20L);
 
         event.setRespawnLocation(MCG.council.getRandomCouncilSpawn());
+
+        discordReminderMessage(player);
     }
 
+
+    private void discordReminderMessage(Player player){
+        player.sendMessage("");
+        BaseComponent[] component = new ComponentBuilder("Please dont forget to join the family on ")
+                .color(ChatColor.GOLD)
+                .append("Discord!").color(ChatColor.BLUE).underlined(true)
+                .event(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/U262bxT4jh"))
+                .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                        new ComponentBuilder("Click to join!").color(ChatColor.GRAY).italic(true).create()))
+                .create();
+        player.spigot().sendMessage(component);
+        player.sendMessage("");
+    }
 
 
 

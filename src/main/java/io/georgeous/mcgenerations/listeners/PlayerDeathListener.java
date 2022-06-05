@@ -1,13 +1,11 @@
 package io.georgeous.mcgenerations.listeners;
 
 import io.georgeous.mcgenerations.MCG;
-import io.georgeous.mcgenerations.files.McgConfig;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.BlockFacing;
 import io.georgeous.mcgenerations.utils.ItemManager;
-import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;

@@ -10,6 +10,11 @@ import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
 import io.georgeous.mcgenerations.utils.NameManager;
 import io.georgeous.mcgenerations.utils.Notification;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -77,6 +82,8 @@ public class RoleManager {
             player.getActivePotionEffects().forEach(potionEffect -> {
                 player.removePotionEffect(potionEffect.getType());
             });
+
+
         }
     }
 
@@ -173,4 +180,6 @@ public class RoleManager {
             return false;
         return phaseManager.getCurrentPhase().getName().equalsIgnoreCase("baby");
     }
+
+
 }
