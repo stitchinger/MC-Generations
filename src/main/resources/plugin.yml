@@ -20,5 +20,6 @@ commands:
   howto:
   discord:
   broadcast:
+  babyhandler:
 depend: [Piggyback, NickAPI, Petmanager]
 

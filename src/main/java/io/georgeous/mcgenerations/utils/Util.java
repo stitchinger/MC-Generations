@@ -3,6 +3,7 @@ package io.georgeous.mcgenerations.utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.Damageable;
@@ -101,6 +102,10 @@ public class Util {
     public static void giveItemIfNotInInventory(ItemStack item, PlayerInventory inventory) {
         if (Util.findInInventory(item, inventory) == null) {
             inventory.addItem(item);
+        } else{
+            if(inventory.getHolder() instanceof Player player){
+                Notification.errorMsg(player, "You already have that item in your inventory");
+            }
         }
     }
 

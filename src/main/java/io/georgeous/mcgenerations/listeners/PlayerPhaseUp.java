@@ -3,6 +3,7 @@ package io.georgeous.mcgenerations.listeners;
 import io.georgeous.mcgenerations.events.PlayerPhaseUpEvent;
 import io.georgeous.mcgenerations.scoreboard.ScoreboardHandler;
 import io.georgeous.mcgenerations.utils.ItemManager;
+import io.georgeous.mcgenerations.utils.Notification;
 import io.georgeous.mcgenerations.utils.Util;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,7 +21,14 @@ public class PlayerPhaseUp implements Listener {
             player.getInventory().clear();
         }
         if(phaseId >= 3 && phaseId < 5){
-            Util.giveItemIfNotInInventory(ItemManager.createBabyHandler(),player.getInventory());
+            if(player.getInventory().firstEmpty() == -1){
+                Notification.errorMsg(player, "Inventory full! Use </babyhandler> to get a Baby-Handler");
+            } else{
+                Util.giveItemIfNotInInventory(ItemManager.createBabyHandler(),player.getInventory());
+            }
+
+
+
         }
     }
 }

@@ -178,6 +178,7 @@ public final class MCG extends JavaPlugin {
         registerCommand("howto", new HowtoCommand());
         registerCommand("discord", new DiscordCommand());
         registerCommand("broadcast", new BroadcastCommand());
+        registerCommand("babyhandler", new BabyHandlerCommand());
 
         registerCommand("msg", new CommandDeactivator());
         registerCommand("w", new CommandDeactivator());

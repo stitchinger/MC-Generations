@@ -17,9 +17,9 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void disableBabyHandlerDrop(PlayerDropItemEvent event) {
-        event.getPlayer().sendMessage("NO can doo");
         ItemStack item = event.getItemDrop().getItemStack();
         if (ItemManager.isBabyHandler(item)) {
+            Notification.errorMsg(event.getPlayer(), "You cant drop your Baby-Handler");
             event.setCancelled(true);
         }
     }
@@ -54,12 +54,15 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void disableBabyHandlerMove(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
         if(event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY){
             if(ItemManager.isBabyHandler(event.getCurrentItem()) && event.getClickedInventory() == event.getWhoClicked().getInventory()) {
+                Notification.errorMsg(player, "You cant move the Baby-Handler in another inventory");
                 event.setCancelled(true);
             }
         }else if(event.getAction() == InventoryAction.PLACE_ALL){
             if(ItemManager.isBabyHandler(event.getCursor()) && event.getClickedInventory() != event.getWhoClicked().getInventory()) {
+                Notification.errorMsg(player, "You cant move the Baby-Handler in another inventory");
                 event.setCancelled(true);
             }
         }

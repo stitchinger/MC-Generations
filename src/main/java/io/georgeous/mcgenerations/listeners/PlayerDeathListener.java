@@ -41,9 +41,6 @@ public class PlayerDeathListener implements Listener {
         RoleManager.get().removeRoleData(role);
         RoleManager.get().removeRoleOfPlayer(player);
 
-        //dealWithRoleDeath(event);
-        //removeMember(player);
-        //SurrogateManager.getInstance().destroySurrogateOfPlayer(player);
     }
 
     @EventHandler
