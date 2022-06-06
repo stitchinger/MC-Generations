@@ -9,10 +9,7 @@ import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
-import io.georgeous.mcgenerations.utils.ItemManager;
-import io.georgeous.mcgenerations.utils.NameManager;
-import io.georgeous.mcgenerations.utils.Notification;
-import io.georgeous.mcgenerations.utils.Util;
+import io.georgeous.mcgenerations.utils.*;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -21,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 import xyz.haoshoku.nick.api.NickAPI;
 
 import java.util.ArrayList;
@@ -140,37 +138,18 @@ public class SpawnManager {
             // This could happen, if the player never interacted with a bed
         }
 
+        // Teleport Eve
         if (playerWrapper.getDiedOfOldAge() && playerWrapper.getLastBedLocation() != null && bedIsValid) {
             player.teleport(PlayerManager.get().getWrapper(player).getLastBedLocation());
         } else {
-            Location loc = McgConfig.getSpawnLocation();
-            double radius = McgConfig.getSpawnRadius();
-            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "spreadplayers " + loc.getX() + " " + loc.getZ() + " 0 " + radius + " false " + player.getName());
+            randomEveSpawn(player);
         }
 
         String name = NameManager.randomFirst();
         Family family = FamilyManager.addFamily(NameManager.randomLast());
         RoleManager.get().createAndAddRole(player, name, 10, 1, family);
 
-        player.getInventory().addItem(ItemManager.getEveStarterSeeds());
-        player.getInventory().addItem(ItemManager.getEveStarterFood());
-
-        ItemStack armor = ItemManager.getEveStarterArmor();
-        if(armor.getType().equals(Material.LEATHER_HELMET)){
-            player.getInventory().setHelmet(armor);
-        }
-        if(armor.getType().equals(Material.LEATHER_CHESTPLATE)){
-            player.getInventory().setChestplate(armor);
-        }
-        if(armor.getType().equals(Material.LEATHER_LEGGINGS)){
-            player.getInventory().setLeggings(armor);
-        }
-        if(armor.getType().equals(Material.LEATHER_BOOTS)){
-            player.getInventory().setBoots(armor);
-        }
-
-
-        //player.setSaturation(0); too hard?
+        equipEve(player);
 
         new BukkitRunnable() {
             @Override
@@ -179,8 +158,33 @@ public class SpawnManager {
             }
         }.runTaskLater(MCG.getInstance(), 20);
 
-        Notification.neutralMsg(player, "You were reincarnated as an Eve");
+        Notification.neutralMsg(player, "You were reborn as an Eve");
         Notification.neutralMsg(player, "Use [ §d/family rename Smith§r ] to rename your family");
+    }
+
+    private static void randomEveSpawn(Player player){
+        //Location loc = McgConfig.getSpawnLocation();
+        Location loc = rotationSpawnResult();
+        double radius = McgConfig.getSpawnRadius();
+        String cmd = "spreadplayers " + loc.getX() + " " + loc.getZ() + " 0 " + radius + " false " + player.getName();
+        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), cmd);
+
+    }
+
+    private static Location rotationSpawnResult(){
+        Location rotationCenter = McgConfig.getSpawnRotationCenter();
+        double rotationRadius = McgConfig.getSpawnRotationRadius();
+        double time = System.currentTimeMillis() / 1000d / 60d / 60d;
+        double radian =  (time % (2 * Math.PI)) - Math.PI;
+
+        double x = Math.cos(radian);
+        double z = Math.sin(radian);
+
+
+        Vector dir = new Vector(x,0, z);
+        rotationCenter.add(dir.multiply(rotationRadius));
+
+        return rotationCenter;
     }
 
     public static void spawnAsBaby(Player newBorn, PlayerRole mother) {
@@ -215,6 +219,25 @@ public class SpawnManager {
             }
         }.runTaskLater(MCG.getInstance(), 20L);
 
+    }
+
+    private static void equipEve(Player player){
+        player.getInventory().addItem(ItemManager.getEveStarterSeeds());
+        player.getInventory().addItem(ItemManager.getEveStarterFood());
+
+        ItemStack armor = ItemManager.getEveStarterArmor();
+        if(armor.getType().equals(Material.LEATHER_HELMET)){
+            player.getInventory().setHelmet(armor);
+        }
+        if(armor.getType().equals(Material.LEATHER_CHESTPLATE)){
+            player.getInventory().setChestplate(armor);
+        }
+        if(armor.getType().equals(Material.LEATHER_LEGGINGS)){
+            player.getInventory().setLeggings(armor);
+        }
+        if(armor.getType().equals(Material.LEATHER_BOOTS)){
+            player.getInventory().setBoots(armor);
+        }
     }
 
     public static PlayerRole findViableMother(Player child) {

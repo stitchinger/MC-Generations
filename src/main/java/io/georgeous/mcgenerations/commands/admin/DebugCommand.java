@@ -1,6 +1,5 @@
 package io.georgeous.mcgenerations.commands.admin;
 
-
 import io.georgeous.mcgenerations.SpawnManager;
 import io.georgeous.mcgenerations.commands.CommandUtils;
 import io.georgeous.mcgenerations.files.McgConfig;
@@ -10,14 +9,13 @@ import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
 import org.jetbrains.annotations.NotNull;
 import xyz.haoshoku.nick.api.NickAPI;
 
@@ -56,17 +54,18 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if ("health".equals(args[0])) {
-            player.sendMessage("max: " + String.valueOf(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()));
-            player.sendMessage("base: " + String.valueOf(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue()));
-            player.sendMessage("default: " + String.valueOf(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue()));
-            player.sendMessage(String.valueOf(player.getHealth()));
+        if ("speed".equals(args[0])) {
+            AttributeInstance speed = player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
+            player.sendMessage(speed.getBaseValue() + "");
+            player.sendMessage(speed.getDefaultValue() + "");
+            player.sendMessage(speed.getValue() + "");
+            player.setWalkSpeed(0.7f);
+            //speed.setBaseValue(speed.getDefaultValue());
+
             return true;
         }
 
         if ("spawn".equals(args[0])) {
-            //RoleManager.get().initPlayer(player);
-            //SpawnManager.spawnPlayer(player);
             SpawnManager.get().spawnPlayer(player);
             return true;
         }

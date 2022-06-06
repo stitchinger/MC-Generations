@@ -1,7 +1,6 @@
 package io.georgeous.mcgenerations.files;
 
 import io.georgeous.mcgenerations.MCG;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -49,6 +48,10 @@ public class McgConfig {
 
     private static void setupDefaults(){
         cfg.addDefault("spawn_timer_sec", 5);
+        cfg.addDefault("eve_spawn_center_x", 0);
+        cfg.addDefault("eve_spawn_center_z", 0);
+        cfg.addDefault("eve_spawn_rotation_radius", 1000);
+        cfg.addDefault("eve_spawn_rotation_speed", 8);
         cfg.addDefault("eve_spawn_x", 540);
         cfg.addDefault("eve_spawn_z", 1800);
         cfg.addDefault("eve_spawn_radius", 200);
@@ -75,8 +78,22 @@ public class McgConfig {
         return new Location(MCG.overworld, x, 0, z);
     }
 
+    public static Location getSpawnRotationCenter(){
+        double x = cfg.getDouble("eve_spawn_center_x");
+        double z = cfg.getDouble("eve_spawn_center_z");
+        return new Location(MCG.overworld, x, 0, z);
+    }
+
+    public static double getSpawnRotationRadius(){
+        return cfg.getDouble("eve_spawn_rotation_radius");
+    }
+
     public static double getSpawnRadius(){
         return cfg.getDouble("eve_spawn_radius");
+    }
+
+    public static double getSpawnRotationSpeed(){
+        return cfg.getDouble("eve_spawn_rotation_speed");
     }
 
     public static int getSecInLobby(){

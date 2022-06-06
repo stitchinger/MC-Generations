@@ -21,7 +21,6 @@ public class BroadcastCommand implements CommandExecutor {
             }
         }
 
-
         if (args.length == 0) {
             return true;
         }
@@ -29,7 +28,7 @@ public class BroadcastCommand implements CommandExecutor {
         String msg = "§6SERVER MSG: ";
 
         for (String arg : args) {
-            msg = msg + " " +  String.valueOf(arg);
+            msg = msg + " " + String.valueOf(arg);
         }
 
         Bukkit.broadcastMessage(msg);
