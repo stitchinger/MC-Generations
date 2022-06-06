@@ -183,5 +183,4 @@ public class RoleManager {
         return phaseManager.getCurrentPhase().getName().equalsIgnoreCase("baby");
     }
 
-
 }

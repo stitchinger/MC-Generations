@@ -41,7 +41,6 @@ public class Interact implements Listener {
             return;
         }
 
-
         feeder.setFoodLevel(Math.max(feeder.getFoodLevel() - 2, 0));
         int newFoodLevel = Math.min(baby.getFoodLevel() + 5, 20);
         baby.setFoodLevel(newFoodLevel);
@@ -61,9 +60,17 @@ public class Interact implements Listener {
         if (!(event.getDamager() instanceof Player damager) || !(event.getEntity() instanceof Player receiver))
             return;
 
+        PlayerRole damagerRole = RoleManager.get().get(damager);
+        PlayerRole receiverRole = RoleManager.get().get(receiver);
+
+        if(damagerRole == null || receiverRole == null){
+            event.setCancelled(true);
+            return;
+        }
+
         if (Family.inSameFamily(damager, receiver)) {
             event.setCancelled(true);
-            friendlyFamilyTalk(RoleManager.get().get(damager), RoleManager.get().get(receiver));
+            friendlyFamilyTalk(damagerRole, receiverRole);
         }
     }
 
@@ -73,11 +80,21 @@ public class Interact implements Listener {
             return;
         }
 
+        PlayerRole damagerRole = RoleManager.get().get(damager);
+        PlayerRole receiverRole = RoleManager.get().get(receiver);
+
+        if(damagerRole == null || receiverRole == null){
+            event.setCancelled(true);
+            return;
+        }
+
         if (Family.inSameFamily(damager, receiver)) {
             event.setCancelled(true);
-            friendlyFamilyTalk(RoleManager.get().get(damager), RoleManager.get().get(receiver));
+            friendlyFamilyTalk(damagerRole, receiverRole);
         }
     }
+
+
 
 
 
