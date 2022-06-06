@@ -95,9 +95,6 @@ public class Interact implements Listener {
     }
 
 
-
-
-
     public void friendlyFamilyTalk(PlayerRole damager, PlayerRole receiver) {
         Player pd = damager.getPlayer();
         Player pr = receiver.getPlayer();

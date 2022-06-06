@@ -1,8 +1,13 @@
 package io.georgeous.mcgenerations.utils;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Arrays;
 
 public class Notification {
 
@@ -29,4 +34,23 @@ public class Notification {
         String prefix = ChatColor.RED + "[!]" + ChatColor.RESET;
         sender.sendMessage(prefix + "This command is only for players.");
     }
+
+    public static void opBroadcast(String msg){
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            if(player.isOp()){
+                errorMsg(player, msg);
+            }
+        });
+    }
+
+    public static void opBroadcast(TextComponent... args){
+
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            if(player.isOp()){
+                //Object[] test = Arrays.stream(args).toArray();
+                player.spigot().sendMessage(ChatMessageType.SYSTEM,  args);
+            }
+        });
+    }
+
 }

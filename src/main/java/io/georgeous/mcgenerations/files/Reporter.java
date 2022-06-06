@@ -2,6 +2,11 @@ package io.georgeous.mcgenerations.files;
 
 import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.utils.Notification;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -82,7 +87,25 @@ public class Reporter {
         cfg.set(reported.getName(), reports);
         save();
         Notification.successMsg(reporter, "You reported " + reportedName + " for " + reason);
-        Notification.errorMsg(reported, "You have been reported for '" + reason + "'. Multiple reports will lead to a automatic ban");
+        //Notification.errorMsg(reported, "You have been reported for '" + reason + "'. Multiple reports will lead to a automatic ban");
+
+        TextComponent reporterText = new TextComponent(reporter.getName());
+        reporterText.setColor(ChatColor.BLUE);
+        reporterText.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tp @s " + reporter.getName()));
+        reporterText.setHoverEvent(
+                new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                        new ComponentBuilder("Click to tp").color(ChatColor.GRAY).italic(true).create())
+        );
+
+        TextComponent reportedText = new TextComponent(reported.getName());
+        reportedText.setColor(ChatColor.BLUE);
+        reportedText.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tp @s " + reported.getName()));
+        reportedText.setHoverEvent(
+                new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                        new ComponentBuilder("Click to tp").color(ChatColor.GRAY).italic(true).create())
+        );
+        Notification.opBroadcast(reporterText, new TextComponent(" reported "), reportedText);
+        //Notification.opBroadcast(reporter.getName() + " reported " + reported.getName());
     }
 
     public static void printReports(Player player){

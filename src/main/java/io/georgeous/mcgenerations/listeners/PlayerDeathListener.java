@@ -13,16 +13,11 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.Rotatable;
-import org.bukkit.entity.Creature;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.scheduler.BukkitRunnable;
-import xyz.haoshoku.nick.api.NickAPI;
+
 
 public class PlayerDeathListener implements Listener {
     private final RoleManager roleManager = RoleManager.get();
@@ -32,7 +27,7 @@ public class PlayerDeathListener implements Listener {
         Player player = event.getEntity();
         removeBabyHandlerFromDrops(event);
         PlayerRole role = RoleManager.get().get(player);
-        if(role == null){
+        if (role == null) {
             event.setDeathMessage("");
             return;
         }
@@ -41,47 +36,8 @@ public class PlayerDeathListener implements Listener {
         dealWithRoleDeath(event);
         RoleManager.get().removeRoleData(role);
         RoleManager.get().removeRoleOfPlayer(player);
-
     }
 
-    @EventHandler
-    public void onBeforePlayerDeath(EntityDamageEvent event) {
-        if(!(event.getEntity() instanceof Player player)){
-            return;
-        }
-        if(player.getHealth() - event.getDamage() < 1){
-            /*
-            //player.teleport(ServerConfig.getInstance().getCouncilLocation());
-            event.setCancelled(true);
-            NickAPI.resetNick(player);
-            NickAPI.resetSkin(player);
-            NickAPI.resetUniqueId(player);
-            NickAPI.resetGameProfileName(player);
-            NickAPI.refreshPlayer(player);
-            player.setHealth(0);
-
-             */
-
-        }
-    }
-
-    @EventHandler
-    public void onBeforePlayerDeath(EntityDamageByEntityEvent event) {
-        if(!(event.getEntity() instanceof Player player)){
-            return;
-        }
-        if(player.getHealth() - event.getDamage() < 1){
-            if(event.getDamager() instanceof Projectile projectile){
-                if(projectile.getShooter() instanceof Creature creature){
-                    //player.sendMessage(event.getDamager().getType().getName());
-                    return;
-                }
-            }
-            //player.sendMessage(event.getDamager().getType().getName());
-
-
-        }
-    }
 
     private void removeMember(Player player) {
         PlayerRole role = RoleManager.get().get(player);
@@ -92,7 +48,7 @@ public class PlayerDeathListener implements Listener {
 
     }
 
-    private String getRoleDeathMessage(PlayerDeathEvent event){
+    private String getRoleDeathMessage(PlayerDeathEvent event) {
         Player player = event.getEntity();
         PlayerRole playerRole = roleManager.get(player);
         if (playerRole == null) {
@@ -128,7 +84,7 @@ public class PlayerDeathListener implements Listener {
         return msg;
     }
 
-    private void dealWithRoleDeath(PlayerDeathEvent event){
+    private void dealWithRoleDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
         PlayerRole playerRole = roleManager.get(player);
         if (playerRole == null) {
@@ -137,7 +93,7 @@ public class PlayerDeathListener implements Listener {
 
         //player.setBedSpawnLocation(McgConfig.getCouncilLocation(), true);
 
-        if(!PlayerManager.get().getWrapper(player).isDebugMode() && playerRole.getAgeManager().getAge() >= 6) {
+        if (!PlayerManager.get().getWrapper(player).isDebugMode() && playerRole.getAgeManager().getAge() >= 6) {
             createGrave(playerRole);
         }
 
@@ -145,15 +101,15 @@ public class PlayerDeathListener implements Listener {
         playerRole.die();
     }
 
-    private void createGrave(PlayerRole role){
+    private void createGrave(PlayerRole role) {
         // Place Grave Sign
         World world = role.getPlayer().getWorld();
 
         // Find Ground
         Block under = world.getBlockAt(role.getPlayer().getLocation());
-        do{
-           under = under.getRelative(BlockFace.DOWN);
-        }while(under.getType() == Material.AIR);
+        do {
+            under = under.getRelative(BlockFace.DOWN);
+        } while (under.getType() == Material.AIR);
 
         Block block1 = under.getRelative(BlockFace.UP);
 
@@ -170,7 +126,7 @@ public class PlayerDeathListener implements Listener {
         block1.setBlockData(bd);
 
         // Random Grave Symbol
-        String[] graveSymbols = {"☄", "♰", "☮", "☯", "Ω", "❤", "✿", "☪", "♬", "✟" };
+        String[] graveSymbols = {"☄", "♰", "☮", "☯", "Ω", "❤", "✿", "☪", "♬", "✟"};
         i = (int) (Math.random() * (graveSymbols.length - 1));
         String graveSymbol = graveSymbols[i];
 

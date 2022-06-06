@@ -39,6 +39,7 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
             player.sendMessage("§f ► Mother");
             player.sendMessage("§f ► Family");
             player.sendMessage("§f ► Chat");
+            player.sendMessage("§f ► Commands");
             player.sendMessage("§6e.g. Use command §d[/howto hearts]§6 to find out, what's up with your hearts.");
             TextComponent howtoExampleCommand = new TextComponent("[/howto hearts]");
             howtoExampleCommand.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/howto hearts"));
@@ -123,12 +124,14 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
                 player.sendMessage("   Used to change your babies name");
                 player.sendMessage("► [ §d/family§r ]");
                 player.sendMessage("   Info about your family");
+                player.sendMessage("► [ §d/babyhandler§r ]");
+                player.sendMessage("   Gives you a Baby-Handler, if you are old enough");
                 player.sendMessage("► [ §d/die§r ]");
-                player.sendMessage("   If there are no other options...");
+                player.sendMessage("   If there are no other options.. Abuse not allowed!");
+                player.sendMessage("► [ §d/report§r ]");
+                player.sendMessage("   Report a player e.g.: /report Sue cheating");
                 player.sendMessage("► [ §d/discord§r ]");
                 player.sendMessage("   Link to the discord");
-                player.sendMessage("► [ §d/commands§r ]");
-                player.sendMessage("   List of all commands on the server");
                 player.sendMessage("");
                 break;
 
