@@ -93,7 +93,7 @@ public class PlayerDeathListener implements Listener {
 
         //player.setBedSpawnLocation(McgConfig.getCouncilLocation(), true);
 
-        if (!PlayerManager.get().getWrapper(player).isDebugMode() && playerRole.getAgeManager().getAge() >= 6) {
+        if (!PlayerManager.get().getWrapper(player).isDebugMode() && playerRole.getAgeManager().getAge() >= 40) {
             createGrave(playerRole);
         }
 

@@ -47,14 +47,14 @@ public class McgConfig {
     }
 
     private static void setupDefaults(){
-        cfg.addDefault("spawn_timer_sec", 5);
-        cfg.addDefault("eve_spawn_center_x", 0);
-        cfg.addDefault("eve_spawn_center_z", 0);
-        cfg.addDefault("eve_spawn_rotation_radius", 1000);
+        cfg.addDefault("spawn_timer_sec", 10);
+        cfg.addDefault("eve_spawn_center_x", -2000);
+        cfg.addDefault("eve_spawn_center_z", -3000);
+        cfg.addDefault("eve_spawn_rotation_radius", 2000);
         cfg.addDefault("eve_spawn_rotation_speed", 8);
         cfg.addDefault("eve_spawn_x", 540);
         cfg.addDefault("eve_spawn_z", 1800);
-        cfg.addDefault("eve_spawn_radius", 200);
+        cfg.addDefault("eve_spawn_radius", 400);
         cfg.addDefault("council_x", -6782);
         cfg.addDefault("council_z", -6011);
         cfg.addDefault("council_y", 264);
@@ -62,7 +62,7 @@ public class McgConfig {
         cfg.addDefault("baby_cooldown", 180);
         cfg.addDefault("min_birth_age", 15);
         cfg.addDefault("max_birth_age", 45);
-        cfg.addDefault("valid_offline_time_sec", 5);
+        cfg.addDefault("valid_offline_time_sec", 60);
     }
 
     public static Location getCouncilLocation(){

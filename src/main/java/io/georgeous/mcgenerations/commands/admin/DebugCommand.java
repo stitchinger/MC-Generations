@@ -59,7 +59,7 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
             player.sendMessage(speed.getBaseValue() + "");
             player.sendMessage(speed.getDefaultValue() + "");
             player.sendMessage(speed.getValue() + "");
-            player.setWalkSpeed(0.7f);
+            //player.setWalkSpeed(0.7f);
             //speed.setBaseValue(speed.getDefaultValue());
 
             return true;
