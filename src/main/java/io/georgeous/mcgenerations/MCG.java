@@ -71,6 +71,7 @@ public final class MCG extends JavaPlugin {
 
         overworld = Bukkit.getWorlds().get(0);
         council = new Council(overworld);
+        overworld.setSpawnLocation(McgConfig.getCouncilLocation());
         getConfig().options().copyDefaults(false);
 
 
@@ -181,6 +182,7 @@ public final class MCG extends JavaPlugin {
         registerCommand("babyhandler", new BabyHandlerCommand());
 
         registerCommand("msg", new CommandDeactivator());
+        registerCommand("minecraft:me", new CommandDeactivator());
         registerCommand("w", new CommandDeactivator());
         registerCommand("say", new CommandDeactivator());
     }

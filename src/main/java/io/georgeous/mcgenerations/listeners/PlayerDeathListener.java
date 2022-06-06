@@ -13,9 +13,12 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.Rotatable;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -47,6 +50,7 @@ public class PlayerDeathListener implements Listener {
             return;
         }
         if(player.getHealth() - event.getDamage() < 1){
+            /*
             //player.teleport(ServerConfig.getInstance().getCouncilLocation());
             event.setCancelled(true);
             NickAPI.resetNick(player);
@@ -55,12 +59,27 @@ public class PlayerDeathListener implements Listener {
             NickAPI.resetGameProfileName(player);
             NickAPI.refreshPlayer(player);
             player.setHealth(0);
-            new BukkitRunnable(){
-                @Override
-                public void run() {
 
+             */
+
+        }
+    }
+
+    @EventHandler
+    public void onBeforePlayerDeath(EntityDamageByEntityEvent event) {
+        if(!(event.getEntity() instanceof Player player)){
+            return;
+        }
+        if(player.getHealth() - event.getDamage() < 1){
+            if(event.getDamager() instanceof Projectile projectile){
+                if(projectile.getShooter() instanceof Creature creature){
+                    //player.sendMessage(event.getDamager().getType().getName());
+                    return;
                 }
-            }.runTaskLater(MCG.getInstance(), 20L * 2);
+            }
+            //player.sendMessage(event.getDamager().getType().getName());
+
+
         }
     }
 

@@ -18,8 +18,11 @@ public class PlayerCarry implements Listener {
         Player player = event.getPlayer();
         Entity target = event.getTarget();
 
-        if (!(target instanceof Player))
+        if (!(target instanceof Player)){
+            event.setCancelled(true);
             return;
+        }
+
         PlayerRole targetRole = RoleManager.get().get((Player) target);
         PlayerRole playerRole = RoleManager.get().get(player);
 
