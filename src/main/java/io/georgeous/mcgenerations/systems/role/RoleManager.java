@@ -15,6 +15,7 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
+import org.bukkit.GameMode;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -79,6 +80,7 @@ public class RoleManager {
             player.teleport(MCG.council.getRandomCouncilSpawn());
             // Reset Player
             player.getInventory().clear();
+            player.setGameMode(GameMode.ADVENTURE);
             player.getActivePotionEffects().forEach(potionEffect -> {
                 player.removePotionEffect(potionEffect.getType());
             });

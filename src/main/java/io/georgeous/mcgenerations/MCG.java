@@ -7,6 +7,7 @@ import io.georgeous.mcgenerations.commands.player.*;
 import io.georgeous.mcgenerations.files.DataManager;
 import io.georgeous.mcgenerations.files.FileManager;
 import io.georgeous.mcgenerations.files.McgConfig;
+import io.georgeous.mcgenerations.files.Reporter;
 import io.georgeous.mcgenerations.listeners.*;
 import io.georgeous.mcgenerations.scoreboard.ScoreboardHandler;
 import io.georgeous.mcgenerations.systems.family.FamilyManager;
@@ -68,6 +69,7 @@ public final class MCG extends JavaPlugin {
 
         fileManager = new FileManager(this.getDataFolder().getPath());
         McgConfig.setup(this.getDataFolder().getPath());
+        Reporter.setup(this.getDataFolder().getPath());
 
         overworld = Bukkit.getWorlds().get(0);
         council = new Council(overworld);
@@ -110,8 +112,6 @@ public final class MCG extends JavaPlugin {
         serverYear = getConfig().getInt("data.server.year");
 
         saveConfig();
-
-        //scoreboardHandler = new ScoreboardHandler();
     }
 
     @Override
@@ -133,7 +133,6 @@ public final class MCG extends JavaPlugin {
             }catch (NullPointerException e){
                e.printStackTrace();
             }
-
         }
     }
 
@@ -180,6 +179,7 @@ public final class MCG extends JavaPlugin {
         registerCommand("discord", new DiscordCommand());
         registerCommand("broadcast", new BroadcastCommand());
         registerCommand("babyhandler", new BabyHandlerCommand());
+        registerCommand("report", new ReportCommand());
 
         registerCommand("msg", new CommandDeactivator());
         registerCommand("minecraft:me", new CommandDeactivator());

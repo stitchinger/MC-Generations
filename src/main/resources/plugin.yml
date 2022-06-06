@@ -21,5 +21,6 @@ commands:
   discord:
   broadcast:
   babyhandler:
+  report:
 depend: [Piggyback, NickAPI, Petmanager]
 

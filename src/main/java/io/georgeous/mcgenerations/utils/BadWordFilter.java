@@ -84,7 +84,7 @@ public class BadWordFilter {
            // BufferedReader reader = new BufferedReader(fr);
 
     	BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(
-          "https://docs.google.com/spreadsheets/d/1hIEi2YG3ydav1E06Bzf2mQbGZ12kh2fe4ISgLg_UBuM/export?format=csv")
+          "https://docs.google.com/spreadsheets/d/1mz5-kcVsv8wPQKRbRzivKoWsiujZcuEm-G-mGbl1FTQ/export?format=csv")
           .openConnection().getInputStream()));
 
 

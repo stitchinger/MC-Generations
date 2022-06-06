@@ -26,6 +26,8 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
+        player.setGameMode(GameMode.SURVIVAL);
+
         playerManager.initPlayer(player);
         roleManager.initPlayer(player);
 
