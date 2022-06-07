@@ -63,6 +63,13 @@ public class Interact implements Listener {
         PlayerRole damagerRole = RoleManager.get().get(damager);
         PlayerRole receiverRole = RoleManager.get().get(receiver);
 
+        boolean hasSword = damagerRole.getPlayer().getInventory().getItemInMainHand().getType().name().endsWith("SWORD");
+        boolean isAdult = damagerRole.getPhaseManager().getCurrentPhase().getId() >= 4;
+
+        if( isAdult && hasSword ){
+            return;
+        }
+
         if(damagerRole == null || receiverRole == null){
             event.setCancelled(true);
             return;
