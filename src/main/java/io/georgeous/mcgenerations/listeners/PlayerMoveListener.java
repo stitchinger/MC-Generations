@@ -3,8 +3,11 @@ package io.georgeous.mcgenerations.listeners;
 import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.SpawnManager;
 import io.georgeous.mcgenerations.files.McgConfig;
+import io.georgeous.mcgenerations.systems.player.PlayerManager;
+import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
+import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -53,7 +56,16 @@ public class PlayerMoveListener implements Listener {
 
         if (loc.distance(McgConfig.getCouncilLocation()) < triggerRadius) {
             // Steps into light and start life
-            SpawnManager.get().spawnPlayer(player);
+            PlayerWrapper playerWrapper = PlayerManager.get().getWrapper(player);
+            if(playerWrapper != null){
+                if(playerWrapper.getRulesAccepted()){
+                    SpawnManager.get().spawnPlayer(player);
+                } else{
+                    Notification.errorMsg(player, "Before you can play you need to read and accept our rules. Use [/rules]");
+                }
+
+            }
+
         }
     }
 

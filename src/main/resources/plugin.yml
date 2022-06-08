@@ -22,5 +22,6 @@ commands:
   broadcast:
   babyhandler:
   report:
+  rules:
 depend: [Piggyback, NickAPI, Petmanager]
 

@@ -118,6 +118,8 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
             case "commands":
                 player.sendMessage("");
                 printHeading(player, "COMMANDS");
+                player.sendMessage("► [ §d/rules§r ]");
+                player.sendMessage("   Read the rules of the server");
                 player.sendMessage("► [ §d/me§r ]");
                 player.sendMessage("   Info about your life");
                 player.sendMessage("► [ §d/you§r ]");

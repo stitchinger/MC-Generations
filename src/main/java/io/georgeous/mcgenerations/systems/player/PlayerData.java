@@ -34,6 +34,8 @@ public class PlayerData {
         cs.set("playtime", playerWrapper.getPlayTime());
         cs.set("timesinceoffline", System.currentTimeMillis());
         cs.set("debug", playerWrapper.isDebugMode());
+        cs.set("rules_read", playerWrapper.getRulesRead());
+        cs.set("rules_accepted", playerWrapper.getRulesAccepted());
 
         plugin.saveConfig();
     }
@@ -53,6 +55,10 @@ public class PlayerData {
 
         boolean debugMode = cs.getBoolean("debug", false);
         playerWrapper.setDebugMode(debugMode);
+
+        playerWrapper.setRulesRead(cs.getBoolean("rules_read", false));
+        playerWrapper.setRulesAccepted(cs.getBoolean("rules_accepted", false));
+
     }
 
     public void restorePlayerWrapperFromConfig(PlayerWrapper playerWrapper) {

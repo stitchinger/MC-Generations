@@ -16,6 +16,8 @@ public class PlayerWrapper {
     private Location lastBedLocation = null;
     private boolean isSpawing = false;
     private GameMode lastGameMode = GameMode.SURVIVAL;
+    private boolean rulesRead = false;
+    private boolean rulesAccepted = false;
 
     public PlayerWrapper(Player player) {
         this.player = player;
@@ -108,5 +110,21 @@ public class PlayerWrapper {
 
     public void setLastGameMode(GameMode gm){
         lastGameMode = gm;
+    }
+
+    public boolean getRulesRead(){
+        return rulesRead;
+    }
+
+    public void setRulesRead(boolean value){
+        rulesRead = value;
+    }
+
+    public boolean getRulesAccepted(){
+        return rulesRead;
+    }
+
+    public void setRulesAccepted(boolean value){
+        rulesRead = value;
     }
 }
