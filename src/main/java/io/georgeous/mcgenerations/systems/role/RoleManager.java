@@ -84,8 +84,6 @@ public class RoleManager {
             player.getActivePotionEffects().forEach(potionEffect -> {
                 player.removePotionEffect(potionEffect.getType());
             });
-
-
         }
     }
 

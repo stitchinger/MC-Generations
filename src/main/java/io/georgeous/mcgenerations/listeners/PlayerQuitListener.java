@@ -20,19 +20,26 @@ public class PlayerQuitListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
+        dealWithRole(player);
+        dealWithWrapper(player);
+
+        SurrogateManager.getInstance().destroySurrogateOfPlayer(player);
+    }
+
+    private void dealWithWrapper(Player player){
+        PlayerWrapper wrapper = playerManager.getWrapper(player);
+        if(wrapper != null){
+            playerManager.saveAndRemoveWrapper(player);
+        }
+    }
+
+    private void dealWithRole(Player player){
         PlayerRole role = roleManager.get(player);
         if(role != null){
             removeFromFamily(role);
             roleManager.saveRoleData(role);
             roleManager.removeRoleOfPlayer(player);
         }
-
-        PlayerWrapper wrapper = playerManager.getWrapper(player);
-        if(wrapper != null){
-            playerManager.saveAndRemoveWrapper(player);
-        }
-
-        SurrogateManager.getInstance().destroySurrogateOfPlayer(player);
     }
 
     private void removeFromFamily(PlayerRole role) {
