@@ -11,6 +11,8 @@ import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
 import io.georgeous.mcgenerations.utils.*;
 import org.bukkit.*;
+import org.bukkit.advancement.Advancement;
+import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -22,6 +24,7 @@ import org.bukkit.util.Vector;
 import xyz.haoshoku.nick.api.NickAPI;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class SpawnManager {
@@ -42,6 +45,8 @@ public class SpawnManager {
 
 
     public void spawnPlayer(Player spawnedPlayer) {
+        PotionEffect hover = new PotionEffect(PotionEffectType.LEVITATION, 200, 1, false, false, false);
+        spawnedPlayer.addPotionEffect(hover);
         PlayerWrapper spawnedPlayerWrapper = PlayerManager.get().getWrapper(spawnedPlayer);
         if(spawnedPlayerWrapper.getIsSpawning()){
             return;
@@ -124,6 +129,17 @@ public class SpawnManager {
         wrapper.getPlayer().setGameMode(wrapper.getLastGameMode());
         wrapper.getPlayer().setInvulnerable(false);
         wrapper.getPlayer().getInventory().clear();
+
+        // Reset Advancements
+        Iterator<Advancement> iterator = Bukkit.getServer().advancementIterator();
+        while (iterator.hasNext())
+        {
+            AdvancementProgress progress = wrapper.getPlayer().getAdvancementProgress(iterator.next());
+            for (String criteria : progress.getAwardedCriteria()){
+                progress.revokeCriteria(criteria);
+            }
+
+        }
     }
 
     public static void spawnAsEve(Player player) {
