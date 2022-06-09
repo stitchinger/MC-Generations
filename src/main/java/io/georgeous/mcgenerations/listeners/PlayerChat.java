@@ -1,6 +1,7 @@
 package io.georgeous.mcgenerations.listeners;
 
 import io.georgeous.mcgenerations.MCG;
+import io.georgeous.mcgenerations.files.McgConfig;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
@@ -22,9 +23,6 @@ import java.util.Random;
 
 public class PlayerChat implements Listener {
 
-    private final double CHAT_RANGE = 100;
-    private final int ALONE_MSG_TIMER = 2; // secs
-    private final boolean FILTER_PROFANITY = true;
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
@@ -43,7 +41,7 @@ public class PlayerChat implements Listener {
         TextComponent prefix = new TextComponent(firstName + " " + lastName + "§f: ");
         TextComponent msg = new TextComponent(prepareMsg(event.getMessage(), pm.getCurrentPhase().getSpellAccuracy()));
 
-        rangedBroadcast(player, prefix, msg, CHAT_RANGE);
+        rangedBroadcast(player, prefix, msg, McgConfig.getChatRange());
     }
 
 
@@ -62,7 +60,7 @@ public class PlayerChat implements Listener {
                 public void run() {
                     Notification.neutralMsg(sender, "Nobody heared you. Use §d[/howto chat]§f to learn more.");
                 }
-            }.runTaskLater(MCG.getInstance(), 20L * ALONE_MSG_TIMER);
+            }.runTaskLater(MCG.getInstance(), 20L * McgConfig.getChatAloneMsgTime());
         }
     }
 
@@ -128,7 +126,7 @@ public class PlayerChat implements Listener {
             }
         }
 
-        if(FILTER_PROFANITY){
+        if(McgConfig.getChatFilterProfanity()){
             newMsg = BadWordFilter.getCensoredText(newMsg);
         }
 

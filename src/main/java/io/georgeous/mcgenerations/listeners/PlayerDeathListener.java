@@ -1,6 +1,7 @@
 package io.georgeous.mcgenerations.listeners;
 
 import io.georgeous.mcgenerations.MCG;
+import io.georgeous.mcgenerations.files.McgConfig;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
@@ -34,7 +35,7 @@ public class PlayerDeathListener implements Listener {
         }
 
         String msg = getRoleDeathMessage(event);
-        rangedBroadcast(player, msg, 100);
+        rangedBroadcast(player, msg, McgConfig.getChatRange());
         event.setDeathMessage("");
 
 

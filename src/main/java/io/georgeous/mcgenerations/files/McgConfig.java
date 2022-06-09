@@ -63,6 +63,9 @@ public class McgConfig {
         cfg.addDefault("min_birth_age", 15);
         cfg.addDefault("max_birth_age", 45);
         cfg.addDefault("valid_offline_time_sec", 60);
+        cfg.addDefault("chat_range", 100);
+        cfg.addDefault("chat_alone_msg_time", 2);
+        cfg.addDefault("chat_filter_profanity", true);
     }
 
     public static Location getCouncilLocation(){
@@ -118,5 +121,17 @@ public class McgConfig {
 
     public static long getValidOfflineTime(){
         return cfg.getLong("valid_offline_time_sec");
+    }
+
+    public static double getChatRange(){
+        return cfg.getDouble("chat_range");
+    }
+
+    public static int getChatAloneMsgTime(){
+        return cfg.getInt("chat_alone_msg_time");
+    }
+
+    public static boolean getChatFilterProfanity(){
+        return cfg.getBoolean("chat_filter_profanity");
     }
 }
