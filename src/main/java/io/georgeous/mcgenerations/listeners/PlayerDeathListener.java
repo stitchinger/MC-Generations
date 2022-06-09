@@ -6,6 +6,7 @@ import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.BlockFacing;
 import io.georgeous.mcgenerations.utils.ItemManager;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -32,7 +33,11 @@ public class PlayerDeathListener implements Listener {
             return;
         }
 
-        event.setDeathMessage(getRoleDeathMessage(event));
+        String msg = getRoleDeathMessage(event);
+        rangedBroadcast(player, msg, 100);
+        event.setDeathMessage("");
+
+
         dealWithRoleDeath(event);
         RoleManager.get().removeRoleData(role);
         RoleManager.get().removeRoleOfPlayer(player);
@@ -47,6 +52,22 @@ public class PlayerDeathListener implements Listener {
         role.getFamily().removeMember(role);
 
     }
+
+    private void rangedBroadcast(Player sender, String msg, double range) {
+        for (Player receivingPlayer : Bukkit.getOnlinePlayers()) {
+
+            boolean sameWorld = receivingPlayer.getLocation().getWorld() == sender.getLocation().getWorld();
+            if(!sameWorld) {
+                continue;
+            }
+            double distanceBetweenPlayers = receivingPlayer.getLocation().distance(sender.getLocation());
+            if(distanceBetweenPlayers > range){
+                continue;
+            }
+            receivingPlayer.sendMessage( msg);
+        }
+    }
+
 
     private String getRoleDeathMessage(PlayerDeathEvent event) {
         Player player = event.getEntity();
