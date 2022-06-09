@@ -9,6 +9,7 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,7 +26,11 @@ public class PlayerRespawnListener implements Listener {
 
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
+
         player = event.getPlayer();
+
+        Bukkit.getLogger().info(player.isDead() + "");
+
         playerWrapper = PlayerManager.get().getWrapper(player);
         if(playerWrapper == null){
             PlayerManager.get().initPlayer(player);

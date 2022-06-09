@@ -77,6 +77,7 @@ public class RoleManager {
         if (roleDataExists(player) && validOfflineTime && !roleDead) { // restore player
             restoreRoleFromData(player);
         } else {
+
             player.teleport(MCG.council.getRandomCouncilSpawn());
             // Reset Player
             player.getInventory().clear();
