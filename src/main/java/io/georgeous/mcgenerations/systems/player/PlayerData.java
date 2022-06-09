@@ -69,7 +69,6 @@ public class PlayerData {
             restoreFrom(playerWrapper, cs);
         }
 
-        //deleteEntry(uuid);
     }
 
     public void deleteEntry(String uuid) {

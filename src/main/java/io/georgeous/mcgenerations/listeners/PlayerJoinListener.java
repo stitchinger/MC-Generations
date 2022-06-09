@@ -31,6 +31,8 @@ public class PlayerJoinListener implements Listener {
         playerManager.initPlayer(player);
         roleManager.initPlayer(player);
 
+        event.setJoinMessage("");
+
         new BukkitRunnable(){
             @Override
             public void run() {

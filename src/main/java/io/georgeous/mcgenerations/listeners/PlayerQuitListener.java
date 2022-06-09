@@ -23,6 +23,8 @@ public class PlayerQuitListener implements Listener {
         dealWithRole(player);
         dealWithWrapper(player);
 
+        event.setQuitMessage("");
+
         SurrogateManager.getInstance().destroySurrogateOfPlayer(player);
     }
 
