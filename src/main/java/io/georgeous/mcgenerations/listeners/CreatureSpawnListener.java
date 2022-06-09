@@ -2,11 +2,15 @@ package io.georgeous.mcgenerations.listeners;
 
 import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.files.McgConfig;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
+import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 
 
 public class CreatureSpawnListener implements Listener {
@@ -45,4 +49,5 @@ public class CreatureSpawnListener implements Listener {
             event.setCancelled(true);
         }
     }
+
 }

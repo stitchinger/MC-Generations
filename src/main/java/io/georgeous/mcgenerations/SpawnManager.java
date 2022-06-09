@@ -123,6 +123,7 @@ public class SpawnManager {
 
     private static void resetPlayer(PlayerWrapper wrapper){
         // Reset Player
+        wrapper.getPlayer().removePotionEffect(PotionEffectType.LEVITATION);
         wrapper.setIsSpawning(false);
         wrapper.setDiedOfOldAge(false);
         wrapper.setLastBedLocation(null);

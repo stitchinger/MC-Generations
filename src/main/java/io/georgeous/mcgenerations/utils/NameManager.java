@@ -18,7 +18,12 @@ public class NameManager {
                     "Grace", "Ruby", "Quinn", "Lydia", "Vivian", "Hailey", "Autumn", "Aurora", "Hazel",
                     "Penelope", "Catelyn", "Freya", "Faith", "Cersei", "Sansa", "Arya", "Shae", "Talisa", "Brienne",
                     "Ellaria","Signy", "Hildr", "Nanna", "Eisa", "Saga", "Sol", "Hel", "Frigg", "Lofn", "Joro", "Jojo",
-                    "Lounn", "Fulla", "Laga", "Elli"
+                    "Lounn", "Fulla", "Laga", "Elli",
+                    "Eddard", "Robert", "Jaime", "Jorah", "Jon", "Robb", "Theon", "Brandon", "Joffrey", "Sandor", "Tyrion",
+                    "Petyr", "Davos", "Samwell", "Stannis", "Jeor", "Bronn", "Varys", "Tywin", "Gendry", "Ramsay",
+                    "Gilly", "Daario", "Tommen", "Roose", "Jaqen", "Aegir", "Aeric", "Alvis", "Amund", "Baldur", "Beini",
+                    "Bothi", "Carr", "Fenris", "Floki", "Loki", "Frye", "Hoenir", "Illugi", "Magnar", "Odd", "Olave", "Raud",
+                    "Torfi", "Tormund", "Trig"
             };
     public static final String[] lastNames =
             {
@@ -35,14 +40,15 @@ public class NameManager {
                     "Mallister", "Royce", "Greyjoy", "Blackwood", "Tully", "Bracken", "Whent", "Mooton", "Westerling",
                     "Marbrand", "Lefford", "Lannister", "Clegane", "Swyft", "Crakehall", "Oakheart", "Tyrell", "Selmy",
                     "Baratheon", "Tarth", "Swann", "Seaworth", "Dondarrion", "Caron", "Florent", "Tarly", "Hightower",
-                    "Martell", "Redwyne"
+                    "Martell", "Redwyne", "Artino", "Chronos", "Florakis", "Galatas", "Kazan", "Mallas", "Nanos", "Rella",
+                    "Gataki", "Afia", "Mensah", "Nenge", "Popoola", "Bayu", "Kaloki", "Zammit"
             };
 
     public static ArrayList<String> usedNames = new ArrayList<>();
 
 
     public static String randomFirst() {
-        if(usedNames.size() > firstNames.length / 2){
+        if(usedNames.size() > firstNames.length * (4d / 5d)){
             usedNames = new ArrayList<>();
         }
         String newName = "";
