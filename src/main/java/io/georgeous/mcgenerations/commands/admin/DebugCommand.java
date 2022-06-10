@@ -40,12 +40,17 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 0) {
-            PlayerWrapper wrapper = PlayerManager.get().getWrapper(player);
-            if (wrapper == null) {
-                return true;
-            }
-            wrapper.setDebugMode(!(wrapper.isDebugMode()));
-            Notification.neutralMsg(player, "Debug Mode: " + wrapper.isDebugMode());
+            setDebug(player);
+            return true;
+        }
+
+        if ("true".equals(args[0])) {
+            setDebug(player, true);
+            return true;
+        }
+
+        if ("false".equals(args[0])) {
+            setDebug(player, false);
             return true;
         }
 
@@ -61,7 +66,6 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
             player.sendMessage(speed.getValue() + "");
             //player.setWalkSpeed(0.7f);
             //speed.setBaseValue(speed.getDefaultValue());
-
             return true;
         }
 
@@ -103,5 +107,23 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
             l.add("council");
         }
         return l;
+    }
+
+    private void setDebug(Player player, boolean value){
+        PlayerWrapper wrapper = PlayerManager.get().getWrapper(player);
+        if (wrapper == null) {
+            return;
+        }
+        if(wrapper.isDebugMode() != value){
+            wrapper.setDebugMode(value);
+            Notification.successMsg(player, "Debug Mode: " + wrapper.isDebugMode());
+        }else{
+            Notification.errorMsg(player, "Debug Mode is already " + wrapper.isDebugMode());
+        }
+    }
+
+    private void setDebug(Player player){
+        PlayerWrapper playerWrapper = PlayerManager.get().getWrapper(player);
+        setDebug(player, !playerWrapper.isDebugMode());
     }
 }
