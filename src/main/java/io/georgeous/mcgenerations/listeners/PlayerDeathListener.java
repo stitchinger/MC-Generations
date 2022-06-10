@@ -7,10 +7,7 @@ import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.BlockFacing;
 import io.georgeous.mcgenerations.utils.ItemManager;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
@@ -28,12 +25,14 @@ public class PlayerDeathListener implements Listener {
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
         removeBabyHandlerFromDrops(event);
+        removeStarterItemsFromDrops(event);
         PlayerRole role = RoleManager.get().get(player);
         if (role == null) {
             event.setDeathMessage("");
             return;
         }
 
+        // Broadcast death msg
         String msg = getRoleDeathMessage(event);
         rangedBroadcast(player, msg, McgConfig.getChatRange());
         event.setDeathMessage("");
@@ -51,7 +50,6 @@ public class PlayerDeathListener implements Listener {
             return;
         }
         role.getFamily().removeMember(role);
-
     }
 
     private void rangedBroadcast(Player sender, String msg, double range) {
@@ -133,36 +131,45 @@ public class PlayerDeathListener implements Listener {
             under = under.getRelative(BlockFace.DOWN);
         } while (under.getType() == Material.AIR);
 
-        Block block1 = under.getRelative(BlockFace.UP);
-
-        // Random Sign Type
-        Material[] signTypes = {Material.OAK_SIGN, Material.BIRCH_SIGN, Material.SPRUCE_SIGN, Material.ACACIA_SIGN, Material.JUNGLE_SIGN};
-        int i = (int) (Math.random() * (signTypes.length - 1));
-        Material signType = signTypes[i];
-        block1.setType(signType);
-
-        // Set rotation to players rotation
-        Rotatable bd = ((Rotatable) block1.getBlockData());
-        BlockFace face = BlockFacing.locationToFace(role.getPlayer().getLocation());
-        bd.setRotation(face);
-        block1.setBlockData(bd);
-
-        // Random Grave Symbol
-        String[] graveSymbols = {"☄", "♰", "☮", "☯", "Ω", "❤", "✿", "☪", "♬", "✟"};
-        i = (int) (Math.random() * (graveSymbols.length - 1));
-        String graveSymbol = graveSymbols[i];
-
-        // Write on sign
-        Sign sig = (Sign) block1.getState();
-        sig.setLine(0, role.getName() + " " + role.getFamily().getName());
-        sig.setLine(1, "Age: " + role.getAgeManager().getAge());
-        sig.setLine(2, (MCG.serverYear - role.getAgeManager().getAge()) + " - " + MCG.serverYear);
-        sig.setLine(3, "R.I.P.  " + graveSymbol);
-        sig.update();
+        Block block = under.getRelative(BlockFace.UP);
+        block.setType(randomSignType());
+        rotateSign(block, role.getPlayer().getLocation());
+        writeOnGrave((Sign) block.getState(), role);
     }
 
     public void removeBabyHandlerFromDrops(PlayerDeathEvent event) {
         event.getDrops().stream().filter(ItemManager::isBabyHandler).toList().forEach(item -> item.setAmount(0));
+    }
+
+    public void removeStarterItemsFromDrops(PlayerDeathEvent event) {
+        event.getDrops().stream().filter(ItemManager::isStarterItem).toList().forEach(item -> item.setAmount(0));
+    }
+
+    private Material randomSignType(){
+        Material[] signTypes = {Material.OAK_SIGN, Material.BIRCH_SIGN, Material.SPRUCE_SIGN, Material.ACACIA_SIGN, Material.JUNGLE_SIGN};
+        int i = (int) (Math.random() * (signTypes.length - 1));
+        return signTypes[i];
+    }
+
+    private String randomGraveSymbol(){
+        String[] graveSymbols = {"☄", "♰", "☮", "☯", "Ω", "❤", "✿", "☪", "♬", "✟"};
+        int i = (int) (Math.random() * (graveSymbols.length - 1));
+        return graveSymbols[i];
+    }
+
+    private void rotateSign(Block block, Location location){
+        Rotatable bd = ((Rotatable) block.getBlockData());
+        BlockFace face = BlockFacing.locationToFace(location);
+        bd.setRotation(face);
+        block.setBlockData(bd);
+    }
+
+    private void writeOnGrave(Sign sign, PlayerRole role){
+        sign.setLine(0, role.getName() + " " + role.getFamily().getName());
+        sign.setLine(1, "Age: " + role.getAgeManager().getAge());
+        sign.setLine(2, (MCG.serverYear - role.getAgeManager().getAge()) + " - " + MCG.serverYear);
+        sign.setLine(3, "R.I.P.  " + randomGraveSymbol());
+        sign.update();
     }
 
 

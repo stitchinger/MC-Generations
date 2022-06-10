@@ -49,21 +49,48 @@ public class ItemManager {
         return false;
     }
 
-    public static ItemStack getEveStarterSeeds() {
-        ItemStack item = new ItemStack(Material.CARROT_ON_A_STICK);
+    public static boolean isStarterItem(ItemStack item) {
+        if (item == null) {
+            return false;
+        }
 
+        if(!item.hasItemMeta())
+            return false;
+
+        ItemMeta meta = item.getItemMeta();
+
+        if(!meta.hasCustomModelData())
+            return false;
+
+        if(meta.getCustomModelData() != 69){
+            return false;
+        }
+
+        return true;
+    }
+
+    public static ItemStack getEveStarterSeeds() {
         // Random Seeds
         ItemStack[] seeds = {
                 new ItemStack(Material.CARROT, 16),
                 new ItemStack(Material.POTATO, 16),
                 new ItemStack(Material.BEETROOT_SEEDS, 32),
-                new ItemStack(Material.WHEAT_SEEDS, 32)
+                new ItemStack(Material.WHEAT_SEEDS, 32),
+                new ItemStack(Material.MELON_SEEDS, 32),
+                new ItemStack(Material.PUMPKIN_SEEDS, 32)
         };
 
         Random r = new Random();
         int randomNumber = r.nextInt(seeds.length);
 
-        return seeds[randomNumber];
+        ItemStack item = seeds[randomNumber];
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            meta.setCustomModelData(69);
+            item.setItemMeta(meta);
+        }
+
+        return item;
     }
 
     public static ItemStack getEveStarterFood() {
@@ -81,7 +108,14 @@ public class ItemManager {
         Random r = new Random();
         int randomNumber = r.nextInt(foods.length);
 
-        return foods[randomNumber];
+        ItemStack item = foods[randomNumber];
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            meta.setCustomModelData(69);
+            item.setItemMeta(meta);
+        }
+
+        return item;
     }
 
     public static ItemStack getEveStarterArmor() {
@@ -95,8 +129,10 @@ public class ItemManager {
         int randomNumber = r.nextInt(armors.length);
 
         ItemStack armor = armors[randomNumber];
+
         LeatherArmorMeta meta = (LeatherArmorMeta) armor.getItemMeta();
         meta.setColor(Util.getRandomColorObject());
+        meta.setCustomModelData(69);
         armor.setItemMeta(meta);
 
         return armor;
