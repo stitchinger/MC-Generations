@@ -41,7 +41,7 @@ public class NameManager {
                     "Marbrand", "Lefford", "Lannister", "Clegane", "Swyft", "Crakehall", "Oakheart", "Tyrell", "Selmy",
                     "Baratheon", "Tarth", "Swann", "Seaworth", "Dondarrion", "Caron", "Florent", "Tarly", "Hightower",
                     "Martell", "Redwyne", "Artino", "Chronos", "Florakis", "Galatas", "Kazan", "Mallas", "Nanos", "Rella",
-                    "Gataki", "Afia", "Mensah", "Nenge", "Popoola", "Bayu", "Kaloki", "Zammit"
+                    "Gataki", "Afia", "Mensah", "Nenge", "Popoola", "Bayu", "Kaloki", "Zammit", "Hyuga", "Uzumaki"
             };
 
     public static ArrayList<String> usedNames = new ArrayList<>();
