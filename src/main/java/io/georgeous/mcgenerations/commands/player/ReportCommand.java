@@ -36,6 +36,7 @@ public class ReportCommand implements CommandExecutor, TabCompleter {
 
         switch (args[0]) {
 
+
             case "list":
                 if (!player.isOp()) {
                     Notification.errorMsg(player, "Only for OPs");
@@ -43,6 +44,23 @@ public class ReportCommand implements CommandExecutor, TabCompleter {
                 }
                 Reporter.printReports(player);
                 break;
+
+            case "delete":
+                if (!player.isOp()) {
+                    Notification.errorMsg(player, "Only for OPs");
+                    return true;
+                }
+
+                if(args.length != 2){
+                    return true;
+                }
+
+                boolean result = Reporter.deleteReport(args[1]);
+                if(result){
+                    Notification.successMsg(player, "Deleted all reports of " + args[1]);
+                }else{
+                    Notification.errorMsg(player, "Couldnt find any reports of " + args[1]);
+                }
 
             case "reload":
                 if (!player.isOp()) {
@@ -72,6 +90,11 @@ public class ReportCommand implements CommandExecutor, TabCompleter {
         }
 
         if (cmd.getName().equalsIgnoreCase("report")) {
+            if(args[0].equalsIgnoreCase("delete")){
+                return Reporter.getReportedPlayers();
+            }
+
+
             Bukkit.getOnlinePlayers().forEach(player -> {
                 if(player != playerSender ){
                     PlayerRole role = RoleManager.get().get(player);
@@ -84,6 +107,7 @@ public class ReportCommand implements CommandExecutor, TabCompleter {
             });
             return l;
         }
+
         return l;
     }
 }
