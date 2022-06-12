@@ -57,14 +57,13 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
             case "hearts":
                 player.sendMessage("");
                 printHeading(player, "HEARTS");
-                player.sendMessage(" Every player starts their life with only §c1/2 heart§r.");
+                player.sendMessage(" Every player starts their life with only §c2 hearts§r.");
                 player.sendMessage(" §cMore hearts§r can be added by eating food you havent had before.");
                 player.sendMessage(" Establishing a §cvariety of foodsources§r ensures the survival of your family.");
                 player.sendMessage("");
                 break;
             case "spawning":
                 player.sendMessage("");
-
                 printHeading(player, "SPAWNING");
                 player.sendMessage(" Players usually should spawn as a §cbaby§r to another random player.");
                 player.sendMessage(" If there are no viable mothers, a player will spawn as an §cEve§r in the wilderness.");
@@ -118,23 +117,23 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
             case "commands":
                 player.sendMessage("");
                 printHeading(player, "COMMANDS");
-                player.sendMessage("► [ §d/rules§r ]");
+                player.sendMessage("► §d[/rules]§r");
                 player.sendMessage("   Read the rules of the server");
-                player.sendMessage("► [ §d/me§r ]");
+                player.sendMessage("► §d[/me]§r");
                 player.sendMessage("   Info about your life");
-                player.sendMessage("► [ §d/you§r ]");
+                player.sendMessage("► §d[/you]§r");
                 player.sendMessage("   Used to change your babies name");
-                player.sendMessage("► [ §d/family§r ]");
+                player.sendMessage("► §d[/family]§r");
                 player.sendMessage("   Info about your family");
-                player.sendMessage("► [ §d/babyhandler§r ]");
+                player.sendMessage("► §d[/babyhandler]§r");
                 player.sendMessage("   Gives you a Baby-Handler, if you are old enough");
-                player.sendMessage("► [ §d/adopt§r ]");
+                player.sendMessage("► §d[/adopt]§r");
                 player.sendMessage("   Invite other player into your family");
-                player.sendMessage("► [ §d/die§r ]");
+                player.sendMessage("► §d[/die]§r");
                 player.sendMessage("   If there are no other options.. Abuse not allowed!");
-                player.sendMessage("► [ §d/report§r ]");
+                player.sendMessage("► §d[/report]§r");
                 player.sendMessage("   Report a player e.g.: /report Sue cheating");
-                player.sendMessage("► [ §d/discord§r ]");
+                player.sendMessage("► §d[/discord]§r");
                 player.sendMessage("   Link to the discord");
                 player.sendMessage("");
                 break;
@@ -155,7 +154,6 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
         List<String> l = new ArrayList<>();
         if (cmd.getName().equalsIgnoreCase("howto")) {
             if (sender instanceof Player) {
-                l.add("about");
                 l.add("spawning");
                 l.add("aging");
                 l.add("baby");
