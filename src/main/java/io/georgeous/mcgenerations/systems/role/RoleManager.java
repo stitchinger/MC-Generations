@@ -85,6 +85,9 @@ public class RoleManager {
         if(role != null){
             role.setPlayer(player);
             role.setIsOffline(false);
+            role.refreshNick();
+        } else if (roleDataExists(player)) { // restore player
+            restoreRoleFromData(player);
         } else {
             player.teleport(MCG.council.getRandomCouncilSpawn());
             // Reset Player
@@ -96,16 +99,16 @@ public class RoleManager {
         }
 
 /*
-        boolean validOfflineTime = PlayerManager.get().getWrapper(player).getLastOfflineTime() < (McgConfig.getValidOfflineTime() * 1000);
+        //boolean validOfflineTime = PlayerManager.get().getWrapper(player).getLastOfflineTime() < (McgConfig.getValidOfflineTime() * 1000);
 
-        boolean roleDead = false;
+        //boolean roleDead = false;
         if(roleDataExists(player)){
-            roleDead = MCG.getInstance().getConfig().getBoolean("data.player." + player.getUniqueId() + ".role.dead");
+            //roleDead = MCG.getInstance().getConfig().getBoolean("data.player." + player.getUniqueId() + ".role.dead");
         }
 
-        if(!validOfflineTime){
-            Notification.errorMsg(player, "Characters only can be restored within " + McgConfig.getValidOfflineTime() + " seconds of offline time.");
-        }
+        //if(!validOfflineTime){
+            //Notification.errorMsg(player, "Characters only can be restored within " + McgConfig.getValidOfflineTime() + " seconds of offline time.");
+        //}
 
         if (roleDataExists(player) && validOfflineTime && !roleDead) { // restore player
             restoreRoleFromData(player);
@@ -119,8 +122,8 @@ public class RoleManager {
                 player.removePotionEffect(potionEffect.getType());
             });
         }
+*/
 
- */
     }
 
     public PlayerRole createAndAddRole(Player player, String name, int age, int gen, Family family) {

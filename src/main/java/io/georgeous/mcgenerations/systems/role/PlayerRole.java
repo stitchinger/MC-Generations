@@ -1,6 +1,7 @@
 package io.georgeous.mcgenerations.systems.role;
 
 import io.georgeous.mcgenerations.MCG;
+import io.georgeous.mcgenerations.scoreboard.ScoreboardHandler;
 import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.role.components.PlayerAge;
 import io.georgeous.mcgenerations.systems.role.components.PlayerMother;
@@ -42,6 +43,10 @@ public class PlayerRole {
         playerMother = new PlayerMother(this);
 
         this.family.addMember(this);
+    }
+
+    public void init(){
+
     }
 
     public void update() {
@@ -92,6 +97,15 @@ public class PlayerRole {
 
         refreshHealthBar();
     }
+
+    public void refreshNick(){
+        nickPlayer(player, name);
+        updateScoreboard();
+        ScoreboardHandler.get().refreshScoreboardOfPlayer(player);
+        phaseManager.start();
+    }
+
+
 
     public void updateScoreboard() {
         NickScoreboard.write(name, player.getUniqueId().toString().substring(0, 15), "", " " + getFamily().getColoredName(), true, ChatColor.WHITE);

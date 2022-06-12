@@ -14,14 +14,12 @@ import xyz.haoshoku.nick.api.NickAPI;
 
 public class PhaseManager {
     PlayerRole playerRole;
-    Player player;
     PlayerAge am;
 
     private Phase phase;
 
     public PhaseManager(PlayerRole playerRole, PlayerAge am) {
         this.playerRole = playerRole;
-        this.player = playerRole.getPlayer();
         this.am = am;
 
         checkPhaseUp(am.getAge());
@@ -35,15 +33,15 @@ public class PhaseManager {
 
     private void babyHungerScream() {
         if (phase == Phase.BABY || phase == Phase.TODDLER) {
-            if (player.getFoodLevel() < 10) {
+            if (playerRole.getPlayer().getFoodLevel() < 10) {
                 double freq = Util.map(
-                        player.getFoodLevel(),
+                        playerRole.getPlayer().getFoodLevel(),
                         0,
                         10,
                         10,
                         1);
                 if (Math.random() < freq / 100d) { // triggers every 5 secs in average
-                    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_GOAT_SCREAMING_AMBIENT, SoundCategory.MASTER, 1, 2);
+                    playerRole.getPlayer().getWorld().playSound(playerRole.getPlayer().getLocation(), Sound.ENTITY_GOAT_SCREAMING_AMBIENT, SoundCategory.MASTER, 1, 2);
                 }
             }
         }
@@ -61,7 +59,7 @@ public class PhaseManager {
 
             if (age >= start && age < end) { // in Age range
                 if (this.phase != phase) {  // not already in this phase?
-                    PlayerPhaseUpEvent e = new PlayerPhaseUpEvent(player, this, this.phase, phase);
+                    PlayerPhaseUpEvent e = new PlayerPhaseUpEvent(playerRole.getPlayer(), this, this.phase, phase);
                     Bukkit.getServer().getPluginManager().callEvent(e);
                     if (!e.isCancelled()) {
                         changePhase(phase);
@@ -70,22 +68,22 @@ public class PhaseManager {
                 return;
             }
         }
-        player.setHealth(0);
+        playerRole.getPlayer().setHealth(0);
     }
 
     public void changePhase(Phase phase) {
         endPhase();
 
         // Stop carrying if one player phases up
-        if (Piggyback.carryCoupleMap.containsKey(player)) {
-            if (Piggyback.carryCoupleMap.carried.get(player) != null) {
-                Player carrier = Piggyback.carryCoupleMap.carried.get(player).getCarrier();
+        if (Piggyback.carryCoupleMap.containsKey(playerRole.getPlayer())) {
+            if (Piggyback.carryCoupleMap.carried.get(playerRole.getPlayer()) != null) {
+                Player carrier = Piggyback.carryCoupleMap.carried.get(playerRole.getPlayer()).getCarrier();
                 Piggyback.stopCarry(carrier);
                 Notification.errorMsg(carrier, "Dog Sven vanished!");
-                Notification.errorMsg(player, "Dog Sven vanished!");
-            } else if (Piggyback.carryCoupleMap.carriers.get(player) != null) {
-                Piggyback.stopCarry(player);
-                Notification.errorMsg(player, "Dog Sven vanished!");
+                Notification.errorMsg(playerRole.getPlayer(), "Dog Sven vanished!");
+            } else if (Piggyback.carryCoupleMap.carriers.get(playerRole.getPlayer()) != null) {
+                Piggyback.stopCarry(playerRole.getPlayer());
+                Notification.errorMsg(playerRole.getPlayer(), "Dog Sven vanished!");
             }
         }
 
@@ -96,12 +94,12 @@ public class PhaseManager {
     }
 
     public void phaseUpEffect() {
-        Location location = player.getLocation();
-        player.getWorld().spawnParticle(Particle.COMPOSTER, location, 100, 0.5, 1, 0.5);
+        Location location = playerRole.getPlayer().getLocation();
+        playerRole.getPlayer().getWorld().spawnParticle(Particle.COMPOSTER, location, 100, 0.5, 1, 0.5);
         //player.getWorld().playSound(location, Sound.BLOCK_BELL_USE, 4, 1);
         //player.getWorld().playSound(location, Sound.BLOCK_BELL_RESONATE, 4, 1);
-        player.playSound(location, Sound.BLOCK_BELL_USE, 4, 1);
-        player.playSound(location, Sound.BLOCK_BELL_RESONATE, 4, 1);
+        playerRole.getPlayer().playSound(location, Sound.BLOCK_BELL_USE, 4, 1);
+        playerRole.getPlayer().playSound(location, Sound.BLOCK_BELL_RESONATE, 4, 1);
     }
 
     public void start() {

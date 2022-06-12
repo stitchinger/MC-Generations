@@ -128,7 +128,7 @@ public class SpawnManager {
         wrapper.setIsSpawning(false);
         wrapper.setDiedOfOldAge(false);
         wrapper.setLastBedLocation(null);
-        wrapper.getPlayer().setGameMode(wrapper.getLastGameMode());
+        wrapper.getPlayer().setGameMode(GameMode.SURVIVAL);
         wrapper.getPlayer().setInvulnerable(false);
         wrapper.getPlayer().getInventory().clear();
 
