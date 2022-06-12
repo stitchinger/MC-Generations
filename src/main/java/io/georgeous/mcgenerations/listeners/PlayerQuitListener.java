@@ -24,7 +24,6 @@ public class PlayerQuitListener implements Listener {
         dealWithWrapper(player);
 
         event.setQuitMessage("");
-
         SurrogateManager.getInstance().destroySurrogateOfPlayer(player);
     }
 
@@ -40,10 +39,12 @@ public class PlayerQuitListener implements Listener {
 
 
         if(role != null){
+            roleManager.saveRoleData(role);
+
             if(role.getFamily() != null){
                 removeFromFamily(role);
             }
-            roleManager.saveRoleData(role);
+
             roleManager.removeRoleOfPlayer(player);
         }
     }
