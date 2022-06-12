@@ -24,6 +24,8 @@ public class PlayerRole {
     public Family family;
     public int generation;
     public boolean isDead = false;
+    private boolean offline = false;
+    private long lastSeenOnline = 0L;
     private String name;
     private boolean isRenamed = false;
     private boolean usedAdopt = false;
@@ -184,5 +186,18 @@ public class PlayerRole {
 
     public void setUsedAdopt(boolean value){
         usedAdopt = value;
+    }
+
+    public void goOffline(){
+        offline = true;
+        lastSeenOnline = System.currentTimeMillis();
+    }
+
+    public boolean isOffline(){
+        return offline;
+    }
+
+    public Long getLastSeenOnline(){
+        return lastSeenOnline;
     }
 }

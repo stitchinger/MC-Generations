@@ -5,6 +5,7 @@ import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -39,13 +40,16 @@ public class PlayerQuitListener implements Listener {
 
 
         if(role != null){
-            roleManager.saveRoleData(role);
+            //roleManager.saveRoleData(role);
 
             if(role.getFamily() != null){
-                removeFromFamily(role);
+                //removeFromFamily(role);
             }
 
-            roleManager.removeRoleOfPlayer(player);
+            //roleManager.removeRoleOfPlayer(player);
+
+            Bukkit.getLogger().info(role.getName() + " went missing.");
+            role.goOffline();
         }
     }
 

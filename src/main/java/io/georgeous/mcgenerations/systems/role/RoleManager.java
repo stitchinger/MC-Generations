@@ -15,12 +15,15 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.bukkit.Bukkit.getServer;
@@ -51,7 +54,19 @@ public class RoleManager {
     }
 
     public void update() {
-        roles.values().forEach(PlayerRole::update);
+        Iterator<Map.Entry<UUID, PlayerRole>> iterator = roles.entrySet().iterator();
+        while (iterator.hasNext()) {
+            PlayerRole role = iterator.next().getValue();
+
+            if(!role.isOffline()){
+                role.update();
+            } else{
+                if(role.getLastSeenOnline() + 1000L * 5 < System.currentTimeMillis() ){
+                    Bukkit.getLogger().info(role.getName() + "died offline");
+                    iterator.remove();
+                }
+            }
+        }
     }
 
     public PlayerRole get(Player player) {

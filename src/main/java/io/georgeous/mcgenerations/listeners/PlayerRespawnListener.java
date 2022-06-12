@@ -22,15 +22,48 @@ import xyz.haoshoku.nick.api.NickAPI;
 public class PlayerRespawnListener implements Listener {
 
     Player player = null;
-    PlayerWrapper playerWrapper;
+    PlayerWrapper playerWrapper = null;
 
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
 
         player = event.getPlayer();
+        playerWrapper = PlayerManager.get().getWrapper(player);
+        //player.sendMessage(player.getHealth() + "");
 
-        Bukkit.getLogger().info(player.isDead() + "");
+        if(player.getHealth() != 0){
+            // End portal
+            return;
+        }
 
+        setupPlayerForCouncil(player);
+        respawnToCouncil(event);
+    }
+
+    private void respawnToCouncil(PlayerRespawnEvent event){
+        if(playerWrapper == null){
+            PlayerManager.get().initPlayer(player);
+            playerWrapper = PlayerManager.get().getWrapper(player);
+        }
+        playerWrapper.setLastGameMode(player.getGameMode());
+        player.setGameMode(GameMode.ADVENTURE);
+        player.setInvulnerable(true);
+        setupPlayerForCouncil(player);
+
+        event.setRespawnLocation(MCG.council.getRandomCouncilSpawn());
+        discordReminderMessage(player);
+
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                NickAPI.resetNick(player);
+                NickAPI.resetSkin(player);
+                NickAPI.refreshPlayer(player);
+            }
+        }.runTaskLater(MCG.getInstance(), 20L);
+    }
+
+    private void setupPlayerForCouncil(Player player){
         playerWrapper = PlayerManager.get().getWrapper(player);
         if(playerWrapper == null){
             PlayerManager.get().initPlayer(player);
@@ -39,23 +72,7 @@ public class PlayerRespawnListener implements Listener {
         playerWrapper.setLastGameMode(player.getGameMode());
         player.setGameMode(GameMode.ADVENTURE);
         player.setInvulnerable(true);
-
-        new BukkitRunnable(){
-            @Override
-            public void run() {
-
-                    NickAPI.resetNick(player);
-                    NickAPI.resetSkin(player);
-                    NickAPI.refreshPlayer(player);
-
-            }
-        }.runTaskLater(MCG.getInstance(), 20L);
-
-        event.setRespawnLocation(MCG.council.getRandomCouncilSpawn());
-
-        discordReminderMessage(player);
     }
-
 
     private void discordReminderMessage(Player player){
         player.sendMessage("");
