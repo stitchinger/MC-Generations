@@ -1,6 +1,8 @@
 package io.georgeous.mcgenerations.listeners;
 
+import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
+import io.georgeous.mcgenerations.systems.role.lifephase.Phase;
 import io.georgeous.mcgenerations.utils.ItemManager;
 import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.Bukkit;
@@ -26,30 +28,55 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void disableBabyItemPickup(EntityPickupItemEvent event) {
-        if (event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
-            if (RoleManager.get().isABaby(player)) {
-                event.setCancelled(true);
-            }
+        if(event.getEntity().getScoreboardTags().contains("surrogate")){
+            event.setCancelled(true);
+            return;
         }
+
+        if(!(event.getEntity() instanceof Player player)){
+            return;
+        }
+
+        PlayerRole role = RoleManager.get().get(player);
+        if(role == null){
+            return;
+        }
+
+        if(role.getPhaseManager().getCurrentPhase() != Phase.BABY){
+            return;
+        }
+
+        event.setCancelled(true);
     }
 
     @EventHandler
     public void disableBabyInventoryOpening(InventoryOpenEvent event) {
         Player player = (Player) event.getPlayer();
-        if (RoleManager.get().isABaby(player)) {
-            Notification.errorMsg(player, "Babies cant interact with inventories");
-            event.setCancelled(true);
+
+        PlayerRole role = RoleManager.get().get(player);
+        if(role == null){
+            return;
         }
+
+        if(role.getPhaseManager().getCurrentPhase() != Phase.BABY){
+            return;
+        }
+
+        Notification.errorMsg(player, "Babies cant interact with inventories");
+        event.setCancelled(true);
+
     }
 
     @EventHandler
     public void disableEnderchest(InventoryOpenEvent event) {
         Player player = (Player) event.getPlayer();
-        if (event.getInventory().getType() == InventoryType.ENDER_CHEST) {
-            Notification.errorMsg(player, "Enderchests do not work here");
-            event.setCancelled(true);
+
+        if (event.getInventory().getType() != InventoryType.ENDER_CHEST) {
+            return;
         }
+
+        Notification.errorMsg(player, "Enderchests do not work here");
+        event.setCancelled(true);
     }
 
     @EventHandler

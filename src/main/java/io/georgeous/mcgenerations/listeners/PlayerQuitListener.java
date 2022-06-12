@@ -49,7 +49,7 @@ public class PlayerQuitListener implements Listener {
             //roleManager.removeRoleOfPlayer(player);
 
             Bukkit.getLogger().info(role.getName() + " went missing.");
-            role.goOffline();
+            role.setIsOffline(true);
         }
     }
 

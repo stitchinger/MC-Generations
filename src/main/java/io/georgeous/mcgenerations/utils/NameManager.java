@@ -2,6 +2,7 @@ package io.georgeous.mcgenerations.utils;
 
 import io.georgeous.mcgenerations.MCG;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -76,10 +77,12 @@ public class NameManager {
 
     public static void registerName(String name){
         usedNames.add(name.toLowerCase());
+        Bukkit.getLogger().info(usedNames.toString());
     }
 
     public static void deregisterName(String name){
         usedNames.remove(name.toLowerCase());
+        Bukkit.getLogger().info(usedNames.toString());
     }
 
     public static void saveConfig() {

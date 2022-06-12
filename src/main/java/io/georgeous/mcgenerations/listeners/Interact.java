@@ -45,7 +45,16 @@ public class Interact implements Listener {
         int newFoodLevel = Math.min(baby.getFoodLevel() + 5, 20);
         baby.setFoodLevel(newFoodLevel);
 
-        babyRole.babyFeedEffect();
+        babyFeedEffect(babyRole.getPlayer());
+    }
+
+    public void babyFeedEffect(Player player) {
+        Location location = player.getLocation();
+        World world = location.getWorld();
+        if (world != null) {
+            world.spawnParticle(Particle.COMPOSTER, location, 40, 0.5, 0.5, 0.5);
+            world.playSound(location, Sound.ENTITY_GENERIC_DRINK, 1, 1);
+        }
     }
 
     public void babyFullEffect(Location location) {

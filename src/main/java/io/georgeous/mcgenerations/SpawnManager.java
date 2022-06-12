@@ -111,6 +111,7 @@ public class SpawnManager {
                 spawnAsEve(spawnedPlayer);
             }
 
+            ScoreboardHandler.get().refreshScoreboardOfPlayer(spawnedPlayer);
 
             new BukkitRunnable() {
                 @Override

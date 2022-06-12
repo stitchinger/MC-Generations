@@ -118,6 +118,7 @@ public class PlayerDeathListener implements Listener {
         }
 
         PlayerManager.get().getWrapper(player).addLife();
+        Bukkit.getLogger().info(playerRole.getName() + " died offline");
         playerRole.die();
     }
 

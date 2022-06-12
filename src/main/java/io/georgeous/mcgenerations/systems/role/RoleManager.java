@@ -62,7 +62,8 @@ public class RoleManager {
                 role.update();
             } else{
                 if(role.getLastSeenOnline() + 1000L * 5 < System.currentTimeMillis() ){
-                    Bukkit.getLogger().info(role.getName() + "died offline");
+
+                    role.die();
                     iterator.remove();
                 }
             }
@@ -78,6 +79,23 @@ public class RoleManager {
     }
 
     public void initPlayer(Player player) {
+
+        PlayerRole role = get(player.getUniqueId());
+
+        if(role != null){
+            role.setPlayer(player);
+            role.setIsOffline(false);
+        } else {
+            player.teleport(MCG.council.getRandomCouncilSpawn());
+            // Reset Player
+            player.getInventory().clear();
+            player.setGameMode(GameMode.ADVENTURE);
+            player.getActivePotionEffects().forEach(potionEffect -> {
+                player.removePotionEffect(potionEffect.getType());
+            });
+        }
+
+/*
         boolean validOfflineTime = PlayerManager.get().getWrapper(player).getLastOfflineTime() < (McgConfig.getValidOfflineTime() * 1000);
 
         boolean roleDead = false;
@@ -101,6 +119,8 @@ public class RoleManager {
                 player.removePotionEffect(potionEffect.getType());
             });
         }
+
+ */
     }
 
     public PlayerRole createAndAddRole(Player player, String name, int age, int gen, Family family) {
@@ -185,16 +205,6 @@ public class RoleManager {
 
     public int getRoleCount() {
         return roles.size();
-    }
-
-    public boolean isABaby(Player player) {
-        PlayerRole role = get(player);
-        if (role == null)
-            return false;
-        PhaseManager phaseManager = get(player).getPhaseManager();
-        if (phaseManager == null)
-            return false;
-        return phaseManager.getCurrentPhase().getName().equalsIgnoreCase("baby");
     }
 
 }

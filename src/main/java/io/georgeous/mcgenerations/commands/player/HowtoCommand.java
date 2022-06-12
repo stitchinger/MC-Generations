@@ -128,6 +128,8 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
                 player.sendMessage("   Info about your family");
                 player.sendMessage("► [ §d/babyhandler§r ]");
                 player.sendMessage("   Gives you a Baby-Handler, if you are old enough");
+                player.sendMessage("► [ §d/adopt§r ]");
+                player.sendMessage("   Invite other player into your family");
                 player.sendMessage("► [ §d/die§r ]");
                 player.sendMessage("   If there are no other options.. Abuse not allowed!");
                 player.sendMessage("► [ §d/report§r ]");

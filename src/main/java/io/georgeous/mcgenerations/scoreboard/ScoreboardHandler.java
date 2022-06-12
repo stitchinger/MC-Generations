@@ -65,25 +65,6 @@ public class ScoreboardHandler {
 
     public void refreshScoreboardOfPlayer(Player toRefresh) {
 
-        /*
-        SURROGATE MANAGEMENT
-         */
-        /*
-        Team team = toRefresh.getScoreboard().getTeam("nocollision");
-        if(team == null){
-            team = toRefresh.getScoreboard().registerNewTeam("nocollision");
-            team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
-        }
-        SurrogateEntity surrogateEntity = SurrogateManager.getInstance().getVillager(toRefresh);
-        if(surrogateEntity != null) {
-            if(!team.getEntries().contains(surrogateEntity.getUniqueId().toString())) {
-                team.addEntry(surrogateEntity.getUniqueId().toString());
-            }
-        }
-
-         */
-
-
         if(toRefresh.getScoreboard().getObjective("dummy_sidebar") == null){
             registerPlayer(toRefresh);
         }

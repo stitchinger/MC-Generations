@@ -1,17 +1,15 @@
 package io.georgeous.mcgenerations.commands.admin;
 
-import io.georgeous.mcgenerations.MCG;
-import io.georgeous.mcgenerations.SpawnManager;
+
 import io.georgeous.mcgenerations.commands.CommandUtils;
 import io.georgeous.mcgenerations.files.McgConfig;
-import io.georgeous.mcgenerations.systems.family.Family;
+
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
-import io.georgeous.mcgenerations.systems.role.PlayerRole;
-import io.georgeous.mcgenerations.systems.role.RoleManager;
+
+import io.georgeous.mcgenerations.utils.NameManager;
 import io.georgeous.mcgenerations.utils.Notification;
-import org.bukkit.Bukkit;
-import org.bukkit.Sound;
+
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.command.Command;
@@ -19,12 +17,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scoreboard.Scoreboard;
-import org.jetbrains.annotations.NotNull;
-import xyz.haoshoku.nick.api.NickAPI;
 
-import javax.management.relation.Role;
+import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +59,12 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if ("clearnames".equals(args[0])) {
+            NameManager.usedNames = new ArrayList<>();
+            return true;
+        }
+
+
         if ("speed".equals(args[0])) {
             AttributeInstance speed = player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
             player.sendMessage(speed.getBaseValue() + "");
@@ -75,71 +75,12 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if ("sound".equals(args[0])) {
-            AttributeInstance speed = player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
-            player.sendMessage(speed.getBaseValue() + "");
-            player.sendMessage(speed.getDefaultValue() + "");
-            player.sendMessage(speed.getValue() + "");
-            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASEDRUM, 1f, 1.083f);
-
-            new BukkitRunnable(){
-                @Override
-                public void run() {
-                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASEDRUM, 1.249f, 1f);
-                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASEDRUM, 1.332f, 1f);
-                }
-            }.runTaskLater(MCG.getInstance(), 6L);
-            //player.setWalkSpeed(0.7f);
-            //speed.setBaseValue(speed.getDefaultValue());
-            return true;
-        }
-
-        if ("spawn".equals(args[0])) {
-            SpawnManager.get().spawnPlayer(player);
-            return true;
-        }
-
-        if ("roleremove".equals(args[0])) {
-            RoleManager.get().removeRoleData(RoleManager.get().get(player));
-            //RoleManager.get().saveRoleData(RoleManager.get().get(player));
-
-            RoleManager.get().removeRoleOfPlayer(player);
-
-            NickAPI.resetNick(player);
-            NickAPI.resetSkin(player);
-            NickAPI.resetUniqueId(player);
-            NickAPI.resetGameProfileName(player);
-            NickAPI.refreshPlayer(player);
-            return true;
-        }
-
-        if ("resetscore".equals(args[0])) {
-            Scoreboard main = Bukkit.getServer().getScoreboardManager().getMainScoreboard();
-            player.setScoreboard(main);
-            return true;
-        }
         if ("reloadconfig".equals(args[0])) {
             McgConfig.reload();
             return true;
         }
 
-        if ("leave".equals(args[0])) {
-            PlayerRole role = RoleManager.get().get(player);
-            Family family = role.getFamily();
-            family.removeMember(role);
-            return true;
-        }
 
-        if ("join".equals(args[0])) {
-            Player playerToJoin = Bukkit.getPlayer("Bitbanga");
-            PlayerRole roleToJoin = RoleManager.get().get(playerToJoin);
-            Family family = roleToJoin.getFamily();
-            family.addMember(RoleManager.get().get(player));
-            RoleManager.get().get(player).updateScoreboard();
-
-            player.teleport(playerToJoin.getLocation());
-            return true;
-        }
         return false;
     }
 

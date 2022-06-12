@@ -16,7 +16,7 @@ import xyz.haoshoku.nick.api.NickScoreboard;
 
 public class PlayerRole {
     // todo Kill role if player is offline for more than 5 min
-    private final Player player;
+    private Player player;
     // Managers
     private final PlayerAge playerAge;
     private final PhaseManager phaseManager;
@@ -118,19 +118,15 @@ public class PlayerRole {
 
     public void die() {
         if (!isDead) {
+
             isDead = true;
-            passOnPetsToDescendent();
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    unnickPlayer(player);
-                }
-            }.runTaskLater(MCG.getInstance(), 20);
+            //passOnPetsToDescendent();
 
             if (player.getHealth() != 0) {
                 player.setHealth(0);
             }
-            SurrogateManager.getInstance().destroySurrogateOfPlayer(player);
+            NameManager.deregisterName(name);
+            //SurrogateManager.getInstance().destroySurrogateOfPlayer(player);
         }
     }
 
@@ -147,13 +143,8 @@ public class PlayerRole {
         return player;
     }
 
-    public void babyFeedEffect() {
-        Location location = player.getLocation();
-        World world = location.getWorld();
-        if (world != null) {
-            world.spawnParticle(Particle.COMPOSTER, location, 40, 0.5, 0.5, 0.5);
-            world.playSound(location, Sound.ENTITY_GENERIC_DRINK, 1, 1);
-        }
+    public void setPlayer(Player player){
+        this.player = player;
     }
 
     public void setRenamed(boolean toggle){
@@ -188,9 +179,11 @@ public class PlayerRole {
         usedAdopt = value;
     }
 
-    public void goOffline(){
-        offline = true;
-        lastSeenOnline = System.currentTimeMillis();
+    public void setIsOffline(boolean value){
+        offline = value;
+        if(offline){
+            lastSeenOnline = System.currentTimeMillis();
+        }
     }
 
     public boolean isOffline(){
