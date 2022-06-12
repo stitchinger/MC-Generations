@@ -6,8 +6,7 @@ import io.georgeous.piggyback.events.PlayerStartCarryEvent;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.World;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -18,7 +17,7 @@ public class PlayerCarry implements Listener {
         Player player = event.getPlayer();
         Entity target = event.getTarget();
 
-        if (!(target instanceof Player)){
+        if (!(target instanceof Player) && !(target instanceof Cow) && !(target instanceof Chicken) && !(target instanceof Sheep) && !(target instanceof Pig)){
             event.setCancelled(true);
             return;
         }

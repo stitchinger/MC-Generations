@@ -48,12 +48,12 @@ public class NickCommand implements CommandExecutor {
     public void nickPlayer(Player player, String name) {
         NickAPI.nick(player, name);
 
-        NickAPI.setSkin(player, "Jahrhundert");
+        NickAPI.setSkin(player, player.getName());
         //NickAPI.setGameProfileName(player, name);
 
         NickAPI.refreshPlayer(player);
 
-        NickScoreboard.write(name, "admin", "Prefix ", " CustomNick", true, ChatColor.WHITE);
+        NickScoreboard.write(name, "admin", "Admin ", "", true, ChatColor.WHITE);
         NickScoreboard.updateScoreboard(name);
 
         player.sendMessage(ChatColor.DARK_GREEN + "Successfully set the nickname to " + ChatColor.YELLOW + name);

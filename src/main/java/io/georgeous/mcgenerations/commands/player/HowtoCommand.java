@@ -40,11 +40,15 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
             player.sendMessage("§f ► Family");
             player.sendMessage("§f ► Chat");
             player.sendMessage("§f ► Commands");
-            player.sendMessage("§6e.g. Use command §d[/howto hearts]§6 to find out, what's up with your hearts.");
-            TextComponent howtoExampleCommand = new TextComponent("[/howto hearts]");
+            //player.sendMessage("§6e.g. Use command §d[/howto hearts]§6 to find out, what's up with your hearts.");
+
+            TextComponent howtoExampleCommand = new TextComponent("§d[/howto hearts]");
             howtoExampleCommand.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/howto hearts"));
             howtoExampleCommand.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Copy to Chat").color(ChatColor.GRAY).italic(true).bold(true).create()));
-            //player.spigot().sendMessage(howtoExampleCommand);
+            player.spigot().sendMessage(
+                    new TextComponent("§6e.g. Use command "),
+                    howtoExampleCommand,
+                    new TextComponent(" §6to find out, what's up with your hearts."));
 
             player.sendMessage("");
             return true;
