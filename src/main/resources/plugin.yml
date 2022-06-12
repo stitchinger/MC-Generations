@@ -23,5 +23,6 @@ commands:
   babyhandler:
   report:
   rules:
+  adopt:
 depend: [Piggyback, NickAPI, Petmanager]
 

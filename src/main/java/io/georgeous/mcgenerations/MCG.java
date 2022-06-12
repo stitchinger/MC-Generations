@@ -87,12 +87,7 @@ public final class MCG extends JavaPlugin {
         registerEvents();
         registerCommands();
 
-        //makeBundleCraftable();
-
         overworld.setSpawnLocation(McgConfig.getCouncilLocation());
-
-        //getServer().dispatchCommand(Bukkit.getConsoleSender(), "veryspicy true");
-
 
         // Start Update-Function
         new BukkitRunnable() {
@@ -181,6 +176,7 @@ public final class MCG extends JavaPlugin {
         registerCommand("babyhandler", new BabyHandlerCommand());
         registerCommand("report", new ReportCommand());
         registerCommand("rules", new RulesCommand());
+        registerCommand("adopt", new AdoptCommand());
 
         registerCommand("msg", new CommandDeactivator());
         registerCommand("minecraft:me", new CommandDeactivator());
