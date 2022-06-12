@@ -1,20 +1,42 @@
 package io.georgeous.mcgenerations.adoption;
 
+import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
+import io.georgeous.mcgenerations.systems.role.lifephase.Phase;
 import io.georgeous.mcgenerations.utils.Notification;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.UUID;
 
 public class AdoptionManager {
 
     private static AdoptionManager instance;
     private static final HashMap<UUID, AdoptionRequest> requests = new HashMap<>();
+    private static final int UPDATE_TIME = 60;
 
-    private AdoptionManager(){}
+    private AdoptionManager(){
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                Iterator<Map.Entry<UUID, AdoptionRequest>> iterator = requests.entrySet().iterator();
+                while (iterator.hasNext()) {
+                    AdoptionRequest request = iterator.next().getValue();
+
+                    if(!request.isValid()){
+                        Bukkit.getLogger().info("removed adoption request from memory");
+                        iterator.remove();
+                    }
+                }
+            }
+        }.runTaskTimer(MCG.getInstance(), 20L * UPDATE_TIME, 20L * UPDATE_TIME);
+    }
 
     public static AdoptionManager get() {
         if (instance == null) {
@@ -46,6 +68,19 @@ public class AdoptionManager {
                 return;
             }
 
+            Phase minPhase = Phase.CHILD;
+            Phase currentPhase = adopterRole.getPhaseManager().getCurrentPhase();
+            if(currentPhase.getId() < minPhase.getId()){
+                Notification.errorMsg(adopter, "You must be at least " + minPhase.getStartAge() + " years old to adopt another player");
+                return;
+            }
+
+            currentPhase = adopteeRole.getPhaseManager().getCurrentPhase();
+            if(currentPhase.getId() < minPhase.getId()){
+                Notification.errorMsg(adopter, "Players must be at least " + minPhase.getStartAge() + " years old to adopt them");
+                return;
+            }
+
             UUID uuid = UUID.randomUUID();
             AdoptionRequest request = new AdoptionRequest(adopterRole, adopteeRole, uuid);
             requests.put(uuid, request);
@@ -59,8 +94,23 @@ public class AdoptionManager {
             Notification.errorMsg(player, "Request invalid");
             return;
         }
-        request.accept();
         requests.remove(uuid);
+        if(!request.isValid()){
+            Notification.errorMsg(player, "Requests are only valid for 1 minute");
+            return;
+        }
+
+        if(!request.adopter.getPlayer().isOnline()){
+            Notification.errorMsg(player, request.adopter.getName() + " " + request.adopter.getFamily().getColoredName() +  " left the game");
+            return;
+        }
+
+        if(request.adopter != RoleManager.get().get(request.adopter.getPlayer())){
+            Notification.errorMsg(player, request.adopter.getName() + " " + request.adopter.getFamily().getColoredName() + " doesnt exist anymore");
+            return;
+        }
+
+        request.accept();
     }
 
     public void decline(UUID uuid, Player player){
@@ -69,7 +119,23 @@ public class AdoptionManager {
             Notification.errorMsg(player, "Request invalid");
             return;
         }
-        request.decline();
         requests.remove(uuid);
+
+        if(!request.isValid()){
+            Notification.errorMsg(player, "Requests are only valid for 1 minute");
+            return;
+        }
+
+        if(!request.adopter.getPlayer().isOnline()){
+            Notification.errorMsg(player, request.adopter.getName() + " " + request.adopter.getFamily().getColoredName() + " left the game");
+            return;
+        }
+
+        if(request.adopter != RoleManager.get().get(request.adopter.getPlayer())){
+            Notification.errorMsg(player, request.adopter.getName() + " " + request.adopter.getFamily().getColoredName() + " doesnt exist anymore");
+            return;
+        }
+        request.decline();
+
     }
 }

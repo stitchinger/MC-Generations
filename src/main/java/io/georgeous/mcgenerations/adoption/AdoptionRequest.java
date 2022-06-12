@@ -13,15 +13,19 @@ import net.md_5.bungee.api.chat.TextComponent;
 import java.util.UUID;
 
 public class AdoptionRequest {
+    final int REQUEST_VALID_TIME = 60; // seconds
     PlayerRole adopter;
     PlayerRole adoptee;
     UUID uuid;
+    Long time;
 
 
     public AdoptionRequest(PlayerRole adopter, PlayerRole adoptee, UUID uuid){
+
         this.adopter = adopter;
         this.adoptee = adoptee;
         this.uuid = uuid;
+        this.time = System.currentTimeMillis();
         sendRequestMsg();
     }
 
@@ -62,6 +66,10 @@ public class AdoptionRequest {
     public void decline(){
         Notification.neutralMsg(adopter.getPlayer(), adoptee.getName() + " " + adoptee.getFamily().getColoredName() +  " declined your adoptation request.");
         Notification.neutralMsg(adoptee.getPlayer(), "You declined the adoptation request of " + adopter.getName() + " " + adopter.getFamily().getColoredName());
+    }
+
+    public boolean isValid(){
+        return time + 1000L * REQUEST_VALID_TIME > System.currentTimeMillis();
     }
 
 }
