@@ -4,8 +4,10 @@ import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.SpawnManager;
 import io.georgeous.mcgenerations.commands.CommandUtils;
 import io.georgeous.mcgenerations.files.McgConfig;
+import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
+import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.Bukkit;
@@ -22,6 +24,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
 import xyz.haoshoku.nick.api.NickAPI;
 
+import javax.management.relation.Role;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,6 +120,24 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
         }
         if ("reloadconfig".equals(args[0])) {
             McgConfig.reload();
+            return true;
+        }
+
+        if ("leave".equals(args[0])) {
+            PlayerRole role = RoleManager.get().get(player);
+            Family family = role.getFamily();
+            family.removeMember(role);
+            return true;
+        }
+
+        if ("join".equals(args[0])) {
+            Player playerToJoin = Bukkit.getPlayer("Bitbanga");
+            PlayerRole roleToJoin = RoleManager.get().get(playerToJoin);
+            Family family = roleToJoin.getFamily();
+            family.addMember(RoleManager.get().get(player));
+            RoleManager.get().get(player).updateScoreboard();
+
+            player.teleport(playerToJoin.getLocation());
             return true;
         }
         return false;

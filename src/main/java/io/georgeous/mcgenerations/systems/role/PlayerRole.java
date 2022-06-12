@@ -26,6 +26,7 @@ public class PlayerRole {
     public boolean isDead = false;
     private String name;
     private boolean isRenamed = false;
+    private boolean usedAdopt = false;
 
     public PlayerRole(Player player, String name, int age, int generation, Family family) {
         this.player = player;
@@ -109,6 +110,10 @@ public class PlayerRole {
         return family;
     }
 
+    public void setFamily(Family family) {
+        this.family = family;
+    }
+
     public void die() {
         if (!isDead) {
             isDead = true;
@@ -171,5 +176,13 @@ public class PlayerRole {
 
     public int getGeneration(){
         return this.generation;
+    }
+
+    public boolean getUsedAdopt(){
+        return usedAdopt;
+    }
+
+    public void setUsedAdopt(boolean value){
+        usedAdopt = value;
     }
 }

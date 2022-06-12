@@ -44,7 +44,6 @@ public class FamilyManager {
             Family family = entry.getValue();
             saveFamily(family);
         }
-
     }
 
     public static void saveFamily(Family family) {

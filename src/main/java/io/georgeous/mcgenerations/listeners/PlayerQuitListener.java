@@ -37,8 +37,12 @@ public class PlayerQuitListener implements Listener {
 
     private void dealWithRole(Player player){
         PlayerRole role = roleManager.get(player);
+
+
         if(role != null){
-            removeFromFamily(role);
+            if(role.getFamily() != null){
+                removeFromFamily(role);
+            }
             roleManager.saveRoleData(role);
             roleManager.removeRoleOfPlayer(player);
         }

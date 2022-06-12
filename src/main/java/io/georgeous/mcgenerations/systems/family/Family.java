@@ -6,6 +6,7 @@ import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.Notification;
 import io.georgeous.mcgenerations.utils.Util;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -108,11 +109,20 @@ public class Family {
         if (members.size() == 0) {
             setLeader(role);
         }
+        role.setFamily(this);
+        ScoreboardHandler.get().refreshScoreboardOfPlayer(role.getPlayer());
+
         members.add(role);
     }
 
     public void removeMember(PlayerRole role) {
-        members.remove(role);
+        if(!members.remove(role)){
+            Bukkit.getLogger().info("Role not found in family");
+            return;
+        }
+        role.setFamily(null);
+        ScoreboardHandler.get().refreshScoreboardOfPlayer(role.getPlayer());
+
         if (members.size() == 0) {
             isDead = true;
         }
