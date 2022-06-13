@@ -140,7 +140,7 @@ public class PlayerRole {
                 player.setHealth(0);
             }
             NameManager.deregisterName(name);
-            //SurrogateManager.getInstance().destroySurrogateOfPlayer(player);
+            SurrogateManager.getInstance().destroySurrogateOfPlayer(player);
         }
     }
 

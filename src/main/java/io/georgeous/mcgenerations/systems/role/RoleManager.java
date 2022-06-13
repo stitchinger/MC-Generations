@@ -10,6 +10,7 @@ import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
 import io.georgeous.mcgenerations.utils.NameManager;
 import io.georgeous.mcgenerations.utils.Notification;
+import io.georgeous.spicyhearts.SpicyAPI;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -62,9 +63,11 @@ public class RoleManager {
                 role.update();
             } else{
                 if(role.getLastSeenOnline() + 1000L * 5 < System.currentTimeMillis() ){
-
+                    removeRoleData(role);
+                    Bukkit.getLogger().info(role.getName() + " died offline");
                     role.die();
                     iterator.remove();
+
                 }
             }
         }
@@ -96,6 +99,9 @@ public class RoleManager {
             player.getActivePotionEffects().forEach(potionEffect -> {
                 player.removePotionEffect(potionEffect.getType());
             });
+            SpicyAPI.get().clearFoodList(player);
+            player.setFoodLevel(20);
+            player.setHealth(player.getMaxHealth());
         }
 
 /*

@@ -3,6 +3,7 @@ package io.georgeous.mcgenerations.listeners;
 import io.georgeous.mcgenerations.Council;
 import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.files.McgConfig;
+import io.georgeous.mcgenerations.scoreboard.ScoreboardHandler;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
@@ -31,6 +32,14 @@ public class PlayerJoinListener implements Listener {
         playerManager.initPlayer(player);
         roleManager.initPlayer(player);
 
+
+
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                ScoreboardHandler.get().refreshScoreboardOfPlayer(player);
+            }
+        }.runTaskLater(MCG.getInstance(), 20L);
         event.setJoinMessage("");
 
         new BukkitRunnable(){

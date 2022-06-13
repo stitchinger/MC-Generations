@@ -51,6 +51,7 @@ public class ScoreboardHandler {
     }
 
     public void registerPlayer(Player toRegister) {
+        Bukkit.getLogger().info("Register Scoreboard: " + toRegister.getName());
         Scoreboard scoreboard = toRegister.getScoreboard();
 
         Objective objective = scoreboard.getObjective("dummy_sidebar");
@@ -64,7 +65,7 @@ public class ScoreboardHandler {
     }
 
     public void refreshScoreboardOfPlayer(Player toRefresh) {
-
+        Bukkit.getLogger().info("Refresh Scoreboard: " + toRefresh.getName());
         if(toRefresh.getScoreboard().getObjective("dummy_sidebar") == null){
             registerPlayer(toRefresh);
         }

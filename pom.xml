@@ -127,5 +127,12 @@
             <scope>system</scope>
             <systemPath>/Users/georg/Development/Buildtools/plugins/Piggyback.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>io.georgeous</groupId>
+            <artifactId>Spicyhearts</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>/Users/georg/Development/Buildtools/plugins/Spicyhearts-custom.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>
