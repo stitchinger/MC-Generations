@@ -106,8 +106,6 @@ public class PlayerRole {
         phaseManager.start();
     }
 
-
-
     public void updateScoreboard() {
         NickScoreboard.write(name, player.getUniqueId().toString().substring(0, 15), "", " " + getFamily().getColoredName(), true, ChatColor.WHITE);
         NickScoreboard.updateScoreboard(name);

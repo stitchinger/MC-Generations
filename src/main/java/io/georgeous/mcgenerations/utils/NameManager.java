@@ -5,6 +5,7 @@ import io.georgeous.mcgenerations.MCG;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import xyz.haoshoku.nick.api.NickAPI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +73,8 @@ public class NameManager {
                 return true;
             }
         }
-        return false;
+
+        return NickAPI.isNickedName(newName);
     }
 
     public static void registerName(String name){

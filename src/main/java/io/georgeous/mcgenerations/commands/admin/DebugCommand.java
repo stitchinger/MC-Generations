@@ -20,6 +20,8 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import org.jetbrains.annotations.NotNull;
+import xyz.haoshoku.nick.api.NickAPI;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,6 +85,13 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
 
         if ("reloadconfig".equals(args[0])) {
             McgConfig.reload();
+            return true;
+        }
+
+        if ("isnick".equals(args[0])) {
+            player.sendMessage(String.valueOf(NickAPI.isNickedName(args[1])));
+            ;
+            //McgConfig.reload();
             return true;
         }
 
