@@ -27,6 +27,8 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
+        player.setPlayerListHeader("§c1§fHour §c1§fLife");
+        player.setPlayerListFooter("§61hour1life.minehut.gg");
         player.setGameMode(GameMode.SURVIVAL);
 
         playerManager.initPlayer(player);

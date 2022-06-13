@@ -112,6 +112,9 @@ public class ScoreboardHandler {
             if(playerRole.getMothersName() != null){
                 toReplace = toReplace
                         .replace("[mother]",String.valueOf( playerRole.getMothersName()));
+            }else{
+                toReplace = toReplace
+                        .replace("[mother]", "-");
             }
         }
 
