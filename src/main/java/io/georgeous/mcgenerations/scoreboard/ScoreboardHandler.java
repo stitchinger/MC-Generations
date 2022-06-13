@@ -64,13 +64,21 @@ public class ScoreboardHandler {
 
         PlayerRole role = RoleManager.get().get(toRefresh);
         if(role != null){
-            objective.setDisplayName(role.getName() + " " + role.getFamily().getColoredName());
+            Family family = role.getFamily();
+
+            if(family != null){
+                objective.setDisplayName(role.getName() + " " + role.getFamily().getColoredName());
+            } else{
+                objective.setDisplayName(role.getName());
+            }
+
+
             lines.add(sbLine("Age", role.getAgeManager().getAge()));
             lines.add(sbLine("Gen", role.getGeneration()));
             lines.add(sbLine("Mother", role.getMothersName()));
             lines.add("[space]");
 
-            Family family = role.getFamily();
+
             if(family != null){
                 lines.add(sbLine("Family", family.getColoredName()));
                 lines.add(sbLine("- Est", family.getEstablished()));
