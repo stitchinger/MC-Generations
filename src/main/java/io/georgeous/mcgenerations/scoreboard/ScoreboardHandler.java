@@ -1,6 +1,7 @@
 package io.georgeous.mcgenerations.scoreboard;
 
 import io.georgeous.mcgenerations.MCG;
+import io.georgeous.mcgenerations.files.McgConfig;
 import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
@@ -12,13 +13,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class ScoreboardHandler {
 
     private final String title;
-    private final List<String> lines;
+
     private static ScoreboardHandler instance;
 
     public static ScoreboardHandler get(){
@@ -31,22 +33,8 @@ public class ScoreboardHandler {
     private ScoreboardHandler() {
 
         title = "1hour1life.minehut.gg";
-        lines =  MCG.getInstance().getFileManager().getScoreboardFile().getStringList("lines");
-        for(int i = 0; i < lines.size(); i++) {
-            lines.set(i, ChatColor.translateAlternateColorCodes('&', lines.get(i)));
-        }
+        //lines =  MCG.getInstance().getFileManager().getScoreboardFile().getStringList("lines");
 
-        /*
-        new BukkitRunnable(){
-            @Override
-            public void run() {
-                for(UUID player : PlayerManager.get().getWrapperAttachedPlayers()) {
-                    refreshScoreboardOfPlayer(Bukkit.getPlayer(player));
-                }
-            }
-        }.runTaskTimer(MCG.getInstance(), 20 , 20);
-
-         */
 
     }
 
@@ -55,9 +43,11 @@ public class ScoreboardHandler {
         Scoreboard scoreboard = toRegister.getScoreboard();
 
         Objective objective = scoreboard.getObjective("dummy_sidebar");
-        if(objective == null) objective = scoreboard.registerNewObjective("dummy_sidebar", "bbb", replacePlaceholders(title, toRegister));
+        if(objective == null) {
+            objective = scoreboard.registerNewObjective("dummy_sidebar", "bbb", "Charakter Name");
+        }
 
-        for(int i = 0; i < lines.size(); i++) {
+        for(int i = 0; i < 10; i++) {
             Team team = scoreboard.registerNewTeam(String.valueOf(i));
             team.addEntry(ChatColor.values()[i].toString());
         }
@@ -70,6 +60,28 @@ public class ScoreboardHandler {
             registerPlayer(toRefresh);
         }
         Objective objective = toRefresh.getScoreboard().getObjective("dummy_sidebar");
+        List<String> lines = new ArrayList<>();
+
+        PlayerRole role = RoleManager.get().get(toRefresh);
+        if(role != null){
+            objective.setDisplayName(role.getName() + " " + role.getFamily().getColoredName());
+            lines.add(sbLine("Age", role.getAgeManager().getAge()));
+            lines.add(sbLine("Gen", role.getGeneration()));
+            lines.add(sbLine("Mother", role.getMothersName()));
+            lines.add("[space]");
+
+            Family family = role.getFamily();
+            if(family != null){
+                lines.add(sbLine("Family", family.getColoredName()));
+                lines.add(sbLine("- Est", family.getEstablished()));
+                lines.add(sbLine("- Gens", family.getMaxGenerations()));
+                lines.add(sbLine("- Members", family.getMembers().size()));
+                lines.add("[space]");
+            }
+        }
+
+        lines.add(sbLine("Year", MCG.serverYear));
+
         final int maxScore = lines.size();
         String spaceCounter = "";
 
@@ -84,7 +96,7 @@ public class ScoreboardHandler {
                 scoreboardTextLine.setPrefix(spaceCounter);
                 spaceCounter += " ";
             } else {
-                scoreboardTextLine.setPrefix(replacePlaceholders(lines.get(i), toRefresh));
+                scoreboardTextLine.setPrefix(lines.get(i));
             }
             objective.getScore(ChatColor.values()[i].toString()).setScore(maxScore-i);
         }
@@ -92,47 +104,9 @@ public class ScoreboardHandler {
 
     }
 
-
-    private String replacePlaceholders(String toReplace, Player player) {
-        PlayerWrapper playerWrapper = PlayerManager.get().getWrapper(player);
-        if(playerWrapper != null){
-            toReplace = toReplace
-                    .replace("[lifes]", String.valueOf(playerWrapper.getLifes()));
-        }
-
-        PlayerRole playerRole = RoleManager.get().get(player);
-        Family family = null;
-        if(playerRole != null){
-            family = playerRole.getFamily();
-            toReplace = toReplace
-                    .replace("[rolename]",String.valueOf( playerRole.getName()))
-                    .replace("[age]", String.valueOf( playerRole.getAgeManager().getAge()))
-                    .replace("[generation]", String.valueOf( playerRole.getGeneration()));
-
-            if(playerRole.getMothersName() != null){
-                toReplace = toReplace
-                        .replace("[mother]",String.valueOf( playerRole.getMothersName()));
-            }else{
-                toReplace = toReplace
-                        .replace("[mother]", "-");
-            }
-        }
-
-        if(family != null){
-            toReplace = toReplace
-                    .replace("[familyname]", family.getColoredName())
-                    .replace("[familyestablished]", String.valueOf(family.getEstablished()))
-                    .replace("[familymembercount]", String.valueOf(family.memberCount()))
-                    .replace("[familyleadername]", String.valueOf(family.getLeader().getName()))
-                    .replace("[familygenerations]", String.valueOf(family.getMaxGenerations()));
-
-        }
-
-        toReplace = toReplace.replace("[year]", String.valueOf(MCG.serverYear));
-
-
-
-        return toReplace;
+    private String sbLine(String label, Object value){
+        return "§7" + label + ": §6" + String.valueOf(value);
     }
+
 
 }

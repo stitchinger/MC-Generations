@@ -112,7 +112,8 @@ public class Family {
         role.setFamily(this);
         ScoreboardHandler.get().refreshScoreboardOfPlayer(role.getPlayer());
 
-        members.add(role);
+        if(!members.contains(role))
+            members.add(role);
     }
 
     public void removeMember(PlayerRole role) {

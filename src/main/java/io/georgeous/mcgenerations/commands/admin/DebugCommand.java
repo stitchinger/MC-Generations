@@ -4,6 +4,7 @@ package io.georgeous.mcgenerations.commands.admin;
 import io.georgeous.mcgenerations.commands.CommandUtils;
 import io.georgeous.mcgenerations.files.McgConfig;
 
+import io.georgeous.mcgenerations.scoreboard.ScoreboardHandler;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 
@@ -56,6 +57,11 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
 
         if ("council".equals(args[0])) {
             player.teleport(McgConfig.getCouncilLocation());
+            return true;
+        }
+
+        if ("refresh".equals(args[0])) {
+            ScoreboardHandler.get().refreshScoreboardOfPlayer(player);
             return true;
         }
 
