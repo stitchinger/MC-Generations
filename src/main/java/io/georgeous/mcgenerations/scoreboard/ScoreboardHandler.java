@@ -108,6 +108,11 @@ public class ScoreboardHandler {
                     .replace("[rolename]",String.valueOf( playerRole.getName()))
                     .replace("[age]", String.valueOf( playerRole.getAgeManager().getAge()))
                     .replace("[generation]", String.valueOf( playerRole.getGeneration()));
+
+            if(playerRole.getMothersName() != null){
+                toReplace = toReplace
+                        .replace("[mother]",String.valueOf( playerRole.getMothersName()));
+            }
         }
 
         if(family != null){

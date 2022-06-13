@@ -24,6 +24,7 @@ public class PlayerRole {
     private final PlayerMother playerMother;
     public Family family;
     public int generation;
+    private String mothersName = null;
     public boolean isDead = false;
     private boolean offline = false;
     private long lastSeenOnline = 0L;
@@ -206,5 +207,13 @@ public class PlayerRole {
 
     public Long getLastSeenOnline(){
         return lastSeenOnline;
+    }
+
+    public String getMothersName(){
+        return mothersName;
+    }
+
+    public void setMothersName(String name){
+        mothersName = name;
     }
 }

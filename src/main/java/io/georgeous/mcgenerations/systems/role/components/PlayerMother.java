@@ -31,6 +31,7 @@ public class PlayerMother {
         children.add(child);
         // Inherit from mother
         child.generation = playerRole.generation + 1;
+        child.setMothersName(playerRole.getName());
         lastChildTime = System.currentTimeMillis();
         Notification.neutralMsg(playerRole.getPlayer(), "You just had a baby. Congrats");
         Notification.neutralMsg(playerRole.getPlayer(), "You can rename your baby with [/you are Lisa] while carrying it");

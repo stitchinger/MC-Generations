@@ -6,6 +6,7 @@ lines:
   - "[space]"
   - "&7Age:&6 [age]"
   - "&7Gen:&6 [generation]"
+  - "&7Mother:&6 [mother]"
   - "&7Lifes lived:&6 [lifes]"
   - "[space]"
   - "&7Family:&6 [familyname]"

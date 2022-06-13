@@ -22,6 +22,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import javax.management.relation.Role;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -162,6 +163,7 @@ public class RoleManager {
         config.set("data.player." + uuid + ".role.familyname", playerRole.family.getName());
         config.set("data.player." + uuid + ".role.family", playerRole.family.getUuid());
         config.set("data.player." + uuid + ".role.generation", playerRole.generation);
+        config.set("data.player." + uuid + ".role.mother", playerRole.getMothersName());
         config.set("data.player." + uuid + ".role.time", System.currentTimeMillis());
         config.set("data.player." + uuid + ".role.dead", playerRole.isDead);
 
@@ -191,6 +193,7 @@ public class RoleManager {
         int age = configSection.getInt("age");
         String name = configSection.getString("name");
         int gen = configSection.getInt("generation");
+        String mother = configSection.getString("mother", null);
 
         // Family
         String familyUUID = configSection.getString("family");
@@ -202,6 +205,8 @@ public class RoleManager {
 
         // CreateRole
         createAndAddRole(player, name, age, gen, family);
+
+        RoleManager.get().get(player).setMothersName(mother);
 
         // delete Config entry after loaded
         //config.set("data.player." + uuid + ".role", null);
