@@ -63,7 +63,7 @@ public class RoleManager {
             if(!role.isOffline()){
                 role.update();
             } else{
-                if(role.getLastSeenOnline() + 1000L * 5 < System.currentTimeMillis() ){
+                if(role.getLastSeenOnline() + 1000L * 60 < System.currentTimeMillis() ){
                     removeRoleData(role);
                     Bukkit.getLogger().info(role.getName() + " died offline");
                     role.die();
