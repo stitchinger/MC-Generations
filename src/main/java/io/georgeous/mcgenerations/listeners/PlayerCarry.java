@@ -22,6 +22,10 @@ public class PlayerCarry implements Listener {
             return;
         }
 
+        if(!(target instanceof Player)){
+            return;
+        }
+
         PlayerRole targetRole = RoleManager.get().get((Player) target);
         PlayerRole playerRole = RoleManager.get().get(player);
 
@@ -38,6 +42,7 @@ public class PlayerCarry implements Listener {
             return;
         }
 
+        // Effects for player as target
         startCarryEffects(target.getLocation());
     }
 
