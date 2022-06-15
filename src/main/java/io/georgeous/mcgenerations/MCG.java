@@ -200,9 +200,33 @@ public final class MCG extends JavaPlugin {
 }
 
 /*
-
-
-
+Todo: Regular new World
+Todo: Worldevents eg: Year 2000 apocalypse
+Todo: Graves disappear after time
+Todo: Worldborder expands
+Todo: Claim land as family
+Todo: Website mysql stats
+Todo: players in council can chat with each other
+Todo: Players in council see whole chat/ family chat
+Todo: Spectate previous family
+Todo: Reward dieing of old age
+Todo: Family boosts eg: More hearts, resitance, longer life per generation
+Todo: Community competition
+Todo: /will <child's name> and it opens a chest which they can leave their items in and then when they die, the items go to the kid they named
+Todo: Rename Item command
+Todo: BAby autofeeder block
+Todo: Feeding baby proportional hunger cost
+Todo: Skins for biomes
+Todo: Advancements: eg: Nether born
+Todo: Custom recipe eg: String from grass
+Todo: invulnarable during Phasechange
+Todo: Karma system (Change name color to red if karma -0)
+Todo: Curse Feature
+Todo: Banish command
+Todo: Buff for Mothers
+Todo: Buff for Family
+Todo: Twin Feature
+Todo: Spawn improvement
 Todo: Council countdown beeping
 Todo: Setup config file for ...
 Todo: Show baby cooldown in info command

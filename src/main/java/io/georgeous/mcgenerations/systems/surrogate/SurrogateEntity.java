@@ -34,6 +34,7 @@ public class SurrogateEntity{
                 entity.setInvulnerable(true);
                 entity.setSilent(true);
                 entity.setCustomName(fullname);
+                entity.setGravity(false);
                 makeNonCollidable(followTarget);
 
             }
@@ -64,6 +65,13 @@ public class SurrogateEntity{
         if(entity == null){
             return;
         }
+
+        if(entity.getScoreboardTags().contains("riding")){
+            entity.getLocation().setDirection(followTarget.getLocation().getDirection());
+            //entity.teleport(entity.getLocation().clone().setDirection(followTarget.getLocation().getDirection()));
+            return;
+        }
+
         entity.teleport(pos.add(dir));
     }
 

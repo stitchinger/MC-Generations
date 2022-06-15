@@ -5,18 +5,25 @@ import io.georgeous.mcgenerations.systems.family.FriendlyTalk;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
+import io.georgeous.mcgenerations.systems.surrogate.SurrogateEntity;
+import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
 import io.georgeous.mcgenerations.utils.ItemManager;
 import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Sheep;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
+import org.spigotmc.event.entity.EntityDismountEvent;
+import org.spigotmc.event.entity.EntityMountEvent;
 
 public class Interact implements Listener {
 
@@ -143,5 +150,55 @@ public class Interact implements Listener {
         if (phaseManager.getCurrentPhase().getName().equalsIgnoreCase("baby")) {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onSurrogateMount(EntityMountEvent event){
+        Bukkit.getLogger().info(event.getMount().toString());
+        Bukkit.getLogger().info(event.getEntity().toString());
+
+        if(!(event.getEntity() instanceof Player player)){
+            return;
+        }
+
+        SurrogateEntity surro = SurrogateManager.getInstance().getSurrogateOfPlayer(player);
+        if(surro == null){
+            return;
+        }
+
+        event.getMount().addPassenger(surro.getEntity());
+        surro.getEntity().addScoreboardTag("riding");
+
+        Bukkit.getLogger().info("//////Passengers: " + event.getMount().getPassengers().toString() + "//////////");
+    }
+
+    @EventHandler
+    public void onSurrogateDismount(EntityDismountEvent event){
+        if(!event.getEntity().getScoreboardTags().contains("surrogate"))
+            return;
+
+        if(!event.getEntity().getScoreboardTags().contains("riding"))
+            return;
+
+
+        event.getEntity().removeScoreboardTag("riding");
+    }
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent event){
+
+        Player player = event.getPlayer();
+
+        PlayerRole role = RoleManager.get().get(player);
+
+        if(role == null){
+            return;
+        }
+
+        if(role.getPhaseManager().getCurrentPhase().getId() != 0){
+            return;
+        }
+
+        event.setCancelled(true);
     }
 }
