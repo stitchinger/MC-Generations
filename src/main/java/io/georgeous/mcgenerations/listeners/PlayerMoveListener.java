@@ -8,11 +8,15 @@ import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.Notification;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPhysicsEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import javax.management.relation.Role;
@@ -82,6 +86,23 @@ public class PlayerMoveListener implements Listener {
             }
         }
         return false;
+    }
+
+    @EventHandler
+    public void onCropJump(PlayerInteractEvent event){
+        if(event.getAction() != Action.PHYSICAL){
+            return;
+        }
+
+        if(event.getClickedBlock() == null){
+            return;
+        }
+
+        if(event.getClickedBlock().getType() != Material.FARMLAND){
+            return;
+        }
+
+        event.setCancelled(true);
     }
 
 

@@ -188,7 +188,6 @@ public class Interact implements Listener {
     public void onBlockBreak(BlockBreakEvent event){
 
         Player player = event.getPlayer();
-
         PlayerRole role = RoleManager.get().get(player);
 
         if(role == null){
