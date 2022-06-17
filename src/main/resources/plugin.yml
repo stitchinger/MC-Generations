@@ -25,5 +25,6 @@ commands:
   rules:
   adopt:
   shareign:
+  ad:
 depend: [Piggyback, NickAPI, Petmanager, Spicyhearts]
 

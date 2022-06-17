@@ -12,17 +12,17 @@ import java.util.Arrays;
 public class Notification {
 
     public static void neutralMsg(Player player, String msg) {
-        String prefix = ChatColor.YELLOW + "[i] " + ChatColor.RESET;
+        String prefix = ChatColor.YELLOW + "[i] " + ChatColor.RESET + ChatColor.GRAY;
         player.sendMessage(prefix + msg);
     }
 
     public static void errorMsg(Player player, String msg) {
-        String prefix = ChatColor.RED + "[!] " + ChatColor.RESET;
+        String prefix = ChatColor.RED + "[!] " + ChatColor.RESET + ChatColor.GRAY;
         player.sendMessage(prefix + msg);
     }
 
     public static void successMsg(Player player, String msg) {
-        String prefix = ChatColor.GREEN + "[!] " + ChatColor.RESET;
+        String prefix = ChatColor.GREEN + "[!] " + ChatColor.RESET + ChatColor.GRAY;
         player.sendMessage(prefix + msg);
     }
 

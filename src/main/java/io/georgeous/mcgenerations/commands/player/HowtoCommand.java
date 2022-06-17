@@ -137,8 +137,12 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
                 player.sendMessage("   If there are no other options.. Abuse not allowed!");
                 player.sendMessage("► §d[/report]§r");
                 player.sendMessage("   Report a player e.g.: /report Sue cheating");
+                player.sendMessage("► §d[/shareign]§r");
+                player.sendMessage("   Share your IGN with another player");
                 player.sendMessage("► §d[/discord]§r");
                 player.sendMessage("   Link to the discord");
+                player.sendMessage("► §d[/ad]§r");
+                player.sendMessage("   Get a advertising text, which you can use in the minehut hub");
                 player.sendMessage("");
                 break;
 
