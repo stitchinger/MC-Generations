@@ -11,6 +11,8 @@ import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -103,6 +105,63 @@ public class PlayerMoveListener implements Listener {
         }
 
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void protectCouncil(PlayerMoveEvent event){
+        PlayerRole role = RoleManager.get().get(event.getPlayer());
+        if(role == null){
+            return;
+        }
+
+
+        if(enteredCouncilProtection(event.getFrom(), event.getTo())){
+            event.getPlayer().sendMessage("Turn back");
+            return;
+        }
+
+        if(leftCouncilProtection(event.getFrom(), event.getTo())){
+            event.getPlayer().sendMessage("Good boy");
+            return;
+        }
+
+        if(!withinCouncilProtection(event.getFrom())){
+            return;
+        }
+
+
+        lightningStrike(event.getPlayer().getLocation());
+    }
+
+    private void lightningStrike(Location loc){
+        double random = Math.random();
+        if(random < 0.01){
+            MCG.overworld.spawnEntity(loc, EntityType.LIGHTNING);
+        }
+    }
+
+    private boolean enteredCouncilProtection(Location from, Location to){
+        return !withinCouncilProtection(from) && withinCouncilProtection(to);
+    }
+
+    private boolean leftCouncilProtection(Location from, Location to){
+        return withinCouncilProtection(from) && !withinCouncilProtection(to);
+    }
+
+    private boolean withinCouncilProtection(Location loc){
+        Location center = McgConfig.getCouncilLocation().clone();
+        double radius = 150;
+        double minY = 61;
+        if(loc.getY() < minY){
+            return false;
+        }
+
+        center.setY(loc.getY());
+
+        if(loc.distance(center) > radius){
+            return false;
+        }
+        return  true;
     }
 
 
