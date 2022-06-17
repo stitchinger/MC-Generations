@@ -18,6 +18,19 @@ import java.util.List;
 
 public class ReportCommand implements CommandExecutor, TabCompleter {
 
+    private List<String> reportReasons = new ArrayList<>();
+
+    public ReportCommand(){
+        reportReasons.add("Cheating");
+        reportReasons.add("Griefing");
+        reportReasons.add("Exploiting");
+        reportReasons.add("Profanity");
+        reportReasons.add("Bullying");
+        reportReasons.add("Other");
+    }
+
+
+
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
@@ -73,9 +86,14 @@ public class ReportCommand implements CommandExecutor, TabCompleter {
             default:
                 if (args.length != 2) {
                     Notification.errorMsg(player, "Usage: /report <Name> <Reason>");
-                } else {
-                    Reporter.reportPlayer(player, args[0], args[1]);
+                    return true;
                 }
+
+                if(!containsCaseInsensitive(args[1], reportReasons)){
+                    Notification.errorMsg(player, "Please pick a reason from the list");
+                    return true;
+                }
+                Reporter.reportPlayer(player, args[0], args[1]);
         }
         return false;
     }
@@ -94,6 +112,10 @@ public class ReportCommand implements CommandExecutor, TabCompleter {
                 return Reporter.getReportedPlayers();
             }
 
+            if(!args[0].equals("")){
+                return reportReasons;
+            }
+
 
             Bukkit.getOnlinePlayers().forEach(player -> {
                 if(player != playerSender ){
@@ -109,5 +131,14 @@ public class ReportCommand implements CommandExecutor, TabCompleter {
         }
 
         return l;
+    }
+
+    public boolean containsCaseInsensitive(String s, List<String> l){
+        for (String string : l){
+            if (string.equalsIgnoreCase(s)){
+                return true;
+            }
+        }
+        return false;
     }
 }
