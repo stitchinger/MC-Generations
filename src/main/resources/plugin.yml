@@ -24,5 +24,6 @@ commands:
   report:
   rules:
   adopt:
-depend: [Piggyback, NickAPI, Petmanager]
+  shareign:
+depend: [Piggyback, NickAPI, Petmanager, Spicyhearts]
 
