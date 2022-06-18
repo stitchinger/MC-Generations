@@ -14,9 +14,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 public class AdCommand implements CommandExecutor {
+
+    String[] ads = {
+            "/ad 1hour1life NEW UNIQUE GAMEMODE! Join as a baby of a random player. Build your Legacy!",
+            "/ad 1hour1life Hardcore Family Survival Civilization Simulator"
+
+    };
 
 
     @Override
@@ -26,17 +33,18 @@ public class AdCommand implements CommandExecutor {
             return true;
         }
 
-        String ad = "/ad 1hour1life NEW UNIQUE GAMEMODE! Join as a baby of a random player. Build your Legacy!";
+        Random r = new Random();
+        int randomNumber=r.nextInt(ads.length);
+        String ad = ads[randomNumber];
 
         TextComponent msg = new TextComponent("Click here to copy the Ad message to your clipboard. Thanks for supporting the server :)");
-        msg.setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, "/ad 1hour1life NEW UNIQUE GAMEMODE! Join as a baby of a random player. Build your Legacy! "));
+        msg.setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, ad));
         msg.setHoverEvent(
                 new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                         new ComponentBuilder("Click to copy").color(ChatColor.GRAY).italic(true).create())
         );
 
-        player.spigot().sendMessage(msg);
-
+        Notification.successMsg(player, msg);
         return false;
     }
 
