@@ -19,6 +19,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import javax.management.relation.Role;
 import java.util.Random;
 
 public class PlayerChat implements Listener {
@@ -27,10 +28,12 @@ public class PlayerChat implements Listener {
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
         event.setCancelled(true);
+        //event.setFormat("%s blub: %s");
         Player player = event.getPlayer();
         PlayerRole playerRole = RoleManager.get().get(player);
 
         if (playerRole == null) {
+            wrapperBroadcast(player, event.getMessage());
             return;
         }
         PhaseManager pm = playerRole.getPhaseManager();
@@ -42,6 +45,19 @@ public class PlayerChat implements Listener {
         TextComponent msg = new TextComponent(prepareMsg(event.getMessage(), pm.getCurrentPhase().getSpellAccuracy()));
 
         rangedBroadcast(player, prefix, msg, McgConfig.getChatRange());
+    }
+
+    private void wrapperBroadcast(Player sender, String msg){
+        String newMsg = msg;
+        if(McgConfig.getChatFilterProfanity()){
+            newMsg = BadWordFilter.getCensoredText(newMsg);
+        }
+        for (Player receivingPlayer : Bukkit.getOnlinePlayers()) {
+            if(RoleManager.get().get(receivingPlayer) != null){
+                continue;
+            }
+            receivingPlayer.sendMessage(sender.getName() + ": " + newMsg);
+        }
     }
 
 
@@ -93,6 +109,8 @@ public class PlayerChat implements Listener {
         } else if(receivingPlayer.isOp()){
             opEditPrefix(customPrefix, sendingPlayer);
             receivingPlayer.spigot().sendMessage(customPrefix, msg);
+        } else if(RoleManager.get().get(receivingPlayer) == null){
+            receivingPlayer.spigot().sendMessage( prefix, msg);
         }
 
         return  messageReceived;

@@ -1,6 +1,7 @@
 package io.georgeous.mcgenerations.listeners;
 
 import io.georgeous.mcgenerations.MCG;
+import io.georgeous.mcgenerations.files.McgConfig;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
@@ -25,72 +26,113 @@ import java.util.Random;
 
 public class PlayerChatListener implements Listener {
 
-    /*
-    private final double CHAT_RANGE = 100;
-    private final int ALONE_MSG_TIMER = 2; // secs
-    private final boolean FILTER_PROFANITY = true;
-
+    private final double CHAT_RANGE = 50;
+/*
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
-        Player sendingPlayer = event.getPlayer();
-        PlayerWrapper sendingPlayerWrapper = PlayerManager.get().getWrapper(sendingPlayer);
-        PlayerRole sendingPlayerRole = RoleManager.get().get(sendingPlayer);
+        //String msg = event.setFormat();
+        PlayerRole role = RoleManager.get().get(event.getPlayer());
 
-        if(sendingPlayerRole != null){
-            // change name in Message
-            sendWithRole(sendingPlayerRole);
-            return;
+        if(role != null){
+           // sendWithRole();
+
+        } else{
+            //sendWithoutRole();
         }
+
+        T//extComponent chatName = new TextComponent(firstName + " " + lastName + "§f: ");
+        TextComponent chatMsg = new TextComponent(prepareMsg(event.getMessage(), pm.getCurrentPhase().getSpellAccuracy()));
+        //event.setCancelled(true);
     }
 
-    private void sendWithRole(PlayerRole sendingPlayerRole){
-        double range = 100;
-        Player sendingPlayer = sendingPlayerRole.getPlayer();
-
+    public void sendWithRole(Player sender, TextComponent chatName, TextComponent chatMsg){
         for (Player receivingPlayer : Bukkit.getOnlinePlayers()) {
-            PlayerWrapper receivingPlayerWrapper = PlayerManager.get().getWrapper(receivingPlayer);
-            PlayerRole receivingPlayerRole = RoleManager.get().get(receivingPlayer);
-            double distanceBetweenPlayers = sendingPlayerRole.getPlayer().getLocation().distance(receivingPlayer.getLocation());
+            PlayerRole receiverRole = RoleManager.get().get(receivingPlayer);
+
+            if(receiverRole != null){
+                if(receivingPlayer.getLocation().getWorld() != sender.getLocation().getWorld()){
+                    continue;
+                }
+                double distanceBetweenPlayers = receivingPlayer.getLocation().distance(sender.getLocation());
+                TextComponent name = formatChatName(chatName, distanceBetweenPlayers);
+            }
 
 
         }
     }
 
-    public boolean handleReceivingMessage(Player receivingPlayer, Player sendingPlayer,  double distanceBetweenPlayers, TextComponent prefix, TextComponent msg, double range){
+    private boolean roleReceiveMsg(){
+
+    }
+
+    public void rangedBroadcast(Player sender, TextComponent prefix, TextComponent msg, double range) {
         boolean messageReceived = false;
+        for (Player receivingPlayer : Bukkit.getOnlinePlayers()) {
+            if(receivingPlayer.getLocation().getWorld() != sender.getLocation().getWorld()){
+                continue;
+            }
+            double distanceBetweenPlayers = receivingPlayer.getLocation().distance(sender.getLocation());
+            messageReceived = handleReceivingMessage(receivingPlayer, sender, distanceBetweenPlayers, prefix, msg, range) || messageReceived;
+
+        }
+        if(!messageReceived){
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    Notification.neutralMsg(sender, "Nobody heared you. Use §d[/howto chat]§f to learn more.");
+                }
+            }.runTaskLater(MCG.getInstance(), 20L * McgConfig.getChatAloneMsgTime());
+        }
+    }
+
+    public String prepareMsg(String msg, float spellAccuracy) {
+        msg = msg.trim();
+        msg = msg.substring(0, Math.min(msg.length(), 999));
+        String newMsg = "";
+        for(char c : msg.toCharArray()) {
+            char replacement;
+
+            if(Math.random() <= spellAccuracy){
+                replacement = c;
+            } else{
+                Random random = new Random();
+                char randomizedCharacter = (char) (random.nextInt(26) + 'a');
+                replacement = randomizedCharacter;
+            }
+
+            if(Math.random() <= spellAccuracy){
+                newMsg = newMsg + replacement;
+            }
+        }
+
+        if(McgConfig.getChatFilterProfanity()){
+            newMsg = BadWordFilter.getCensoredText(newMsg);
+        }
+
+
+        return newMsg;
+    }
+
+    public TextComponent formatChatName(TextComponent prefix, double distance){
         TextComponent customPrefix = prefix.duplicate();
 
-
         // Adjust chat color to distance
-        if(distanceBetweenPlayers < range * (1d/3d)){
+        if(distance < CHAT_RANGE * (1d/3d)){
             customPrefix.setColor(ChatColor.WHITE);
-        } else if(distanceBetweenPlayers < range * (2d/3d)){
+        } else if(distance < CHAT_RANGE * (2d/3d)){
             customPrefix.setColor(ChatColor.GRAY);
-        } else if(distanceBetweenPlayers < range){
+        } else if(distance < CHAT_RANGE){
             customPrefix.setColor(ChatColor.DARK_GRAY);
         } else{
             customPrefix.setColor(ChatColor.DARK_GRAY);
             customPrefix.setStrikethrough(true);
         }
 
-        if (distanceBetweenPlayers <= range) {
-            if(sendingPlayer != receivingPlayer){
-                messageReceived = true;
-            }
-            if(receivingPlayer.isOp()){
-                opEditPrefix(customPrefix, sendingPlayer);
-            }
-            receivingPlayer.spigot().sendMessage( customPrefix, msg);
-
-        } else if(receivingPlayer.isOp()){
-            opEditPrefix(customPrefix, sendingPlayer);
-            receivingPlayer.spigot().sendMessage(customPrefix, msg);
-        }
-
-        return  messageReceived;
+        return customPrefix;
     }
 
-*/
+
+ */
 }
 
 
