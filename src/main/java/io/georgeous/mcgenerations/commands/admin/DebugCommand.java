@@ -95,6 +95,26 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if ("stat".equals(args[0])) {
+            PlayerWrapper wrapper = PlayerManager.get().getWrapper(player);
+            player.sendMessage("Old age: " + wrapper.getDiedOfOldAge());
+            if(player.getBedSpawnLocation() != null){
+                player.sendMessage("Bed spawn: " + player.getBedSpawnLocation().toString());
+            }
+            //player.setBedSpawnLocation();
+
+
+
+            //McgConfig.reload();
+            return true;
+        }
+
+        if ("entities".equals(args[0])) {
+
+            //McgConfig.reload();
+            return true;
+        }
+
 
         return false;
     }

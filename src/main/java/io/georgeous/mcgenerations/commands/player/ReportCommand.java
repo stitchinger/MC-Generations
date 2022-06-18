@@ -18,7 +18,7 @@ import java.util.List;
 
 public class ReportCommand implements CommandExecutor, TabCompleter {
 
-    private List<String> reportReasons = new ArrayList<>();
+    private final List<String> reportReasons = new ArrayList<>();
 
     public ReportCommand(){
         reportReasons.add("Cheating");
@@ -28,8 +28,6 @@ public class ReportCommand implements CommandExecutor, TabCompleter {
         reportReasons.add("Bullying");
         reportReasons.add("Other");
     }
-
-
 
 
     @Override
