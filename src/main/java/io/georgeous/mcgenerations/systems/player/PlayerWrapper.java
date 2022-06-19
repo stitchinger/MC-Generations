@@ -121,10 +121,10 @@ public class PlayerWrapper {
     }
 
     public boolean getRulesAccepted(){
-        return rulesRead;
+        return rulesAccepted;
     }
 
     public void setRulesAccepted(boolean value){
-        rulesRead = value;
+        rulesAccepted = value;
     }
 }
