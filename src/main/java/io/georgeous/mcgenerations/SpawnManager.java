@@ -14,7 +14,6 @@ import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -94,7 +93,7 @@ public class SpawnManager {
 
         @Override
         public void run() {
-            resetPlayer(spawnedPlayerWrapper);
+
             boolean motherStillValid =
                     chosenMotherRole != null
                             && !chosenMotherRole.isDead
@@ -110,7 +109,7 @@ public class SpawnManager {
             } else {
                 spawnAsEve(spawnedPlayer);
             }
-
+            resetPlayerOnLifeStart(spawnedPlayerWrapper);
             ScoreboardHandler.get().refreshScoreboardOfPlayer(spawnedPlayer);
 
             new BukkitRunnable() {
@@ -122,49 +121,41 @@ public class SpawnManager {
         }
     }
 
-    private static void resetPlayer(PlayerWrapper wrapper){
+    private static void resetPlayerOnLifeStart(PlayerWrapper wrapper){
         // Reset Player
         wrapper.getPlayer().removePotionEffect(PotionEffectType.LEVITATION);
         wrapper.setIsSpawning(false);
         wrapper.setDiedOfOldAge(false);
-        wrapper.setLastBedLocation(null);
         wrapper.getPlayer().setGameMode(GameMode.SURVIVAL);
         wrapper.getPlayer().setInvulnerable(false);
         wrapper.getPlayer().getInventory().clear();
+        wrapper.getPlayer().setBedSpawnLocation(null);
+        resetAllAdvancements(wrapper.getPlayer());
+    }
 
-        // Reset Advancements
+    private static void resetAllAdvancements(Player player){
         Iterator<Advancement> iterator = Bukkit.getServer().advancementIterator();
         while (iterator.hasNext())
         {
-            AdvancementProgress progress = wrapper.getPlayer().getAdvancementProgress(iterator.next());
+            AdvancementProgress progress = player.getAdvancementProgress(iterator.next());
             for (String criteria : progress.getAwardedCriteria()){
                 progress.revokeCriteria(criteria);
             }
-
         }
     }
 
     public static void spawnAsEve(Player player) {
-        // If diedOfOldAge spawn at last bed
         PlayerWrapper playerWrapper = PlayerManager.get().getWrapper(player);
-        Location lastBed = playerWrapper.getLastBedLocation();
-        boolean bedIsValid = false;
-        if (lastBed != null) {
-            bedIsValid = lastBed.distance(McgConfig.getCouncilLocation()) > 500;
-            // Using the bedspawing for the council stuff
-            // This makes sure, that the players bed isnt the council
-            // This could happen, if the player never interacted with a bed
-        }
 
-        // Teleport Eve
-        if (playerWrapper.getDiedOfOldAge() && playerWrapper.getLastBedLocation() != null && bedIsValid) {
-            player.teleport(PlayerManager.get().getWrapper(player).getLastBedLocation());
+        if (playerWrapper.getDiedOfOldAge() && player.getBedSpawnLocation() != null) {
+            player.teleport(player.getBedSpawnLocation());
         } else {
             randomEveSpawn(player);
         }
 
         String name = NameManager.randomFirst();
         Family family = FamilyManager.addFamily(NameManager.randomLast());
+
         RoleManager.get().createAndAddRole(player, name, 10, 1, family);
 
         equipEve(player);
@@ -181,7 +172,6 @@ public class SpawnManager {
     }
 
     private static void randomEveSpawn(Player player){
-        //Location loc = McgConfig.getSpawnLocation();
         Location loc = rotationSpawnResult();
         double radius = McgConfig.getSpawnRadius();
         String cmd = "spreadplayers " + loc.getX() + " " + loc.getZ() + " 0 " + radius + " false " + player.getName();

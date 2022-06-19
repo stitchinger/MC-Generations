@@ -148,6 +148,7 @@ public class Family {
 
     public void setMaxGenerations(int gen){
         maxGenerations = Math.max(gen, maxGenerations);
+        Top10.get().update(this);
     }
 
     public int getMaxGenerations(){

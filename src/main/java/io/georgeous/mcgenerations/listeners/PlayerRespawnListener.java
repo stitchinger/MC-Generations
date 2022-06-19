@@ -26,7 +26,6 @@ public class PlayerRespawnListener implements Listener {
 
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-
         player = event.getPlayer();
         playerWrapper = PlayerManager.get().getWrapper(player);
         //player.sendMessage(player.getHealth() + "");
