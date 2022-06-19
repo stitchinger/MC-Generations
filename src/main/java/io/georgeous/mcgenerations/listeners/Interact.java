@@ -131,7 +131,7 @@ public class Interact implements Listener {
             Notification.neutralMsg(pr, messages[1]);
 
             try {
-                pd.getWorld().spawnParticle(Particle.HEART, pd.getLocation(), 5, 0.5, 0.5, 0.5);
+                pd.getWorld().spawnParticle(Particle.HEART, pd.getLocation().clone().add(0,2,0), 5, 0.5, 0.5, 0.5);
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
