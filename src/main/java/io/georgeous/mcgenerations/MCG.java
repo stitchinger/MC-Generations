@@ -183,6 +183,7 @@ public final class MCG extends JavaPlugin {
         registerCommand("ad", new AdCommand());
         registerCommand("realname", new RealNameCommand());
         registerCommand("familyreborn", new FamilyRebornCommand());
+        registerCommand("namepreference", new NamePreferenceCommand());
 
         registerCommand("msg", new CommandDeactivator());
         registerCommand("minecraft:me", new CommandDeactivator());

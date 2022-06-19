@@ -153,7 +153,7 @@ public class SpawnManager {
             randomEveSpawn(player);
         }
 
-        String name = NameManager.randomFirst();
+        String name = NameManager.randomFirst(playerWrapper.getNamePreference());
         Family family = FamilyManager.addFamily(NameManager.randomLast());
 
         RoleManager.get().createAndAddRole(player, name, 10, 1, family);
@@ -196,7 +196,7 @@ public class SpawnManager {
     }
 
     public static void spawnAsBaby(Player newBorn, PlayerRole mother) {
-        String name = NameManager.randomFirst();
+        String name = NameManager.randomFirst(PlayerManager.get().getWrapper(newBorn).getNamePreference());
 
         Family family = mother.getFamily();
 

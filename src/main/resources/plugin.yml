@@ -28,5 +28,6 @@ commands:
   ad:
   realname:
   familyreborn:
+  namepreference:
 depend: [Piggyback, NickAPI, Petmanager, Spicyhearts]
 

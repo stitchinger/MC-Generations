@@ -18,6 +18,7 @@ public class PlayerWrapper {
     private GameMode lastGameMode = GameMode.SURVIVAL;
     private boolean rulesRead = false;
     private boolean rulesAccepted = false;
+    private String namePreference = "random";
 
     public PlayerWrapper(Player player) {
         this.player = player;
@@ -126,5 +127,13 @@ public class PlayerWrapper {
 
     public void setRulesAccepted(boolean value){
         rulesAccepted = value;
+    }
+
+    public String getNamePreference(){
+        return namePreference;
+    }
+
+    public void setNamePreference(String newPref){
+        this.namePreference = newPref;
     }
 }

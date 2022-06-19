@@ -36,6 +36,7 @@ public class PlayerData {
         cs.set("debug", playerWrapper.isDebugMode());
         cs.set("rules_read", playerWrapper.getRulesRead());
         cs.set("rules_accepted", playerWrapper.getRulesAccepted());
+        cs.set("name_preference", playerWrapper.getNamePreference());
 
         plugin.saveConfig();
     }
@@ -58,6 +59,7 @@ public class PlayerData {
 
         playerWrapper.setRulesRead(cs.getBoolean("rules_read", false));
         playerWrapper.setRulesAccepted(cs.getBoolean("rules_accepted", false));
+        playerWrapper.setNamePreference(cs.getString("name_preference", "random"));
 
     }
 

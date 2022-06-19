@@ -12,22 +12,24 @@ import java.util.List;
 import java.util.logging.Level;
 
 public class NameManager {
+    private static final String[] maleNames = {
+            "Eddard", "Robert", "Jaime", "Jorah", "Jon", "Robb", "Theon", "Brandon", "Joffrey", "Sandor", "Tyrion",
+            "Petyr", "Davos", "Samwell", "Stannis", "Jeor", "Bronn", "Varys", "Tywin", "Gendry", "Ramsay",
+            "Gilly", "Daario", "Tommen", "Roose", "Jaqen", "Aegir", "Aeric", "Alvis", "Amund", "Baldur", "Beini",
+            "Bothi", "Carr", "Fenris", "Floki", "Loki", "Frye", "Hoenir", "Illugi", "Magnar", "Odd", "Olave", "Raud",
+            "Torfi", "Tormund", "Trig", "Jojo", "Lofn", "Joro", "Ragnar"
+    };
 
-    public static final String[] firstNames =
-            {
-                    "Martha", "Lisa", "Julia", "Sarah", "Anna", "Maria", "Emma", "Sophia", "Charlie", "Mia", "Chloe",
-                    "Vic", "Scarlett", "Amy", "Madison", "Ellie", "Natalie", "Adele", "Joy", "Olivia", "Naomi",
-                    "Grace", "Ruby", "Quinn", "Lydia", "Vivian", "Hailey", "Autumn", "Aurora", "Hazel",
-                    "Penelope", "Catelyn", "Freya", "Faith", "Cersei", "Sansa", "Arya", "Shae", "Talisa", "Brienne",
-                    "Ellaria","Signy", "Hildr", "Nanna", "Eisa", "Saga", "Sol", "Hel", "Frigg", "Lofn", "Joro", "Jojo",
-                    "Lounn", "Fulla", "Laga", "Elli",
-                    "Eddard", "Robert", "Jaime", "Jorah", "Jon", "Robb", "Theon", "Brandon", "Joffrey", "Sandor", "Tyrion",
-                    "Petyr", "Davos", "Samwell", "Stannis", "Jeor", "Bronn", "Varys", "Tywin", "Gendry", "Ramsay",
-                    "Gilly", "Daario", "Tommen", "Roose", "Jaqen", "Aegir", "Aeric", "Alvis", "Amund", "Baldur", "Beini",
-                    "Bothi", "Carr", "Fenris", "Floki", "Loki", "Frye", "Hoenir", "Illugi", "Magnar", "Odd", "Olave", "Raud",
-                    "Torfi", "Tormund", "Trig"
-            };
-    public static final String[] lastNames =
+    private static final String[] femaleNames = {
+            "Martha", "Lisa", "Julia", "Sarah", "Anna", "Maria", "Emma", "Sophia", "Charlie", "Mia", "Chloe",
+            "Vic", "Scarlett", "Amy", "Madison", "Ellie", "Natalie", "Adele", "Joy", "Olivia", "Naomi",
+            "Grace", "Ruby", "Quinn", "Lydia", "Vivian", "Hailey", "Autumn", "Aurora", "Hazel",
+            "Penelope", "Catelyn", "Freya", "Faith", "Cersei", "Sansa", "Arya", "Shae", "Talisa", "Brienne",
+            "Ellaria","Signy", "Hildr", "Nanna", "Eisa", "Saga", "Sol", "Hel", "Frigg", "Lofn", "Jojo",
+            "Lounn", "Fulla", "Laga", "Elli"
+    };
+
+    private static final String[] lastNames =
             {
                     "Marten", "Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Taylor",
                     "Moore", "White", "Walker", "Hill", "Nelson", "Baker", "Adams", "Mitchell", "Clinton", "Bush",
@@ -49,14 +51,24 @@ public class NameManager {
     public static ArrayList<String> usedNames = new ArrayList<>();
 
 
-    public static String randomFirst() {
-        if(usedNames.size() > firstNames.length * (4d / 5d)){
+    public static String randomFirst(String namePref) {
+        String[] names;
+
+        if(namePref.equalsIgnoreCase("male")){
+            names = maleNames;
+        }else if(namePref.equalsIgnoreCase("female")){
+            names = femaleNames;
+        }else{
+            names = femaleNames;
+        }
+
+        if(usedNames.size() > names.length * (4d / 5d)){
             usedNames = new ArrayList<>();
         }
         String newName = "";
         do{
-            int i = (int) (Math.random() * (firstNames.length - 1));
-            newName = firstNames[i];
+            int i = (int) (Math.random() * (names.length - 1));
+            newName = names[i];
         }while(nameInUse(newName));
         registerName(newName);
         return newName;

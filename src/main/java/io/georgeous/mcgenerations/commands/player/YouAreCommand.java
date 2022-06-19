@@ -22,7 +22,6 @@ public class YouAreCommand implements CommandExecutor {
             return true;
         }
 
-
         if (args.length != 2) {
             Notification.errorMsg(player, "Usage: /You are <Name>");
             return true;
