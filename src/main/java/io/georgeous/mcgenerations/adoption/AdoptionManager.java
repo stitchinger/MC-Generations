@@ -110,6 +110,11 @@ public class AdoptionManager {
             return;
         }
 
+        if(request.adoptee != RoleManager.get().get(request.adoptee.getPlayer())){
+            Notification.errorMsg(player, request.adoptee.getName() + " " + request.adoptee.getFamily().getColoredName() + " doesnt exist anymore");
+            return;
+        }
+
         request.accept();
     }
 
