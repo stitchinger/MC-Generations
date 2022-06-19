@@ -7,6 +7,7 @@ import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
 import io.georgeous.mcgenerations.systems.surrogate.SurrogateEntity;
 import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
+import io.georgeous.mcgenerations.utils.BadWordFilter;
 import io.georgeous.mcgenerations.utils.ItemManager;
 import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.*;
@@ -18,6 +19,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -199,5 +201,12 @@ public class Interact implements Listener {
         }
 
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onSignBadword(SignChangeEvent event){
+        for(int i = 0; i < event.getLines().length; i++){
+            event.setLine(i, BadWordFilter.getCensoredText(event.getLine(i)));
+        }
     }
 }
