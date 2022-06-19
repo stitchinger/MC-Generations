@@ -50,7 +50,7 @@ public class AdoptCommand implements CommandExecutor, TabCompleter {
 
 
         if (args.length != 1 ) {
-            Notification.errorMsg(player, "Usage: /adopt <IGN>");
+            Notification.errorMsg(player, "Usage: /adopt <Name>");
             return true;
         }
 

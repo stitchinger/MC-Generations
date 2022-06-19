@@ -95,27 +95,10 @@ public class AdoptionManager {
             return;
         }
         requests.remove(uuid);
-        if(!request.isValid()){
-            Notification.errorMsg(player, "Requests are only valid for 1 minute");
-            return;
-        }
 
-        if(!request.adopter.getPlayer().isOnline()){
-            Notification.errorMsg(player, request.adopter.getName() + " " + request.adopter.getFamily().getColoredName() +  " left the game");
-            return;
+        if(validRequest(request, player)){
+            request.accept();
         }
-
-        if(request.adopter != RoleManager.get().get(request.adopter.getPlayer())){
-            Notification.errorMsg(player, request.adopter.getName() + " " + request.adopter.getFamily().getColoredName() + " doesnt exist anymore");
-            return;
-        }
-
-        if(request.adoptee != RoleManager.get().get(request.adoptee.getPlayer())){
-            Notification.errorMsg(player, request.adoptee.getName() + " " + request.adoptee.getFamily().getColoredName() + " doesnt exist anymore");
-            return;
-        }
-
-        request.accept();
     }
 
     public void decline(UUID uuid, Player player){
@@ -126,21 +109,32 @@ public class AdoptionManager {
         }
         requests.remove(uuid);
 
+        if(validRequest(request, player)){
+            request.decline();
+        }
+    }
+
+    private boolean validRequest(AdoptionRequest request, Player player ){
         if(!request.isValid()){
             Notification.errorMsg(player, "Requests are only valid for 1 minute");
-            return;
+            return false;
         }
 
         if(!request.adopter.getPlayer().isOnline()){
             Notification.errorMsg(player, request.adopter.getName() + " " + request.adopter.getFamily().getColoredName() + " left the game");
-            return;
+            return false;
         }
 
         if(request.adopter != RoleManager.get().get(request.adopter.getPlayer())){
             Notification.errorMsg(player, request.adopter.getName() + " " + request.adopter.getFamily().getColoredName() + " doesnt exist anymore");
-            return;
+            return false;
         }
-        request.decline();
 
+        if(request.adoptee != RoleManager.get().get(request.adoptee.getPlayer())){
+            Notification.errorMsg(player, request.adoptee.getName() + " " + request.adoptee.getFamily().getColoredName() + " doesnt exist anymore");
+            return false;
+        }
+
+        return true;
     }
 }
