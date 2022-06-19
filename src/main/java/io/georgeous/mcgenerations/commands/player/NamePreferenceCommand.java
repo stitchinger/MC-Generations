@@ -26,22 +26,28 @@ public class NamePreferenceCommand implements CommandExecutor, TabCompleter {
             return true;
 
         if (args.length != 1) {
+            Notification.errorMsg(player, "Usage: /namepreference <male/female/random>");
             return true;
         }
 
         String arg = args[0].toLowerCase();
 
         switch (arg) {
-
             case "male":
                 wrapper.setNamePreference("male");
+                Notification.successMsg(player, "You set your name preference to male");
                 break;
             case "female":
                 wrapper.setNamePreference("female");
+                Notification.successMsg(player, "You set your name preference to female");
+                break;
             case "random":
                 wrapper.setNamePreference("random");
+                Notification.successMsg(player, "You set your name preference to random");
+                break;
             default:
-                Notification.errorMsg(player, "Command not found");
+                Notification.errorMsg(player, "Invalid preference");
+                return true;
         }
 
 

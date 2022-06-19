@@ -39,6 +39,7 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
             player.sendMessage("§f ► Mother");
             player.sendMessage("§f ► Family");
             player.sendMessage("§f ► Chat");
+            player.sendMessage("§f ► Skin");
             player.sendMessage("§f ► Commands");
             //player.sendMessage("§6e.g. Use command §d[/howto hearts]§6 to find out, what's up with your hearts.");
 
@@ -118,6 +119,14 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
                 player.sendMessage("");
                 break;
 
+            case "skin":
+                player.sendMessage("");
+                printHeading(player, "SKIN");
+                player.sendMessage(" The skin represents your current age.");
+                player.sendMessage(" Use ESC > Options > Skins Customization to get a more male/female look");
+                player.sendMessage(" With §d[/namepreference <male/female>] §fyou can pick what kind of names you prefer");
+                break;
+
             case "commands":
                 player.sendMessage("");
                 printHeading(player, "COMMANDS");
@@ -135,6 +144,8 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
                 player.sendMessage("   Invite other player into your family");
                 player.sendMessage("► §d[/die]§r");
                 player.sendMessage("   If there are no other options.. Abuse not allowed!");
+                player.sendMessage("► §d[/namepreference]§r");
+                player.sendMessage("   Get male or female names");
                 player.sendMessage("► §d[/report]§r");
                 player.sendMessage("   Report a player e.g.: /report Sue cheating");
                 player.sendMessage("► §d[/shareign]§r");
@@ -169,6 +180,7 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
                 l.add("family");
                 l.add("hearts");
                 l.add("chat");
+                l.add("skin");
                 l.add("commands");
 
                 return l;
