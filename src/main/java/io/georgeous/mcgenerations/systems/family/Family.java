@@ -4,6 +4,7 @@ import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.scoreboard.ScoreboardHandler;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
+import io.georgeous.mcgenerations.utils.Logger;
 import io.georgeous.mcgenerations.utils.Notification;
 import io.georgeous.mcgenerations.utils.Util;
 import org.bukkit.Bukkit;
@@ -17,14 +18,14 @@ import java.util.UUID;
 public class Family {
 
     private final String uuid;
-    private final List<PlayerRole> members;
-    public boolean isDead = false;
     private String name;
     private String color;
     private long established;
-    private PlayerRole leader;
     private boolean namedByLeader;
+    public boolean isDead = false;
     private int maxGenerations;
+    private final List<PlayerRole> members;
+    private PlayerRole leader;
 
     public Family(String name) {
         this(name, UUID.randomUUID().toString());
@@ -109,6 +110,7 @@ public class Family {
         if (members.size() == 0) {
             setLeader(role);
         }
+        Logger.log(role.getName() + " added to family " + this.getName());
         role.setFamily(this);
         ScoreboardHandler.get().refreshScoreboardOfPlayer(role.getPlayer());
 
@@ -118,9 +120,10 @@ public class Family {
 
     public void removeMember(PlayerRole role) {
         if(!members.remove(role)){
-            Bukkit.getLogger().info("Role not found in family");
+            Logger.log("Role not found in family");
             return;
         }
+        Logger.log(role.getName() + " removed from family " + this.getName());
         role.setFamily(null);
         ScoreboardHandler.get().refreshScoreboardOfPlayer(role.getPlayer());
 

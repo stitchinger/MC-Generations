@@ -5,6 +5,7 @@ import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.role.lifephase.Phase;
+import io.georgeous.mcgenerations.utils.Logger;
 import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -30,7 +31,7 @@ public class AdoptionManager {
                     AdoptionRequest request = iterator.next().getValue();
 
                     if(!request.isValid()){
-                        Bukkit.getLogger().info("removed adoption request from memory");
+                        Logger.log("removed adoption request from memory");
                         iterator.remove();
                     }
                 }

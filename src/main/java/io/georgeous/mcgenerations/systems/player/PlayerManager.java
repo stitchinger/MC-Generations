@@ -1,6 +1,7 @@
 package io.georgeous.mcgenerations.systems.player;
 
 import io.georgeous.mcgenerations.MCG;
+import io.georgeous.mcgenerations.utils.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -41,7 +42,7 @@ public class PlayerManager {
         attachWrapperToPlayer(player);
         if (data.playerDataExists(player)) { // restore player
             data.restorePlayerWrapperFromConfig(getWrapper(player));
-            Bukkit.getLogger().info( "Restored Wrapper: " + player);
+            Logger.log("Restored Wrapper: " + player);
         }
     }
 
@@ -50,7 +51,7 @@ public class PlayerManager {
 
         PlayerWrapper wrapper = new PlayerWrapper(player);
         playersMap.put(uuid, wrapper);
-        Bukkit.getLogger().info("Created wrapper : " + player.getName());
+        Logger.log("Created wrapper : " + player.getName());
     }
 
     public Set<UUID> getWrapperAttachedPlayers() {

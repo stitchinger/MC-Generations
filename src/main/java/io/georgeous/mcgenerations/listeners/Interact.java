@@ -156,9 +156,6 @@ public class Interact implements Listener {
 
     @EventHandler
     public void onSurrogateMount(EntityMountEvent event){
-        Bukkit.getLogger().info(event.getMount().toString());
-        Bukkit.getLogger().info(event.getEntity().toString());
-
         if(!(event.getEntity() instanceof Player player)){
             return;
         }
@@ -170,8 +167,6 @@ public class Interact implements Listener {
 
         event.getMount().addPassenger(surro.getEntity());
         surro.getEntity().addScoreboardTag("riding");
-
-        Bukkit.getLogger().info("//////Passengers: " + event.getMount().getPassengers().toString() + "//////////");
     }
 
     @EventHandler

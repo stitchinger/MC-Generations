@@ -7,6 +7,7 @@ import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.BlockFacing;
 import io.georgeous.mcgenerations.utils.ItemManager;
+import io.georgeous.mcgenerations.utils.Logger;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -118,7 +119,7 @@ public class PlayerDeathListener implements Listener {
         }
 
         PlayerManager.get().getWrapper(player).addLife();
-        //Bukkit.getLogger().info(playerRole.getName() + " died offline");
+        Logger.log(playerRole.getName() + " died offline");
         playerRole.die();
     }
 

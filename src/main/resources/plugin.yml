@@ -27,5 +27,6 @@ commands:
   shareign:
   ad:
   realname:
+  familyreborn:
 depend: [Piggyback, NickAPI, Petmanager, Spicyhearts]
 

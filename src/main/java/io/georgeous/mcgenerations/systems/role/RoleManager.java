@@ -8,6 +8,7 @@ import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
+import io.georgeous.mcgenerations.utils.Logger;
 import io.georgeous.mcgenerations.utils.NameManager;
 import io.georgeous.mcgenerations.utils.Notification;
 import io.georgeous.spicyhearts.SpicyAPI;
@@ -65,7 +66,8 @@ public class RoleManager {
             } else{
                 if(role.getLastSeenOnline() + 1000L * 60 < System.currentTimeMillis() ){
                     removeRoleData(role);
-                    Bukkit.getLogger().info(role.getName() + " died offline");
+                    Logger.log(role.getName() + " died offline");
+                    Logger.log(role.getName() + " died offline");
                     role.die();
                     iterator.remove();
 

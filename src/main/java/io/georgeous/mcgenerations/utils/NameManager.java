@@ -79,12 +79,12 @@ public class NameManager {
 
     public static void registerName(String name){
         usedNames.add(name.toLowerCase());
-        Bukkit.getLogger().info(usedNames.toString());
+        Logger.log(usedNames.toString());
     }
 
     public static void deregisterName(String name){
         usedNames.remove(name.toLowerCase());
-        Bukkit.getLogger().info(usedNames.toString());
+        Logger.log(usedNames.toString());
     }
 
     public static void saveConfig() {

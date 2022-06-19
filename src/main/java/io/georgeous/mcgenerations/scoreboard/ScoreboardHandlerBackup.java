@@ -6,6 +6,7 @@ import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
+import io.georgeous.mcgenerations.utils.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -51,7 +52,7 @@ public class ScoreboardHandlerBackup {
     }
 
     public void registerPlayer(Player toRegister) {
-        Bukkit.getLogger().info("Register Scoreboard: " + toRegister.getName());
+        Logger.log("Register Scoreboard: " + toRegister.getName());
         Scoreboard scoreboard = toRegister.getScoreboard();
 
         Objective objective = scoreboard.getObjective("dummy_sidebar");
@@ -65,7 +66,7 @@ public class ScoreboardHandlerBackup {
     }
 
     public void refreshScoreboardOfPlayer(Player toRefresh) {
-        Bukkit.getLogger().info("Refresh Scoreboard: " + toRefresh.getName());
+        Logger.log("Refresh Scoreboard: " + toRefresh.getName());
         if(toRefresh.getScoreboard().getObjective("dummy_sidebar") == null){
             registerPlayer(toRefresh);
         }
