@@ -15,7 +15,7 @@ import java.util.Random;
 public class ItemManager {
 
     public static ItemStack createBabyHandler() {
-        ItemStack item = new ItemStack(Material.CARROT_ON_A_STICK);
+        ItemStack item = new ItemStack(Material.SHULKER_SHELL);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Baby-Handler");
@@ -26,10 +26,13 @@ public class ItemManager {
             meta.setLore(lore);
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+            meta.setCustomModelData(1);
             item.setItemMeta(meta);
         }
         return item;
     }
+
+
 
     public static boolean isBabyHandler(ItemStack item) {
         return isItemByName(item, "Baby-Handler");
