@@ -17,7 +17,8 @@ public class NameManager {
             "Petyr", "Davos", "Samwell", "Stannis", "Jeor", "Bronn", "Varys", "Tywin", "Gendry", "Ramsay",
             "Gilly", "Daario", "Tommen", "Roose", "Jaqen", "Aegir", "Aeric", "Alvis", "Amund", "Baldur", "Beini",
             "Bothi", "Carr", "Fenris", "Floki", "Loki", "Frye", "Hoenir", "Illugi", "Magnar", "Odd", "Olave", "Raud",
-            "Torfi", "Tormund", "Trig", "Jojo", "Lofn", "Joro", "Ragnar"
+            "Torfi", "Tormund", "Trig", "Jojo", "Lofn", "Joro", "Ragnar", "Goku", "Vegeta", "Krillin", "Naruto", "Ruffy",
+            "Eren", "Armin", "Reiner", "Bertholdt"
     };
 
     private static final String[] femaleNames = {
@@ -26,7 +27,7 @@ public class NameManager {
             "Grace", "Ruby", "Quinn", "Lydia", "Vivian", "Hailey", "Autumn", "Aurora", "Hazel",
             "Penelope", "Catelyn", "Freya", "Faith", "Cersei", "Sansa", "Arya", "Shae", "Talisa", "Brienne",
             "Ellaria","Signy", "Hildr", "Nanna", "Eisa", "Saga", "Sol", "Hel", "Frigg", "Lofn", "Jojo",
-            "Lounn", "Fulla", "Laga", "Elli"
+            "Lounn", "Fulla", "Laga", "Elli", "Mikasa", "Historia", "Sasha", "Bulma", "Chi-Chi"
     };
 
     private static final String[] lastNames =
