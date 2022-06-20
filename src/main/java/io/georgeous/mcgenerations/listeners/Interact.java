@@ -9,6 +9,7 @@ import io.georgeous.mcgenerations.systems.surrogate.SurrogateEntity;
 import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
 import io.georgeous.mcgenerations.utils.BadWordFilter;
 import io.georgeous.mcgenerations.utils.ItemManager;
+import io.georgeous.mcgenerations.utils.Logger;
 import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
@@ -46,12 +47,19 @@ public class Interact implements Listener {
             return;
 
         if (baby.getFoodLevel() >= 18){
+            Logger.log("baby full");
             babyFullEffect(baby.getLocation());
             return;
         }
 
-        feeder.setFoodLevel(Math.max(feeder.getFoodLevel() - 2, 0));
-        int newFoodLevel = Math.min(baby.getFoodLevel() + 5, 20);
+        float refillValue = 6f;
+        float costFactor = 0.5f;
+
+        float foodToFill = Math.min(20 - baby.getFoodLevel(), refillValue);
+        float cost = Math.max((foodToFill * costFactor),1);
+
+        feeder.setFoodLevel(Math.max(feeder.getFoodLevel() - (int)cost, 0));
+        int newFoodLevel = Math.min(baby.getFoodLevel() + (int)foodToFill, 20);
         baby.setFoodLevel(newFoodLevel);
 
         babyFeedEffect(babyRole.getPlayer());
