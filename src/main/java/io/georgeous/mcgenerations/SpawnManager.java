@@ -156,7 +156,8 @@ public class SpawnManager {
         String name = NameManager.randomFirst(playerWrapper.getNamePreference());
         Family family = FamilyManager.addFamily(NameManager.randomLast());
 
-        RoleManager.get().createAndAddRole(player, name, 10, 1, family);
+        PlayerRole eveRole = RoleManager.get().createAndAddRole(player, name, 10, 1, family);
+        family.addMember(eveRole);
 
         equipEve(player);
 

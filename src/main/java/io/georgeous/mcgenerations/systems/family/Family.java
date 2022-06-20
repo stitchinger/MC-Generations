@@ -111,7 +111,7 @@ public class Family {
             setLeader(role);
         }
         Logger.log(role.getName() + " added to family " + this.getName());
-        role.setFamily(this);
+        //role.setFamily(this);
         ScoreboardHandler.get().refreshScoreboardOfPlayer(role.getPlayer());
 
         if(!members.contains(role))
@@ -124,7 +124,6 @@ public class Family {
             return;
         }
         Logger.log(role.getName() + " removed from family " + this.getName());
-        role.setFamily(null);
         ScoreboardHandler.get().refreshScoreboardOfPlayer(role.getPlayer());
 
         if (members.size() == 0) {

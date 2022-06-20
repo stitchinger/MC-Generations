@@ -55,6 +55,7 @@ public class AdoptionRequest {
     public void accept(){
         adoptee.getFamily().removeMember(adoptee);
         adopter.getFamily().addMember(adoptee);
+        adoptee.setFamily(adopter.getFamily());
         adopter.setUsedAdopt(true);
         adoptee.updateScoreboard();
 

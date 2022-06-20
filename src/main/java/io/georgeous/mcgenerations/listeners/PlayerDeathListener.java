@@ -25,8 +25,12 @@ public class PlayerDeathListener implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
+
+
         removeBabyHandlerFromDrops(event);
         removeStarterItemsFromDrops(event);
+
+
         PlayerRole role = RoleManager.get().get(player);
         if (role == null) {
             event.setDeathMessage("");
@@ -38,6 +42,7 @@ public class PlayerDeathListener implements Listener {
         rangedBroadcast(player, msg, McgConfig.getChatRange());
         event.setDeathMessage("");
 
+        role.getFamily().removeMember(role);
 
         dealWithRoleDeath(event);
         RoleManager.get().removeRoleData(role);
@@ -45,13 +50,7 @@ public class PlayerDeathListener implements Listener {
     }
 
 
-    private void removeMember(Player player) {
-        PlayerRole role = RoleManager.get().get(player);
-        if (role == null) {
-            return;
-        }
-        role.getFamily().removeMember(role);
-    }
+
 
     private void rangedBroadcast(Player sender, String msg, double range) {
         for (Player receivingPlayer : Bukkit.getOnlinePlayers()) {
@@ -112,8 +111,6 @@ public class PlayerDeathListener implements Listener {
             return;
         }
 
-        //player.setBedSpawnLocation(McgConfig.getCouncilLocation(), true);
-
         if (!PlayerManager.get().getWrapper(player).isDebugMode() && playerRole.getAgeManager().getAge() >= 40) {
             createGrave(playerRole);
         }
@@ -173,6 +170,4 @@ public class PlayerDeathListener implements Listener {
         sign.setLine(3, "R.I.P.  " + randomGraveSymbol());
         sign.update();
     }
-
-
 }

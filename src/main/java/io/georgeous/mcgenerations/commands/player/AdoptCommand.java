@@ -55,40 +55,10 @@ public class AdoptCommand implements CommandExecutor, TabCompleter {
         }
 
         Player playerToAdopt = NickAPI.getPlayerOfNickedName(args[0]);
-        //adoptation(player, playerToAdopt);
-
         AdoptionManager.get().requestAdoptation(player, playerToAdopt);
 
         return false;
     }
-
-    private void adoptation(Player adopter, Player adoptee){
-        if(adoptee == null){
-            Notification.errorMsg(adopter, "No player found with this name");
-            return;
-        }
-
-        PlayerRole adopterRole = RoleManager.get().get(adopter);
-        PlayerRole adopteeRole = RoleManager.get().get(adoptee);
-
-        Family adopterFamily = adopterRole.getFamily();
-        Family adopteeFamily = adopteeRole.getFamily();
-
-        if(adopterFamily == adopteeFamily){
-            Notification.errorMsg(adopter, adopteeRole.getName() + " is already in your family");
-            return;
-        }
-
-        adopteeRole.getFamily().removeMember(adopteeRole);
-        adopterRole.getFamily().addMember(adopteeRole);
-        adopteeRole.updateScoreboard();
-
-        adoptee.teleport(adopter.getLocation());
-        Notification.successMsg(adopter, "You adopted " + adopteeRole.getName() + ".");
-
-
-    }
-
 
 
     @Override

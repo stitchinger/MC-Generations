@@ -42,12 +42,6 @@ public class PlayerRole {
         playerAge = new PlayerAge(this, age);
         phaseManager = new PhaseManager(this, playerAge);
         playerMother = new PlayerMother(this);
-
-        this.family.addMember(this);
-    }
-
-    public void init(){
-
     }
 
     public void update() {
@@ -133,7 +127,6 @@ public class PlayerRole {
         if (!isDead) {
 
             isDead = true;
-            //passOnPetsToDescendent();
 
             if (player.getHealth() != 0) {
                 player.setHealth(0);

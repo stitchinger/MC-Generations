@@ -1,16 +1,22 @@
 package io.georgeous.mcgenerations.commands.admin;
 
 
+import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.commands.CommandUtils;
 import io.georgeous.mcgenerations.files.McgConfig;
 
 import io.georgeous.mcgenerations.scoreboard.ScoreboardHandler;
+import io.georgeous.mcgenerations.systems.family.Family;
+import io.georgeous.mcgenerations.systems.family.Top10;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 
 import io.georgeous.mcgenerations.utils.NameManager;
 import io.georgeous.mcgenerations.utils.Notification;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Instrument;
+import org.bukkit.Note;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.command.Command;
@@ -101,17 +107,38 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
             if(player.getBedSpawnLocation() != null){
                 player.sendMessage("Bed spawn: " + player.getBedSpawnLocation().toString());
             }
-            //player.setBedSpawnLocation();
 
 
-
-            //McgConfig.reload();
             return true;
         }
 
-        if ("entities".equals(args[0])) {
+        if ("vanish".equals(args[0])) {
+            Bukkit.getOnlinePlayers().forEach(p -> {
+                p.hidePlayer(MCG.getInstance(), player);
+            });
 
-            //McgConfig.reload();
+            return true;
+        }
+
+        if ("show".equals(args[0])) {
+            Bukkit.getOnlinePlayers().forEach(p -> {
+                p.showPlayer(MCG.getInstance(), player);
+            });
+
+            return true;
+        }
+
+        if ("top10".equals(args[0])) {
+            player.sendMessage("Best Families");
+            Family[] list = Top10.get().getCurrentTop10();
+            for(int i = 0; i < list.length; i++){
+                Family f = list[0];
+                if(f != null){
+                    player.sendMessage(i + "# " + f.getColoredName() + " Gens: " + f.getMaxGenerations());
+                }
+            }
+
+
             return true;
         }
 
