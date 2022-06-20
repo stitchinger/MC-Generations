@@ -30,11 +30,15 @@ public class PlayerCraftListener implements Listener {
             return;
         }
 
+
         if(event.getSlotType() != InventoryType.SlotType.RESULT){
             return;
         }
 
-        //Bukkit.broadcastMessage(event.getCurrentItem().getData().toString());
+        if (event.isShiftClick()){
+            event.setCancelled(true);
+            return;
+        }
 
         ItemStack item = event.getCurrentItem();
 
@@ -53,6 +57,7 @@ public class PlayerCraftListener implements Listener {
         item.setItemMeta(meta);
 
     }
+
 
     private boolean shouldAddLore(Material itemMaterial){
         Material[] mats = {
