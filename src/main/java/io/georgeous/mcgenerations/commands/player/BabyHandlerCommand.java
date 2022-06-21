@@ -35,7 +35,7 @@ public class BabyHandlerCommand implements CommandExecutor {
             return true;
         }
 
-        Util.giveItemIfNotInInventory(ItemManager.createBabyHandler(),player.getInventory());
+        Util.giveItemIfNotInInventory(ItemManager.createBabyHandler(), player.getInventory());
 
         return false;
     }
