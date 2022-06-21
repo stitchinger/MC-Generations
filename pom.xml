@@ -32,7 +32,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
-                    <outputDirectory>/Users/georg/Development/BuildTools/plugins</outputDirectory>
+                    <outputDirectory>/Users/georg/Development/1h1l-server/plugins</outputDirectory>
                     <finalName>MC-Generations</finalName>
                 </configuration>
             </plugin>
@@ -118,21 +118,21 @@
             <artifactId>Petmanager</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>/Users/georg/Development/Buildtools/plugins/Petmanager.jar</systemPath>
+            <systemPath>/Users/georg/Development/1h1l-server/plugins/Petmanager.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>io.georgeous</groupId>
             <artifactId>Piggyback</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>/Users/georg/Development/Buildtools/plugins/Piggyback.jar</systemPath>
+            <systemPath>/Users/georg/Development/1h1l-server/plugins/Piggyback.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>io.georgeous</groupId>
             <artifactId>Spicyhearts</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>/Users/georg/Development/Buildtools/plugins/Spicyhearts-custom.jar</systemPath>
+            <systemPath>/Users/georg/Development/1h1l-server/plugins/Spicyhearts-custom.jar</systemPath>
         </dependency>
     </dependencies>
 </project>
