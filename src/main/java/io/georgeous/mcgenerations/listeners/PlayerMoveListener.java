@@ -14,14 +14,17 @@ import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Vehicle;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.util.Vector;
 
 import javax.management.relation.Role;
+import java.util.Random;
 
 public class PlayerMoveListener implements Listener {
 
@@ -114,23 +117,36 @@ public class PlayerMoveListener implements Listener {
             return;
         }
 
+        Location loc = event.getTo();
 
-        if(enteredCouncilProtection(event.getFrom(), event.getTo())){
-            event.getPlayer().sendMessage("Turn back");
-            return;
+        if(withinProtection(loc)){
+            lightningStrike(loc);
+        }else if(withinWarningArea(loc)){
+            lightningStrikeWarning(loc);
         }
+    }
 
-        if(leftCouncilProtection(event.getFrom(), event.getTo())){
-            event.getPlayer().sendMessage("Good boy");
-            return;
+    private boolean withinWarningArea(Location loc){
+        return withinCylinder(McgConfig.getCouncilLocation(), McgConfig.getCouncilProtectionRadius() + McgConfig.getCouncilProtectionWarningDistance() , McgConfig.getCouncilProtectionHeight(),loc);
+    }
+
+    private boolean withinProtection(Location loc){
+        return withinCylinder(McgConfig.getCouncilLocation(), McgConfig.getCouncilProtectionRadius(), McgConfig.getCouncilProtectionHeight(),loc);
+    }
+
+    private boolean withinCylinder(Location center, double radius, double minY, Location loc){
+        if(center.getWorld() != loc.getWorld())
+            return false;
+
+        if(loc.getY() < minY){
+            return false;
         }
+        center.setY(loc.getY());
 
-        if(!withinCouncilProtection(event.getFrom())){
-            return;
+        if(loc.distance(center) > radius){
+            return false;
         }
-
-
-        lightningStrike(event.getPlayer().getLocation());
+        return  true;
     }
 
     private void lightningStrike(Location loc){
@@ -140,32 +156,15 @@ public class PlayerMoveListener implements Listener {
         }
     }
 
-    private boolean enteredCouncilProtection(Location from, Location to){
-        return !withinCouncilProtection(from) && withinCouncilProtection(to);
-    }
-
-    private boolean leftCouncilProtection(Location from, Location to){
-        return withinCouncilProtection(from) && !withinCouncilProtection(to);
-    }
-
-    private boolean withinCouncilProtection(Location loc){
-        Location center = McgConfig.getCouncilLocation().clone();
-        double radius = 150;
-        double minY = 61;
-
-        if(center.getWorld() != loc.getWorld())
-            return false;
-
-        if(loc.getY() < minY){
-            return false;
+    private void lightningStrikeWarning(Location loc){
+        double random = Math.random();
+        if(random < 0.02){
+            double x = Math.random() - 0.5d;
+            double z = Math.random() - 0.5d;
+            Vector v = new Vector(x, 0, z);
+            double m = 10;
+            MCG.overworld.spawnEntity(loc.clone().add(v.normalize().multiply(10)), EntityType.LIGHTNING);
         }
-
-        center.setY(loc.getY());
-
-        if(loc.distance(center) > radius){
-            return false;
-        }
-        return  true;
     }
 
 

@@ -58,6 +58,10 @@ public class McgConfig {
         cfg.addDefault("council_x", -6782);
         cfg.addDefault("council_z", -6011);
         cfg.addDefault("council_y", 264);
+        cfg.addDefault("council_protection_radius", 150);
+        cfg.addDefault("council_protection_warning_distance", 30);
+        cfg.addDefault("council_protection_y", 61);
+        cfg.addDefault("council_y", 264);
         cfg.addDefault("council_noise_frequency", 0.25);
         cfg.addDefault("baby_cooldown", 180);
         cfg.addDefault("min_birth_age", 15);
@@ -133,5 +137,17 @@ public class McgConfig {
 
     public static boolean getChatFilterProfanity(){
         return cfg.getBoolean("chat_filter_profanity");
+    }
+
+    public static double getCouncilProtectionHeight(){
+        return cfg.getInt("council_protection_y");
+    }
+
+    public static double getCouncilProtectionRadius(){
+        return cfg.getInt("council_protection_radius");
+    }
+
+    public static int getCouncilProtectionWarningDistance(){
+        return cfg.getInt("council_protection_warning_distance");
     }
 }

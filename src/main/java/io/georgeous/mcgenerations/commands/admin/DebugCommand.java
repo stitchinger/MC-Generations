@@ -12,6 +12,7 @@ import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 
 import io.georgeous.mcgenerations.utils.ItemManager;
+import io.georgeous.mcgenerations.utils.Logger;
 import io.georgeous.mcgenerations.utils.NameManager;
 import io.georgeous.mcgenerations.utils.Notification;
 
@@ -26,6 +27,7 @@ import org.bukkit.entity.Player;
 
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import xyz.haoshoku.nick.api.NickAPI;
 
@@ -147,6 +149,26 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if ("spawn".equals(args[0])) {
+            Location rotationCenter = McgConfig.getSpawnRotationCenter();
+            double rotationRadius = McgConfig.getSpawnRotationRadius();
+            double time = System.currentTimeMillis() / 1000d / 60d / 60d * McgConfig.getSpawnRotationSpeed();  // Hour
+
+            double radian =  (time % (2 * Math.PI)) - Math.PI; //range -PI - PI One rotation per 6,28 hours
+            Logger.log("Spawn-Radian: " + radian);
+
+            double x = Math.cos(radian);
+            double z = Math.sin(radian);
+
+
+            Vector dir = new Vector(x,0, z);
+            rotationCenter.add(dir.multiply(rotationRadius));
+
+            Notification.neutralMsg(player, time +"");
+            Notification.neutralMsg(player, radian +"");
+            Notification.neutralMsg(player, "----------------------");
+        }
+
         if ("top10".equals(args[0])) {
             player.sendMessage("Best Families");
             Family[] list = Top10.get().getCurrentTop10();
@@ -160,6 +182,8 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
 
             return true;
         }
+
+
 
 
         return false;
