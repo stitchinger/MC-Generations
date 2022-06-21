@@ -152,6 +152,10 @@ public class PlayerMoveListener implements Listener {
         Location center = McgConfig.getCouncilLocation().clone();
         double radius = 150;
         double minY = 61;
+
+        if(center.getWorld() != loc.getWorld())
+            return false;
+
         if(loc.getY() < minY){
             return false;
         }

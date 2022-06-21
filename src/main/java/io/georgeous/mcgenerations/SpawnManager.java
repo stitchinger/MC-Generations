@@ -183,7 +183,7 @@ public class SpawnManager {
     private static Location rotationSpawnResult(){
         Location rotationCenter = McgConfig.getSpawnRotationCenter();
         double rotationRadius = McgConfig.getSpawnRotationRadius();
-        double time = System.currentTimeMillis() / 1000d / 60d / 60d;  // Hour
+        double time = System.currentTimeMillis() / 1000d / 60d / 60d * McgConfig.getSpawnRotationSpeed();  // Hour
         double radian =  (time % (2 * Math.PI)) - Math.PI; //range -PI - PI One rotation per 6,28 hours
 
         double x = Math.cos(radian);
