@@ -32,6 +32,24 @@ public class ItemManager {
         return item;
     }
 
+    public static ItemStack createAnimalIncubator() {
+        ItemStack item = new ItemStack(Material.STICK);
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            meta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Animal-Incubator");
+            List<String> lore = new ArrayList<>();
+            lore.add("");
+            lore.add(ChatColor.GOLD + "" + ChatColor.ITALIC + "1. Right-Click on animal");
+            lore.add(ChatColor.GOLD + "" + ChatColor.ITALIC + "2. Spawn chosen animal");
+            lore.add(ChatColor.GOLD + "" + ChatColor.ITALIC + "3. Profit");
+            meta.setLore(lore);
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+            item.setItemMeta(meta);
+        }
+        return item;
+    }
+
 
 
     public static boolean isBabyHandler(ItemStack item) {

@@ -12,10 +12,7 @@ import io.georgeous.mcgenerations.utils.ItemManager;
 import io.georgeous.mcgenerations.utils.Logger;
 import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.*;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Sheep;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -211,5 +208,41 @@ public class Interact implements Listener {
         for(int i = 0; i < event.getLines().length; i++){
             event.setLine(i, BadWordFilter.getCensoredText(event.getLine(i)));
         }
+    }
+
+    @EventHandler
+    public void onAnimalIncubator(PlayerInteractEntityEvent event) {
+        Player player = event.getPlayer();
+        Entity target = event.getRightClicked();
+        ItemStack usedItem = player.getInventory().getItemInMainHand();
+
+        if(!ItemManager.isItemByName(usedItem, "Animal-Incubator"))
+            return;
+
+        player.sendMessage("Incubator");
+        //event.setCancelled(true);
+
+        ItemStack replace = null;
+
+        if(target instanceof Cow){
+            replace = new ItemStack(Material.COW_SPAWN_EGG);
+        }
+
+        if(target instanceof Sheep){
+            replace = new ItemStack(Material.SHEEP_SPAWN_EGG);
+        }
+
+        if(target instanceof Pig){
+            replace = new ItemStack(Material.PIG_SPAWN_EGG);
+        }
+
+        if(target instanceof Chicken){
+            replace = new ItemStack(Material.CHICKEN_SPAWN_EGG);
+        }
+
+        if(replace == null)
+            return;
+
+        player.getInventory().setItemInMainHand(replace);
     }
 }

@@ -11,12 +11,11 @@ import io.georgeous.mcgenerations.systems.family.Top10;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 
+import io.georgeous.mcgenerations.utils.ItemManager;
 import io.georgeous.mcgenerations.utils.NameManager;
 import io.georgeous.mcgenerations.utils.Notification;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Instrument;
-import org.bukkit.Note;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.command.Command;
@@ -25,6 +24,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import xyz.haoshoku.nick.api.NickAPI;
 
@@ -120,10 +121,28 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if ("item".equals(args[0])) {
+            ItemStack item = new ItemStack(Material.SHULKER_SHELL);
+            ItemMeta meta = item.getItemMeta();
+            meta.setCustomModelData(1);
+            meta.setDisplayName(ChatColor.RESET + "Diamond Dust");
+            item.setItemMeta(meta);
+
+            player.getInventory().addItem(item);
+
+            return true;
+        }
+
         if ("show".equals(args[0])) {
             Bukkit.getOnlinePlayers().forEach(p -> {
                 p.showPlayer(MCG.getInstance(), player);
             });
+
+            return true;
+        }
+
+        if ("egg".equals(args[0])) {
+            player.getInventory().addItem(ItemManager.createAnimalIncubator());
 
             return true;
         }
