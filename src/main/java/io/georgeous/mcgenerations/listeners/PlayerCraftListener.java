@@ -35,16 +35,12 @@ public class PlayerCraftListener implements Listener {
             return;
         }
 
-        if (event.isShiftClick()){
-            event.setCancelled(true);
-            return;
-        }
-
         ItemStack item = event.getCurrentItem();
 
         if(!shouldAddLore(item.getType())){
             return;
         }
+
 
         ItemMeta meta = item.getItemMeta();
         ArrayList<String> itemLore = new ArrayList<>();

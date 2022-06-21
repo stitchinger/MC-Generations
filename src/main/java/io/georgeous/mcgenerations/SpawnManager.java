@@ -14,6 +14,7 @@ import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -159,12 +160,12 @@ public class SpawnManager {
         PlayerRole eveRole = RoleManager.get().createAndAddRole(player, name, 10, 1, family);
         family.addMember(eveRole);
 
-        equipEve(player);
 
         new BukkitRunnable() {
             @Override
             public void run() {
                 player.playSound(player.getLocation(), Sound.AMBIENT_CAVE, SoundCategory.MASTER, 1, 1);
+                equipEve(player);
             }
         }.runTaskLater(MCG.getInstance(), 20);
 
@@ -233,8 +234,10 @@ public class SpawnManager {
     }
 
     private static void equipEve(Player player){
+        Logger.log("Equipped " + player.getName());
         player.getInventory().addItem(ItemManager.getEveStarterSeeds());
         player.getInventory().addItem(ItemManager.getEveStarterFood());
+        player.getInventory().addItem(ItemManager.createCloneEgg());
 
         ItemStack armor = ItemManager.getEveStarterArmor();
         if(armor.getType().equals(Material.LEATHER_HELMET)){
