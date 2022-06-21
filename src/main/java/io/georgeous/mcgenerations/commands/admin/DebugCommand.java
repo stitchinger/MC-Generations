@@ -144,7 +144,7 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
         }
 
         if ("egg".equals(args[0])) {
-            player.getInventory().addItem(ItemManager.createAnimalIncubator());
+            player.getInventory().addItem(ItemManager.createCloneEgg());
 
             return true;
         }

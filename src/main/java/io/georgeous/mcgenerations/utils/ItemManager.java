@@ -1,7 +1,6 @@
 package io.georgeous.mcgenerations.utils;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -32,11 +31,11 @@ public class ItemManager {
         return item;
     }
 
-    public static ItemStack createAnimalIncubator() {
-        ItemStack item = new ItemStack(Material.STICK);
+    public static ItemStack createCloneEgg() {
+        ItemStack item = new ItemStack(Material.SHULKER_SHELL);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Animal-Incubator");
+            meta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Clone Egg");
             List<String> lore = new ArrayList<>();
             lore.add("");
             lore.add(ChatColor.GOLD + "" + ChatColor.ITALIC + "1. Right-Click on animal");
@@ -45,6 +44,7 @@ public class ItemManager {
             meta.setLore(lore);
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+            meta.setCustomModelData(2);
             item.setItemMeta(meta);
         }
         return item;

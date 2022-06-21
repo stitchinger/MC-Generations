@@ -216,33 +216,15 @@ public class Interact implements Listener {
         Entity target = event.getRightClicked();
         ItemStack usedItem = player.getInventory().getItemInMainHand();
 
-        if(!ItemManager.isItemByName(usedItem, "Animal-Incubator"))
+        if(!ItemManager.isItemByName(usedItem, "Clone Egg"))
             return;
 
-        player.sendMessage("Incubator");
-        //event.setCancelled(true);
 
-        ItemStack replace = null;
-
-        if(target instanceof Cow){
-            replace = new ItemStack(Material.COW_SPAWN_EGG);
-        }
-
-        if(target instanceof Sheep){
-            replace = new ItemStack(Material.SHEEP_SPAWN_EGG);
-        }
-
-        if(target instanceof Pig){
-            replace = new ItemStack(Material.PIG_SPAWN_EGG);
-        }
-
-        if(target instanceof Chicken){
-            replace = new ItemStack(Material.CHICKEN_SPAWN_EGG);
-        }
-
-        if(replace == null)
+        if(!(target instanceof Cow) && !(target instanceof Sheep) && !(target instanceof Pig) && !(target instanceof Chicken)){
             return;
+        }
 
-        player.getInventory().setItemInMainHand(replace);
+        target.getWorld().spawnEntity(target.getLocation(), target.getType());
+        usedItem.setAmount(0);
     }
 }
