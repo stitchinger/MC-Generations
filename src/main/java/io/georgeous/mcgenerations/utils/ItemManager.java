@@ -50,6 +50,17 @@ public class ItemManager {
         return item;
     }
 
+    public static ItemStack createSacrificialSword() {
+        ItemStack item = new ItemStack(Material.GOLDEN_SWORD);
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            meta.setDisplayName("Sacrificial Sword IX");
+            //meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+            item.setItemMeta(meta);
+        }
+        return item;
+    }
+
 
 
     public static boolean isBabyHandler(ItemStack item) {

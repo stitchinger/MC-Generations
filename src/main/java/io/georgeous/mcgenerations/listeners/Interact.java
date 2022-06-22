@@ -1,5 +1,6 @@
 package io.georgeous.mcgenerations.listeners;
 
+import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.family.FriendlyTalk;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
@@ -7,11 +8,9 @@ import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
 import io.georgeous.mcgenerations.systems.surrogate.SurrogateEntity;
 import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
-import io.georgeous.mcgenerations.utils.BadWordFilter;
-import io.georgeous.mcgenerations.utils.ItemManager;
-import io.georgeous.mcgenerations.utils.Logger;
-import io.georgeous.mcgenerations.utils.Notification;
+import io.georgeous.mcgenerations.utils.*;
 import org.bukkit.*;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,9 +18,13 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.spigotmc.event.entity.EntityDismountEvent;
 import org.spigotmc.event.entity.EntityMountEvent;
 
@@ -224,7 +227,62 @@ public class Interact implements Listener {
             return;
         }
 
-        target.getWorld().spawnEntity(target.getLocation(), target.getType());
+        target.getWorld().playSound(target.getLocation(), Sound.ENTITY_TURTLE_EGG_CRACK, SoundCategory.MASTER, 1,1);
+        target.getWorld().spawnEntity(target.getLocation().clone().add(0.1,0.1,0.1), target.getType());
         usedItem.setAmount(0);
+    }
+
+    @EventHandler
+    public void onSacrificialSwordAttack(EntityDeathEvent event){
+
+        int threshold = 2;
+
+        LivingEntity entity = event.getEntity();
+        Player player = entity.getKiller();
+
+        if(player == null)
+            return;
+
+        ItemStack usedItem = player.getInventory().getItemInMainHand();
+
+        if(usedItem.getType() != Material.GOLDEN_SWORD)
+            return;
+
+        ItemMeta meta = usedItem.getItemMeta();
+        if(meta == null)
+            return;
+
+        if(!meta.hasCustomModelData()){
+            meta.setCustomModelData(0);
+        }
+
+        int newModelData = meta.getCustomModelData() + 1;
+
+        if(newModelData > threshold)
+            return;
+
+        meta.setCustomModelData(newModelData);
+
+        if(newModelData >= threshold){
+            meta.setDisplayName("Sacrifial Dagger ");
+            meta.addEnchant(Enchantment.ARROW_FIRE, 1, false);
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            player.getWorld().playSound(player.getLocation(), Sound.BLOCK_RESPAWN_ANCHOR_CHARGE, 1, 1);
+        } else{
+            meta.setDisplayName("Golden Sword " + RomanNumber.toRoman(newModelData));
+        }
+
+        usedItem.setItemMeta(meta);
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                player.getWorld().playSound(entity.getLocation(), Sound.PARTICLE_SOUL_ESCAPE, 2f,1);
+                player.getInventory().getLocation();
+                player.getWorld().spawnParticle(Particle.SOUL, entity.getLocation().clone().add(0,1,0), 10, 0.5, 1, 0.5,0);
+            }
+        }.runTaskLater(MCG.getInstance(), 20L);
+        //usedItem.getItemMeta().setCustomModelData(usedItem.getItemMeta().getCustomModelData() + 1);
+
+
     }
 }

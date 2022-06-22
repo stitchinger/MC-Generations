@@ -149,6 +149,12 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if ("sword".equals(args[0])) {
+            player.getInventory().addItem(ItemManager.createSacrificialSword());
+
+            return true;
+        }
+
         if ("spawn".equals(args[0])) {
             Location rotationCenter = McgConfig.getSpawnRotationCenter();
             double rotationRadius = McgConfig.getSpawnRotationRadius();
