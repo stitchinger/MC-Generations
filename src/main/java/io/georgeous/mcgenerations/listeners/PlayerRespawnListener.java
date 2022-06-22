@@ -37,6 +37,8 @@ public class PlayerRespawnListener implements Listener {
 
         setupPlayerForCouncil(player);
         respawnToCouncil(event);
+        //event.setRespawnLocation(player.getLocation());
+        //player.setGameMode(GameMode.SPECTATOR);
     }
 
     private void respawnToCouncil(PlayerRespawnEvent event){
