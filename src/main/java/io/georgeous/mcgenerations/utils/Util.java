@@ -43,29 +43,12 @@ public class Util {
         return new Random().nextInt(length);
     }
 
-    public static ItemStack findInInventory(String name, PlayerInventory inventory) {
-        ItemStack[] stack = inventory.getContents();
-
-        for (ItemStack item : stack) {
-            if (item != null) {
-                ItemMeta meta = item.getItemMeta();
-                if (meta != null && meta.getDisplayName().contains(name)) {
-                    return item;
-                }
-            }
-        }
-        return null;
-    }
-
     public static ItemStack findInInventory(ItemStack searchItem, PlayerInventory inventory) {
         ItemStack[] stack = inventory.getContents();
 
         for (ItemStack item : stack) {
-            if (item != null) {
-                if (item.getType() == searchItem.getType()) {
-                    return item;
-                }
-            }
+            if(searchItem.isSimilar(item))
+                return item;
         }
         return null;
     }
@@ -109,15 +92,4 @@ public class Util {
         }
     }
 
-    public static void setItemsDamage(ItemStack item, float damage) {
-        if (item != null) {
-            ItemMeta meta = item.getItemMeta();
-            if (meta != null) {
-                if (meta instanceof Damageable) {
-                    ((Damageable) meta).setDamage((int) damage);
-                    item.setItemMeta(meta);
-                }
-            }
-        }
-    }
 }
