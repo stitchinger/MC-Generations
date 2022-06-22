@@ -36,7 +36,7 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
             player.sendMessage("§f ► Aging");
             player.sendMessage("§f ► Spawning");
             player.sendMessage("§f ► Baby");
-            player.sendMessage("§f ► Mother");
+            player.sendMessage("§f ► Parenting");
             player.sendMessage("§f ► Family");
             player.sendMessage("§f ► Chat");
             player.sendMessage("§f ► Skin");
@@ -71,7 +71,7 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
                 player.sendMessage("");
                 printHeading(player, "SPAWNING");
                 player.sendMessage(" Players usually should spawn as a §cbaby§r to another random player.");
-                player.sendMessage(" If there are no viable mothers, a player will spawn as an §cEve§r in the wilderness.");
+                player.sendMessage(" If there are no viable parents, a player will spawn as an §cEve§r in the wilderness.");
                 player.sendMessage(" Eves are §c10§r years old. They are the first in their lineage and can therefore chose their families name.");
                 player.sendMessage("");
                 break;
@@ -84,12 +84,12 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
                 player.sendMessage("");
                 break;
 
-            case "mother":
+            case "parenting":
                 player.sendMessage("");
-                printHeading(player, "MOTHER");
-                player.sendMessage(" Players can be chosen as mothers, if they are §c16-40§r years old.");
+                printHeading(player, "PARENTING");
+                player.sendMessage(" Players can be chosen as parents, if they are §c16-40§r years old.");
                 player.sendMessage(" There is a §ccooldown§r after having a baby.");
-                player.sendMessage(" Mothers can feed their babies by right-clicking with the §aBaby-Handler§r");
+                player.sendMessage(" Parents can feed their babies by right-clicking with the §aBaby-Handler§r");
                 player.sendMessage("");
                 break;
 

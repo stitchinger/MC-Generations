@@ -256,7 +256,7 @@ public class SpawnManager {
 
     public static PlayerRole findViableMother(Player child) {
         List<PlayerRole> viableMothers = new ArrayList<>();
-        Logger.log("Looking for mother");
+        Logger.log("Looking for parent player");
         // find viable Mothers on Server
         for (Player player : Bukkit.getOnlinePlayers()) {
             PlayerRole playerRole = RoleManager.get().get(player);
