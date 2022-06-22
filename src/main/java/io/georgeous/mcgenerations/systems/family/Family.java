@@ -26,6 +26,7 @@ public class Family {
     private int maxGenerations;
     private final List<PlayerRole> members;
     private PlayerRole leader;
+    private List<Player> babyQueue = new ArrayList<>();
 
     public Family(String name) {
         this(name, UUID.randomUUID().toString());
@@ -151,6 +152,10 @@ public class Family {
     public void setMaxGenerations(int gen){
         maxGenerations = Math.max(gen, maxGenerations);
         Top10.get().update(this);
+    }
+
+    public List<Player> getBabyQueue(){
+        return babyQueue;
     }
 
     public int getMaxGenerations(){

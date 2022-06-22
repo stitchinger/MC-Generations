@@ -2,6 +2,7 @@ package io.georgeous.mcgenerations.commands.admin;
 
 
 import io.georgeous.mcgenerations.MCG;
+import io.georgeous.mcgenerations.SpawnManager;
 import io.georgeous.mcgenerations.commands.CommandUtils;
 import io.georgeous.mcgenerations.files.McgConfig;
 
@@ -11,6 +12,8 @@ import io.georgeous.mcgenerations.systems.family.Top10;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 
+import io.georgeous.mcgenerations.systems.role.PlayerRole;
+import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.ItemManager;
 import io.georgeous.mcgenerations.utils.Logger;
 import io.georgeous.mcgenerations.utils.NameManager;
@@ -151,8 +154,18 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
 
         if ("sword".equals(args[0])) {
             player.getInventory().addItem(ItemManager.createSacrificialSword());
-
             return true;
+        }
+
+        if ("birthqueue".equals(args[0])) {
+            birthQueue(player);
+            return true;
+        }
+
+        if ("addqueue".equals(args[0])) {
+            PlayerRole role = RoleManager.get().get(player);
+            role.getFamily().getBabyQueue().add(player);
+            Notification.neutralMsg(player, role.getFamily().getBabyQueue().toString());
         }
 
         if ("spawn".equals(args[0])) {
@@ -173,6 +186,11 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
             Notification.neutralMsg(player, time +"");
             Notification.neutralMsg(player, radian +"");
             Notification.neutralMsg(player, "----------------------");
+        }
+
+        if ("invsee".equals(args[0])) {
+            player.openInventory(player.getInventory());
+
         }
 
         if ("top10".equals(args[0])) {
@@ -220,5 +238,19 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
     private void setDebug(Player player){
         PlayerWrapper playerWrapper = PlayerManager.get().getWrapper(player);
         setDebug(player, !playerWrapper.isDebugMode());
+    }
+
+    private void birthQueue(Player mother){
+        PlayerRole motherRole = RoleManager.get().get(mother);
+        if(motherRole == null) return;
+
+        Family family = motherRole.getFamily();
+        if(family == null) return;
+
+        if(family.getBabyQueue().size() == 0) return;
+
+        Player baby = family.getBabyQueue().get(0);
+        SpawnManager.spawnAsBaby(baby, motherRole);
+        family.getBabyQueue().remove(0);
     }
 }
