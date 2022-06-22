@@ -13,6 +13,7 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.haoshoku.nick.api.NickAPI;
+import xyz.haoshoku.nick.api.NickConfig;
 import xyz.haoshoku.nick.api.NickScoreboard;
 
 public class PlayerRole {
@@ -101,7 +102,7 @@ public class PlayerRole {
     }
 
     public void updateScoreboard() {
-        NickScoreboard.write(name, player.getUniqueId().toString().substring(0, 15), "", " " + getFamily().getColoredName(), true, ChatColor.WHITE);
+        NickScoreboard.write(name, player.getUniqueId().toString().substring(0, 15),  getFamily().getColoredName() + " ", "" , true, ChatColor.WHITE);
         NickScoreboard.updateScoreboard(name);
     }
 
