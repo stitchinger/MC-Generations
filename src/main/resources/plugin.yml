@@ -29,5 +29,6 @@ commands:
   realname:
   familyreborn:
   namepreference:
+  invsee:
 depend: [Piggyback, NickAPI, Petmanager, Spicyhearts]
 
