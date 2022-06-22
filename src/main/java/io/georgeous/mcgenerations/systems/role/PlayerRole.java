@@ -65,15 +65,6 @@ public class PlayerRole {
         }
     }
 
-    public void rename(String name) {
-        if (isRenamed) {
-            System.out.println("Role already named by mother");
-            return;
-        }
-        setName(name);
-        isRenamed = true;
-    }
-
     public boolean isRenamed() {
         return isRenamed;
     }
