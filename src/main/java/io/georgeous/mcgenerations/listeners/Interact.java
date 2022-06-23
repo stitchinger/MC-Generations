@@ -240,6 +240,8 @@ public class Interact implements Listener {
         LivingEntity entity = event.getEntity();
         Player player = entity.getKiller();
 
+        if(entity.getType() != EntityType.ZOMBIE && entity.getType() != EntityType.ZOMBIE_VILLAGER && entity.getType() != EntityType.HUSK && entity.getType() != EntityType.SKELETON && entity.getType() != EntityType.DROWNED && entity.getType() != EntityType.ZOMBIFIED_PIGLIN && entity.getType() != EntityType.SKELETON_HORSE ) return;
+
         if(player == null)
             return;
 
@@ -281,8 +283,5 @@ public class Interact implements Listener {
                 player.getWorld().spawnParticle(Particle.SOUL, entity.getLocation().clone().add(0,1,0), 10, 0.5, 1, 0.5,0);
             }
         }.runTaskLater(MCG.getInstance(), 20L);
-        //usedItem.getItemMeta().setCustomModelData(usedItem.getItemMeta().getCustomModelData() + 1);
-
-
     }
 }
