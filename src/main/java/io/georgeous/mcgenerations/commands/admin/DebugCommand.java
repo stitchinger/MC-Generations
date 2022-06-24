@@ -148,7 +148,6 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
 
         if ("egg".equals(args[0])) {
             player.getInventory().addItem(ItemManager.createCloneEgg());
-
             return true;
         }
 
@@ -186,11 +185,6 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
             Notification.neutralMsg(player, time +"");
             Notification.neutralMsg(player, radian +"");
             Notification.neutralMsg(player, "----------------------");
-        }
-
-        if ("invsee".equals(args[0])) {
-            player.openInventory(player.getInventory());
-
         }
 
         if ("top10".equals(args[0])) {

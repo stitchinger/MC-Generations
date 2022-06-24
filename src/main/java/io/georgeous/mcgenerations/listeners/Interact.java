@@ -235,7 +235,7 @@ public class Interact implements Listener {
     @EventHandler
     public void onSacrificialSwordAttack(EntityDeathEvent event){
 
-        int threshold = 2;
+        int threshold = 10;
 
         LivingEntity entity = event.getEntity();
         Player player = entity.getKiller();
@@ -266,7 +266,7 @@ public class Interact implements Listener {
         meta.setCustomModelData(newModelData);
 
         if(newModelData >= threshold){
-            meta.setDisplayName("Sacrifial Dagger ");
+            meta.setDisplayName("Sacrificial Dagger");
             meta.addEnchant(Enchantment.ARROW_FIRE, 1, false);
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             player.getWorld().playSound(player.getLocation(), Sound.BLOCK_RESPAWN_ANCHOR_CHARGE, 1, 1);

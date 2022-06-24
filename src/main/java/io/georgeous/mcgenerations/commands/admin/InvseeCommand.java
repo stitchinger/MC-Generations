@@ -58,7 +58,6 @@ public class InvseeCommand implements CommandExecutor, TabCompleter {
         if(target == null)
             return true;
 
-
         player.openInventory(target.getInventory());
 
         return false;
