@@ -126,18 +126,6 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if ("item".equals(args[0])) {
-            ItemStack item = new ItemStack(Material.SHULKER_SHELL);
-            ItemMeta meta = item.getItemMeta();
-            meta.setCustomModelData(1);
-            meta.setDisplayName(ChatColor.RESET + "Diamond Dust");
-            item.setItemMeta(meta);
-
-            player.getInventory().addItem(item);
-
-            return true;
-        }
-
         if ("show".equals(args[0])) {
             Bukkit.getOnlinePlayers().forEach(p -> {
                 p.showPlayer(MCG.getInstance(), player);
