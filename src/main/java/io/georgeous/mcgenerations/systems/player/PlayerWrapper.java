@@ -1,5 +1,6 @@
 package io.georgeous.mcgenerations.systems.player;
 
+import io.georgeous.mcgenerations.systems.family.Family;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -13,6 +14,7 @@ public class PlayerWrapper {
     private long timeOfJoin;
     private boolean debugMode = false;
     private boolean diedOfOldAge = false;
+    private Family lastFamily = null;
     private Location lastBedLocation = null;
     private boolean isSpawing = false;
     private GameMode lastGameMode = GameMode.SURVIVAL;
@@ -135,5 +137,13 @@ public class PlayerWrapper {
 
     public void setNamePreference(String newPref){
         this.namePreference = newPref;
+    }
+
+    public Family getLastFamily(){
+        return lastFamily;
+    }
+
+    public void setLastFamily(Family f){
+        lastFamily = f;
     }
 }

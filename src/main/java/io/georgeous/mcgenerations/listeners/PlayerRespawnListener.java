@@ -2,8 +2,12 @@ package io.georgeous.mcgenerations.listeners;
 
 import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.files.McgConfig;
+import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
+import io.georgeous.mcgenerations.systems.role.PlayerRole;
+import io.georgeous.mcgenerations.systems.role.RoleManager;
+import io.georgeous.mcgenerations.utils.Notification;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -60,8 +64,23 @@ public class PlayerRespawnListener implements Listener {
                 NickAPI.resetNick(player);
                 NickAPI.resetSkin(player);
                 NickAPI.refreshPlayer(player);
+
+                addToQueue(playerWrapper);
+
             }
         }.runTaskLater(MCG.getInstance(), 20L);
+    }
+
+    private void addToQueue(PlayerWrapper pw){
+
+        Family family = pw.getLastFamily();
+        if(family == null) return;
+
+        if(!pw.getDiedOfOldAge()) return;
+
+        family.getBabyQueue().add(pw.getPlayer());
+
+        Notification.neutralMsg(player, "You have been added to the birthing queue of the " + family.getName() + " family");
     }
 
     private void setupPlayerForCouncil(Player player){

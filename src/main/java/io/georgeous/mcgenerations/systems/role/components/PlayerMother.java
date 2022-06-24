@@ -1,10 +1,12 @@
 package io.georgeous.mcgenerations.systems.role.components;
 
+import io.georgeous.mcgenerations.SpawnManager;
 import io.georgeous.mcgenerations.files.McgConfig;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +52,20 @@ public class PlayerMother {
                 && notTooHungry
                 && isHealthy
                 && !playerInDebug;
+    }
+
+    public void update(){
+
+        if(playerRole.getFamily().getBabyQueue().size() == 0)
+            return;
+
+        if(!canHaveBaby())
+            return;
+
+        Player baby = playerRole.getFamily().getBabyQueue().get(0);
+        SpawnManager.spawnAsBaby(baby, playerRole);
+        playerRole.getFamily().getBabyQueue().remove(0);
+
     }
 
     private long secSinceLastBaby() {

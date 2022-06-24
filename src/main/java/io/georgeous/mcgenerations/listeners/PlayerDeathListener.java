@@ -3,6 +3,7 @@ package io.georgeous.mcgenerations.listeners;
 import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.files.McgConfig;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
+import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.BlockFacing;
@@ -96,8 +97,10 @@ public class PlayerDeathListener implements Listener {
         // Died of old Age?
         boolean diedOfOldAge = playerRole.getAgeManager().getAge() >= 60;
         if (diedOfOldAge) {
-            PlayerManager.get().getWrapper(player).setDiedOfOldAge(true);
-            PlayerManager.get().getWrapper(player).setLastBedLocation(player.getBedSpawnLocation());
+            PlayerWrapper p = PlayerManager.get().getWrapper(player);
+            p.setDiedOfOldAge(true);
+            p.setLastBedLocation(player.getBedSpawnLocation());
+            p.setLastFamily(playerRole.getFamily());
             msg = roleName + " died of old Age. RIP";
         }
 
