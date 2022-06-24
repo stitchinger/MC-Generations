@@ -7,6 +7,7 @@ import io.georgeous.mcgenerations.scoreboard.ScoreboardHandler;
 import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
+import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
 import io.georgeous.mcgenerations.utils.Logger;
 import io.georgeous.mcgenerations.utils.NameManager;
@@ -105,34 +106,23 @@ public class RoleManager {
             SpicyAPI.get().clearFoodList(player);
             player.setFoodLevel(20);
             player.setHealth(player.getMaxHealth());
+
+            PlayerWrapper pw = PlayerManager.get().getWrapper(player);
+            if(pw == null) return;
+            addToQueue(pw);
         }
+    }
 
-/*
-        //boolean validOfflineTime = PlayerManager.get().getWrapper(player).getLastOfflineTime() < (McgConfig.getValidOfflineTime() * 1000);
+    private void addToQueue(PlayerWrapper pw){
 
-        //boolean roleDead = false;
-        if(roleDataExists(player)){
-            //roleDead = MCG.getInstance().getConfig().getBoolean("data.player." + player.getUniqueId() + ".role.dead");
-        }
+        Family family = pw.getLastFamily();
+        if(family == null) return;
 
-        //if(!validOfflineTime){
-            //Notification.errorMsg(player, "Characters only can be restored within " + McgConfig.getValidOfflineTime() + " seconds of offline time.");
-        //}
+        if(!pw.getDiedOfOldAge()) return;
 
-        if (roleDataExists(player) && validOfflineTime && !roleDead) { // restore player
-            restoreRoleFromData(player);
-        } else {
+        family.getBabyQueue().add(pw.getPlayer());
 
-            player.teleport(MCG.council.getRandomCouncilSpawn());
-            // Reset Player
-            player.getInventory().clear();
-            player.setGameMode(GameMode.ADVENTURE);
-            player.getActivePotionEffects().forEach(potionEffect -> {
-                player.removePotionEffect(potionEffect.getType());
-            });
-        }
-*/
-
+        Notification.neutralMsg(pw.getPlayer(), "You have been added to the birthing queue of the " + family.getName() + " family");
     }
 
     public PlayerRole createAndAddRole(Player player, String name, int age, int gen, Family family) {

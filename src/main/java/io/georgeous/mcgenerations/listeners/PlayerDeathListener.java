@@ -27,10 +27,8 @@ public class PlayerDeathListener implements Listener {
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
 
-
         removeBabyHandlerFromDrops(event);
         removeStarterItemsFromDrops(event);
-
 
         PlayerRole role = RoleManager.get().get(player);
         if (role == null) {
@@ -50,9 +48,6 @@ public class PlayerDeathListener implements Listener {
         RoleManager.get().removeRoleOfPlayer(player);
     }
 
-
-
-
     private void rangedBroadcast(Player sender, String msg, double range) {
         for (Player receivingPlayer : Bukkit.getOnlinePlayers()) {
 
@@ -67,7 +62,6 @@ public class PlayerDeathListener implements Listener {
             receivingPlayer.sendMessage( msg);
         }
     }
-
 
     private String getRoleDeathMessage(PlayerDeathEvent event) {
         Player player = event.getEntity();
@@ -114,6 +108,7 @@ public class PlayerDeathListener implements Listener {
             return;
         }
 
+        // Create Grave
         if (!PlayerManager.get().getWrapper(player).isDebugMode() && playerRole.getAgeManager().getAge() >= 40) {
             createGrave(playerRole);
         }
@@ -137,14 +132,6 @@ public class PlayerDeathListener implements Listener {
         block.setType(randomSignType());
         rotateSign(block, role.getPlayer().getLocation());
         writeOnGrave((Sign) block.getState(), role);
-    }
-
-    public void removeBabyHandlerFromDrops(PlayerDeathEvent event) {
-        event.getDrops().stream().filter(ItemManager::isBabyHandler).toList().forEach(item -> item.setAmount(0));
-    }
-
-    public void removeStarterItemsFromDrops(PlayerDeathEvent event) {
-        event.getDrops().stream().filter(ItemManager::isStarterItem).toList().forEach(item -> item.setAmount(0));
     }
 
     private Material randomSignType(){
@@ -172,5 +159,13 @@ public class PlayerDeathListener implements Listener {
         sign.setLine(2, (MCG.serverYear - role.getAgeManager().getAge()) + " - " + MCG.serverYear);
         sign.setLine(3, "R.I.P.  " + randomGraveSymbol());
         sign.update();
+    }
+
+    private void removeBabyHandlerFromDrops(PlayerDeathEvent event) {
+        event.getDrops().stream().filter(ItemManager::isBabyHandler).toList().forEach(item -> item.setAmount(0));
+    }
+
+    private void removeStarterItemsFromDrops(PlayerDeathEvent event) {
+        event.getDrops().stream().filter(ItemManager::isStarterItem).toList().forEach(item -> item.setAmount(0));
     }
 }

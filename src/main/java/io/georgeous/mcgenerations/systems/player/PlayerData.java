@@ -1,6 +1,9 @@
 package io.georgeous.mcgenerations.systems.player;
 
 import io.georgeous.mcgenerations.MCG;
+import io.georgeous.mcgenerations.systems.family.Family;
+import io.georgeous.mcgenerations.systems.family.FamilyManager;
+import io.georgeous.mcgenerations.utils.Logger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -37,6 +40,8 @@ public class PlayerData {
         cs.set("rules_read", playerWrapper.getRulesRead());
         cs.set("rules_accepted", playerWrapper.getRulesAccepted());
         cs.set("name_preference", playerWrapper.getNamePreference());
+        cs.set("last_family", playerWrapper.getLastFamily().getUuid());
+        cs.set("old_age", playerWrapper.getDiedOfOldAge());
 
         plugin.saveConfig();
     }
@@ -60,6 +65,19 @@ public class PlayerData {
         playerWrapper.setRulesRead(cs.getBoolean("rules_read", false));
         playerWrapper.setRulesAccepted(cs.getBoolean("rules_accepted", false));
         playerWrapper.setNamePreference(cs.getString("name_preference", "random"));
+
+        playerWrapper.setDiedOfOldAge(cs.getBoolean("old_age", false));
+
+        Family f = FamilyManager.getFamily(cs.getString("last_family", "empty"));
+
+        if(f != null){
+            playerWrapper.setLastFamily(f);
+            Logger.log(f.getName() + "  dkljgaklöhjfdklöajfkldajfkdsl");
+        } else{
+            playerWrapper.setLastFamily(null);
+        }
+
+        Logger.log(playerWrapper.getDiedOfOldAge() + " OLD AGE?");
 
     }
 

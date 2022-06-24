@@ -1,6 +1,8 @@
 package io.georgeous.mcgenerations.systems.role.components;
 
+import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.SpawnManager;
+import io.georgeous.mcgenerations.SpawnTask;
 import io.georgeous.mcgenerations.files.McgConfig;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
@@ -44,7 +46,7 @@ public class PlayerMother {
         boolean playerInDebug = PlayerManager.get().getWrapper(playerRole.getPlayer()).isDebugMode();
         boolean notTooHungry = playerRole.getPlayer().getFoodLevel() >= 10;
         boolean isHealthy = playerRole.getPlayer().getHealth() >= 4;
-        return playerRole.getAgeManager().getAge() > McgConfig.getMinBirthAge()
+        return playerRole.getAgeManager().getAge() >= McgConfig.getMinBirthAge()
                 && playerRole.getAgeManager().getAge() < McgConfig.getMaxBirthAge()
                 && secSinceLastBaby() > McgConfig.getBabyCooldown()
                 && playerRole.getPlayer().getHealth() > 0
@@ -63,9 +65,11 @@ public class PlayerMother {
             return;
 
         Player baby = playerRole.getFamily().getBabyQueue().get(0);
-        SpawnManager.spawnAsBaby(baby, playerRole);
-        playerRole.getFamily().getBabyQueue().remove(0);
+        //SpawnManager.spawnAsBaby(baby, playerRole);
 
+        SpawnManager.startSpawning(baby, playerRole);
+
+        playerRole.getFamily().getBabyQueue().remove(0);
     }
 
     private long secSinceLastBaby() {

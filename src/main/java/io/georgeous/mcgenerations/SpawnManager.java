@@ -45,25 +45,24 @@ public class SpawnManager {
 
 
     public void spawnPlayer(Player spawnedPlayer) {
-        PotionEffect hover = new PotionEffect(PotionEffectType.LEVITATION, 200, 1, false, false, false);
-        spawnedPlayer.addPotionEffect(hover);
         PlayerWrapper spawnedPlayerWrapper = PlayerManager.get().getWrapper(spawnedPlayer);
         if(spawnedPlayerWrapper.getIsSpawning()){
             return;
         }
-        Notification.neutralMsg(spawnedPlayer, "You will be reborn in " + McgConfig.getSecInLobby() + " seconds");
+        PlayerRole chosenMotherRole = findViableMother(spawnedPlayer);
+        startSpawning(spawnedPlayer, chosenMotherRole);
+    }
+
+    public static void startSpawning(Player spawnedPlayer, PlayerRole chosenMotherRole){
+        PlayerWrapper spawnedPlayerWrapper = PlayerManager.get().getWrapper(spawnedPlayer);
+
 
         spawnedPlayerWrapper.setIsSpawning(true);
 
-        // Effects
-        spawnedPlayer.getWorld().playSound(spawnedPlayer.getLocation(), Sound.BLOCK_BEACON_POWER_SELECT, SoundCategory.MASTER,1.5f,1f);
-        spawnedPlayer.getWorld().spawnParticle(Particle.END_ROD, spawnedPlayer.getLocation().add(0,1,0), 60, 0.01, 0.05, 0.01);
-
+        startSpawningFeedback(spawnedPlayer);
 
         NickAPI.refreshPlayer(spawnedPlayer);
 
-
-        PlayerRole chosenMotherRole = findViableMother(spawnedPlayer);
         boolean playerToSpawnInDebugMode = PlayerManager.get().getWrapper(spawnedPlayer).isDebugMode();
 
         // Mother gets notified of birth
@@ -74,55 +73,21 @@ public class SpawnManager {
 
         SpawnTask spawnTask = new SpawnTask(spawnedPlayer, chosenMotherRole);
         spawnTask.runTaskLater(MCG.getInstance(), 20L * McgConfig.getSecInLobby());
-
     }
 
-    private class SpawnTask extends BukkitRunnable{
+    private static void startSpawningFeedback(Player spawnedPlayer){
+        //Levitation
+        PotionEffect hover = new PotionEffect(PotionEffectType.LEVITATION, 200, 1, false, false, false);
+        spawnedPlayer.addPotionEffect(hover);
 
-        Player spawnedPlayer;
-        PlayerWrapper spawnedPlayerWrapper;
-        boolean playerToSpawnInDebugMode;
-        PlayerRole chosenMotherRole;
+        // Effects
+        spawnedPlayer.getWorld().playSound(spawnedPlayer.getLocation(), Sound.BLOCK_BEACON_POWER_SELECT, SoundCategory.MASTER,1.5f,1f);
+        spawnedPlayer.getWorld().spawnParticle(Particle.END_ROD, spawnedPlayer.getLocation().add(0,1,0), 60, 0.01, 0.05, 0.01);
 
-        public SpawnTask(Player player, PlayerRole chosenMotherRole){
-            this.spawnedPlayer = player;
-            this.spawnedPlayerWrapper = PlayerManager.get().getWrapper(player);
-            this.playerToSpawnInDebugMode = spawnedPlayerWrapper.isDebugMode();
-            this.chosenMotherRole = chosenMotherRole;
-
-        }
-
-        @Override
-        public void run() {
-
-            boolean motherStillValid =
-                    chosenMotherRole != null
-                            && !chosenMotherRole.isDead
-                            && chosenMotherRole.getPlayer().isOnline();
-
-            if (motherStillValid && !playerToSpawnInDebugMode) {
-                if(!spawnedPlayer.isOnline()){
-                    Notification.neutralMsg(chosenMotherRole.getPlayer(), "The baby didn't make it. Sorry");
-                    chosenMotherRole.getMotherController().setReservedForBaby(false);
-                    return;
-                }
-                spawnAsBaby(spawnedPlayer, chosenMotherRole);
-            } else {
-                spawnAsEve(spawnedPlayer);
-            }
-            resetPlayerOnLifeStart(spawnedPlayerWrapper);
-            ScoreboardHandler.get().refreshScoreboardOfPlayer(spawnedPlayer);
-
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    Notification.neutralMsg(spawnedPlayer, "Use [ §d/howto§r ] command to learn how to play.");
-                }
-            }.runTaskLater(MCG.getInstance(), 20L * timeToHowtoNotification);
-        }
+        Notification.neutralMsg(spawnedPlayer, "You will be reborn in " + McgConfig.getSecInLobby() + " seconds");
     }
 
-    private static void resetPlayerOnLifeStart(PlayerWrapper wrapper){
+    public static void resetPlayerOnLifeStart(PlayerWrapper wrapper){
         // Reset Player
         wrapper.getPlayer().removePotionEffect(PotionEffectType.LEVITATION);
         wrapper.setIsSpawning(false);

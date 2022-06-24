@@ -32,6 +32,7 @@ public class PlayerQuitListener implements Listener {
     private void dealWithWrapper(Player player){
         PlayerWrapper wrapper = playerManager.getWrapper(player);
         if(wrapper != null){
+            wrapper.getLastFamily().getBabyQueue().remove(wrapper.getPlayer());
             playerManager.saveAndRemoveWrapper(player);
         }
     }
