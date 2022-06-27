@@ -136,6 +136,11 @@ public class AdoptionManager {
             return false;
         }
 
+        if(request.adopter.getUsedAdopt()){
+            Notification.errorMsg(player, request.adopter.getName() + " " + request.adopter.getFamily().getColoredName() + " already adopted someone else");
+            return false;
+        }
+
         return true;
     }
 }

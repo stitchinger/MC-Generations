@@ -60,6 +60,7 @@ public class AdoptionRequest {
         adoptee.updateScoreboard();
 
         adoptee.getPlayer().teleport(adopter.getPlayer().getLocation());
+        adoptee.setUsedAdopt(true);
         Notification.successMsg(adopter.getPlayer(), "You adopted " + adoptee.getName() + ".");
         Notification.successMsg(adoptee.getPlayer(), "You are now a member of the " + adopter.getFamily().getColoredName() + " family");
     }
