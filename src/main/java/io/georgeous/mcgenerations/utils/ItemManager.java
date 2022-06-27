@@ -14,7 +14,7 @@ import java.util.Random;
 public class ItemManager {
 
     public static ItemStack createBabyHandler() {
-        ItemStack item = new ItemStack(Material.SHULKER_SHELL);
+        ItemStack item = new ItemStack(Material.STICK);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Baby-Handler");
@@ -32,7 +32,7 @@ public class ItemManager {
     }
 
     public static ItemStack createCloneEgg() {
-        ItemStack item = new ItemStack(Material.SHULKER_SHELL);
+        ItemStack item = new ItemStack(Material.STICK);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Clone Egg");
