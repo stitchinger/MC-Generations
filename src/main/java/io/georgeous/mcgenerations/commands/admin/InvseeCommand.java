@@ -39,13 +39,17 @@ public class InvseeCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if (!player.isOp()) {
+            Notification.onlyForOp(player);
+            return true;
+        }
+
         if (args.length > 2 || args.length == 0) {
             Notification.errorMsg(player, "Usage: /report <Name> <Reason>");
             return true;
         }
 
         //String arg = args[0].toLowerCase();
-
 
         if (args.length != 1) {
             Notification.errorMsg(player, "Usage: /report <Name> <Reason>");
