@@ -96,21 +96,26 @@ public class RoleManager {
         } else if (roleDataExists(player)) { // restore player
             restoreRoleFromData(player);
         } else {
-            player.teleport(MCG.council.getRandomCouncilSpawn());
-            // Reset Player
-            player.getInventory().clear();
-            player.setGameMode(GameMode.ADVENTURE);
-            player.getActivePotionEffects().forEach(potionEffect -> {
-                player.removePotionEffect(potionEffect.getType());
-            });
-            SpicyAPI.get().clearFoodList(player);
-            player.setFoodLevel(20);
-            player.setHealth(player.getMaxHealth());
+
+            resetToCouncil(player);
 
             PlayerWrapper pw = PlayerManager.get().getWrapper(player);
-            if(pw == null) return;
-            addToQueue(pw);
+            if(pw != null)
+                addToQueue(pw);
         }
+    }
+
+    private void resetToCouncil(Player player){
+        player.teleport(MCG.council.getRandomCouncilSpawn());
+        // Reset Player
+        player.getInventory().clear();
+        player.setGameMode(GameMode.ADVENTURE);
+        player.getActivePotionEffects().forEach(potionEffect -> {
+            player.removePotionEffect(potionEffect.getType());
+        });
+        SpicyAPI.get().clearFoodList(player);
+        player.setFoodLevel(20);
+        player.setHealth(player.getMaxHealth());
     }
 
     private void addToQueue(PlayerWrapper pw){
