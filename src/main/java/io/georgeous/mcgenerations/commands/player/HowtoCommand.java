@@ -176,7 +176,7 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
                 l.add("spawning");
                 l.add("aging");
                 l.add("baby");
-                l.add("mother");
+                l.add("parenting");
                 l.add("family");
                 l.add("hearts");
                 l.add("chat");
