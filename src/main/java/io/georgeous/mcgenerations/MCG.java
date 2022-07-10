@@ -169,6 +169,8 @@ public final class MCG extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerCarry(), this);
         getServer().getPluginManager().registerEvents(new PlayerPhaseUp(), this);
         getServer().getPluginManager().registerEvents(new CreatureSpawnListener(), this);
+
+        getServer().getPluginManager().registerEvents(new CustomItemsListener(), this);
     }
 
     public void registerCommands() {
