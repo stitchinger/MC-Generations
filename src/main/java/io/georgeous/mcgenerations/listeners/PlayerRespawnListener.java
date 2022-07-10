@@ -65,7 +65,7 @@ public class PlayerRespawnListener implements Listener {
                 NickAPI.resetSkin(player);
                 NickAPI.refreshPlayer(player);
 
-                addToQueue(playerWrapper);
+                //addToQueue(playerWrapper);
 
             }
         }.runTaskLater(MCG.getInstance(), 20L);

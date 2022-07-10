@@ -40,7 +40,12 @@ public class PlayerData {
         cs.set("rules_read", playerWrapper.getRulesRead());
         cs.set("rules_accepted", playerWrapper.getRulesAccepted());
         cs.set("name_preference", playerWrapper.getNamePreference());
-        cs.set("last_family", playerWrapper.getLastFamily().getUuid());
+        if(playerWrapper.getLastFamily() != null){
+            cs.set("last_family", playerWrapper.getLastFamily().getUuid());
+        }else{
+            cs.set("last_family", "");
+        }
+
         cs.set("old_age", playerWrapper.getDiedOfOldAge());
 
         plugin.saveConfig();

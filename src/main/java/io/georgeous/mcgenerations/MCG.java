@@ -19,18 +19,14 @@ import org.bukkit.*;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.FishHook;
+
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Sheep;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 
-import java.io.File;
+
+
 import java.util.logging.Level;
 
 public final class MCG extends JavaPlugin {
@@ -67,6 +63,8 @@ public final class MCG extends JavaPlugin {
         }
 
          */
+
+
 
         fileManager = new FileManager(this.getDataFolder().getPath());
         McgConfig.setup(this.getDataFolder().getPath());
@@ -108,6 +106,18 @@ public final class MCG extends JavaPlugin {
         serverYear = getConfig().getInt("data.server.year");
 
         saveConfig();
+
+
+
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "gamerule doFireTick false");
+                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "gamerule announceAdvancements false");
+                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "gamerule playersSleepingPercentage 0");
+                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "gamerule doImmediateRespawn true");
+            }
+        }.runTaskLater(this, 20L * 2);
 
     }
 
