@@ -213,4 +213,21 @@ public class Interact implements Listener {
         }
     }
 
+    @EventHandler
+    public void onBabyHandlerItemFrame(PlayerInteractEntityEvent event){
+        Player player = event.getPlayer();
+        ItemStack usedItem;
+
+        usedItem = player.getInventory().getItemInMainHand();
+
+        if(usedItem.getType().equals(Material.AIR)){
+            usedItem = player.getInventory().getItemInOffHand();
+        }
+
+        if(ItemManager.isBabyHandler(usedItem)){
+            event.setCancelled(true);
+            Notification.errorMsg(player, "You cant put the Baby-Handler in an Item Frame");
+        }
+    }
+
 }
