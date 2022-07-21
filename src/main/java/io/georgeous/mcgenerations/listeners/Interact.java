@@ -164,6 +164,8 @@ public class Interact implements Listener {
 
     @EventHandler
     public void onSurrogateMount(EntityMountEvent event){
+        // If player with surro mounts entity, add surro as passenger
+        // Avoiding surro to hover
         if(!(event.getEntity() instanceof Player player)){
             return;
         }
@@ -175,6 +177,7 @@ public class Interact implements Listener {
 
         event.getMount().addPassenger(surro.getEntity());
         surro.getEntity().addScoreboardTag("riding");
+        Logger.log("testing 124");
     }
 
     @EventHandler
@@ -188,6 +191,7 @@ public class Interact implements Listener {
 
         event.getEntity().removeScoreboardTag("riding");
     }
+
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event){
@@ -228,6 +232,35 @@ public class Interact implements Listener {
             event.setCancelled(true);
             Notification.errorMsg(player, "You cant put the Baby-Handler in an Item Frame");
         }
+    }
+
+    @EventHandler
+    public void disableBabyBoat(PlayerInteractEntityEvent event){
+        Player player = event.getPlayer();
+
+
+        PlayerRole role = RoleManager.get().get(player);
+
+        if(role == null)
+            return;
+
+
+
+        if(role.getPhaseManager().getCurrentPhase().getId() > 1)
+            return;
+
+
+
+        if(!event.getRightClicked().getType().equals(EntityType.BOAT) &&
+                !event.getRightClicked().getType().equals(EntityType.MINECART) &&
+                !event.getRightClicked().getType().equals(EntityType.MULE) &&
+                !event.getRightClicked().getType().equals(EntityType.DONKEY) &&
+                !event.getRightClicked().getType().equals(EntityType.HORSE))
+            return;
+
+
+        event.setCancelled(true);
+        Notification.errorMsg(player, "You are too young to do this");
     }
 
 }
