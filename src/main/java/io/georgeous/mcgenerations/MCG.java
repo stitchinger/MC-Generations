@@ -197,6 +197,7 @@ public final class MCG extends JavaPlugin {
         registerCommand("familyreborn", new FamilyRebornCommand());
         registerCommand("namepreference", new NamePreferenceCommand());
         registerCommand("invsee", new InvseeCommand());
+        registerCommand("renameitem", new RenameItemCommand());
 
         registerCommand("msg", new CommandDeactivator());
         registerCommand("minecraft:me", new CommandDeactivator());

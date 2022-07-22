@@ -144,6 +144,8 @@ public class HowtoCommand implements CommandExecutor, TabCompleter {
                 player.sendMessage("   Invite other player into your family");
                 player.sendMessage("► §d[/die]§r");
                 player.sendMessage("   If there are no other options.. Abuse not allowed!");
+                player.sendMessage("► §d[/renameitem]§r");
+                player.sendMessage("   Rename equipment items");
                 player.sendMessage("► §d[/namepreference]§r");
                 player.sendMessage("   Get male or female names");
                 player.sendMessage("► §d[/report]§r");

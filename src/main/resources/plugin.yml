@@ -30,5 +30,6 @@ commands:
   familyreborn:
   namepreference:
   invsee:
+  renameitem:
 depend: [Piggyback, NickAPI, Petmanager, Spicyhearts]
 
