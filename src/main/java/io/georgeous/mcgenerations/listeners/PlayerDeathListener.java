@@ -9,6 +9,7 @@ import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.utils.BlockFacing;
 import io.georgeous.mcgenerations.utils.ItemManager;
 import io.georgeous.mcgenerations.utils.Logger;
+import io.georgeous.mcgenerations.utils.Util;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -18,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.inventory.ItemStack;
 
 
 public class PlayerDeathListener implements Listener {
@@ -96,9 +98,22 @@ public class PlayerDeathListener implements Listener {
             p.setLastBedLocation(player.getBedSpawnLocation());
             p.setLastFamily(playerRole.getFamily());
             msg = roleName + " died of old Age. RIP";
+           oldPeopleLoot(event);
         }
 
         return msg;
+    }
+
+    private void oldPeopleLoot(PlayerDeathEvent event){
+        ItemStack[] loots = {
+                new ItemStack(Material.DIAMOND, 1),
+                new ItemStack(Material.DIAMOND, 2),
+                new ItemStack(Material.DIAMOND, 3),
+                new ItemStack(Material.GOLD_INGOT, 5),
+                new ItemStack(Material.IRON_INGOT, 5)
+        };
+        int rand = Util.getRandomInt(loots.length);
+        event.getDrops().add(loots[rand]);
     }
 
     private void dealWithRoleDeath(PlayerDeathEvent event) {
