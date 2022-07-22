@@ -1,6 +1,5 @@
 package io.georgeous.mcgenerations.listeners;
 
-import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.family.FriendlyTalk;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
@@ -10,7 +9,6 @@ import io.georgeous.mcgenerations.systems.surrogate.SurrogateEntity;
 import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
 import io.georgeous.mcgenerations.utils.*;
 import org.bukkit.*;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,68 +16,17 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.spigotmc.event.entity.EntityDismountEvent;
 import org.spigotmc.event.entity.EntityMountEvent;
 
 public class Interact implements Listener {
 
-    @EventHandler
-    public void onBabyFeed(PlayerInteractEntityEvent event) {
-        Player player = event.getPlayer();
-        Entity target = event.getRightClicked();
-        ItemStack usedItem = player.getInventory().getItemInMainHand();
-
-        if (target instanceof Player && ItemManager.isBabyHandler(usedItem)) {
-            feedBaby(player, (Player) target);
-        }
-    }
-
-    public void feedBaby(Player feeder, Player baby) {
-        PlayerRole babyRole = RoleManager.get().get(baby);
-        if (babyRole == null || (baby.getFoodLevel() >= 20 && feeder.getFoodLevel() > 0) || !babyRole.getPhaseManager().getCurrentPhase().isFeedable())
-            return;
-
-        if (baby.getFoodLevel() >= 18){
-            Logger.log("baby full");
-            babyFullEffect(baby.getLocation());
-            return;
-        }
-
-        float refillValue = 6f;
-        float costFactor = 0.5f;
-
-        float foodToFill = Math.min(20 - baby.getFoodLevel(), refillValue);
-        float cost = Math.max((foodToFill * costFactor),1);
-
-        feeder.setFoodLevel(Math.max(feeder.getFoodLevel() - (int)cost, 0));
-        int newFoodLevel = Math.min(baby.getFoodLevel() + (int)foodToFill, 20);
-        baby.setFoodLevel(newFoodLevel);
-
-        babyFeedEffect(babyRole.getPlayer());
-    }
-
-    public void babyFeedEffect(Player player) {
-        Location location = player.getLocation();
-        World world = location.getWorld();
-        if (world != null) {
-            world.spawnParticle(Particle.COMPOSTER, location, 40, 0.5, 0.5, 0.5);
-            world.playSound(location, Sound.ENTITY_GENERIC_DRINK, 1, 1);
-        }
-    }
-
-    public void babyFullEffect(Location location) {
-        World world = location.getWorld();
-        if (world != null) {
-            world.playSound(location, Sound.ENTITY_VILLAGER_NO, 1, 2);
-        }
-    }
+    /*
+    FRIENDLY FIRE
+     */
 
     @EventHandler
     public void disableFriendlyFire(EntityDamageByEntityEvent event) {
@@ -127,8 +74,7 @@ public class Interact implements Listener {
         }
     }
 
-
-    public void friendlyFamilyTalk(PlayerRole damager, PlayerRole receiver) {
+    private void friendlyFamilyTalk(PlayerRole damager, PlayerRole receiver) {
         Player pd = damager.getPlayer();
         Player pr = receiver.getPlayer();
 
@@ -148,6 +94,10 @@ public class Interact implements Listener {
         }
     }
 
+    /*
+    Baby Handicaps
+     */
+
     @EventHandler
     public void disableBabyBlockPlacement(BlockPlaceEvent event) {
         Player player = event.getPlayer();
@@ -161,6 +111,45 @@ public class Interact implements Listener {
             event.setCancelled(true);
         }
     }
+
+    @EventHandler
+    public void disableBabyHarvest(BlockBreakEvent event){
+        Player player = event.getPlayer();
+        PlayerRole role = RoleManager.get().get(player);
+        if(role == null){
+            return;
+        }
+        if(role.getPhaseManager().getCurrentPhase().getId() != 0){
+            return;
+        }
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void disableBabyBoat(PlayerInteractEntityEvent event){
+        Player player = event.getPlayer();
+        PlayerRole role = RoleManager.get().get(player);
+
+        if(role == null)
+            return;
+
+        if(role.getPhaseManager().getCurrentPhase().getId() > 1)
+            return;
+
+        if(!event.getRightClicked().getType().equals(EntityType.BOAT) &&
+                !event.getRightClicked().getType().equals(EntityType.MINECART) &&
+                !event.getRightClicked().getType().equals(EntityType.MULE) &&
+                !event.getRightClicked().getType().equals(EntityType.DONKEY) &&
+                !event.getRightClicked().getType().equals(EntityType.HORSE))
+            return;
+
+        event.setCancelled(true);
+        Notification.errorMsg(player, "You are too young to do this");
+    }
+
+    /*
+    SURROGATE
+     */
 
     @EventHandler
     public void onSurrogateMount(EntityMountEvent event){
@@ -188,79 +177,18 @@ public class Interact implements Listener {
         if(!event.getEntity().getScoreboardTags().contains("riding"))
             return;
 
-
         event.getEntity().removeScoreboardTag("riding");
     }
 
-
-    @EventHandler
-    public void onBlockBreak(BlockBreakEvent event){
-
-        Player player = event.getPlayer();
-        PlayerRole role = RoleManager.get().get(player);
-
-        if(role == null){
-            return;
-        }
-
-        if(role.getPhaseManager().getCurrentPhase().getId() != 0){
-            return;
-        }
-
-        event.setCancelled(true);
-    }
+   /*
+    SIGNS
+     */
 
     @EventHandler
     public void onSignBadword(SignChangeEvent event){
         for(int i = 0; i < event.getLines().length; i++){
             event.setLine(i, BadWordFilter.getCensoredText(event.getLine(i)));
         }
-    }
-
-    @EventHandler
-    public void onBabyHandlerItemFrame(PlayerInteractEntityEvent event){
-        Player player = event.getPlayer();
-        ItemStack usedItem;
-
-        usedItem = player.getInventory().getItemInMainHand();
-
-        if(usedItem.getType().equals(Material.AIR)){
-            usedItem = player.getInventory().getItemInOffHand();
-        }
-
-        if(ItemManager.isBabyHandler(usedItem)){
-            event.setCancelled(true);
-            Notification.errorMsg(player, "You cant put the Baby-Handler in an Item Frame");
-        }
-    }
-
-    @EventHandler
-    public void disableBabyBoat(PlayerInteractEntityEvent event){
-        Player player = event.getPlayer();
-
-
-        PlayerRole role = RoleManager.get().get(player);
-
-        if(role == null)
-            return;
-
-
-
-        if(role.getPhaseManager().getCurrentPhase().getId() > 1)
-            return;
-
-
-
-        if(!event.getRightClicked().getType().equals(EntityType.BOAT) &&
-                !event.getRightClicked().getType().equals(EntityType.MINECART) &&
-                !event.getRightClicked().getType().equals(EntityType.MULE) &&
-                !event.getRightClicked().getType().equals(EntityType.DONKEY) &&
-                !event.getRightClicked().getType().equals(EntityType.HORSE))
-            return;
-
-
-        event.setCancelled(true);
-        Notification.errorMsg(player, "You are too young to do this");
     }
 
 }

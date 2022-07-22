@@ -164,6 +164,7 @@ public final class MCG extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new InventoryListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerMoveListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerCraftListener(), this);
+        getServer().getPluginManager().registerEvents(new BabyHandlerListener(), this);
 
         getServer().getPluginManager().registerEvents(new PlayerCarry(), this);
         getServer().getPluginManager().registerEvents(new PlayerPhaseUp(), this);
@@ -222,22 +223,7 @@ public final class MCG extends JavaPlugin {
 }
 
 /*
-Todo: Worldborder expands
-Todo: Claim land as family
-Todo: Website mysql stats
-Todo: Community competition
-Todo: /will <child's name> and it opens a chest which they can leave their items in and then when they die, the items go to the kid they named
-Todo: Rename Item command
-Todo: BAby autofeeder block
-Todo: Worldevents eg: Year 2000 apocalypse
-Todo: Skins for biomes
-Todo: Advancements: eg: Nether born
-Todo: Custom recipe eg: String from grass
-Todo: invulnarable during Phasechange
-Todo: Karma system (Change name color to red if karma -0)
-Todo: Curse Feature
-Todo: Spawn improvement
-Todo: Council countdown beeping
-Todo: Setup config file for ...
-Todo: Show baby cooldown in info command
+
+
+
  */
