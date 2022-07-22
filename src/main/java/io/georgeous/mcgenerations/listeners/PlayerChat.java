@@ -20,10 +20,13 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import javax.management.relation.Role;
+import java.util.HashMap;
 import java.util.Random;
+import java.util.UUID;
 
 public class PlayerChat implements Listener {
 
+    private static final HashMap<UUID, Long> aloneMsgCountdowns = new HashMap<>();
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
@@ -71,10 +74,17 @@ public class PlayerChat implements Listener {
 
         }
         if(!messageReceived){
+           sendAloneMsg(sender);
+        }
+    }
+
+    private void sendAloneMsg(Player player){
+        if(System.currentTimeMillis() > aloneMsgCountdowns.getOrDefault(player.getUniqueId(), 0L)){
+            aloneMsgCountdowns.put(player.getUniqueId(), System.currentTimeMillis() + 1000L * 120);
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    Notification.neutralMsg(sender, "Nobody heared you. Use §d[/howto chat]§f to learn more.");
+                    Notification.neutralMsg(player, "Nobody heared you. Use §d[/howto chat]§f to learn more.");
                 }
             }.runTaskLater(MCG.getInstance(), 20L * McgConfig.getChatAloneMsgTime());
         }
