@@ -1,32 +1,22 @@
 package io.georgeous.mcgenerations.systems.role;
 
 import io.georgeous.mcgenerations.MCG;
-import io.georgeous.mcgenerations.SpawnManager;
 import io.georgeous.mcgenerations.files.McgConfig;
 import io.georgeous.mcgenerations.scoreboard.ScoreboardHandler;
 import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
-import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
 import io.georgeous.mcgenerations.utils.Logger;
 import io.georgeous.mcgenerations.utils.NameManager;
 import io.georgeous.mcgenerations.utils.Notification;
 import io.georgeous.spicyhearts.SpicyAPI;
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import javax.management.relation.Role;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -39,7 +29,8 @@ public class RoleManager {
 
     private static RoleManager instance;
 
-    private RoleManager(){}
+    private RoleManager() {
+    }
 
     public static RoleManager get() {
         if (instance == null) {
@@ -48,7 +39,7 @@ public class RoleManager {
         return instance;
     }
 
-    public void enable(){
+    public void enable() {
         for (Player player : getServer().getOnlinePlayers()) {
             initPlayer(player);
         }
@@ -63,11 +54,10 @@ public class RoleManager {
         while (iterator.hasNext()) {
             PlayerRole role = iterator.next().getValue();
 
-            if(!role.isOffline()){
+            if (!role.isOffline()) {
                 role.update();
-            } else{
-                if(role.getLastSeenOnline() + 1000L * 60 < System.currentTimeMillis() ){
-
+            } else {
+                if (shouldDieOffline(role)) {
                     dropOfflineItems(role);
                     removeRoleData(role);
                     Logger.log(role.getName() + " died offline");
@@ -78,9 +68,13 @@ public class RoleManager {
         }
     }
 
-    private void dropOfflineItems(PlayerRole role){
+    private boolean shouldDieOffline(PlayerRole role) {
+        return role.getLastSeenOnline() + 1000L * McgConfig.getValidOfflineTime() < System.currentTimeMillis();
+    }
+
+    private void dropOfflineItems(PlayerRole role) {
         for (ItemStack content : role.getOfflineInventory().getContents()) {
-            if(content != null){
+            if (content != null) {
                 Logger.log("dropped Items");
                 role.getPlayer().getWorld().dropItemNaturally(role.getPlayer().getLocation(), content);
             }
@@ -99,7 +93,7 @@ public class RoleManager {
 
         PlayerRole role = get(player.getUniqueId());
 
-        if(role != null){
+        if (role != null) {
             role.setPlayer(player);
             role.setIsOffline(false);
             role.refreshNick();
@@ -110,12 +104,12 @@ public class RoleManager {
             resetToCouncil(player);
 
             PlayerWrapper pw = PlayerManager.get().getWrapper(player);
-            if(pw != null)
+            if (pw != null)
                 addToQueue(pw);
         }
     }
 
-    private void resetToCouncil(Player player){
+    private void resetToCouncil(Player player) {
         player.teleport(MCG.council.getRandomCouncilSpawn());
         // Reset Player
         player.getInventory().clear();
@@ -128,12 +122,12 @@ public class RoleManager {
         player.setHealth(player.getMaxHealth());
     }
 
-    private void addToQueue(PlayerWrapper pw){
+    private void addToQueue(PlayerWrapper pw) {
 
         Family family = pw.getLastFamily();
-        if(family == null) return;
+        if (family == null) return;
 
-        if(!pw.getDiedOfOldAge()) return;
+        if (!pw.getDiedOfOldAge()) return;
 
         family.getBabyQueue().add(pw.getPlayer());
 
