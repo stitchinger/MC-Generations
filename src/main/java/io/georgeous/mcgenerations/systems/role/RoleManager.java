@@ -20,9 +20,11 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import javax.management.relation.Role;
 import java.util.HashMap;
@@ -34,7 +36,6 @@ import static org.bukkit.Bukkit.getServer;
 
 public class RoleManager {
     private static final HashMap<UUID, PlayerRole> roles = new HashMap<>();
-
 
     private static RoleManager instance;
 
@@ -66,13 +67,22 @@ public class RoleManager {
                 role.update();
             } else{
                 if(role.getLastSeenOnline() + 1000L * 60 < System.currentTimeMillis() ){
+
+                    dropOfflineItems(role);
                     removeRoleData(role);
-                    Logger.log(role.getName() + " died offline");
                     Logger.log(role.getName() + " died offline");
                     role.die();
                     iterator.remove();
-
                 }
+            }
+        }
+    }
+
+    private void dropOfflineItems(PlayerRole role){
+        for (ItemStack content : role.getOfflineInventory().getContents()) {
+            if(content != null){
+                Logger.log("dropped Items");
+                role.getPlayer().getWorld().dropItemNaturally(role.getPlayer().getLocation(), content);
             }
         }
     }

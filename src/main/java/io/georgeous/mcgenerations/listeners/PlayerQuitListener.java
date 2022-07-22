@@ -6,12 +6,10 @@ import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
 import io.georgeous.mcgenerations.utils.Logger;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayerQuitListener implements Listener {
@@ -50,10 +48,9 @@ public class PlayerQuitListener implements Listener {
                 //removeFromFamily(role);
             }
 
-            //roleManager.removeRoleOfPlayer(player);
-
-            Logger.log(role.getName() + " went missing.");
+            role.setOfflineInventory(player.getInventory());
             role.setIsOffline(true);
+            Logger.log(role.getName() + " went missing.");
         }
     }
 

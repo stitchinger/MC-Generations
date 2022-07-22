@@ -28,6 +28,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
@@ -76,6 +77,17 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
 
         if ("refresh".equals(args[0])) {
             ScoreboardHandler.get().refreshScoreboardOfPlayer(player);
+            return true;
+        }
+
+        if ("drop".equals(args[0])) {
+            Inventory inv = player.getInventory();
+
+            for (ItemStack content : inv.getContents()) {
+                if(content != null){
+                    player.getWorld().dropItemNaturally(player.getLocation(), content);
+                }
+            }
             return true;
         }
 

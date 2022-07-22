@@ -11,6 +11,7 @@ import io.georgeous.mcgenerations.utils.NameManager;
 import io.georgeous.petmanager.PetManager;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.haoshoku.nick.api.NickAPI;
 import xyz.haoshoku.nick.api.NickConfig;
@@ -32,6 +33,7 @@ public class PlayerRole {
     private String name;
     private boolean isRenamed = false;
     private boolean usedAdopt = false;
+    private Inventory offlineInventory;
 
     public PlayerRole(Player player, String name, int age, int generation, Family family) {
         this.player = player;
@@ -199,5 +201,13 @@ public class PlayerRole {
 
     public void setMothersName(String name){
         mothersName = name;
+    }
+
+    public Inventory getOfflineInventory() {
+        return offlineInventory;
+    }
+
+    public void setOfflineInventory(Inventory offlineInventory) {
+        this.offlineInventory = offlineInventory;
     }
 }
