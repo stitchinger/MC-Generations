@@ -13,20 +13,23 @@ public class PlayerPhaseUp implements Listener {
 
     @EventHandler
     public void onPlayerPhaseUp(PlayerPhaseUpEvent event) {
-        String phaseName = event.getNewPhase().getName();
         int phaseId = event.getNewPhase().getId();
         Player player = event.getPlayer();
         ScoreboardHandler.get().refreshScoreboardOfPlayer(player);
-        if(phaseName.equalsIgnoreCase("baby")){
+
+        if (phaseId == 0) {
             player.getInventory().clear();
         }
-        if(phaseId >= 3 && phaseId < 5){
-            if(player.getInventory().firstEmpty() == -1){
-                Notification.errorMsg(player, "Inventory full! Use </babyhandler> to get a Baby-Handler");
-            } else{
-                Util.giveItemIfNotInInventory(ItemManager.createBabyHandler(),player.getInventory());
-            }
+        if (phaseId >= 3 && phaseId < 5) {
+            giveBabyHandler(player, phaseId);
+        }
+    }
 
+    private void giveBabyHandler(Player player, int phaseId) {
+        if (player.getInventory().firstEmpty() == -1) {
+            Notification.errorMsg(player, "Inventory full! Use </babyhandler> to get a Baby-Handler");
+        } else {
+            Util.giveItemIfNotInInventory(ItemManager.createBabyHandler(), player.getInventory());
         }
     }
 }

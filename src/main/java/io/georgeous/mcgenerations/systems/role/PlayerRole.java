@@ -34,6 +34,8 @@ public class PlayerRole {
     private boolean isRenamed = false;
     private boolean usedAdopt = false;
     private Inventory offlineInventory;
+    private String skinColor;
+    private String hairColor;
 
     public PlayerRole(Player player, String name, int age, int generation, Family family) {
         this.player = player;
@@ -209,5 +211,21 @@ public class PlayerRole {
 
     public void setOfflineInventory(Inventory offlineInventory) {
         this.offlineInventory = offlineInventory;
+    }
+
+    public String getSkinColor() {
+        return skinColor;
+    }
+
+    public void setSkinColor(String skinColor) {
+        this.skinColor = skinColor;
+    }
+
+    public String getHairColor() {
+        return hairColor;
+    }
+
+    public void setHairColor(String hairColor) {
+        this.hairColor = hairColor;
     }
 }

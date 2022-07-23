@@ -10,6 +10,7 @@ import io.georgeous.mcgenerations.utils.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import xyz.haoshoku.nick.api.NickScoreboard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,8 +99,18 @@ public class Family {
     }
 
     public void setLeader(PlayerRole leader) {
+        NickScoreboard.write(leader.getName(), leader.getPlayer().getUniqueId().toString().substring(0, 15),  getColoredName() + " ", "" , true, ChatColor.GOLD);
+        NickScoreboard.updateScoreboard(leader.getName());
         Notification.neutralMsg(leader.getPlayer(), "You are now leader of the family " + this.color + "" + name);
         this.leader = leader;
+    }
+
+    public void removeLeader(){
+        if(leader != null){
+            NickScoreboard.write(leader.getName(), leader.getPlayer().getUniqueId().toString().substring(0, 15),  getColoredName() + " ", "" , true, ChatColor.WHITE);
+            NickScoreboard.updateScoreboard(leader.getName());
+            Notification.neutralMsg(leader.getPlayer(), "You are no longer the leader of " + this.color + "" + name);
+        }
     }
 
     // Members
@@ -129,7 +140,17 @@ public class Family {
 
         if (members.size() == 0) {
             isDead = true;
+            return;
         }
+
+        if(getLeader() == role){
+            removeLeader();
+            // Elect new leader
+            PlayerRole newLeader = members.get(0);
+            setLeader(newLeader);
+        }
+
+
     }
 
     public int memberCount() {
