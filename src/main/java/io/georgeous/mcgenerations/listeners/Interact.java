@@ -9,6 +9,8 @@ import io.georgeous.mcgenerations.systems.surrogate.SurrogateEntity;
 import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
 import io.georgeous.mcgenerations.utils.*;
 import org.bukkit.*;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Sign;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -123,6 +125,24 @@ public class Interact implements Listener {
             return;
         }
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void preventGraveDrop(BlockBreakEvent event){
+        Player player = event.getPlayer();
+        PlayerRole role = RoleManager.get().get(player);
+
+        BlockState blockState = event.getBlock().getState();
+        if (!(blockState instanceof Sign))
+            return;
+
+        Sign s = (Sign) blockState;
+
+        if(!(s.getLine(3).toLowerCase().startsWith("r.i.p.")))
+            return;
+
+        event.setDropItems(false);
+        s.getLocation().getWorld().dropItemNaturally(s.getLocation(),new ItemStack(Material.STICK, 2));
     }
 
     @EventHandler
