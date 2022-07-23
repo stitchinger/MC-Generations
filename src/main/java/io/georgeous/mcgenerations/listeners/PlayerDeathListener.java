@@ -1,25 +1,19 @@
 package io.georgeous.mcgenerations.listeners;
 
-import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.files.McgConfig;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
-import io.georgeous.mcgenerations.utils.BlockFacing;
-import io.georgeous.mcgenerations.utils.ItemManager;
-import io.georgeous.mcgenerations.utils.Logger;
-import io.georgeous.mcgenerations.utils.Util;
+import io.georgeous.mcgenerations.utils.*;
+import io.georgeous.mcgenerations.utils.graves.GraveManager;
 import org.bukkit.*;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.Sign;
-import org.bukkit.block.data.Rotatable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
+
 
 
 public class PlayerDeathListener implements Listener {
@@ -125,55 +119,12 @@ public class PlayerDeathListener implements Listener {
 
         // Create Grave
         if (!PlayerManager.get().getWrapper(player).isDebugMode() && playerRole.getAgeManager().getAge() >= 40) {
-            createGrave(playerRole);
+            GraveManager.createGrave(playerRole);
         }
 
         PlayerManager.get().getWrapper(player).addLife();
         Logger.log(playerRole.getName() + " died offline");
         playerRole.die();
-    }
-
-    private void createGrave(PlayerRole role) {
-        // Place Grave Sign
-        World world = role.getPlayer().getWorld();
-
-        // Find Ground
-        Block under = world.getBlockAt(role.getPlayer().getLocation());
-        do {
-            under = under.getRelative(BlockFace.DOWN);
-        } while (under.getType() == Material.AIR);
-
-        Block block = under.getRelative(BlockFace.UP);
-        block.setType(randomSignType());
-        rotateSign(block, role.getPlayer().getLocation());
-        writeOnGrave((Sign) block.getState(), role);
-    }
-
-    private Material randomSignType(){
-        Material[] signTypes = {Material.OAK_SIGN, Material.BIRCH_SIGN, Material.SPRUCE_SIGN, Material.ACACIA_SIGN, Material.JUNGLE_SIGN};
-        int i = (int) (Math.random() * (signTypes.length - 1));
-        return signTypes[i];
-    }
-
-    private String randomGraveSymbol(){
-        String[] graveSymbols = {"☄", "♰", "☮", "☯", "Ω", "❤", "✿", "☪", "♬", "✟"};
-        int i = (int) (Math.random() * (graveSymbols.length - 1));
-        return graveSymbols[i];
-    }
-
-    private void rotateSign(Block block, Location location){
-        Rotatable bd = ((Rotatable) block.getBlockData());
-        BlockFace face = BlockFacing.locationToFace(location);
-        bd.setRotation(face);
-        block.setBlockData(bd);
-    }
-
-    private void writeOnGrave(Sign sign, PlayerRole role){
-        sign.setLine(0, role.getName() + " " + role.getFamily().getName());
-        sign.setLine(1, "Age: " + role.getAgeManager().getAge());
-        sign.setLine(2, (MCG.serverYear - role.getAgeManager().getAge()) + " - " + MCG.serverYear);
-        sign.setLine(3, "R.I.P.  " + randomGraveSymbol());
-        sign.update();
     }
 
     private void removeBabyHandlerFromDrops(PlayerDeathEvent event) {

@@ -27,8 +27,6 @@ public class PlayerPhaseUp implements Listener {
                 Util.giveItemIfNotInInventory(ItemManager.createBabyHandler(),player.getInventory());
             }
 
-
-
         }
     }
 }
