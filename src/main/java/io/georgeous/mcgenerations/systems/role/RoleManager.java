@@ -7,20 +7,19 @@ import io.georgeous.mcgenerations.systems.family.Family;
 import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.player.PlayerWrapper;
+import io.georgeous.mcgenerations.utils.ItemManager;
 import io.georgeous.mcgenerations.utils.Logger;
 import io.georgeous.mcgenerations.utils.NameManager;
 import io.georgeous.mcgenerations.utils.Notification;
 import io.georgeous.spicyhearts.SpicyAPI;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static org.bukkit.Bukkit.getServer;
 
@@ -61,6 +60,7 @@ public class RoleManager {
                     dropOfflineItems(role);
                     removeRoleData(role);
                     Logger.log(role.getName() + " died offline");
+                    role.getFamily().removeMember(role);
                     role.die();
                     iterator.remove();
                 }
@@ -73,12 +73,17 @@ public class RoleManager {
     }
 
     private void dropOfflineItems(PlayerRole role) {
-        for (ItemStack content : role.getOfflineInventory().getContents()) {
-            if (content != null) {
-                Logger.log("dropped Items");
-                role.getPlayer().getWorld().dropItemNaturally(role.getPlayer().getLocation(), content);
+        List<ItemStack> drops = Arrays.asList(role.getOfflineInventory().getContents());
+        drops.stream().filter(ItemManager::isStarterItem).toList().forEach(item -> item.setAmount(0));
+        drops.stream().filter(ItemManager::isBabyHandler).toList().forEach(item -> item.setAmount(0));
+
+        //ItemStack[] items = drops.toArray(ItemStack[])
+
+        drops.forEach(item -> {
+            if (item != null && !item.getType().equals(Material.AIR)){
+                role.getPlayer().getWorld().dropItemNaturally(role.getPlayer().getLocation(), item);
             }
-        }
+        });
     }
 
     public PlayerRole get(Player player) {
