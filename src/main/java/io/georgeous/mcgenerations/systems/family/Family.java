@@ -99,7 +99,7 @@ public class Family {
     }
 
     public void setLeader(PlayerRole leader) {
-        NickScoreboard.write(leader.getName(), leader.getPlayer().getUniqueId().toString().substring(0, 15),  getColoredName() + " ", "" , true, ChatColor.GOLD);
+        NickScoreboard.write(leader.getName(), leader.getPlayer().getUniqueId().toString().substring(0, 15),  getColoredName() + " ", ChatColor.GOLD + " ♚" , true, ChatColor.WHITE);
         NickScoreboard.updateScoreboard(leader.getName());
         Notification.neutralMsg(leader.getPlayer(), "You are now leader of the family " + this.color + "" + name);
         this.leader = leader;
