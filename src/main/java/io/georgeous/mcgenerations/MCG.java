@@ -14,6 +14,7 @@ import io.georgeous.mcgenerations.systems.family.FamilyManager;
 import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
+import io.georgeous.mcgenerations.utils.BadWordFilter;
 import io.georgeous.mcgenerations.utils.NameManager;
 import org.bukkit.*;
 import org.bukkit.command.CommandExecutor;
@@ -64,6 +65,7 @@ public final class MCG extends JavaPlugin {
          */
 
 
+        BadWordFilter.init();
 
         fileManager = new FileManager(this.getDataFolder().getPath());
         McgConfig.setup(this.getDataFolder().getPath());
@@ -198,6 +200,7 @@ public final class MCG extends JavaPlugin {
         registerCommand("namepreference", new NamePreferenceCommand());
         registerCommand("invsee", new InvseeCommand());
         registerCommand("renameitem", new RenameItemCommand());
+        registerCommand("banish", new BanishCommand());
 
         registerCommand("msg", new CommandDeactivator());
         registerCommand("minecraft:me", new CommandDeactivator());

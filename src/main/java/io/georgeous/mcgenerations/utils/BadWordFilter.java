@@ -1,7 +1,6 @@
 package io.georgeous.mcgenerations.utils;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -20,9 +19,15 @@ public class BadWordFilter {
      * Iterates over a String input and checks whether any cuss word was found - and for any/all cuss word found,
      * as long as the cuss word should not be ignored (i.e. check for false positives - e.g. even though "bass"
      * contains the word *ss, bass should not be censored) then (in the String returned) replace the cuss word with asterisks.
+     *
      */
-    public static String getCensoredText(final String input) {
+
+    public static void init(){
         loadBadWords();
+    }
+
+    public static String getCensoredText(final String input) {
+
         if (input == null) {
             return "";
         }
@@ -33,8 +38,11 @@ public class BadWordFilter {
         modifiedInput = modifiedInput.replaceAll("1", "i").replaceAll("!", "i").replaceAll("3", "e").replaceAll("4", "a")
                 .replaceAll("@", "a").replaceAll("5", "s").replaceAll("7", "t").replaceAll("0", "o").replaceAll("9", "g");
 
+
         // ignore any character that is not a letter
         modifiedInput = modifiedInput.toLowerCase().replaceAll("[^a-zA-Z]", "");
+
+        Logger.log(modifiedInput);
 
         ArrayList<String> badWordsFound = new ArrayList<>();
 
@@ -44,6 +52,7 @@ public class BadWordFilter {
             // the sentence is reached, or the max word length is reached.
             for (int offset = 1; offset < (modifiedInput.length() + 1 - start) && offset < largestWordLength; offset++) {
                 String wordToCheck = modifiedInput.substring(start, start + offset);
+                //Logger.log(wordToCheck);
                 if (allBadWords.containsKey(wordToCheck)) {
                     String[] ignoreCheck = allBadWords.get(wordToCheck);
                     boolean ignore = false;
@@ -57,6 +66,7 @@ public class BadWordFilter {
                     if (!ignore) {
                         badWordsFound.add(wordToCheck);
                     }
+                    badWordsFound.add(wordToCheck);
                 }
             }
         }
@@ -71,6 +81,7 @@ public class BadWordFilter {
             inputToReturn = inputToReturn.replaceAll("(?i)" + swearWord, stars);
         }
 
+        Logger.log(inputToReturn);
         return inputToReturn;
     } // end getCensoredText
 
@@ -80,12 +91,12 @@ public class BadWordFilter {
             // The following spreadsheet is from: https://gist.github.com/PimDeWitte/c04cc17bc5fa9d7e3aee6670d4105941
             // (If the spreadsheet ever ceases to exist, then this application will still function normally otherwise - it just won't censor any swear words.)
 
-           // FileReader fr = new FileReader("C:\\Users\\sshah\\Downloads\\Word_Filter - Sheet1.csv");
-           // BufferedReader reader = new BufferedReader(fr);
+            // FileReader fr = new FileReader("C:\\Users\\sshah\\Downloads\\Word_Filter - Sheet1.csv");
+            // BufferedReader reader = new BufferedReader(fr);
 
-    	BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(
-          "https://docs.google.com/spreadsheets/d/1mz5-kcVsv8wPQKRbRzivKoWsiujZcuEm-G-mGbl1FTQ/export?format=csv")
-          .openConnection().getInputStream()));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(
+                    "https://docs.google.com/spreadsheets/d/1mz5-kcVsv8wPQKRbRzivKoWsiujZcuEm-G-mGbl1FTQ/export?format=csv")
+                    .openConnection().getInputStream()));
 
 
             String currentLine = "";
@@ -112,7 +123,7 @@ public class BadWordFilter {
                         largestWordLength = word.length();
                     }
 
-                    String[] ignore_in_combination_with_words = new String[] {};
+                    String[] ignore_in_combination_with_words = new String[]{};
                     if (content.length > 1) {
                         ignore_in_combination_with_words = content[1].split("_");
                     }
