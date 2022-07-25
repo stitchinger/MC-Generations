@@ -7,6 +7,7 @@ import io.georgeous.mcgenerations.utils.Logger;
 import io.georgeous.mcgenerations.utils.Notification;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -72,9 +73,11 @@ public class BabyHandlerListener implements Listener {
     @EventHandler
     public void onBabyHandlerItemFrame(PlayerInteractEntityEvent event){
         Player player = event.getPlayer();
-        ItemStack usedItem;
 
-        usedItem = player.getInventory().getItemInMainHand();
+        if(!(event.getRightClicked() instanceof ItemFrame))
+            return;
+
+        ItemStack usedItem = player.getInventory().getItemInMainHand();
 
         if(usedItem.getType().equals(Material.AIR)){
             usedItem = player.getInventory().getItemInOffHand();

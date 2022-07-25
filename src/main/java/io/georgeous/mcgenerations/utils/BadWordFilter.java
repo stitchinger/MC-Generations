@@ -42,7 +42,7 @@ public class BadWordFilter {
         // ignore any character that is not a letter
         modifiedInput = modifiedInput.toLowerCase().replaceAll("[^a-zA-Z]", "");
 
-        Logger.log(modifiedInput);
+        //ogger.log(modifiedInput);
 
         ArrayList<String> badWordsFound = new ArrayList<>();
 
@@ -52,7 +52,6 @@ public class BadWordFilter {
             // the sentence is reached, or the max word length is reached.
             for (int offset = 1; offset < (modifiedInput.length() + 1 - start) && offset < largestWordLength; offset++) {
                 String wordToCheck = modifiedInput.substring(start, start + offset);
-                //Logger.log(wordToCheck);
                 if (allBadWords.containsKey(wordToCheck)) {
                     String[] ignoreCheck = allBadWords.get(wordToCheck);
                     boolean ignore = false;
@@ -81,7 +80,6 @@ public class BadWordFilter {
             inputToReturn = inputToReturn.replaceAll("(?i)" + swearWord, stars);
         }
 
-        Logger.log(inputToReturn);
         return inputToReturn;
     } // end getCensoredText
 
