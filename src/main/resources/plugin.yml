@@ -31,7 +31,6 @@ commands:
   namepreference:
   invsee:
   renameitem:
-  banish:
   mute:
 depend: [Piggyback, NickAPI, Petmanager, Spicyhearts]
 
