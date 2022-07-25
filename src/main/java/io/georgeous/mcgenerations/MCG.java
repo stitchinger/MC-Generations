@@ -3,6 +3,7 @@ package io.georgeous.mcgenerations;
 
 import io.georgeous.mcgenerations.commands.CommandDeactivator;
 import io.georgeous.mcgenerations.commands.admin.*;
+import io.georgeous.mcgenerations.commands.admin.mute.MuteCommand;
 import io.georgeous.mcgenerations.commands.player.*;
 import io.georgeous.mcgenerations.files.DataManager;
 import io.georgeous.mcgenerations.files.FileManager;
@@ -201,6 +202,7 @@ public final class MCG extends JavaPlugin {
         registerCommand("invsee", new InvseeCommand());
         registerCommand("renameitem", new RenameItemCommand());
         registerCommand("banish", new BanishCommand());
+        registerCommand("mute", new MuteCommand());
 
         registerCommand("msg", new CommandDeactivator());
         registerCommand("minecraft:me", new CommandDeactivator());

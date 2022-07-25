@@ -1,6 +1,7 @@
 package io.georgeous.mcgenerations.listeners;
 
 import io.georgeous.mcgenerations.MCG;
+import io.georgeous.mcgenerations.commands.admin.mute.MuteManager;
 import io.georgeous.mcgenerations.files.McgConfig;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
@@ -34,6 +35,12 @@ public class PlayerChat implements Listener {
         //event.setFormat("%s blub: %s");
         Player player = event.getPlayer();
         PlayerRole playerRole = RoleManager.get().get(player);
+
+        if(MuteManager.get().isMuted(player)){
+            Notification.errorMsg(player, "Remaining time muted: " + MuteManager.get().getRemainingMuteTimeSec(player) + "s");
+            return;
+        }
+
 
         if (playerRole == null) {
             wrapperBroadcast(player, event.getMessage());
