@@ -3,6 +3,7 @@ package io.georgeous.mcgenerations.listeners;
 import io.georgeous.mcgenerations.MCG;
 import io.georgeous.mcgenerations.commands.admin.mute.MuteManager;
 import io.georgeous.mcgenerations.files.McgConfig;
+import io.georgeous.mcgenerations.systems.player.PlayerManager;
 import io.georgeous.mcgenerations.systems.role.PlayerRole;
 import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.role.lifephase.PhaseManager;
@@ -123,7 +124,7 @@ public class PlayerChat implements Listener {
             }
             receivingPlayer.spigot().sendMessage( customPrefix, msg);
 
-        } else if(receivingPlayer.isOp()){
+        } else if(receivingPlayer.isOp() && PlayerManager.get().getWrapper(receivingPlayer) != null && PlayerManager.get().getWrapper(receivingPlayer).isDebugMode()){
             opEditPrefix(customPrefix, sendingPlayer);
             receivingPlayer.spigot().sendMessage(customPrefix, msg);
         } else if(RoleManager.get().get(receivingPlayer) == null){
