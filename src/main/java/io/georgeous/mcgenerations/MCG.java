@@ -17,15 +17,13 @@ import io.georgeous.mcgenerations.systems.role.RoleManager;
 import io.georgeous.mcgenerations.systems.surrogate.SurrogateManager;
 import io.georgeous.mcgenerations.utils.BadWordFilter;
 import io.georgeous.mcgenerations.utils.NameManager;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
-
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-
 
 import java.util.Optional;
 import java.util.logging.Level;
@@ -98,7 +96,7 @@ public final class MCG extends JavaPlugin {
             }
         }.runTaskTimer(this, 0L, 1L);
 
-        new BukkitRunnable(){
+        new BukkitRunnable() {
             @Override
             public void run() {
                 serverYear++;
@@ -110,8 +108,7 @@ public final class MCG extends JavaPlugin {
         saveConfig();
 
 
-
-        new BukkitRunnable(){
+        new BukkitRunnable() {
             @Override
             public void run() {
                 Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "gamerule doFireTick false");
@@ -129,6 +126,7 @@ public final class MCG extends JavaPlugin {
         PlayerManager.get().disable();
         RoleManager.get().disable();
         FamilyManager.disable();
+
         NameManager.saveConfig();
 
         FileConfiguration config = getConfig();
@@ -136,14 +134,19 @@ public final class MCG extends JavaPlugin {
         saveConfig();
 
 
-        for(Player player : Bukkit.getOnlinePlayers()) {
+        resetPlayerScoreboards();
+    }
+
+    private void resetPlayerScoreboards() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
             try {
                 player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
-            }catch (NullPointerException e){
-               e.printStackTrace();
+            } catch (NullPointerException e) {
+                e.printStackTrace();
             }
         }
     }
+
 
     public void printLoadupText() {
         getLogger().log(Level.FINE, "MCG ? ========== [ MC Generations ] ==========");
@@ -168,58 +171,55 @@ public final class MCG extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerMoveListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerCraftListener(), this);
         getServer().getPluginManager().registerEvents(new BabyHandlerListener(), this);
-
         getServer().getPluginManager().registerEvents(new PlayerCarry(), this);
         getServer().getPluginManager().registerEvents(new PlayerPhaseUp(), this);
         getServer().getPluginManager().registerEvents(new CreatureSpawnListener(), this);
-
         getServer().getPluginManager().registerEvents(new CustomItemsListener(), this);
     }
 
     public void registerCommands() {
-        registerCommand("gm", new GamemodeCommand());
-        registerCommand("nick", new NickCommand());
-        registerCommand("you", new YouAreCommand());
-        registerCommand("secinyear", new SecInYear());
-        registerCommand("die", new DieCommand());
-        registerCommand("dayspeed", new DaySpeedCommand());
+        registerAdminCommands();
+        registerPlayerCommands();
+    }
+
+    private void registerPlayerCommands() {
         registerCommand("me", new MeCommand());
-        registerCommand("debug", new DebugCommand());
+        registerCommand("you", new YouAreCommand());
         registerCommand("role", new RoleCommand());
         registerCommand("family", new FamilyCommand());
+        registerCommand("babyhandler", new BabyHandlerCommand());
+        registerCommand("die", new DieCommand());
         registerCommand("howto", new HowtoCommand());
         registerCommand("discord", new DiscordCommand());
-        registerCommand("broadcast", new BroadcastCommand());
-        registerCommand("babyhandler", new BabyHandlerCommand());
+        registerCommand("ad", new AdCommand());
         registerCommand("report", new ReportCommand());
         registerCommand("rules", new RulesCommand());
         registerCommand("adopt", new AdoptCommand());
         registerCommand("shareign", new ShareIgnCommand());
-        registerCommand("ad", new AdCommand());
-        registerCommand("realname", new RealNameCommand());
-        registerCommand("familyreborn", new FamilyRebornCommand());
         registerCommand("namepreference", new NamePreferenceCommand());
-        registerCommand("invsee", new InvseeCommand());
+        registerCommand("familyreborn", new FamilyRebornCommand());
         registerCommand("renameitem", new RenameItemCommand());
-        registerCommand("banish", new BanishCommand());
-        registerCommand("mute", new MuteCommand());
-
         registerCommand("msg", new CommandDeactivator());
         registerCommand("minecraft:me", new CommandDeactivator());
         registerCommand("w", new CommandDeactivator());
         registerCommand("say", new CommandDeactivator());
     }
 
-    private void registerCommand(String command, CommandExecutor executor) {
-        /*
-        PluginCommand pluginCommand = getServer().getPluginCommand(command);
-        if (pluginCommand == null)
-            return;
-        pluginCommand.setExecutor(executor);
-         */
+    private void registerAdminCommands() {
+        registerCommand("banish", new BanishCommand());
+        registerCommand("mute", new MuteCommand());
+        registerCommand("invsee", new InvseeCommand());
+        registerCommand("realname", new RealNameCommand());
+        registerCommand("debug", new DebugCommand());
+        registerCommand("broadcast", new BroadcastCommand());
+        registerCommand("secinyear", new SecInYear());
+        registerCommand("dayspeed", new DaySpeedCommand());
+        registerCommand("gm", new GamemodeCommand());
+        registerCommand("nick", new NickCommand());
+    }
 
-        Optional.ofNullable(getCommand(command))
-                .ifPresent(c -> c.setExecutor(executor));
+    private void registerCommand(String command, CommandExecutor executor) {
+        Optional.ofNullable(getCommand(command)).ifPresent(c -> c.setExecutor(executor));
     }
 
     public FileManager getFileManager() {
@@ -227,9 +227,3 @@ public final class MCG extends JavaPlugin {
     }
 
 }
-
-/*
-
-
-
- */

@@ -13,14 +13,13 @@ import io.georgeous.mcgenerations.utils.*;
 import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.advancement.AdvancementProgress;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.Nullable;
 import xyz.haoshoku.nick.api.NickAPI;
 
 import java.util.ArrayList;
@@ -32,28 +31,18 @@ public class SpawnManager {
     private static final int timeToHowtoNotification = 15;
     private static SpawnManager instance;
 
-    private SpawnManager(){
+    private SpawnManager() {
 
     }
 
-    public static SpawnManager get(){
-        if(instance == null){
+    public static SpawnManager get() {
+        if (instance == null) {
             instance = new SpawnManager();
         }
-        return  instance;
+        return instance;
     }
 
-
-    public void spawnPlayer(Player spawnedPlayer) {
-        PlayerWrapper spawnedPlayerWrapper = PlayerManager.get().getWrapper(spawnedPlayer);
-        if(spawnedPlayerWrapper.getIsSpawning()){
-            return;
-        }
-        PlayerRole chosenMotherRole = findViableMother(spawnedPlayer);
-        startSpawning(spawnedPlayer, chosenMotherRole);
-    }
-
-    public static void startSpawning(Player spawnedPlayer, PlayerRole chosenMotherRole){
+    public static void startSpawning(Player spawnedPlayer, PlayerRole chosenMotherRole) {
         PlayerWrapper spawnedPlayerWrapper = PlayerManager.get().getWrapper(spawnedPlayer);
 
 
@@ -75,19 +64,19 @@ public class SpawnManager {
         spawnTask.runTaskLater(MCG.getInstance(), 20L * McgConfig.getSecInLobby());
     }
 
-    private static void startSpawningFeedback(Player spawnedPlayer){
+    private static void startSpawningFeedback(Player spawnedPlayer) {
         //Levitation
         PotionEffect hover = new PotionEffect(PotionEffectType.LEVITATION, 200, 1, false, false, false);
         spawnedPlayer.addPotionEffect(hover);
 
         // Effects
-        spawnedPlayer.getWorld().playSound(spawnedPlayer.getLocation(), Sound.BLOCK_BEACON_POWER_SELECT, SoundCategory.MASTER,1.5f,1f);
-        spawnedPlayer.getWorld().spawnParticle(Particle.END_ROD, spawnedPlayer.getLocation().add(0,1,0), 60, 0.01, 0.05, 0.01);
+        spawnedPlayer.getWorld().playSound(spawnedPlayer.getLocation(), Sound.BLOCK_BEACON_POWER_SELECT, SoundCategory.MASTER, 1.5f, 1f);
+        spawnedPlayer.getWorld().spawnParticle(Particle.END_ROD, spawnedPlayer.getLocation().add(0, 1, 0), 60, 0.01, 0.05, 0.01);
 
         Notification.neutralMsg(spawnedPlayer, "You will be reborn in " + McgConfig.getSecInLobby() + " seconds");
     }
 
-    public static void resetPlayerOnLifeStart(PlayerWrapper wrapper){
+    public static void resetPlayerOnLifeStart(PlayerWrapper wrapper) {
         // Reset Player
         wrapper.getPlayer().removePotionEffect(PotionEffectType.LEVITATION);
         wrapper.setIsSpawning(false);
@@ -99,12 +88,11 @@ public class SpawnManager {
         resetAllAdvancements(wrapper.getPlayer());
     }
 
-    private static void resetAllAdvancements(Player player){
+    private static void resetAllAdvancements(Player player) {
         Iterator<Advancement> iterator = Bukkit.getServer().advancementIterator();
-        while (iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             AdvancementProgress progress = player.getAdvancementProgress(iterator.next());
-            for (String criteria : progress.getAwardedCriteria()){
+            for (String criteria : progress.getAwardedCriteria()) {
                 progress.revokeCriteria(criteria);
             }
         }
@@ -138,7 +126,7 @@ public class SpawnManager {
         Notification.neutralMsg(player, "Use [ §d/family rename Smith§r ] to rename your family");
     }
 
-    private static void randomEveSpawn(Player player){
+    private static void randomEveSpawn(Player player) {
         Location loc = rotationSpawnResult();
         double radius = McgConfig.getSpawnRadius();
         String cmd = "spreadplayers " + loc.getX() + " " + loc.getZ() + " 0 " + radius + " false " + player.getName();
@@ -146,19 +134,19 @@ public class SpawnManager {
 
     }
 
-    private static Location rotationSpawnResult(){
+    private static Location rotationSpawnResult() {
         Location rotationCenter = McgConfig.getSpawnRotationCenter();
         double rotationRadius = McgConfig.getSpawnRotationRadius();
         double time = System.currentTimeMillis() / 1000d / 60d / 60d * McgConfig.getSpawnRotationSpeed();  // Hour
 
-        double radian =  (time % (2 * Math.PI)) - Math.PI; //range -PI - PI One rotation per 6,28 hours
+        double radian = (time % (2 * Math.PI)) - Math.PI; //range -PI - PI One rotation per 6,28 hours
         Logger.log("Spawn-Radian: " + radian);
 
         double x = Math.cos(radian);
         double z = Math.sin(radian);
 
 
-        Vector dir = new Vector(x,0, z);
+        Vector dir = new Vector(x, 0, z);
         rotationCenter.add(dir.multiply(rotationRadius));
 
         return rotationCenter;
@@ -186,9 +174,9 @@ public class SpawnManager {
 
         Notification.neutralMsg(newBorn, "You were reincarnated as a Baby");
         // Effects
-        babyBornEffects(newBorn, mother.getPlayer());
+        babyBornEffects(mother.getPlayer().getLocation());
 
-        new BukkitRunnable(){
+        new BukkitRunnable() {
             @Override
             public void run() {
                 PotionEffect glow = new PotionEffect(PotionEffectType.GLOWING, 100, 1, true, true, true);
@@ -198,44 +186,40 @@ public class SpawnManager {
 
     }
 
-    private static void equipEve(Player player){
+    private static void equipEve(Player player) {
         Logger.log("Equipped " + player.getName());
         player.getInventory().addItem(ItemManager.getEveStarterSeeds());
         player.getInventory().addItem(ItemManager.getEveStarterFood());
         player.getInventory().addItem(ItemManager.createCloneEgg());
 
         ItemStack armor = ItemManager.getEveStarterArmor();
-        if(armor.getType().equals(Material.LEATHER_HELMET)){
+        equipArmor(player, armor);
+    }
+
+    private static void equipArmor(Player player, ItemStack armor) {
+        if (armor.getType().equals(Material.LEATHER_HELMET)) {
             player.getInventory().setHelmet(armor);
         }
-        if(armor.getType().equals(Material.LEATHER_CHESTPLATE)){
+        if (armor.getType().equals(Material.LEATHER_CHESTPLATE)) {
             player.getInventory().setChestplate(armor);
         }
-        if(armor.getType().equals(Material.LEATHER_LEGGINGS)){
+        if (armor.getType().equals(Material.LEATHER_LEGGINGS)) {
             player.getInventory().setLeggings(armor);
         }
-        if(armor.getType().equals(Material.LEATHER_BOOTS)){
+        if (armor.getType().equals(Material.LEATHER_BOOTS)) {
             player.getInventory().setBoots(armor);
         }
     }
 
     public static PlayerRole findViableMother(Player child) {
-        List<PlayerRole> viableMothers = new ArrayList<>();
         Logger.log("Looking for parent player");
-        // find viable Mothers on Server
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            PlayerRole playerRole = RoleManager.get().get(player);
-            boolean playerHasRole
-                    = RoleManager.get().get(player) != null;
-            boolean notSelf
-                    = child != player;
-            if (playerHasRole && notSelf) {
-                if (playerRole.getMotherController().canHaveBaby()) {
-                    viableMothers.add(playerRole);
-                }
-            }
-        }
 
+        List<PlayerRole> viableMothers = getAllPossibleMothers(child);
+        return pickTheMother(viableMothers);
+    }
+
+    @Nullable
+    private static PlayerRole pickTheMother(List<PlayerRole> viableMothers) {
         if (viableMothers.size() != 0) {
             // get random mother
             return viableMothers.get(Util.getRandomInt(viableMothers.size()));
@@ -244,11 +228,41 @@ public class SpawnManager {
         }
     }
 
-    private static void babyBornEffects(Player player, Entity mom) {
-        World world = player.getWorld();
-        world.playSound(mom.getLocation(), Sound.EVENT_RAID_HORN, 1, 2);
-        world.playSound(mom.getLocation(), Sound.ENTITY_PLAYER_SPLASH, 1, 1.5f);
-        world.playSound(mom.getLocation(), Sound.ENTITY_PANDA_SNEEZE, 2, 1.5f);
-        world.spawnParticle(Particle.FIREWORKS_SPARK, mom.getLocation(), 50);
+    private static List<PlayerRole> getAllPossibleMothers(Player child) {
+        List<PlayerRole> viableMothers = new ArrayList<>();
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            PlayerRole playerRole = RoleManager.get().get(player);
+
+            boolean playerHasRole = RoleManager.get().get(player) != null;
+            if (!playerHasRole)
+                continue;
+
+            boolean notSelf = child != player;
+            if (!notSelf)
+                continue;
+
+            if (!playerRole.getMotherController().canHaveBaby())
+                continue;
+
+            viableMothers.add(playerRole);
+        }
+        return viableMothers;
+    }
+
+    private static void babyBornEffects(Location location) {
+        World world = location.getWorld();
+        world.playSound(location, Sound.EVENT_RAID_HORN, 1, 2);
+        world.playSound(location, Sound.ENTITY_PLAYER_SPLASH, 1, 1.5f);
+        world.playSound(location, Sound.ENTITY_PANDA_SNEEZE, 2, 1.5f);
+        world.spawnParticle(Particle.FIREWORKS_SPARK, location, 50);
+    }
+
+    public void spawnPlayer(Player spawnedPlayer) {
+        PlayerWrapper spawnedPlayerWrapper = PlayerManager.get().getWrapper(spawnedPlayer);
+        if (spawnedPlayerWrapper.getIsSpawning()) {
+            return;
+        }
+        PlayerRole chosenMotherRole = findViableMother(spawnedPlayer);
+        startSpawning(spawnedPlayer, chosenMotherRole);
     }
 }
